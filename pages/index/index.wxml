@@ -59,3 +59,35 @@
         <text>联系小鹿找料：400-8088-156</text>
     </view>
 </view>
+
+<view class='index-popup' wx:if="{{isPopup}}">
+    <view class='index-popup-bg' catchtap='closePopup'></view>
+    <view class='index-popup-content'>
+        <view class='index-popup-title'>请填写找料件数，选择找料方式</view>
+        <view class='index-popup-main'>
+            <view class='index-popup-view-1'>件数 ：</view> 
+            <view class='index-popup-view-2'>
+              <view class='sub' bindtap='sub'>-</view> 
+              <input class='findInput' bindinput='findNumChange' bindblur='findNumBlur' type='number' value='{{findNum}}'> </input> 
+              <view class='plu' bindtap='plu'>+</view>
+            </view>
+        </view>
+        <view class='index-popup-check'>
+          <view>找料方式 :</view>
+          <view bindtap='selcetTab' data-id="1">
+           <text hidden='{{selcetTabNum != 1}}' class="iconfont icon-dui fs40 text-theme"></text>
+           <text hidden='{{selcetTabNum == 1}}' class="iconfont icon-yuan fs40 text-eb"></text>
+            按图找料
+          </view>
+          <view bindtap='selcetTab' data-id="2">
+           <text hidden='{{selcetTabNum != 2}}' class="iconfont icon-dui fs40 text-theme"></text>
+           <text hidden='{{selcetTabNum == 2}}' class="iconfont icon-yuan fs40 text-eb"></text>
+            按样找料
+          </view>
+        </view>
+
+        <view class='doSubmit' catchtap='doSubmit'>
+          提交
+        </view> 
+    </view>
+</view>

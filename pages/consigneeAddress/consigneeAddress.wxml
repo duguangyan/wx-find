@@ -23,6 +23,9 @@
             <image hidden='{{!item.is_default}}' src="https://m.yidap.com/assets/imgs/order_address_icon_1.png" style="position:absolute;left:0;width:40rpx;height:40rpx;"></image>
 
             <view class="address-item-center border-bottom">
+                <view class="bold " style="line-height:78rpx;">
+                    <text class="mgr-14 fs36">档口名称：{{item.consignee}}</text>
+                </view>
 
                 <view class="bold " style="line-height:78rpx;">
                     <text class="mgr-14 fs36">{{item.consignee}}</text>
@@ -33,6 +36,10 @@
                     <text hidden='{{!item.is_default}}' class="text-theme">[选中地址]</text>
                     <text> {{item.city_str}} </text>
                     <text>{{item.address}}</text>
+                </view>
+
+                <view class="bold text-666" style="line-height:78rpx;">
+                    <text>备注</text>
                 </view>
 
             </view>

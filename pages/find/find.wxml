@@ -82,25 +82,25 @@
           <view class="border-bottom cell-padding address flex flex-start">
               <text class="iconfont icon-dizhi fs40 text-gray mgr-20"></text>
 
-              <navigator open-type='navigate' url="../consigneeAddress/consigneeAddress" hidden='{{!defaultAddress}}' class="flex-1 address-info fs30">
+              <view data-index='{{idx}}' bindtap='goConsigneeAddress' hidden='{{!defaultAddress}}' class="flex-1 address-info fs30">
                   <view class="flex">
                       <text>档口名称: xxxxxxxxxxxxx</text>
                   </view>
                   <view class="flex">
-                      <text>收货人<text class='mgl-30'>:</text> {{defaultAddress.consignee}}</text>
-                      <text>{{defaultAddress.mobile}}</text>
+                      <text>收货人<text class='mgl-30'>:</text> {{item.address.consignee}}</text>
+                      <text>{{item.address.mobile}}</text>
                   </view>
 
                   <view>
                       <text>收货地址：</text>
-                      <text>{{defaultAddress.city_str}} {{defaultAddress.address}}</text>
+                      <text>{{item.address.city_str}} {{item.address.address}}</text>
                   </view>
 
-              </navigator>
+              </view>
 
-              <navigator open-type='navigate' url="../newAddress/newAddress?type=new" hidden='{{defaultAddress}}' class="text-666 h100 lh100 flex-1">
+              <view data-index='{{idx}}' bindtap='goConsigneeAddress'  hidden='{{defaultAddress}}' class="text-666 h100 lh100 flex-1">
                   点击添加收货地址
-              </navigator>
+              </view>
 
           </view>
 

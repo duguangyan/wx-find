@@ -15,7 +15,7 @@ Page({
         checkType: '面料',
         isSelect: false, // 下拉显示按描述找料
         selcetSecondTabNum: '1',
-        addFinds: [{ index: 0, checkType: '面料', selcetTabNum: '1', selcetSecondTabNum: '1', isSelect: false, description: '', files: [{}, {}, {}]}]
+        addFinds: [{ index: 0, checkType: '面料', selcetTabNum: '1', selcetSecondTabNum: '1', isSelect: false, description: '', files: [{}, {}, {}],address:{}}]
     },
     // 获取描述
     getDescription(e) {
@@ -52,7 +52,15 @@ Page({
     },
     // 点击添加找料
     addFind () {
-      let newAddFinds = this.data.addFinds.concat([{ index: this.data.addFinds.length, checkType: '面料', selcetTabNum: '1', selcetSecondTabNum: '1', isSelect: false, description: '', addressId: '', files: [{}, {}, {}]}]) ;
+      if (this.data.addFinds.length >= 10){
+        wx.showToast({
+          title: '最多10个找料任务',
+          icon: 'none',
+          duration: 2000
+        })
+        return false;
+      }
+      let newAddFinds = this.data.addFinds.concat([{ index: this.data.addFinds.length, checkType: '面料', selcetTabNum: '1', selcetSecondTabNum: '1', isSelect: false, description: '', files: [{}, {}, {}], address: this.data.defaultAddress}]) ;
       this.setData({
         addFinds: newAddFinds
       });
@@ -60,6 +68,8 @@ Page({
     },
     // 删除找料单个信息
     closed(e) {
+      let _this = this;
+      let index = e.currentTarget.dataset.index;
       if (this.data.addFinds.length<=1){
         wx.showToast({
           title: '至少保留一个找料单',
@@ -68,14 +78,25 @@ Page({
         })
         return false;
       }
-      let index = e.currentTarget.dataset.index;
-      console.log(index);
-      this.data.addFinds.splice(index, 1);
-      let newAddFinds = this.data.addFinds;
-      this.setData({
-        addFinds: newAddFinds
-      });
-      console.log(this.data.addFinds);
+      wx.showModal({
+        title: '提示',
+        content: '确认删除吗？',
+        confirmText: '确认',
+        confirmColor: '#c81a29',
+        success: (res) => {
+          if (res.confirm) {
+            console.log(index);
+            _this.data.addFinds.splice(index, 1);
+            let newAddFinds = _this.data.addFinds;
+            _this.setData({
+              addFinds: newAddFinds
+            });
+            console.log(_this.data.addFinds);
+          } else if (res.cancel) {
+            console.log('用户点击取消')
+          }
+        }
+      })
     },
     // 显示按描述找料
     showSelect (e) {
@@ -257,7 +278,31 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
-
+      // 获取默认地址
+      this.getSelectedAddress(()=>{
+        console.log('--------');
+        console.log(options.findNum);
+        console.log(this.data.defaultAddress);
+        // 获取上一级页面传过来的数据
+        this.setData({
+          findNum: options.findNum,
+          selcetTabNum: options.selcetTabNum
+        })
+        // 根据上一级findNum创建找料单数
+        let newAddFinds = [];
+        let findNum = options.findNum == '' ? 1 : options.findNum;
+        for (let i = 0; i < parseInt(findNum) ;i++){
+          newAddFinds.push(
+            { index: i, checkType: '面料', selcetTabNum: options.selcetTabNum, selcetSecondTabNum: '1', isSelect: false, description: '', files: [{}, {}, {}], address: this.data.defaultAddress }
+          )
+        }
+        // 设置数据
+        this.setData({
+          addFinds: newAddFinds
+        });
+        console.log(this.data.addFinds);
+      });
+      
     },
 
     /**
@@ -271,8 +316,7 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow: function () {
-        // 获取默认地址
-        this.getSelectedAddress();
+        
     },
 
     /**
@@ -310,31 +354,26 @@ Page({
 
     },
     // 收货地址
-    getSelectedAddress() {
+    getSelectedAddress(callBlack) {
         // 获取默认地址
         api.defaultAddress({
-
         }).then((res) => {
-
             let defaultAddress = res.data;
-
             // 可能位空数组
             if (Array.isArray(defaultAddress)) {
-
                 this.setData({
                     defaultAddress: false,
                     addressId: ''
                 })
-
             } else {
-
+              this.data.addFinds[app.globalData.addressIndex].address = res.data;
                 this.setData({
                     defaultAddress,
-                    addressId: defaultAddress.id
+                    addressId: defaultAddress.id,
+                    addFinds: this.data.addFinds
                 })
-
+                callBlack();
             }
-
         }).catch((res) => {
 
         })
@@ -386,5 +425,13 @@ Page({
 
             }
         });
+    },
+    // 去地址选择页面
+    goConsigneeAddress (e) {
+      let index = e.currentTarget.dataset.index;
+      app.globalData.addressIndex = index;
+      wx.navigateTo({
+        url: '../consigneeAddress/consigneeAddress',
+      })
     }
 })

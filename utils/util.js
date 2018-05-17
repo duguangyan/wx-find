@@ -162,7 +162,7 @@ const successTips = (msg = '成功') => {
 
   wx.showToast({
     title: msg,
-    // image: '../../images/icons/error.png',
+    image: '../../public/images/icon/error.png',
     duration: 1500
   })
 
@@ -173,7 +173,7 @@ const errorTips = (msg = '发生了错误') => {
 
   wx.showToast({
     title: msg,
-    image: '../../images/icons/error.png',
+    image: '../../public/images/icon/error.png',
     duration: 1500
   })
 

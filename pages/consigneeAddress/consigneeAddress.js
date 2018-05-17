@@ -1,5 +1,6 @@
 const api = require('../../utils/api.js');
 let firstIn = true;
+let app = new getApp();
 Page({
 
     /**
@@ -19,7 +20,7 @@ Page({
                 address_id: id
             }
         }).then((res) => {
-
+            app.globalData.addressChecked = res.data;
             // 默认地址
             let addressList = this.data.addressList;
 
@@ -104,7 +105,7 @@ Page({
             this.getAddressListData();
 
         }
-
+        
 
     },
 

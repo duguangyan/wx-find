@@ -6,6 +6,7 @@ App({
     
   },
   globalData: {
-    userInfo: null
+    userInfo: null,
+    addressIndex:0
   }
 })

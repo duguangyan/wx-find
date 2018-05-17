@@ -5,7 +5,84 @@ Page({
      * 页面的初始数据
      */
     data: {
+      findNum:1,
+      selcetTabNum:1,
+      isPopup:false
+    },
+    // 提交
+    doSubmit () {
+      this.setData({
+        isPopup: false
+      })
+      wx.navigateTo({
+        url: '../find/find?findNum=' + this.data.findNum + '&selcetTabNum=' + this.data.selcetTabNum,
+      })
+    },
+    // 弹窗件数input失去焦点
+    findNumBlur (e) {
+      let n = e.detail.value;
+      if(n==''){
+        this.setData({
+          findNum: 1
+        })
+      }
+    },
+    // input 改变1-10
+    findNumChange (e) {
+      let n = e.detail.value;
+      if(n<=1 && n!=''){
+        this.setData({
+          findNum: 1
+        })
+        return false;
+      }
+      if (n >= 10) {
+        this.setData({
+          findNum: 10
+        })
+        wx.showToast({
+          title: '最多10个找料任务',
+          icon: 'none',
+          duration: 2000
+        })
+        return false;
+      }
+      this.setData({
+        findNum: e.detail.value
+      })
+    },
+    // 减法
+    sub () {
+      if (this.data.findNum<=1){
+        return false;
+      }
+      this.data.findNum--;
+      this.setData({
+        findNum: this.data.findNum
+      })
+    },
+    // 加法
+    plu () {
+      if (this.data.findNum >= 10) {
+        wx.showToast({
+          title: '最多10个找料单',
+          icon: 'none',
+          duration: 2000
+        })
+        return false;
+      }
+      this.data.findNum++;
+      this.setData({
+        findNum: this.data.findNum
+      })
+    },
 
+    // 找料方式切换
+    selcetTab (e){
+      let id = e.currentTarget.dataset.id;
+      this.setData({
+        selcetTabNum: id
+      })
     },
     //  联系我们电话
     contact() {
@@ -13,13 +90,20 @@ Page({
             phoneNumber: '400-8088-156'
         })
     },
+    // 点击背景关闭找料数量弹窗
+    closePopup() {
+      this.setData({
+        isPopup: false
+      })
+    },
     // 去找料
     goFind() {
-        let token = app.globalData.token;
+        //let token = app.globalData.token;
+        let token = true;
         if (token) {
-            wx.navigateTo({
-                url: '../find/find',
-            })
+          this.setData({
+            isPopup:true
+          })
         } else {
             // 跳转关联页面
             wx.navigateTo({
@@ -47,16 +131,11 @@ Page({
     onLoad: function (options) {
         //设置服务人数
         api.serviceNum({}).then(res => {
-            console.log(res);
             let serviceData = res.data;
             this.setData({
                 serviceData
             })
         });
-
-      
-
-      
     },
     /**
      * 生命周期函数--监听页面初次渲染完成
