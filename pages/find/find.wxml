@@ -82,7 +82,7 @@
           <view class="border-bottom cell-padding address flex flex-start">
               <text class="iconfont icon-dizhi fs40 text-gray mgr-20"></text>
 
-              <view data-index='{{idx}}' bindtap='goConsigneeAddress' hidden='{{!defaultAddress}}' class="flex-1 address-info fs30">
+              <view data-index='{{idx}}' bindtap='goConsigneeAddress' hidden='{{!item.address}}' class="flex-1 address-info fs30">
                   <view class="flex">
                       <text>档口名称: xxxxxxxxxxxxx</text>
                   </view>
@@ -98,7 +98,7 @@
 
               </view>
 
-              <view data-index='{{idx}}' bindtap='goConsigneeAddress'  hidden='{{defaultAddress}}' class="text-666 h100 lh100 flex-1">
+              <view data-index='{{idx}}' bindtap='goConsigneeAddress'  hidden='{{item.address}}' class="text-666 h100 lh100 flex-1">
                   点击添加收货地址
               </view>
 
@@ -122,7 +122,7 @@
       <text>点击添加找料</text>
     </view>
     <view class="cell-padding submit-form">
-        <button formType="submit">加入小鹿任务</button>
+        <button bindtap="findSubmit">加入小鹿任务</button>
     </view>
 
 

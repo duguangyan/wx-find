@@ -1,6 +1,9 @@
 const api = require('../../utils/api.js');
 let firstIn = true;
 let app = new getApp();
+var pages = getCurrentPages();
+var currPage = pages[pages.length - 1];   //当前页面
+var prevPage = pages[pages.length - 2];  //上一个页面
 Page({
 
     /**
@@ -14,24 +17,28 @@ Page({
         console.log(e)
         let id = e.currentTarget.dataset.id,
             index = e.currentTarget.dataset.index;
-
         api.setDefaultAddress({
             data: {
                 address_id: id
             }
         }).then((res) => {
+            console.log(res.data);
             app.globalData.addressChecked = res.data;
             // 默认地址
+            var pages = getCurrentPages();
+            var currPage = pages[pages.length - 1];   //当前页面
+            var prevPage = pages[pages.length - 2];  //上一个页面
+            prevPage.setData({
+              defaultAddress: res.data
+            })
+            
             let addressList = this.data.addressList;
-
             addressList.forEach((ele) => {
                 if (ele.is_default == 1) {
                     ele.is_default = 0;
                 }
             })
-
             addressList[index].is_default = 1;
-
             this.setData({
                 addressList
             })
@@ -39,12 +46,27 @@ Page({
             wx.showToast({
                 title: '已设为默认地址',
             })
-
         }).catch(() => {
 
         })
-
-
+    },
+    // 点击选中地址返回
+    goBlack (e) {
+      // 获取当前点击地址数据
+      let item = e.currentTarget.dataset.item;
+      console.log(item);
+      // 更新上一页的地址数据
+      var pages = getCurrentPages();
+      var currPage = pages[pages.length - 1];   //当前页面
+      var prevPage = pages[pages.length - 2];  //上一个页面
+      this.data.addFinds[app.globalData.addressIndex].address = item;
+      prevPage.setData({
+        addFinds: this.data.addFinds
+      })
+      // 返回上一页
+      wx.navigateBack({
+        delta: 1
+      })
     },
     // 编辑
     edit(e) {
@@ -61,8 +83,8 @@ Page({
             index = e.currentTarget.dataset.index;
 
         wx.showModal({
-            title: '确定要删除吗？',
-            content: '',
+            title: '提示',
+            content: '确定要删除吗？',
             confirmColor: '#C81A29',
             success: (res) => {
                 if (res.confirm) {
@@ -99,7 +121,14 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
-
+      if (options.addFinds){
+        var addFinds = JSON.parse(options.addFinds);
+        this.setData({
+          addFinds
+        })
+      }
+      console.log('获取上一级addFinds数据');
+      console.log(this.data.addFinds);
         // 获取列表数据
         if (firstIn) {
             this.getAddressListData();

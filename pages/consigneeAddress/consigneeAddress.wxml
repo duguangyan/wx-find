@@ -42,13 +42,22 @@
                     <text>备注</text>
                 </view>
 
+                <view class='dot-btn' data-item='{{item}}' bindtap='goBlack'>
+                  <view class="dot">
+                    <view class="dot2">
+                        <view class="dot3">切换地址</view>
+                    </view>
+                  </view>
+                </view>
+
+
             </view>
             <view class="flex h80 text-666 lh80">
                 <view data-id="{{item.id}}" data-index="{{index}}" bindtap='setDefault'>
 
                     <text hidden='{{item.is_default == 0}}' class="iconfont icon-dui fs40 pdr-20 text-theme"></text>
                     <text hidden='{{item.is_default == 1}}' class="iconfont icon-yuan fs40 pdr-20 text-eb"></text>
-                    <text>设为选中</text>
+                    <text>设为默认</text>
 
                 </view>
 

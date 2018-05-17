@@ -34,6 +34,11 @@ Page({
         this.setData({
           findNum: 1
         })
+        wx.showToast({
+          title: '最少1个找料任务',
+          icon: 'none',
+          duration: 2000
+        })
         return false;
       }
       if (n >= 10) {
@@ -98,8 +103,8 @@ Page({
     },
     // 去找料
     goFind() {
-        //let token = app.globalData.token;
-        let token = true;
+        let token = app.globalData.token;
+        //let token = true;
         if (token) {
           this.setData({
             isPopup:true

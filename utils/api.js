@@ -1,5 +1,5 @@
 const apiUrl = 'https://api.yidap.com';
-/// const apiUrl = 'https://devapi.yidap.com';
+ //const apiUrl = 'https://devapi.yidap.com';
 
 
 Promise.prototype.finally = function (callback) {
@@ -312,33 +312,28 @@ const activity = (params) => myRequest(params, `${apiUrl}/ec/spike_activity/info
 // 提交表单数据
 const activitySubmit = (params) => myRequest(params, `${apiUrl}/ec/spike_activity/make`);
 
+// 获取找料类型数据
+const getCheckTypes = (params) => myRequest(params, `${apiUrl}/find/api/category`);
 
 module.exports = {
+    getCheckTypes,
     apiUrl,
     wxLogin,
     wxDatacrypt,
     associateAccount,
-
-
     login,
-
     memberInfo,
     modifyMemberInfo,
-
     memberExit,
     regSMS,
     register,
     restSMS,
     restpwd,
-
     addCart,
     getCartList,
     updateNumber,
     deleteCart,
     cartNumber,
-
-
-
     listAddress,
     infoAddress,
     addAddress,
@@ -346,27 +341,19 @@ module.exports = {
     defaultAddress,
     setDefaultAddress,
     deleteAddress,
-
     addOrder,
     orderList,
     orderDetail,
     cancelOrder,
-
     payment,
-
     confirmReceipt,
-
-
     search,
     getCategoryList,
     getGoodsList,
     getGoodsDetail,
     getAddress,
-
-
     brandShow,
     serviceNum,
-
     demandPrice,
     addDemand,
     demandPay,
@@ -376,10 +363,7 @@ module.exports = {
     packageService,
     addPackageOrder,
     packageOrderPay,
-
     myPackageOrderList,
-
-
     activity,
     activitySubmit
 }

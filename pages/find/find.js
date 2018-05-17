@@ -28,6 +28,12 @@ Page({
       })
       console.log(this.data.addFinds);
     },
+    // 获取物料类型数据
+    getCheckTypes(){
+      api.getCheckTypes({}).then((res)=>{
+        console.log(res);
+      })
+    },
     /**
      * 切换物料类型
      */
@@ -219,65 +225,61 @@ Page({
 
     // 提交表单
 
-    formSubmit(e) {
+    findSubmit() {
 
-        console.log(e.detail.value);
-
-        let formData = e.detail.value,
-            descStrL = formData.field_desc.trim().length;
-
-        console.log(descStrL);
-        // 描述没有输入文字判定
-        if (descStrL === 0) {
-            util.errorTips('请输入描述');
-            return false;
+      console.log(this.data.addFinds); 
+      for (let i = 0; i < this.data.addFinds.length;i++){ 
+        // 描述必填 判断是否填写
+        if (this.data.addFinds[i].description == '') {
+          wx.showToast({
+            title: '第' + (i + 1) + '个任务，请填写描述',
+            icon: 'none',
+            duration: 1500
+          })
+          return false
         }
-
-        // 判断图片上传完整性
-        if (formData.sampling_type == 1
-            && formData.img1.length === 0
-            && formData.img2.length === 0
-            && formData.img3.length === 0) {
-            util.errorTips('请上传图片');
-            return false;
-        }
-
-        // 判断地址
-        if (formData.address_id.length === 0) {
-            util.errorTips('请确认收货地址');
-            return false;
-        }
-
-        if (formData.sampling_type == 1) {
-
-            let files = this.data.files;
-            // 获取上传图片信息
-            let arr = [];
-            files.map((ele) => {
-
-                if (ele.image_url) {
-                    arr.push(ele.image_url)
-                }
-
+        // 图片找料判断
+        if (this.data.addFinds[i].selcetTabNum == '1'){
+          let filesNum = 0;
+          // 是否至少上传一张图片
+          for (let j = 0; j < this.data.addFinds[i].files.length;j++){ 
+            if (!this.data.addFinds[i].files[j].url){
+              filesNum++;
+            }
+            if (filesNum>=3){
+              wx.showToast({
+                title: '第' + (i + 1) + '个任务，至少上传一张图片',
+                icon: 'none',
+                duration: 1500
+              })
+              return false;
+            }
+          }
+  
+        } else if (this.data.addFinds[i].selcetTabNum == '2') {   // 按样找料判断
+          // 按样找料地址是否存在
+          if (this.data.addFinds[i].address.url == '' || !this.data.addFinds[i].address.url){
+            wx.showToast({
+              title: '第' + (i + 1) + '个任务，请添加地址',
+              icon: 'none',
+              duration: 1500
             })
+            return false;
+          }
 
-            app.globalData.orderArr = arr;
+        } else if (this.data.addFinds[i].selcetTabNum == '3') { // 按描述找料判断
+          // 只有描述 此方法头部已经判断
         }
-        app.globalData.orderData = formData;
-
-        console.log('formData',formData, JSON.stringify(formData));
-        let formDataStr = JSON.stringify(formData);
-
-        wx.navigateTo({
-            url: `../firmOrder/firmOrder?type=${formData.sampling_type}&desc=${formData.field_desc}&range=${formData.price_range}&cname=${formData.cname}&data=${formDataStr}`,
-        })
-
+      }
 
     },
     /**
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
+
+      // 获取找料类型数据
+      //this.getCheckTypes();
       // 获取默认地址
       this.getSelectedAddress(()=>{
         console.log('--------');
@@ -371,9 +373,9 @@ Page({
                     defaultAddress,
                     addressId: defaultAddress.id,
                     addFinds: this.data.addFinds
-                })
-                callBlack();
+                }) 
             }
+            callBlack();
         }).catch((res) => {
 
         })
@@ -431,7 +433,7 @@ Page({
       let index = e.currentTarget.dataset.index;
       app.globalData.addressIndex = index;
       wx.navigateTo({
-        url: '../consigneeAddress/consigneeAddress',
+        url: '../consigneeAddress/consigneeAddress?addFinds='+ JSON.stringify(this.data.addFinds),
       })
     }
 })
