@@ -1,0 +1,58 @@
+/*套餐块  */
+
+.package-item {
+    /* box-sizing: border-box; */
+    width: 210rpx;
+    height: 100rpx;
+    margin: 30rpx 0 0 30rpx;
+    background: #fefbf4;
+    border: 2rpx #ded7c7 solid;
+    border-radius: 10rpx;
+}
+
+.item-info view:last-of-type {
+    color: #d0af6c;
+}
+
+.item-discount {
+    display: flex;
+    align-items: center;
+    width: 36rpx;
+    height: 100rpx;
+    padding-left: 8rpx;
+    border-radius: 0 10rpx 10rpx 0;
+    /* -webkit-writing-mode: vertical-rl;  */
+    letter-spacing: 4rpx;
+    /*#F3DC8E  */
+    background: url(https://static.yidap.com/miniapp/find/package-bg.png) no-repeat 0;
+}
+
+.item-discount view {
+    
+}
+
+/*选中状态  */
+
+.selected {
+    border: 2rpx red solid;
+}
+
+/*蒙版  */
+
+.masking {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 999;
+}
+
+.masking .detail-info-box {
+    background: white;
+    width: 600rpx;
+    padding: 44rpx 30rpx 66rpx 56rpx;
+    margin: 254rpx auto;
+    border-radius: 10rpx;
+}

@@ -1,0 +1,129 @@
+<form class="fs30" bindsubmit="formSubmit" report-submit>
+
+    <view class='section-order mgb-20' wx:for="{{addFinds}}" wx:for-index="idx"  wx:key='addFindKey' wx:for-item="item">
+        <view class="cell-padding lh90 flex border-bottom">
+            <view  data-index='{{idx}}' bindtap='checkType'>
+              <text class="text-theme">*</text>物料类型 : <text>{{item.checkType}}</text>  <text class='mgl-20 iconfont icon-jiantou'></text>
+            </view>
+            <view class='close_btn' data-index='{{idx}}' bindtap='closed'><image src='../../public/images/find/close_btn.png'></image></view>
+        </view>
+
+        <view class="pd-20 flex align-start">
+            <view class="width-200 word-spacing">
+                <text class="text-theme">*</text> 描 述 ：</view>
+
+            <textarea class="flex-1 height-200" name="field_desc" data-index='{{idx}}' bindinput='getDescription' value="{{item.description}}" placeholder='(注：请详细描述物料的名称、用途、材质、交货时间)'>
+            </textarea>
+        </view>
+
+ <!--找料方式  -->
+      <view class="fs30">
+          <!--选择找料方式  -->
+            <view>
+                <view class="flex space-around lh110  {{!item.isSelect?'bottom-border':''}}">
+                    <view bindtap='selcetTab' data-index='{{idx}}' data-id="1" class="flex selcetTab1">
+                        <text hidden='{{item.selcetTabNum != 1}}' class="iconfont icon-dui fs40 text-theme"></text>
+                        <text hidden='{{item.selcetTabNum == 1}}' class="iconfont icon-yuan fs40 text-eb"></text>
+                        <text class="mgl-20"></text> 图片找料
+                    </view>
+                    <view bindtap='selcetTab' data-index='{{idx}}' data-id="2" class="flex">
+                        <text hidden='{{item.selcetTabNum != 2}}' class="iconfont icon-dui fs40 text-theme"></text>
+                        <text hidden='{{item.selcetTabNum == 2}}' class="iconfont icon-yuan fs40 text-eb"></text>
+                        <text class="mgl-20">按样找料</text>
+                    </view>
+                    <view wx:if='{{!item.isSelect}}' data-index='{{idx}}' bindtap='showSelect' class='iconfont icon-jiantou'></view>
+                    <view wx:if='{{item.isSelect}}' data-index='{{idx}}' bindtap='showSelect' class='iconfont icon-xiangxia'></view>
+                </view>
+
+                <view wx:if='{{item.isSelect}}' class="flex space-around lh110 border-bottom">
+                    <view bindtap='selcetTab' data-index='{{idx}}' data-id="3" class="flex selcetTab3">
+                        <text hidden='{{item.selcetTabNum != 3}}' class="iconfont icon-dui fs40 text-theme"></text>
+                        <text hidden='{{item.selcetTabNum == 3}}' class="iconfont icon-yuan fs40 text-eb"></text>
+                        <text class="mgl-20">按描述找料</text>
+                    </view>
+                </view>
+              <!--1图片找料  -->
+              <view hidden='{{item.selcetTabNum != 1}}' class="pd-20 upload-view flex">
+                  <view wx:for="{{item.files}}"  wx:for-index="fileIdx" wx:for-item="fileItem" data-index='{{idx}}'  data-id="{{fileIdx}}" wx:key="{{i}}" bindtap='chooseImage' class="relative">
+                      <image src='{{fileItem.url}}'></image>
+                      <image data-id="{{fileIdx}}"   data-index='{{idx}}' catchtap='deleteItem' wx:if="{{fileItem.pct}}" style="width:44rpx;height:44rpx;position:absolute;right:0;top:0rpx;background-color: transparent;z-index:999;" src='../../public/images/icon/del.png'></image>
+
+                      <view wx:if="{{fileItem.pct}}" style="width:200rpx;height:200rpx;background:rgba(0,0,0,0.4);position:absolute;left:0;top:0;text-align:center;line-height:200rpx;color:white;font-size:30rpx;">{{fileItem.pct}}</view>
+                  <input class="hidden" value="{{fileItem.images_id}}" name="{{'img' + ( fileIdx +1 )}}"></input>
+                  </view>
+              </view>
+              <!-- 按样找料 -->
+              <view hidden='{{item.selcetTabNum != 2}}' class="bottom-border">
+                  <view class="flex space-around lh110">
+                  <view bindtap='selcetSecondTab' data-index='{{idx}}' data-id="1" class="flex selcetSecendTab1">
+                      <text hidden='{{item.selcetSecondTabNum != 1}}' class="iconfont icon-dui fs40 text-theme"></text>
+                      <text hidden='{{item.selcetSecondTabNum == 1}}' class="iconfont icon-yuan fs40 text-eb"></text>
+                      <text class="mgl-20"></text> 上门取样
+                  </view>
+                  <view bindtap='selcetSecondTab' data-index='{{idx}}' data-id="2" class="flex selcetSecendTab2">
+                      <text hidden='{{item.selcetSecondTabNum != 2}}' class="iconfont icon-dui fs40 text-theme"></text>
+                      <text hidden='{{item.selcetSecondTabNum == 2}}' class="iconfont icon-yuan fs40 text-eb"></text>
+                      <text class="mgl-20">寄送样品</text>
+                  </view>
+              </view>
+              </view>
+          </view>
+      </view>
+  <!--收货地址  -->
+      <view class="fs30 bottom-border" hidden='{{item.selcetTabNum != 2}}'>
+          <view class="cell-padding fs30 mgt-30" wx:if='{{item.selcetSecondTabNum==1}}'>
+              <text class="text-theme">*</text>取样地址
+              <input class="hidden" value="{{addressId}}" name="address_id"></input>
+          </view>
+          <view class="cell-padding fs30 mgt-30" wx:if='{{item.selcetSecondTabNum==2}}'>
+              <text class="text-theme">*</text>寄样地址
+              <input class="hidden" value="{{addressId}}" name="address_id"></input>
+          </view>
+          <view class="border-bottom cell-padding address flex flex-start">
+              <text class="iconfont icon-dizhi fs40 text-gray mgr-20"></text>
+
+              <navigator open-type='navigate' url="../consigneeAddress/consigneeAddress" hidden='{{!defaultAddress}}' class="flex-1 address-info fs30">
+                  <view class="flex">
+                      <text>档口名称: xxxxxxxxxxxxx</text>
+                  </view>
+                  <view class="flex">
+                      <text>收货人<text class='mgl-30'>:</text> {{defaultAddress.consignee}}</text>
+                      <text>{{defaultAddress.mobile}}</text>
+                  </view>
+
+                  <view>
+                      <text>收货地址：</text>
+                      <text>{{defaultAddress.city_str}} {{defaultAddress.address}}</text>
+                  </view>
+
+              </navigator>
+
+              <navigator open-type='navigate' url="../newAddress/newAddress?type=new" hidden='{{defaultAddress}}' class="text-666 h100 lh100 flex-1">
+                  点击添加收货地址
+              </navigator>
+
+          </view>
+
+      </view>
+
+
+    </view>
+
+
+
+   
+
+    
+
+
+    <!--提交按钮  -->
+    <view class='add-find' bindtap='addFind'>
+      <image src='../../public/images/find/add-find.png'></image>
+      <text>点击添加找料</text>
+    </view>
+    <view class="cell-padding submit-form">
+        <button formType="submit">加入小鹿任务</button>
+    </view>
+
+
+</form>

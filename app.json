@@ -1,0 +1,62 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/order/order",
+    "pages/task/task",
+    "pages/center/center",
+    "pages/find/find",
+    "pages/recharge/recharge",
+    "pages/associatedAccount/associatedAccount",
+    "pages/delivery/delivery",
+    "pages/login/login",
+    "pages/register/register",
+    "pages/resetPassword/resetPassword",
+    "pages/consigneeAddress/consigneeAddress",
+    "pages/newAddress/newAddress",
+    "pages/findOrderDetail/findOrderDetail",
+    "pages/firmOrder/firmOrder",
+    "pages/firmPackageOrder/firmPackageOrder",
+    "pages/myFindOrder/myFindOrder"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#C81A29",
+    "navigationBarTitleText": "一大批",
+    "navigationBarTextStyle": "white"
+  },
+  "tabBar": {
+    "color": "#000000",
+    "selectedColor": "#C81A29",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "public/images/icon/1.1.png",
+        "selectedIconPath": "public/images/icon/2.1.png"
+      },
+      {
+        "pagePath": "pages/task/task",
+        "text": "任务中心",
+        "iconPath": "public/images/icon/1.2.png",
+        "selectedIconPath": "public/images/icon/2.2.png"
+      },
+      {
+        "pagePath": "pages/order/order",
+        "text": "订单",
+        "iconPath": "public/images/icon/1.3.png",
+        "selectedIconPath": "public/images/icon/2.3.png"
+      },
+      {
+        "pagePath": "pages/center/center",
+        "text": "个人中心",
+        "iconPath": "public/images/icon/1.4.png",
+        "selectedIconPath": "public/images/icon/2.4.png"
+      }
+    ]
+  },
+  "networkTimeout": {
+    "request": 8000,
+    "downloadFile": 8000
+  }
+}

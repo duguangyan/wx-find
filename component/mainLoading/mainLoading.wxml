@@ -1,0 +1,3 @@
+<view hidden='{{modalShow}}' class="main-loading">
+    <image src='../../public/images/icon/spin.png'></image>
+</view> 

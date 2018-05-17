@@ -1,0 +1,126 @@
+.title-bg {
+    background: #f0eff5;
+}
+
+.width-166 {
+    width: 166rpx;
+    text-align-last: justify;
+}
+.width-200 {
+  width: 200rpx;
+}
+.height-200 {
+    height: 200rpx;
+}
+
+.align-start {
+    align-items: flex-start;
+    border-bottom:1px solid #f0eff5; 
+}
+
+/*上传图片  */
+
+.upload-view {
+    padding: 20rpx 34rpx;
+}
+
+.upload-view image {
+    height: 200rpx;
+    width: 200rpx;
+    background: #f2f2f2;
+}
+
+/*图片北京  */
+.upload-view view:nth-of-type(1) image {
+    background: #f2f2f2 url(https://static.yidap.com/miniapp/upload/upload1.png) no-repeat;
+    background-size:  200rpx 200rpx;
+}
+
+.upload-view view:nth-of-type(2) image {
+    background: #f2f2f2 url(https://static.yidap.com/miniapp/upload/upload2.png);
+    background-size:  200rpx 200rpx;
+}
+
+.upload-view view:nth-of-type(3) image {
+    background: #f2f2f2 url(https://static.yidap.com/miniapp/upload/upload3.png);
+    background-size:  200rpx 200rpx;
+}
+
+
+
+/*收货地址  */
+.address {
+    min-height: 180rpx;
+    padding-right: 40rpx;
+}
+
+
+/*提交按钮  */
+.submit-form {
+    padding: 36rpx 20rpx 100rpx;
+}
+
+.submit-form button {
+    color: #FFF;
+    background: #c81a29;
+}
+
+ .submit-form button::after{
+    border: none;
+} 
+.section-order{
+  margin: 0 20rpx;
+  border-radius:10rpx;
+  box-shadow: 2rpx 0 10rpx rgba(102, 102, 102, 0.3); 
+  margin-top: 20rpx;
+  overflow: hidden
+}
+
+.word-spacing{
+  word-spacing: 12rpx;
+}
+.fl{
+  float: left;
+}
+.close_btn image{
+  display: inline-block;
+  width: 50rpx;
+  height: 50rpx;
+  margin-top: 30rpx;
+}
+.selcetTab1{
+  position: relative;
+  left: 38rpx;
+}
+.selcetTab2{
+  position: relative;
+  left: -50rpx;
+}
+.selcetTab3{
+  position: relative;
+  left: -160rpx;
+}
+.selcetSecendTab2{
+   position: relative;
+  left: -108rpx;
+}
+.word-spacing-18{
+  white-space: 18rpx;
+}
+.bottom-border{
+  border-bottom:1rpx solid #f0eff5; 
+}
+.add-find image{
+  display: block;
+  width: 100rpx;
+  height: 100rpx;
+  margin: 0 auto;
+  margin-top: 40rpx;
+}
+.add-find text{
+  text-align:center;
+  margin:0 auto;
+  display:block;
+  margin-top:20rpx;
+  color:#666;
+}

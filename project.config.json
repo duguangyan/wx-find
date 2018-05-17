@@ -1,0 +1,76 @@
+{
+	"description": "项目配置文件。",
+	"packOptions": {
+		"ignore": []
+	},
+	"setting": {
+		"urlCheck": false,
+		"es6": true,
+		"postcss": true,
+		"minified": true,
+		"newFeature": true
+	},
+	"compileType": "miniprogram",
+	"libVersion": "1.9.98",
+	"appid": "wx95dd0020bb2c868f",
+	"projectname": "%E5%BE%AE%E4%BF%A1%E5%B0%8F%E9%B9%BF%E5%BF%AB%E6%89%BE",
+	"isGameTourist": false,
+	"condition": {
+		"search": {
+			"current": -1,
+			"list": []
+		},
+		"conversation": {
+			"current": -1,
+			"list": []
+		},
+		"plugin": {
+			"current": -1,
+			"list": []
+		},
+		"game": {
+			"currentL": -1,
+			"list": []
+		},
+		"miniprogram": {
+			"current": 5,
+			"list": [
+				{
+					"id": -1,
+					"name": "绑定手机号",
+					"pathName": "pages/associatedAccount/associatedAccount",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "首页",
+					"pathName": "pages/index/index",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "个人中心",
+					"pathName": "pages/center/center",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "登录",
+					"pathName": "pages/login/login",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "找料",
+					"pathName": "pages/find/find",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "地址",
+					"pathName": "pages/consigneeAddress/consigneeAddress"
+				}
+			]
+		}
+	}
+}
