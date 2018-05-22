@@ -1,0 +1,70 @@
+<!--pages/material/material.wxml-->
+<view class='material'>
+    <view class='box-shadow'>
+        <view class='lh90 fs30 pdl-30 border-bottom'>
+          物料信息
+        </view>
+        <view class='lh90 fs30 pdl-30 bb-1'>
+            <text class="text-theme">*</text> <text>物料品类:</text> <text class='pdl-10'> {{checkType}}</text> 
+            <view wx:if='{{!isSelect}}'  bindtap='checkType' class='iconfont icon-jiantou material-icon flr pdr-30'></view>
+            <view wx:if='{{isSelect}}'  bindtap='checkType' class='iconfont icon-xiangxia material-icon flr pdr-30'></view>
+        </view>
+        <view class='material-number lh90 fs30 pdl-30 cf border-bottom'>
+            <text class="text-theme">*</text> <text>物料数量:</text>
+            <text class='sub' bindtap='sub'>-</text>
+            <input class='material-input' bindinput='findNumChange' bindblur='findNumBlur' type='number' value='{{findNum}}'></input>
+            <text class='plu' bindtap='plu'>+</text>
+            <text class='pdl-30'>件</text>
+        </view>
+
+          <view class="pd-30 flex align-start fs30">
+            <view class="width-200 word-spacing">
+                <text class="text-theme">*</text>描 述 ：</view>
+
+            <textarea class="flex-1 height-200" name="field_desc" data-index='{{idx}}' bindinput='getDescription' value="{{item.description}}" placeholder='(注：请详细描述物料的名称、用途、材质、交货时间)'>
+            </textarea>
+        </view>
+       
+    </view>
+
+     <!--收货地址  -->
+      <view class="fs30 box-shadow">
+          <view class="cell-padding fs30 lh90 border-bottom mgt-30">
+              取料地址
+              <input class="hidden" value="{{addressId}}" name="address_id"></input>
+          </view>
+          <view class="address flex flex-start pdt-30 pdb-30 pdl-20 pdr-20">
+              <text class="iconfont icon-dizhi fs40 text-gray mgr-20"></text>
+
+              <view data-index='{{idx}}' bindtap='goConsigneeAddress'  wx:if='{{false}}' class="flex-1 address-info fs30">
+                  <view class="flex">
+                      <text>档口名称: xxxxxxxxxxxxx</text>
+                  </view>
+                  <view class="flex">
+                      <text>收货人<text class='mgl-30'>:</text> {{item.address.consignee}}</text>
+                      <text>{{item.address.mobile}}</text>
+                  </view>
+
+                  <view>
+                      <text>收货地址：</text>
+                      <text>{{item.address.city_str}} {{item.address.address}}</text>
+                  </view>
+
+              </view>
+
+              <view data-index='{{idx}}' bindtap='goConsigneeAddress'  hidden='{{item.address}}' class="text-666 h100 lh100 flex-1">
+                  点击添加收货地址
+              </view>
+          </view>
+      </view>
+      <view class='fs30 box-shadow'>
+          <view class='lh90 fs30 pdl-30 bb-1'>
+              配送费用
+          </view>
+          <view class='lh90 fs30 pdl-30'>
+              <text>共1件</text>
+              <text class='flr pdr-30'>￥30.00</text>
+          </view>
+      </view>
+      <view class='join-find lh90 fs30'>加入小鹿任务</view>
+</view>

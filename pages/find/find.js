@@ -1,12 +1,16 @@
 const api = require('../../utils/api.js');
 const util = require('../../utils/util.js');
 let app = getApp();
+let interval = '';
 Page({
 
     /**
      * 页面的初始数据
      */
     data: {
+        interval:'',
+        payNum:10, // 支付倒计时
+        isPopup:false, // 弹窗控制
         addressIndex:'',
         descValue: '',
         files: [{}, {}, {}],
@@ -226,7 +230,7 @@ Page({
     // 提交表单
 
     findSubmit() {
-
+      let _this = this;
       console.log(this.data.addFinds); 
       for (let i = 0; i < this.data.addFinds.length;i++){ 
         // 描述必填 判断是否填写
@@ -258,7 +262,7 @@ Page({
   
         } else if (this.data.addFinds[i].selcetTabNum == '2') {   // 按样找料判断
           // 按样找料地址是否存在
-          if (this.data.addFinds[i].address.url == '' || !this.data.addFinds[i].address.url){
+          if (this.data.addFinds[i].address.id == '' || !this.data.addFinds[i].address.id){
             wx.showToast({
               title: '第' + (i + 1) + '个任务，请添加地址',
               icon: 'none',
@@ -271,6 +275,21 @@ Page({
           // 只有描述 此方法头部已经判断
         }
       }
+
+      this.setData({
+        isPopup:true
+      })
+      interval = setInterval(function () {
+        console.log(_this.data.payNum);
+        _this.data.payNum--;
+        _this.setData({
+          payNum: _this.data.payNum
+        })
+        if (_this.data.payNum == 0) {
+          _this.goPay();
+          return false;
+        }
+      }, 1000)
 
     },
     /**
@@ -434,6 +453,20 @@ Page({
       app.globalData.addressIndex = index;
       wx.navigateTo({
         url: '../consigneeAddress/consigneeAddress?addFinds='+ JSON.stringify(this.data.addFinds),
+      })
+    },
+    // 返回上一层，继续找料
+    goBack () {
+      clearInterval(interval);
+      wx.navigateBack({
+        delta: 1
+      })
+    },
+    // 去支付
+    goPay () {
+      clearInterval(interval);
+      wx.switchTab({
+        url:'../task/task'
       })
     }
 })

@@ -1,0 +1,32 @@
+/* pages/taskPaySuccess/taskPaySuccess.wxss */
+.task-success image{
+  display: inline-block;
+  width: 100rpx;
+  height: 120rpx; 
+  position: relative;
+  top: 15rpx;
+  right: 5rpx;
+}
+.task-success-msg{
+  display: inline-block;
+}
+.task-success-top{
+  margin: 80rpx auto;
+  width: 320rpx;
+}
+.border-b20{
+  height: 20rpx;
+  background-color: #f4f4f4;
+}
+.footer-btn view{
+  display: inline-block; 
+  height: 80rpx;
+  line-height: 80rpx;
+  font-size: 30rpx;
+  width: 320rpx;
+  text-align: center;
+  border:1rpx solid #666;
+  border-radius:10rpx;  
+  margin-left :35rpx;
+  margin-top: 60rpx;
+}

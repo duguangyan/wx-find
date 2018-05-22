@@ -28,10 +28,13 @@ Page({
             var pages = getCurrentPages();
             var currPage = pages[pages.length - 1];   //当前页面
             var prevPage = pages[pages.length - 2];  //上一个页面
+            this.data.addFinds[app.globalData.addressIndex].address = res.data;
+
             prevPage.setData({
-              defaultAddress: res.data
+              defaultAddress: res.data,
+              addFinds: this.data.addFinds
             })
-            
+          
             let addressList = this.data.addressList;
             addressList.forEach((ele) => {
                 if (ele.is_default == 1) {
@@ -51,23 +54,23 @@ Page({
         })
     },
     // 点击选中地址返回
-    goBlack (e) {
-      // 获取当前点击地址数据
-      let item = e.currentTarget.dataset.item;
-      console.log(item);
-      // 更新上一页的地址数据
-      var pages = getCurrentPages();
-      var currPage = pages[pages.length - 1];   //当前页面
-      var prevPage = pages[pages.length - 2];  //上一个页面
-      this.data.addFinds[app.globalData.addressIndex].address = item;
-      prevPage.setData({
-        addFinds: this.data.addFinds
-      })
-      // 返回上一页
-      wx.navigateBack({
-        delta: 1
-      })
-    },
+    // goBlack (e) {
+    //   // 获取当前点击地址数据
+    //   let item = e.currentTarget.dataset.item;
+    //   console.log(item);
+    //   // 更新上一页的地址数据
+    //   var pages = getCurrentPages();
+    //   var currPage = pages[pages.length - 1];   //当前页面
+    //   var prevPage = pages[pages.length - 2];  //上一个页面
+    //   this.data.addFinds[app.globalData.addressIndex].address = item;
+    //   prevPage.setData({
+    //     addFinds: this.data.addFinds
+    //   })
+    //   // 返回上一页
+    //   wx.navigateBack({
+    //     delta: 1
+    //   })
+    // },
     // 编辑
     edit(e) {
         let id = e.currentTarget.dataset.id;

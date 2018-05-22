@@ -42,13 +42,13 @@
                     <text>备注</text>
                 </view>
 
-                <view class='dot-btn' data-item='{{item}}' bindtap='goBlack'>
+                <!-- <view class='dot-btn' data-item='{{item}}' bindtap='goBlack'>
                   <view class="dot">
                     <view class="dot2">
                         <view class="dot3">切换地址</view>
                     </view>
                   </view>
-                </view>
+                </view> -->
 
 
             </view>

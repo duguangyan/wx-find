@@ -16,7 +16,10 @@
     "pages/findOrderDetail/findOrderDetail",
     "pages/firmOrder/firmOrder",
     "pages/firmPackageOrder/firmPackageOrder",
-    "pages/myFindOrder/myFindOrder"
+    "pages/myFindOrder/myFindOrder",
+    "pages/taskPay/taskPay",
+    "pages/taskPaySuccess/taskPaySuccess",
+    "pages/material/material"
   ],
   "window": {
     "backgroundTextStyle": "light",

@@ -24,7 +24,7 @@
 
     <view class="flex cell-padding-40 fs28">
         <navigator open-type='navigate' url="../register/register">手机快速注册</navigator>
-        <navigator open-type='navigate' url="../resetPassword/resetPassword">忘记密码</navigator>
+        <!-- <navigator open-type='navigate' url="../resetPassword/resetPassword">忘记密码</navigator> -->
     </view>
 
 </view>

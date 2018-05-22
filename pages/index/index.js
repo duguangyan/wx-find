@@ -116,19 +116,21 @@ Page({
             })
         }
     },
-    // 去充值  
-    goReCharge() {
-        let token = app.globalData.token;
-        if (token) {
-            wx.navigateTo({
-              url: '../recharge/recharge',
-            })
-        } else {
-            // 跳转关联页面
-            wx.navigateTo({
-              url: '../login/login',
-            })
-        }
+    // 立刻取料  
+    goMaterial() {
+      let token = app.globalData.token;
+      //let token = true;
+      if (token) {
+        this.setData({
+          isPopup: true
+        })
+      } else {
+        // 跳转关联页面
+        wx.navigateTo({
+          url: '../material/material',
+        })
+      }
+     
     },
     /**
      * 生命周期函数--监听页面加载

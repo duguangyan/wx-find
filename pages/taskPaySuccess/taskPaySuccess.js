@@ -1,4 +1,4 @@
-// pages/find/find.js
+// pages/taskPaySuccess/taskPaySuccess.js
 Page({
 
   /**
@@ -8,6 +8,20 @@ Page({
   
   },
 
+  /**
+   * 返回首页
+   */
+  goIndex () {
+    wx.switchTab({
+      url: '../index/index'
+    })
+  },
+  // 去订单详情
+  goFindOrderDetail () {
+    wx.navigateTo({
+      url: '../findOrderDetail/findOrderDetail'
+    })
+  },
   /**
    * 生命周期函数--监听页面加载
    */

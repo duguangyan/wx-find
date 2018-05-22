@@ -62,5 +62,11 @@ Page({
    */
   onShareAppMessage: function () {
   
+  },
+  // 去支付页面
+  goTaskPay () {
+    wx.navigateTo({
+      url: '../taskPay/taskPay'
+    })
   }
 })

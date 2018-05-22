@@ -3,16 +3,9 @@
   <view>
       <view class='task-find box-shadow'>
         <view class='task-find-title fs30'>
-            <text class="iconfont icon-dui fs40 pdr-20 text-theme"></text>
-            <text wx:if='{{false}}' class="iconfont icon-yuan fs40 pdr-20 text-eb"></text>
             <text>找料任务</text>
         </view>
         <view class='task-find-list fs30'>
-            <view  class='check-box'>
-              <text class="iconfont icon-dui fs40 pdr-20 text-theme"></text>
-              <text wx:if='{{false}}' class="iconfont icon-yuan fs40 pdr-20 text-eb"></text>
-            </view>
-            
             <view class='task-find-item'>
                <view>物料品类：面料</view>
                <view>物料描述：物料名称是xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</view>
@@ -26,17 +19,12 @@
                   <image src='../../public/images/task/task_img.png'></image>
               </view> 
               <view class='task-find-price'>
-                金额:<text class='text-red'>￥20.00</text>
+                金额:￥20.00
               </view>
             </view> 
         </view>
 
         <view class='task-find-list fs30'>
-            <view  class='check-box'>
-              <text class="iconfont icon-dui fs40 pdr-20 text-theme"></text>
-              <text wx:if='{{false}}' class="iconfont icon-yuan fs40 pdr-20 text-eb"></text>
-            </view>
-            
             <view class='task-find-item'>
                <view>物料品类：面料</view>
                <view>物料描述：物料名称是xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</view>
@@ -48,24 +36,51 @@
                   <view>取料地址：取料地址取料地xxxxxcxxxxxxxxxxxxxxxxxx</view>
               </view> 
               <view class='task-find-price'>
-                金额:<text class='text-red'>￥20.00</text>
+                金额:￥20.00
               </view>
             </view> 
+            <view class='task-find-sum'>
+                <text>共2个任务,小计：<text class='text-red'>￥80.00</text></text>
+            </view>
         </view>
-
       </view>
+      
+       <!--收货地址  -->
+      <view class="fs30 bottom-border box-shadow">
+          <view class="cell-padding fs30 mgt-30 lh90 bottom-border">
+              送料地址（找料任务）
+              <input class="hidden" value="{{addressId}}" name="address_id"></input>
+          </view>
+          <view class="cell-padding address flex flex-start">
+              <text class="iconfont icon-dizhi fs40 text-gray mgr-20"></text>
+
+              <view data-index='{{idx}}' bindtap='goConsigneeAddress'  class="flex-1 address-info fs30 pdt-30">
+                  <view class="flex">
+                      <text>档口名称: xxxxxxxxxxxxx</text>
+                  </view>
+                  <view class="flex">
+                      <text>收货人<text class='mgl-30'>:</text> {{item.address.consignee}}</text>
+                      <text>{{item.address.mobile}}</text>
+                  </view>
+                  <view class='pdb-30'>
+                      <text>收货地址：</text>
+                      <text>{{item.address.city_str}} {{item.address.address}}</text>
+                  </view>
+              </view>
+              <view data-index='{{idx}}' bindtap='goConsigneeAddress'  hidden='{{item.address}}' class="text-666 h100 lh100 flex-1">
+                  点击添加收货地址
+              </view>
+          </view>
+      </view>
+
+
+
+
       <view class='task-get box-shadow'>
- <view class='task-find-title fs30'>
-            <text class="iconfont icon-dui fs40 pdr-20 text-theme"></text>
-            <text wx:if='{{false}}' class="iconfont icon-yuan fs40 pdr-20 text-eb"></text>
+         <view class='task-find-title fs30'>
             <text>取料任务</text>
         </view>
-
         <view class='task-find-list fs30'>
-            <view  class='check-box'>
-              <text class="iconfont icon-dui fs40 pdr-20 text-theme"></text>
-              <text wx:if='{{false}}' class="iconfont icon-yuan fs40 pdr-20 text-eb"></text>
-            </view>
             <view class='task-find-item'>
                <view>物料品类：面料</view>
                <view>物料描述：物料名称是xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</view>
@@ -77,16 +92,14 @@
                   <view>送料地址：取料地址取料地xxxxxcxxxxxxxxxxxxxxxxxx</view>
               </view> 
               <view class='task-find-price'>
-                金额:<text class='text-red'>￥20.00</text>
+                金额:￥20.00
               </view>
             </view> 
+
+        
         </view>
 
         <view class='task-find-list fs30'>
-            <view  class='check-box'>
-              <text class="iconfont icon-dui fs40 pdr-20 text-theme"></text>
-              <text wx:if='{{false}}' class="iconfont icon-yuan fs40 pdr-20 text-eb"></text>
-            </view>
             <view class='task-find-item'>
                <view>物料品类：面料</view>
                <view>物料描述：物料名称是xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</view>
@@ -98,20 +111,45 @@
                   <view>送料地址：取料地址取料地xxxxxcxxxxxxxxxxxxxxxxxx</view>
               </view> 
               <view class='task-find-price'>
-                金额:<text class='text-red'>￥20.00</text>
+                金额:￥20.00
               </view>
             </view> 
         </view>
+      </view>
+
+      <!--收货地址  -->
+      <view class="fs30 bottom-border box-shadow">
+          <view class="cell-padding fs30 mgt-30 lh90 bottom-border">
+              送料地址（找料任务）
+              <input class="hidden" value="{{addressId}}" name="address_id"></input>
+          </view>
+          <view class="cell-padding address flex flex-start">
+              <text class="iconfont icon-dizhi fs40 text-gray mgr-20"></text>
+
+              <view data-index='{{idx}}' bindtap='goConsigneeAddress'  class="flex-1 address-info fs30 pdt-30">
+                  <view class="flex">
+                      <text>档口名称: xxxxxxxxxxxxx</text>
+                  </view>
+                  <view class="flex">
+                      <text>收货人<text class='mgl-30'>:</text> {{item.address.consignee}}</text>
+                      <text>{{item.address.mobile}}</text>
+                  </view>
+                  <view class='pdb-30'>
+                      <text>收货地址：</text>
+                      <text>{{item.address.city_str}} {{item.address.address}}</text>
+                  </view>
+              </view>
+              <view data-index='{{idx}}' bindtap='goConsigneeAddress'  hidden='{{item.address}}' class="text-666 h100 lh100 flex-1">
+                  点击添加收货地址
+              </view>
+          </view>
       </view>
   </view> 
 
   <view class='task-pay box-shadow'>
       <view>
-        <text class="iconfont icon-dui fs40 pdr-20 text-theme"></text>
-        <text wx:if='{{false}}' class="iconfont icon-yuan fs40 pdr-20 text-eb"></text>
-          <text class='text-underline mgr-50'>全选</text>
-          <text class='mgr-50'>合计：<text class='text-red'>￥60.00</text></text>
-          <text class='task-pay-btn text-underline' bindtap='goTaskPay'>结算</text> 
+          <text class='mgl-140'>应付款：<text class='text-red'>￥60.00</text></text>
+          <text class='task-pay-btn text-underline' bindtap='doPay'>支付</text> 
       </view>
   </view>
 </view>

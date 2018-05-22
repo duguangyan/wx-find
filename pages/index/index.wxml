@@ -52,11 +52,11 @@
     </view>
 
      <view class="recharge-box">
-        <button bindtap='goReCharge'>立刻配送</button>
+        <button bindtap='goMaterial'>立刻取料</button>
     </view>
     <view bindtap='contact' class="text-theme contact">
         <text class="iconfont icon-dianhua"></text>
-        <text>联系小鹿找料：400-8088-156</text>
+        <text>联系小鹿快找：400-8088-156</text>
     </view>
 </view>
 

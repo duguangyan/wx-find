@@ -33,7 +33,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 1,
+			"current": 11,
 			"list": [
 				{
 					"id": -1,
@@ -69,6 +69,42 @@
 					"id": -1,
 					"name": "地址",
 					"pathName": "pages/consigneeAddress/consigneeAddress",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "任务中心",
+					"pathName": "pages/task/task",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "任务中心-支付",
+					"pathName": "pages/taskPay/taskPay",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "任务中心-支付成功",
+					"pathName": "pages/taskPaySuccess/taskPaySuccess",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "订单--找料订单详情",
+					"pathName": "pages/findOrderDetail/findOrderDetail",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "立刻取料",
+					"pathName": "pages/material/material",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "订单",
+					"pathName": "pages/order/order",
 					"query": ""
 				}
 			]

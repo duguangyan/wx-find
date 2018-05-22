@@ -1,0 +1,66 @@
+/* pages/material/material.wxss */
+.material-number{
+  height: 90rpx;
+  border-bottom: 1rpx solid #f4f4f4; 
+}
+.material-number text{
+  float: left;
+}
+.sub{
+  margin-left: 50rpx;
+}
+.sub,.plu{
+  width: 70rpx;
+  height: 70rpx;
+  line-height: 70rpx;
+  background-color: #eeeeee;
+  text-align: center;
+  font-size: 50rpx;
+  border-radius:10rpx;
+  margin-top: 10rpx; 
+}
+.material-input{
+  margin: 0 20rpx;
+  width: 80rpx;
+  border: 1rpx solid #eeeeee;
+  height: 68rpx;
+  display: inline-block;
+  float: left;
+  border-radius:10rpx;
+  margin-top: 10rpx;
+  padding-left: 20rpx;
+}
+.material-describe{
+
+}
+.material-describe-title{
+  width: 200rpx;
+}
+.material-describe textarea{
+  width:300px;
+  height:150px;
+  display:block;
+  position:relative;
+
+}
+.width-200 {
+  width: 200rpx;
+}
+.height-200 {
+    height: 200rpx;
+}
+
+.align-start {
+    align-items: flex-start;
+    border-bottom:1px solid #f0eff5; 
+}
+.word-spacing{
+  word-spacing: 12rpx;
+}
+.join-find{
+  text-align: center;
+  background-color: #c81a29;
+  margin: 0 20rpx;
+  border-radius:10rpx;
+  color: #fff; 
+}
