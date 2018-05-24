@@ -197,8 +197,9 @@ Page({
 
         }).then((res) => {
 
-            console.log('地址执行')
-            let addressList = res.data.list;
+            console.log('地址执行'); 
+            console.log(res);
+            let addressList = res.data;
 
             let isEmpty = addressList.length == 0 ? true : false;
 

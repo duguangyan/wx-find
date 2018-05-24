@@ -19,13 +19,17 @@
           <text bindtap='checkChildGetNav' data-index='4' class="{{orderChildNavGetNum==4?'nav-child-active':''}}">待评价</text>
       </view> 
     </view>
+    <view class='no-order-data' wx:if='{{false}}'>
+        <image src='../../public/images/icon/no_order.png'></image>
+        <view class='text-666 text-center fs30 mgt-50'>你还没有相关订单</view>
+        <view class='do-order' bindtap='doOrder'>去下单</view>
+    </view>
   <scroll-view scroll-y="true" style="height: 1200rpx;" bindscrolltoupper="upper" bindscrolltolower="lower">
-    <view class='box-shadow order-content'> 
-        
+    <view class='box-shadow order-content' wx:for="findList" wx:key="this"> 
            <view class='task-find'>
             <view class='task-find-title fs30'>
-                <text>订单编号: 1234567</text>
-                <text class='text-red flr pdr-30'>待付款</text>
+                <text>订单编号: {{item.order_sn}}</text>
+                <text class='text-red flr pdr-30'>{{item.is_payed?'待支付':'已支付'}}</text>
             </view>
             <view class='task-find-list fs30 cf'>
               <view bindtap='goOrderDetail'>
@@ -49,7 +53,6 @@
                   </view>   
                 </view> 
               </view>
-               
               <view class='order-footer-btn'>
                   <text bindtap='delOrder'>取消订单</text>
                   <text bindtap='toPay' class='order-footer-btn-red'>去支付</text>

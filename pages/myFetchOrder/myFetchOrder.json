@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "取料订单列表",
+  "usingComponents": {
+    "loading": "../../component/loading/loading",
+    "mainloading": "../../component/mainLoading/mainLoading",
+    "loadcomplete": "../../component/loadComplete/loadComplete"
+  }
+}

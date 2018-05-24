@@ -7,7 +7,8 @@ Page({
      * 页面的初始数据
      */
     data: {
-        agree: true
+        agree: true,
+        smsText:'获取验证码'
     },
     // 手机账号
     mobile(e) {
@@ -56,63 +57,47 @@ Page({
             })
 
             api.memberExit({
-                method: 'POST',
+                method: 'GET',
                 data: {
                     user_name: account
                 }
             }).then((res) => {
-
-                util.errorTips('用户已存在!');
+              if(res.code === 200){
+                // 短信发送成功，限制按钮
+                util.successTips('短信发送成功');
                 this.setData({
-                    smsStatus: false,
+                  smsID: res.data
                 })
-
-            }).catch((res) => {
-                // 用户不存在res.msg
-                if (-1 === res.code) {
-
-                    api.regSMS({
-                        data: {
-                            phone: account
-                        }
-                    }).then((res) => {
-                        // 短信发送成功，限制按钮
-                        util.successTips('短信发送成功');
-                        this.setData({
-                            smsID: res.data
-                        })
-                        // 倒计时60s
-                        let second = 60;
-                        const timer = setInterval(() => {
-
-                            second--;
-
-                            let smsText = `${second}s后重新发送`;
-                            this.setData({
-                                smsText
-                            })
-
-                            if (second == 1) {
-                                this.setData({
-                                    smsStatus: false,
-                                    smsText: false
-                                })
-                                clearInterval(timer)
-                            }
-
-                        }, 1000)
-
-                    }).catch((res) => {
-
-                        util.errorTips('短信发送失败');
-                        this.setData({
-                            smsStatus: false,
-                        })
-
+                // 倒计时60s
+                let second = 60;
+                const timer = setInterval(() => {
+                  second--;
+                  let smsText = `${second}s后重新发送`;
+                  this.setData({
+                    smsText
+                  })
+                  if (second == 1) {
+                    this.setData({
+                      smsStatus: false,
+                      smsText: false
                     })
-                }
+                    clearInterval(timer)
+                  }
+                }, 1000)
+              }else{
+                util.errorTips(res.message);
+                  this.setData({
+                    smsStatus: false,
+                  })
+              }
+            }).catch((res) => {
+               
+              util.errorTips(res.message);
+              this.setData({
+                smsStatus: false,
+              })
+                
             })
-
         } else {
             util.errorTips('请确认手机号码');
         }
@@ -164,9 +149,7 @@ Page({
 
     // 提交表单
     regSubmit() {
-
         console.log(this.data.account, this.data.password, this.data.sms, this.data.agree);
-
         let data = this.data,
             account = data.account || '',
             password = data.password || '',
@@ -196,20 +179,29 @@ Page({
             util.errorTips('请同意协议');
             return false
         }
-
+        var open_id = wx.getStorageSync('open_id');
         api.register({
             method: 'POST',
             data: {
                 user_name: account,
-                user_psw: password,
+                password: password,
                 sms_id: smsID,
-                code: sms
+                code: sms,
+                from:3,
+                open_id: open_id
             }
         }).then((res) => {
-
-            console.log(res);
-            app.globalData.token = res.data;
-            wx.navigateBack();
+            if(res.code===200){
+              console.log(res);
+              wx.setStorageSync('token', res.data.access_token);
+              wx.setStorageSync('token_type', res.data.token_type);
+              app.globalData.token = res.data.access_token;
+              app.globalData.userInfo = res.data.user;
+              wx.navigateBack({
+                 delta: 2
+              })
+            }
+            
 
         }).catch((res) => {
 

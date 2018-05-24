@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "一大批",
+  "usingComponents": {
+    "dialog": "../../component/dialog/dialog"
+  }
+}

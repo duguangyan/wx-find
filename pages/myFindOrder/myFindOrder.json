@@ -1,5 +1,5 @@
 {
-    "navigationBarTitleText": "我的找料",
+    "navigationBarTitleText": "找料订单列表",
     "usingComponents": {
         "loading": "../../component/loading/loading",
         "mainloading": "../../component/mainLoading/mainLoading",

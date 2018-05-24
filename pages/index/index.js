@@ -7,7 +7,7 @@ Page({
     data: {
       findNum:1,
       selcetTabNum:1,
-      isPopup:false
+      isPopup:false,
     },
     // 提交
     doSubmit () {
@@ -104,6 +104,7 @@ Page({
     // 去找料
     goFind() {
         let token = app.globalData.token;
+        //let token = wx.getStorageSync('token')
         //let token = true;
         if (token) {
           this.setData({
@@ -130,24 +131,28 @@ Page({
           url: '../material/material',
         })
       }
-     
+  
     },
+
+
+
     /**
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
         //设置服务人数
-        api.serviceNum({}).then(res => {
-            let serviceData = res.data;
-            this.setData({
-                serviceData
-            })
-        });
+         api.serviceNum({}).then(res => {
+             let serviceData = res.data;
+             this.setData({
+                 serviceData
+             })
+         });
     },
     /**
      * 生命周期函数--监听页面初次渲染完成
      */
     onReady: function () {
+    
 
     },
     /**

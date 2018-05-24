@@ -56,7 +56,7 @@ Page({
         })
 
     },
-    // 商品订单跳转
+    // 找料订单跳转
     toMyOrder(e) {
         console.log(e.currentTarget.dataset.id);
         let statusID = e.currentTarget.dataset.id;
@@ -87,6 +87,37 @@ Page({
         }
     },
 
+
+    // 取料订单跳转
+    toFetchOrder(e) {
+      console.log(e.currentTarget.dataset.id);
+      let statusID = e.currentTarget.dataset.id;
+      let token = app.globalData.token;
+
+      console.log(token);
+
+      if (token) {
+        wx.navigateTo({
+          url: `../myFetchOrder/myFetchOrder?status=${statusID}`,
+        })
+      } else {
+        wx.showModal({
+          title: '您尚未登陆',
+          content: '是否前往登陆页面',
+          confirmText: '前往',
+          confirmColor: '#c81a29',
+          success: (res) => {
+            if (res.confirm) {
+              wx.navigateTo({
+                url: '../login/login',
+              })
+            } else if (res.cancel) {
+              console.log('用户点击取消')
+            }
+          }
+        })
+      }
+    },
     // 增票资质 自我增加
 
     collatingTickets() {
@@ -139,11 +170,9 @@ Page({
     /**
      * 生命周期函数--监听页面加载
      */
-    onLoad: function (options) {
-
-
-
-
+    onLoad: function (options) {  
+      // let userInfo = app.globalData.userInfo;
+      // console.log(userInfo);
     },
 
     /**
@@ -157,39 +186,27 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow: function () {
-
-        //onfire.fire('getMemberInfo', 'data');
-
-
         // 更新用户信息
-        let memberInfo = app.globalData.memberInfo;
-        console.log(memberInfo)
-        if (!!memberInfo) {
+      // 用于注册返回更新用户状态
+      if (app.globalData.token){
+        api.memberInfo({
 
-            this.setData({
-                memberInfo
-            })
+        }).then((res) => {
+          console.log('用户信息 = ', res);
+          app.globalData.memberInfo = res.data;
+          this.setData({
+            memberInfo: res.data
+          })
+        }).catch((res) => {
 
-        } else {
+        })
+      }
+      
 
-            // 用于注册返回更新用户状态
-            let token = wx.getStorageSync('token');
-            if (!!token) {
+    },
 
-                api.memberInfo({
-
-                }).then((res) => {
-                    console.log('用户信息 = ', res);
-                    app.globalData.memberInfo = res.data;
-                    this.setData({
-                        memberInfo: res.data
-                    })
-                }).catch((res)=>{
-        
-                })
-            }
-
-        }
+    // 获取用户信息
+    getUserInfo () {
 
     },
 

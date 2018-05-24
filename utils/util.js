@@ -179,7 +179,6 @@ const errorTips = (msg = '发生了错误') => {
 
 }
 
-
 module.exports = {
   getCurrentTime: getCurrentTime,
   objLength: objLength,

@@ -14,12 +14,12 @@ Page({
         addressIndex:'',
         descValue: '',
         files: [{}, {}, {}],
-        selcetTabNum: '1',
-        checkTypes: ['面料', '五金', '辅料', '其他'],
-        checkType: '面料',
+        selcetTabNum: 1,
+        checkTypes:[],
+        checkType: '',
         isSelect: false, // 下拉显示按描述找料
         selcetSecondTabNum: '1',
-        addFinds: [{ index: 0, checkType: '面料', selcetTabNum: '1', selcetSecondTabNum: '1', isSelect: false, description: '', files: [{}, {}, {}],address:{}}]
+        addFinds: [{ index: 0, checkType: '', selcetTabNum: 1, selcetSecondTabNum: '1', isSelect: false, description: '', files: [{}, {}, {}],address:{}}]
     },
     // 获取描述
     getDescription(e) {
@@ -36,6 +36,16 @@ Page({
     getCheckTypes(){
       api.getCheckTypes({}).then((res)=>{
         console.log(res);
+        if(res.code == 200){
+          this.data.addFinds[0].checkType = res.data[0].name;
+          for(let i=0 ;i<res.data.length;i++){
+            this.data.checkTypes.push(res.data[i].name);
+          }
+          this.setData({
+            checkTypes: this.data.checkTypes,
+            addFinds: this.data.addFinds
+          })
+        }
       })
     },
     /**
@@ -150,6 +160,8 @@ Page({
             sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
             success: (res) => {
                 // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
+
+              
               let files =  this.data.addFinds[index].files;
                 files[i].url = res.tempFilePaths[0];
                 files[i].pct = 'wait';
@@ -158,32 +170,30 @@ Page({
                 });
                 console.log(files);
                 const token = wx.getStorageSync('token') || '';
+                const token_type = wx.getStorageSync('token_type') || '';
                 // 上传图片，返回链接地址跟id,返回进度对象
                 let uploadTask = wx.uploadFile({
-                    url: `${api.apiUrl}/find/image/upload`,
+                    url: `${api.apiUrl}/api/upload/simpleUpload`,
                     filePath: res.tempFilePaths[0],
-                    name: 'image',
+                    name: 'file',
                     header: {
-                        'content-type': 'multipart/form-data'
+                        'content-type': 'multipart/form-data',
+                        'Authorization': token_type + ' ' + token
                     },
                     formData: {
-                        'member_token': token
+                        type:'find_img',
                     },
                     success: (res) => {
+                        console.log('图片上传');
                         console.log(res);
                         var res = JSON.parse(res.data);
-
-                        if (0 === res.code) {
-                            files[i].images_id = res.data.image_id;
-                            files[i].image_url = res.data.image_url;
+                        if (200 === res.code) {
+                            files[i].image_url = res.data.path;
                             this.data.addFinds[index].files = files;
-                            console.log(files);
-                            console.log('--------');
-                            console.log(this.data.addFinds);
                             this.setData({
                               addFinds: this.data.addFinds
                             })
-
+                            console.log(this.data.addFinds);
                         } else {
                             util.errorTips('上传错误');
                         }
@@ -292,13 +302,14 @@ Page({
       }, 1000)
 
     },
+
     /**
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
 
       // 获取找料类型数据
-      //this.getCheckTypes();
+      this.getCheckTypes();
       // 获取默认地址
       this.getSelectedAddress(()=>{
         console.log('--------');
@@ -378,7 +389,7 @@ Page({
     getSelectedAddress(callBlack) {
         // 获取默认地址
         api.defaultAddress({
-        }).then((res) => {
+        },1).then((res) => {
             let defaultAddress = res.data;
             // 可能位空数组
             if (Array.isArray(defaultAddress)) {

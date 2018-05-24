@@ -1,0 +1,129 @@
+/* pages/leftSwiperDel/index.wxss */  
+view{  
+    box-sizing: border-box;  
+}  
+.item-box{  
+    width: 750rpx;  
+    margin: 0 auto;    
+}  
+.items{  
+    width: 100%;  
+}  
+.item{  
+    position: relative;  
+    border-top: 2rpx solid #eee;  
+    height: 300rpx;  
+    overflow: hidden;  
+}  
+.item:last-child{  
+    border-bottom: 2rpx solid #eee;  
+}  
+.inner{  
+    position: absolute;  
+    top:0;  
+}  
+.inner.txt{  
+    background-color: #fff;  
+    width: 100%;  
+    height: 100%;
+    z-index: 5;  
+    transition: left 0.2s ease-in-out;  
+    white-space:nowrap;  
+    overflow:hidden;  
+    text-overflow:ellipsis;  
+}  
+.inner.del{  
+    background-color:#e64340;
+    width:180rpx;
+    text-align:center;
+    z-index:4;
+    right:0;
+    color:#fff;
+    height:300rpx;
+    line-height:300rpx;
+    font-size: 30rpx;
+    text-decoration: underline;
+}  
+.item-icon{  
+    width: 64rpx;  
+    vertical-align: middle;  
+    margin-right: 16rpx  
+}  
+.thumb{  
+    width: 200px;  
+    height: 200px;  
+    -webkit-overflow-scrolling: touch;  
+    overflow: scroll;  
+}  
+
+.check-box{
+  float: left;
+  width: 50rpx;
+}
+.task-find{
+  float: left;
+  width: 580rpx;
+  position: relative;
+}
+.task-find-img{
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 10rpx;
+  margin-right: 20rpx; 
+}
+.task-find-text{
+  height: 50rpx;
+  line-height: 50rpx;
+}
+.task-find-price{
+  position: absolute;
+  bottom: 0;
+  right: -30rpx;
+}
+.task-fetch-price{
+   position: absolute;
+   bottom: 0;
+   right: -30rpx;
+}
+.task-find-method-2{
+    width:200px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.task-find-describe{
+    width:200px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.check-box .iconfont{
+  position: relative;
+  top: 80rpx;
+}
+.box-shadow {
+  overflow: hidden;
+}
+.task-pay-btn{
+  width: 200rpx;
+  display: inline-block;
+  background-color: #c81a29;
+  text-align: center;
+  color: #fff;
+  float: right;
+}
+.task-pay-btn-default{
+  width: 200rpx;
+  display: inline-block;
+  background-color: #999;
+  text-align: center;
+  color: #fff;
+  float: right;
+}
+.fetch{
+  height: 225rpx;
+}
+.height200{
+  height: 200rpx;
+  line-height: 200rpx;
+}

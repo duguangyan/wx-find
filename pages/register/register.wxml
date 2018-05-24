@@ -11,7 +11,7 @@
         <view class="mgt-30 pdl-30 input-box flex">
             <text class="bold mgr-50">验证码</text>
             <input bindinput='sms' placeholder-class='fs30 text-999' placeholder='请输入验证码' maxlength='4'></input>
-            <view bindtap='getSMS' class="{{smsStatus ? 'disabled' : ''}}">{{ smsText ||'获取验证码'}}</view>
+            <view bindtap='getSMS' class="{{smsStatus ? 'disabled' : ''}}">{{ smsText }}</view>
         </view>
 
         <view class="mgt-30 pdl-30 pdr-40 input-box set-pwd">

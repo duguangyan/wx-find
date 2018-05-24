@@ -67,7 +67,7 @@ Page({
     submitLogin() {
 
         let user_name = this.data.account,
-            user_psw = this.data.password;
+            password = this.data.password;
 
         // 可前台判断一下手机格式 util.vailPhone( num)
         const isMatch = util.vailPhone(user_name);
@@ -81,17 +81,21 @@ Page({
             method: 'POST',
             data: {
                 user_name,
-                user_psw
+                password
             }
         }).then((res) => {
             console.log(res);
-            app.globalData.token = res.data;
+            app.globalData.token = res.data.access_token;
+            app.globalData.userInfo = res.data.user;
             console.log(app.globalData.token);
             wx.setStorage({
                 key: 'token',
-                data: res.data,
+                data: res.data.access_token,
             })
-
+            wx.setStorage({
+              key: 'token_type',
+              data: res.data.token_type,
+            })
             wx.navigateBack();
             // wx.navigateTo({
             //     url: '../shoppingCart/shoppingCart',

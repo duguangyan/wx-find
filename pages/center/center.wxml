@@ -1,7 +1,8 @@
+
 <view class="section-avatar flex flex-start">
     <image class='header-bg' src='../../public/images/center/header_bg.png'></image>
     <view class="avatar">
-        <image src="{{memberInfo.avatar_url || '../../public/images/center/default_avatar.png'}}"></image>
+        <image src="{{memberInfo.avatar_path || '../../public/images/center/default_avatar.png'}}"></image>
     </view>
 
     <view class="member-info text-left bold">
@@ -12,7 +13,7 @@
             </view>
             <view class="mgt-20">
                 <image class='center-money' src='../../public/images/center/money.png'></image>
-                <text class="text-yellow mgl-20 fs26">账号余额：￥ 10000.00</text>
+                <text class="text-yellow mgl-20 fs26">账号余额：￥ {{memberInfo.asset.balance_amount || 0}}</text>
             </view>
         </view>
         <navigator style="padding:20rpx 0" open-type='navigate' url="../login/login" hidden='{{memberInfo}}' class="fs32 bold">您暂未登陆（点击登陆）</navigator>
@@ -44,13 +45,13 @@
 <view class="section-order mgt-20">
     <view class="my-order-line flex">
         <view class="fs30">取料订单</view>
-        <view bindtap='toMyOrder' data-id="0" hover-class='hover-click' class="text-999 lh80">
+        <view bindtap='toFetchOrder' data-id="0" hover-class='hover-click' class="text-999 lh80">
             <text>查看全部取料订单</text>
             <text class="iconfont icon-jiantou1 "></text>
         </view>
     </view>
     <view class="flex flex-start">
-        <view bindtap='toMyOrder' data-id="{{item.id}}" class="item" wx:for="{{orderTab}}" wx:key="{{i}}">
+        <view bindtap='toFetchOrder' data-id="{{item.id}}" class="item" wx:for="{{orderTab}}" wx:key="{{i}}">
             <image mode='aspectFit' src='../../public/images/center/{{item.id}}.png'></image>
             <text>{{item.name}}</text>
         </view>

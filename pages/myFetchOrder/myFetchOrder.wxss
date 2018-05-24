@@ -51,7 +51,7 @@
   background-color: #fff;
 }
 .order-content{
-  margin-top: 226rpx;
+  margin-top: 160rpx;
   position: relative;  
 }
 .task-find-title{

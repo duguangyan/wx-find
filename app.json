@@ -3,6 +3,7 @@
     "pages/index/index",
     "pages/order/order",
     "pages/task/task",
+    "pages/task1/task1",
     "pages/center/center",
     "pages/find/find",
     "pages/recharge/recharge",
@@ -19,13 +20,15 @@
     "pages/myFindOrder/myFindOrder",
     "pages/taskPay/taskPay",
     "pages/taskPaySuccess/taskPaySuccess",
-    "pages/material/material"
+    "pages/material/material",
+    "pages/myFetchOrder/myFetchOrder"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#C81A29",
     "navigationBarTitleText": "一大批",
-    "navigationBarTextStyle": "white"
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#eeeeee"
   },
   "tabBar": {
     "color": "#000000",
@@ -39,7 +42,7 @@
         "selectedIconPath": "public/images/icon/2.1.png"
       },
       {
-        "pagePath": "pages/task/task",
+        "pagePath": "pages/task1/task1",
         "text": "任务中心",
         "iconPath": "public/images/icon/1.2.png",
         "selectedIconPath": "public/images/icon/2.2.png"

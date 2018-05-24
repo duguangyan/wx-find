@@ -1,7 +1,7 @@
 <view class="fs30 address-form">
     <view class="flex cell-padding border-bottom lh100">
         <view>档口名称</view>
-        <input bindinput='editConsignee' style="text-align:right" placeholder='请填写' placeholder-class="text-right" value='{{addressInfo.consignee}}'></input>
+        <input bindinput='editConsignee' style="text-align:right" placeholder='请填写' placeholder-class="text-right" value='{{addressInfo.dangkou}}'></input>
     </view>
     <view class="flex cell-padding border-bottom lh100">
         <view>收货人</view>

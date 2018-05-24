@@ -1,0 +1,94 @@
+
+<wxs src="../../utils/filter.wxs" module="filter" />
+<view class="item-box">
+
+  <view class='box-shadow lh90'>
+      <view class='fs30 bb-1'>
+          <text bindtap='findCheckAll' data-check='true' wx:if='{{finds[0].checkAll}}' class="iconfont icon-dui fs40 text-theme mgl-20"></text>
+          <text bindtap='findCheckAll' data-check='false' wx:if='{{!finds[0].checkAll}}' class="iconfont icon-yuan fs40 mgl-20 text-eb"></text>
+          <text class='mgl-20'>找料任务</text>
+      </view>
+     
+      <view class="items">  
+        <view wx:for="{{finds}}"  wx:key="{{index}}"  class="item bb-1" style="height:{{item.form_data.find_type == '3'?'200rpx':'300rpx'}}">  
+          <view bindtouchstart="touchS" bindtouchmove="touchM" bindtouchend="touchE" data-index="{{index}}" style="{{item.txtStyle}}" class="inner txt">  
+
+              <view data-index="{{index}}" class='cf  pdl-20'>
+                <view data-index="{{index}}" class='check-box'>
+                  <text style="top:{{item.form_data.find_type == '3'?'50rpx':'80rpx'}}" catchtap='findCheck' data-index="{{index}}" wx:if='{{item.check}}' class="iconfont icon-dui fs40 pdr-20 text-theme"></text>
+                  <text style="top:{{item.form_data.find_type == '3'?'50rpx':'80rpx'}}" catchtap='findCheck' data-index="{{index}}" wx:if='{{!item.check}}' class="iconfont icon-yuan fs40 pdr-20 text-eb"></text>
+                </view>
+                <view data-index="{{index}}" class='task-find fs30 pdt-30'>
+                    <view data-index="{{index}}" class='task-find-text'>物料类型: {{item.cname}}</view>
+                    <view data-index="{{index}}" class='task-find-text task-find-describe'>物料描述: {{item.form_data.desc}}</view>
+                    <view data-index="{{index}}" class='task-find-text'>提供找料方式: {{item.form_data.find_type_name}}</view>
+                    <view data-index="{{index}}" class='task-find-method'>
+                        <view data-index="{{index}}" class='task-find-method-1' wx:if="{{ item.form_data.find_type == '1'}}">
+                            <image data-index="{{index}}" class='task-find-img' src='{{item.form_data.front_img}}'></image> 
+                            <image data-index="{{index}}" class='task-find-img' src='{{item.form_data.side_img}}'></image> 
+                            <image data-index="{{index}}" class='task-find-img' src='{{item.form_data.back_img}}'></image>    
+                        </view>
+                        <view data-index="{{index}}" class='task-find-method-2' wx:if="{{ item.form_data.find_type == '2'}}">
+                            <text data-index="{{index}}">取料地址: {{item.form_data.get_address}}</text>
+                        </view> 
+                        <text data-index="{{index}}" class='task-find-price' style="top:{{item.form_data.find_type == '3'?'110rpx':''}}">金额: <text data-index="{{index}}" class='text-red fs30'>￥{{filter.formatMoney(item.form_data.fee)}}</text></text>
+                    </view>
+                </view>
+              </view>
+            </view>  
+            <view data-index="{{index}}" data-id='{{item.id}}' bindtap="delItemFind" class="inner del" style="line-height:{{item.form_data.find_type == '3'?'200rpx':'300rpx'}}" >删除</view>  
+          </view>  
+        </view>  
+      </view>  
+  
+</view>  
+
+
+<!-- 取料任务 -->
+<view class="item-box task-fetch">
+  <view class='box-shadow lh90'>
+      <view class='fs30 bb-1'>
+          <text  bindtap='fetchCheckAll' data-check='true' wx:if='{{fetchs[0].checkAll}}' class="iconfont icon-dui fs40 text-theme mgl-20"></text>
+          <text  bindtap='fetchCheckAll' data-check='false' wx:if='{{!fetchs[0].checkAll}}' class="iconfont icon-yuan fs40 mgl-20 text-eb"></text>
+          <text class='mgl-20'>取料任务</text>
+      </view>
+     
+      <view class="items">  
+        <view wx:for="{{fetchs}}"  wx:key="{{index}}"  class="item bb-1 fetch">  
+          <view bindtouchstart="touchSfetch" bindtouchmove="touchMfetch" bindtouchend="touchEfetch" data-index="{{index}}" style="{{item.txtStyle}}" class="inner txt">  
+
+              <view data-index="{{index}}" class='cf  pdl-20'>
+                <view data-index="{{index}}" class='check-box'>
+                  <text bindtap='fetchCheck' data-index="{{index}}" wx:if='{{item.check}}' class="iconfont icon-dui fs40 pdr-20 text-theme"></text>
+                  <text bindtap='fetchCheck' data-index="{{index}}" wx:if='{{!item.check}}' class="iconfont icon-yuan fs40 pdr-20 text-eb"></text>
+                </view>
+                <view data-index="{{index}}" class='task-find fs30 pdt-30'>
+                    <view data-index="{{index}}" class='task-find-text'>物料名称: {{item.cname}}</view>
+                    <view data-index="{{index}}" class='task-find-text task-find-describe'>物料描述: {{item.form_data.desc}}</view>
+                    <view data-index="{{index}}" class='task-find-method'>
+                        <view data-index="{{index}}" class='task-find-method-2'>
+                            <text data-index="{{index}}">取料地址: {{item.form_data.get_address}}</text>
+                        </view> 
+
+                        <text data-index="{{index}}" class='task-fetch-price'>金额: <text data-index="{{index}}" class='text-red fs30'>￥{{filter.formatMoney(item.form_data.fee)}}</text></text>
+                    </view>
+                </view>
+              </view>
+            </view>  
+            <view data-index="{{index}}" data-id='{{item.id}}' bindtap = "delItemFetch" class="inner del" style='height:200rpx;line-height:200rpx;'>删除</view>  
+          </view>  
+        </view>  
+      </view>  
+  
+</view>  
+
+<view class='task-pay box-shadow lh90 fs30 mgb-30' hidden="{{taskDates=='' ? true : false}}">
+      <view class='mgl-30'>
+        <text bindtap='checkAll' data-check='true' wx:if='{{isCheckAll}}' class="iconfont icon-dui fs40 pdr-20 text-theme"></text>
+        <text bindtap='checkAll' data-check='false' wx:if='{{!isCheckAll}}' class="iconfont icon-yuan fs40 pdr-20 text-eb"></text>
+          <text class='text-underline mgr-50'>全选</text>
+          <text class='mgr-50'>合计：<text class='text-red'>￥{{filter.formatMoney(sumPrice)}}</text></text>
+          <text wx:if="{{sumPrice!=0}}" class='task-pay-btn text-underline' bindtap='saveTask'>结算</text> 
+          <text wx:if="{{sumPrice==0}}" class='task-pay-btn-default'>结算</text> 
+      </view>
+  </view>

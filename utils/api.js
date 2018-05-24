@@ -1,6 +1,6 @@
-const apiUrl = 'https://api.yidap.com';
- //const apiUrl = 'https://devapi.yidap.com';
-
+const oldApiUrl = 'https://api.yidap.com';
+//const apiUrl = 'https://devapi.yidap.com';
+const apiUrl = 'https://devv2.yidap.com';
 
 Promise.prototype.finally = function (callback) {
     let P = this.constructor;
@@ -18,24 +18,30 @@ Promise.prototype.finally = function (callback) {
  * @param {*} fail Function
  * @param {*} complete Function
  */
-const myRequest = function (params = {}, url) {
+const myRequest = function (params = {}, url , id) {
 
     return new Promise((resolve, reject) => {
         let data = params.data || {};
         const token = wx.getStorageSync('token') || '';
-        data.member_token = token;
-        let header = { 'content-type': 'application/json' };
+        const token_type = wx.getStorageSync('token_type') || '';
+        // data.member_token = token;
+        let header = {'Accept':'application/json', 'Authorization': token_type+ ' ' +token };
+        let apiUrl = url;
+        if (id!=undefined){
+          apiUrl = url +'/'+id
+        }
+        
         wx.request({
-            url,
+            url: apiUrl,
             method: params.method || 'GET',
             data,
             header,
             success(res) {
                 var res = res.data;
-                if (0 === res.code) {
+                if (200 === res.code || 0 === res.code) {
                     resolve(res);
                 } else {
-                    if (-401 === res.code) {
+                    if (401 === res.code) {
                         console.log('401统一处理');
                         wx.showModal({
                             title: '您尚未登陆',
@@ -96,12 +102,12 @@ const associateAccount = (params) => {
 
 // 手机登录
 const login = (params) => {
-    return myRequest(params, `${apiUrl}/auth/member/login`)
+  return myRequest(params, `${apiUrl}/api/login`)
 }
 
 // 获取用户信息
 const memberInfo = (params) => {
-    return myRequest(params, `${apiUrl}/auth/member/info`)
+  return myRequest(params, `${apiUrl}/api/show`)
 }
 
 // 修改用户信息
@@ -112,7 +118,7 @@ const modifyMemberInfo = (params) => {
 
 // 判定会员是否存在
 const memberExit = (params) => {
-    return myRequest(params, `${apiUrl}/auth/member/exist`)
+    return myRequest(params, `${apiUrl}/api/member/exist`)
 }
 
 // 用户注册短信发送
@@ -122,7 +128,7 @@ const regSMS = (params) => {
 
 // 注册接口
 const register = (params) => {
-    return myRequest(params, `${apiUrl}/auth/member/register`)
+  return myRequest(params, `${apiUrl}/api/register`)
 }
 
 // 重置密码
@@ -164,16 +170,16 @@ const cartNumber = (params) => {
 
 // 订单收货地址列表
 const listAddress = (params) => {
-    return myRequest(params, `${apiUrl}/auth/member/address/list`)
+  return myRequest(params, `${apiUrl}/find/api/address`)
 }
 // 订单收货地址详情
 const infoAddress = (params) => {
-    return myRequest(params, `${apiUrl}/auth/member/address/info`)
+  return myRequest(params, `${apiUrl}/find/api/address`)
 }
 
 // 订单新增收货地址
 const addAddress = (params) => {
-    return myRequest(params, `${apiUrl}/auth/member/address/add`)
+  return myRequest(params, `${apiUrl}/find/api/address`)
 }
 
 // 订单编辑收货地址
@@ -182,8 +188,8 @@ const editAddress = (params) => {
 }
 
 // 获取订单默认收货地址资料
-const defaultAddress = (params) => {
-    return myRequest(params, `${apiUrl}/auth/member/address/info-default`)
+const defaultAddress = (params,id) => {
+  return myRequest(params, `${apiUrl}/find/api/address/getdefault`,id)
 }
 
 // 设置默认收货地址
@@ -202,8 +208,8 @@ const addOrder = (params) => {
 }
 
 // 订单列表
-const orderList = (params) => {
-    return myRequest(params, `${apiUrl}/ec/order/list`)
+const orderList = (params,id) => {
+  return myRequest(params, `${apiUrl}/find/api/order/type`,id)
 }
 
 // 订单详情
@@ -250,14 +256,14 @@ const getGoodsDetail = (params) => {
 }
 
 // 收货地址地区
-const getAddress = (params) => myRequest(params, `${apiUrl}/lib/region/listTree`);
+const getAddress = (params) => myRequest(params, `${oldApiUrl}/lib/region/listTree`);
 
 
 // 首页品牌展示
 const brandShow = (params) => myRequest(params, `${apiUrl}/item/brand/get`);
 
 // 获取服务人数
-const serviceNum = (params) => myRequest(params, `${apiUrl}/find/demand/stat`);
+const serviceNum = (params) => myRequest(params, `${apiUrl}/find/api/material`);
 
 /**
  * 
@@ -315,7 +321,20 @@ const activitySubmit = (params) => myRequest(params, `${apiUrl}/ec/spike_activit
 // 获取找料类型数据
 const getCheckTypes = (params) => myRequest(params, `${apiUrl}/find/api/category`);
 
+// 任务中心列表数据
+const getTaskInit = (params,id) => myRequest(params, `${apiUrl}/find/api/task/type`,id);
+
+// 删除找料任务
+const delTask = (params,id) => myRequest(params, `${apiUrl}/find/api/task`,id);
+
+// 任务中心结算
+const saveTask = (params) => myRequest(params, `${apiUrl}/find/api/task`);
+
+
 module.exports = {
+    saveTask,
+    delTask,
+    getTaskInit,
     getCheckTypes,
     apiUrl,
     wxLogin,
