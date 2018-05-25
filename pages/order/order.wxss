@@ -89,7 +89,7 @@
   width: 125rpx;
   height: 125rpx;
   position: absolute;
-  top: 6rpx;
+  top: 20rpx;
   right:0;
 }
 .task-find-method{
@@ -117,7 +117,6 @@
   white-space: nowrap;
 }
 .order-footer-btn{
-  margin-top: 30rpx;
   float: right;
 }
 .order-footer-btn text {
@@ -155,4 +154,15 @@
   color: #fff;
   font-size: 30rpx;
   margin-top: 40rpx; 
+}
+.task-find-sn{
+  width: 530rpx;
+}
+.task-find-snname{
+  position: relative;
+  top: -60rpx;
+}
+.task-find-item-warp{
+  position: relative;
+  top: -40rpx;
 }

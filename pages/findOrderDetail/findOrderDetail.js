@@ -16,7 +16,7 @@ Page({
      */
     onLoad: function (options) {
 
-       
+      console.log(JSON.parse(options.item));
 
 
     },

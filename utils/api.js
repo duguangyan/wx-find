@@ -170,7 +170,7 @@ const cartNumber = (params) => {
 
 // 订单收货地址列表
 const listAddress = (params) => {
-  return myRequest(params, `${apiUrl}/find/api/address`)
+  return myRequest(params, `${apiUrl}/api/member/address/list`)
 }
 // 订单收货地址详情
 const infoAddress = (params) => {

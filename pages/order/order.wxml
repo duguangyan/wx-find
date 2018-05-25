@@ -1,4 +1,5 @@
 <!--pages/order/order.wxml-->
+<wxs src="../../utils/filter.wxs" module="filter" />
 <view class='order'> 
     <view class='ordder-top-hidden'></view>
     <view class='box-shadow order-header'>
@@ -24,49 +25,150 @@
         <view class='text-666 text-center fs30 mgt-50'>你还没有相关订单</view>
         <view class='do-order' bindtap='doOrder'>去下单</view>
     </view>
-  <scroll-view scroll-y="true" style="height: 1200rpx;" bindscrolltoupper="upper" bindscrolltolower="lower">
-    <view class='box-shadow order-content' wx:for="findList" wx:key="this"> 
-           <view class='task-find'>
-            <view class='task-find-title fs30'>
-                <text>订单编号: {{item.order_sn}}</text>
-                <text class='text-red flr pdr-30'>{{item.is_payed?'待支付':'已支付'}}</text>
-            </view>
-            <view class='task-find-list fs30 cf'>
-              <view bindtap='goOrderDetail'>
-                   <view class='task-find-item'>
-                  <view>物料品类：面料</view>
-                  <view>物料描述：物料名称是xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</view>
-                  <view>找料方式：图片找料</view>
-                  <image class='task-find-img' src='../../public/images/task/task_find.png'></image>
-                </view> 
-                <view class='task-find-method bb-1 pdb-20'>
-                  <view class='task-find-method-img'>
-                      <image src='../../public/images/task/task_img.png'></image>
-                      <image src='../../public/images/task/task_img.png'></image>
-                      <image src='../../public/images/task/task_img.png'></image>
-                  </view> 
-                   <view class='task-find-method-getfind' wx:if='{{ false }}'>
-                      <view>取料地址：取料地址取料地xxxxxcxxxxxxxxxxxxxxxxxx</view>
-                  </view> 
-                  <view class='task-find-price'>
-                    金额:￥20.00
-                  </view>   
-                </view> 
+     <!-- bindscrolltoupper="upper" bindscrolltolower="lower" -->
+    <scroll-view scroll-y="true"   bindscrolltolower="upper" bindscrolltoupper="lower" style="height: 100vh">
+      <view class='order-content'> 
+            <view class='box-shadow task-find'  wx:for="{{findList}}"  wx:key="this">
+              <view class='task-find-title fs30'>
+                  <text class='task-find-sn ellipsis'>订单编号: {{item.order_sn}}</text>
+                  <text class='task-find-snname text-red flr pdr-30'>{{item.is_payed?'待支付':'已支付'}}</text>
               </view>
-              <view class='order-footer-btn'>
-                  <text bindtap='delOrder'>取消订单</text>
-                  <text bindtap='toPay' class='order-footer-btn-red'>去支付</text>
-                  <text bindtap='urgeOrder' class='order-footer-btn-red'>催单</text>
-                  <text bindtap='affirmOrder' class='order-footer-btn-red'>确认收货</text>
-                  <text bindtap='toComment'>评价</text>
+              <view class='task-find-list fs30 cf'>
+                <view bindtap='goFindDetail' data-index="{{index}}" data-xx='xxxx' class='task-find-item-warp'>
+                  <view class='task-find-item'>
+                    <view>物料品类：{{item.cname}}</view>
+                    <view>物料描述：{{item.desc}}</view>
+                    <view>找料方式：{{item.type_name}}</view>
+                    <image class='task-find-img' style="top:{{item.type==3?'-12rpx':'20rpx'}}" src='../../public/images/task/task_find.png'></image>
+                  </view> 
+                  <view class='task-find-method bb-1 pdb-20'>
+                    <view class='task-find-method-img' wx:if='{{item.type==1}}'>
+                        <image src='../../public/images/task/task_img.png'></image>
+                        <image src='../../public/images/task/task_img.png'></image>
+                        <image src='../../public/images/task/task_img.png'></image>
+                    </view> 
+                    <view class='task-find-method-getfind' wx:if='{{item.type==2}}'>
+                        <view>取料地址：{{item.get_address}}</view>
+                    </view> 
+                    <view class='task-find-price'>
+                      金额:￥{{filter.formatMoney(item.pay_fee)}}
+                    </view>   
+                  </view> 
+                </view>
+                <view class='order-footer-btn'>
+                    <text bindtap='delOrder'wx:if='{{item.button_status.on_cancel==1}}'>取消订单</text>
+                    <text bindtap='toPay' wx:if='{{item.button_status.on_pay==1}}' class='order-footer-btn-red'>去支付</text>
+                    <text bindtap='urgeOrder'  wx:if='{{item.button_status.on_prompt==1}}' class='order-footer-btn-red'>催单</text>
+                    <text bindtap='affirmOrder' wx:if='{{item.button_status.on_confirm==1}}' class='order-footer-btn-red'>确认收货</text>
+                    <text bindtap='toComment'  wx:if='{{item.button_status.on_comment==1}}'>评价</text>
+                </view>
               </view>
             </view>
-           </view>
-    </view>
-    <view class='loding'>
+      </view>
+      <view class='loding'>
         已经全部加载完毕
-    </view>
-  </scroll-view>
+      </view>
+      <view class='loding'>
+        已经全部加载完毕
+      </view>
+      <view class='loding'>
+        已经全部加载完毕
+      </view>
+      <view class='loding'>
+        已经全部加载完毕
+      </view>
+      <view class='loding'>
+        已经全部加载完毕
+      </view>
+      <view class='loding'>
+        已经全部加载完毕
+      </view>
+      <view class='loding'>
+        已经全部加载完毕
+      </view><view class='loding'>
+        已经全部加载完毕
+      </view><view class='loding'>
+        已经全部加载完毕
+      </view><view class='loding'>
+        已经全部加载完毕
+      </view><view class='loding'>
+        已经全部加载完毕
+      </view><view class='loding'>
+        已经全部加载完毕
+      </view><view class='loding'>
+        已经全部加载完毕
+      </view><view class='loding'>
+        已经全部加载完毕
+      </view><view class='loding'>
+        已经全部加载完毕
+      </view><view class='loding'>
+        已经全部加载完毕
+      </view><view class='loding'>
+        已经全部加载完毕
+      </view><view class='loding'>
+        已经全部加载完毕
+      </view><view class='loding'>
+        已经全部加载完毕
+      </view><view class='loding'>
+        已经全部加载完毕
+      </view><view class='loding'>
+        已经全部加载完毕
+      </view><view class='loding'>
+        已经全部加载完毕
+      </view><view class='loding'>
+        已经全部加载完毕
+      </view><view class='loding'>
+        已经全部加载完毕
+      </view><view class='loding'>
+        已经全部加载完毕
+      </view><view class='loding'>
+        已经全部加载完毕
+      </view><view class='loding'>
+        已经全部加载完毕
+      </view><view class='loding'>
+        已经全部加载完毕
+      </view><view class='loding'>
+        已经全部加载完毕
+      </view><view class='loding'>
+        已经全部加载完毕
+      </view><view class='loding'>
+        已经全部加载完毕
+      </view><view class='loding'>
+        已经全部加载完毕
+      </view><view class='loding'>
+        已经全部加载完毕
+      </view><view class='loding'>
+        已经全部加载完毕
+      </view><view class='loding'>
+        已经全部加载完毕
+      </view><view class='loding'>
+        已经全部加载完毕
+      </view><view class='loding'>
+        已经全部加载完毕
+      </view><view class='loding'>
+        已经全部加载完毕
+      </view><view class='loding'>
+        已经全部加载完毕
+      </view><view class='loding'>
+        已经全部加载完毕
+      </view><view class='loding'>
+        已经全部加载完毕
+      </view><view class='loding'>
+        已经全部加载完毕
+      </view><view class='loding'>
+        已经全部加载完毕
+      </view><view class='loding'>
+        已经全部加载完毕
+      </view><view class='loding'>
+        已经全部加载完毕
+      </view><view class='loding'>
+        已经全部加载完毕
+      </view>
+
+      <!--加载组件  -->
+        <mainloading modal-show="{{modalShow}}" />
+      <loading modal-text="加载更多" modal-show="{{shopLoading}}" />
+    </scroll-view>
 </view>
 
 <!-- 填写取消订单原因model -->

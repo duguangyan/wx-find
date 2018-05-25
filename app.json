@@ -21,7 +21,8 @@
     "pages/taskPay/taskPay",
     "pages/taskPaySuccess/taskPaySuccess",
     "pages/material/material",
-    "pages/myFetchOrder/myFetchOrder"
+    "pages/myFetchOrder/myFetchOrder",
+    "pages/fetchOrderDetail/fetchOrderDetail"
   ],
   "window": {
     "backgroundTextStyle": "light",

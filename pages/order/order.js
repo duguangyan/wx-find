@@ -7,6 +7,8 @@ Page({
    * 页面的初始数据
    */
   data: {
+    shopLoading:true,
+    modalShow:false,
     orderNavNum:1, // nav一级切换
     orderChildNavFindNum: 1,  //  nav二级切换
     orderChildNavGetNum: 1, //  nav二级切换
@@ -21,10 +23,10 @@ Page({
     fecthList:'', // 取料列表数据
   },
   upper: function (e) {
-    console.log(e)
+    console.log('上拉')
   },
   lower: function (e) {
-    console.log(e)
+    console.log('下拉')
   },
   scroll: function (e) {
     console.log(e)
@@ -35,6 +37,7 @@ Page({
     this.setData({
       orderNavNum: index
     })
+    this.getList(index);
   },
   // nav 二级切换
   checkChildFindNav (e) {
@@ -42,6 +45,7 @@ Page({
     this.setData({
       orderChildNavFindNum: index
     })
+   
   },
   // nav 二级切换
   checkChildGetNav(e) {
@@ -105,11 +109,22 @@ Page({
   affirmOrder () {
     console.log('确认收货');
   },
-  // 去详情
-  goOrderDetail () {
+  // 去找料详情
+  goFindDetail (e) {
+    console.log('去详情页');
+    let index = e.currentTarget.dataset.index;
+    console.log(index);
+    let item = JSON.stringify(this.data.findList[index]);
+    console.log(item);
+    wx.navigateTo({
+      url: '../findOrderDetail/findOrderDetail?item=' + item
+    })
+  },
+  // 去找料详情
+  goFetchDetail() {
     console.log('去详情页');
     wx.navigateTo({
-      url: '../findOrderDetail/findOrderDetail'
+      url: '../fetchOrderDetail/fetchOrderDetail'
     })
   },
   // 去评价
@@ -153,36 +168,36 @@ Page({
   },
 
   // 获取订单列表
-  getFindList(){
-    api.orderList({},1).then((res)=>{
+  getList(index){
+    api.orderList({}, index).then((res)=>{
       if(res.code==200){
         this.data.findList = res.data;
+        for (let i = 0; i < this.data.findList.length;i++){
+          // 1按图找,2按样找3按描述
+          if (this.data.findList[i].type == 1){
+            this.data.findList[i].type_name = '按图找料'; 
+          } else if (this.data.findList[i].type == 2){
+            this.data.findList[i].type_name = '按样找料';
+          } else if (this.data.findList[i].type == 3){
+            this.data.findList[i].type_name = '按描述找料';
+          }
+          // 找料状态 1 待接单 2找料中 3 无法找到 4已找到料
+          
+        }
         this.setData({
           findList: this.data.findList
         })
       }
-      console.log(res);
+      console.log(res.data);
     })
   },
-  // 获取订单列表
-  getFecthList() {
-    api.orderList({}, 1).then((res) => {
-      if (res.code == 200) {
-        this.data.findList = res.data;
-        this.setData({
-          findList: this.data.findList
-        })
-      }
-      console.log(res);
-      
-    })
-  },
+  
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
     // 初始化获取找料列表
-    this.getFindList();
+    this.getList(1);
   },
 
   /**
@@ -224,7 +239,7 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-  
+    console.log('触底');
   },
 
   /**
