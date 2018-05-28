@@ -11,22 +11,24 @@ Page({
         interval:'',
         payNum:10, // 支付倒计时
         isPopup:false, // 弹窗控制
-        addressIndex:'',
-        descValue: '',
-        files: [{}, {}, {}],
-        selcetTabNum: 1,
-        checkTypes:[],
-        checkType: '',
+        addressIndex:'', // 地址索引
+        descValue: '', // 描述
+        files: [{}, {}, {}], // 图片
+        selcetTabNum: 1, // 找料方式切换 
+        checkTypes:[], // 物料类型数据
+        checkTypes_cid: [], // 物料类型数据 cid
+        checkType: '', 
         isSelect: false, // 下拉显示按描述找料
-        selcetSecondTabNum: '1',
-        addFinds: [{ index: 0, checkType: '', selcetTabNum: 1, selcetSecondTabNum: '1', isSelect: false, description: '', files: [{}, {}, {}],address:{}}]
+        selcetSecondTabNum: '1', //  上门  寄送地址切换
+        get_type:'1', //寄送地址切换
+        addFinds: [{ index: 0, checkType: '', selcetTabNum: 1, get_type:'1', selcetSecondTabNum: '1', isSelect: false, desc: '', files: [{}, {}, {}],address:{}}]
     },
     // 获取描述
     getDescription(e) {
       let value = e.detail.value;
       let index = e.currentTarget.dataset.index;
       console.log(value); 
-      this.data.addFinds[index].description = value;
+      this.data.addFinds[index].desc = value;
       this.setData({
         addFinds: this.data.addFinds
       })
@@ -38,8 +40,10 @@ Page({
         console.log(res);
         if(res.code == 200){
           this.data.addFinds[0].checkType = res.data[0].name;
+          this.data.addFinds[0].cid = res.data[0].id;
           for(let i=0 ;i<res.data.length;i++){
             this.data.checkTypes.push(res.data[i].name);
+            this.data.checkTypes_cid.push(res.data[i].id);
           }
           this.setData({
             checkTypes: this.data.checkTypes,
@@ -60,6 +64,7 @@ Page({
         success: function (res) {
           console.log(res);
           _this.data.addFinds[index].checkType = _this.data.checkTypes[res.tapIndex];
+          _this.data.addFinds[index].cid = _this.data.checkTypes_cid[res.tapIndex];
           _this.setData({
             addFinds: _this.data.addFinds
           })
@@ -80,7 +85,7 @@ Page({
         })
         return false;
       }
-      let newAddFinds = this.data.addFinds.concat([{ index: this.data.addFinds.length, checkType: '面料', selcetTabNum: '1', selcetSecondTabNum: '1', isSelect: false, description: '', files: [{}, {}, {}], address: this.data.defaultAddress}]) ;
+      let newAddFinds = this.data.addFinds.concat([{ get_type:'1', index: this.data.addFinds.length, cid: this.data.checkTypes_cid[0], checkType: this.data.checkTypes[0], selcetTabNum: '1', selcetSecondTabNum: '1', isSelect: false, desc: '', files: [{}, {}, {}], get_address: this.data.defaultAddress.id, address: this.data.defaultAddress}]) ;
       this.setData({
         addFinds: newAddFinds
       });
@@ -132,6 +137,7 @@ Page({
       let index = e.currentTarget.dataset.index;
       let id = e.currentTarget.dataset.id;
       this.data.addFinds[index].selcetSecondTabNum = id;
+      this.data.addFinds[index].get_type = id;
       console.log(id);
       this.setData({
         addFinds: this.data.addFinds
@@ -143,6 +149,7 @@ Page({
         let index = e.currentTarget.dataset.index;
         let id = e.currentTarget.dataset.id;
         this.data.addFinds[index].selcetTabNum = id;
+        this.data.addFinds[index].find_type = id;
         console.log(id);
         this.setData({
           addFinds: this.data.addFinds
@@ -153,7 +160,8 @@ Page({
     chooseImage: function (e) {
         let index = e.currentTarget.dataset.index;
         let i = e.currentTarget.dataset.id;
-
+        let imgIndex = e.currentTarget.dataset.id;
+        console.log(i);
         wx.chooseImage({
             count: 1,
             sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
@@ -188,8 +196,16 @@ Page({
                         console.log(res);
                         var res = JSON.parse(res.data);
                         if (200 === res.code) {
-                            files[i].image_url = res.data.path;
+                          files[i].image_url = res.data.full_url;
                             this.data.addFinds[index].files = files;
+                            if (imgIndex==0){
+                              this.data.addFinds[index].front_img = res.data.full_url;
+                            } else if (imgIndex==1){
+                              this.data.addFinds[index].side_img = res.data.full_url;
+                            }else{
+                              this.data.addFinds[index].back_img = res.data.full_url;
+                            }
+                            
                             this.setData({
                               addFinds: this.data.addFinds
                             })
@@ -232,9 +248,17 @@ Page({
       files[i] = {};
       this.data.addFinds[index].files = files;
       console.log(this.data.addFinds[index].files);
+      if (i == 0) {
+        this.data.addFinds[index].front_img = '';
+      } else if (i == 1) {
+        this.data.addFinds[index].side_img = '';
+      } else {
+        this.data.addFinds[index].back_img = '';
+      }
       this.setData({
         addFinds: this.data.addFinds
       });
+      console.log(this.data.addFinds);
     },
 
     // 提交表单
@@ -244,7 +268,7 @@ Page({
       console.log(this.data.addFinds); 
       for (let i = 0; i < this.data.addFinds.length;i++){ 
         // 描述必填 判断是否填写
-        if (this.data.addFinds[i].description == '') {
+        if (this.data.addFinds[i].desc == '') {
           wx.showToast({
             title: '第' + (i + 1) + '个任务，请填写描述',
             icon: 'none',
@@ -285,22 +309,35 @@ Page({
           // 只有描述 此方法头部已经判断
         }
       }
-
-      this.setData({
-        isPopup:true
+      let findDates = {
+        task_type:'1',
+        form_data: this.data.addFinds
+      }
+      // 发起请求
+      api.joinTask({
+        method:'POST',
+        data: findDates
+      }).then((res)=>{
+          console.log(res);
+          if(res.code==200){
+             this.setData({
+               isPopup:true
+             })
+             _this.data.interval = setInterval(function () {
+               console.log(_this.data.payNum);
+               _this.data.payNum--;
+               _this.setData({
+                 payNum: _this.data.payNum
+               })
+               if (_this.data.payNum == 0) {
+                 _this.setData({
+                   isPopup: false
+                 })
+                 _this.goPay();
+               }
+             }, 1000)
+          }
       })
-      interval = setInterval(function () {
-        console.log(_this.data.payNum);
-        _this.data.payNum--;
-        _this.setData({
-          payNum: _this.data.payNum
-        })
-        if (_this.data.payNum == 0) {
-          _this.goPay();
-          return false;
-        }
-      }, 1000)
-
     },
 
     /**
@@ -325,7 +362,7 @@ Page({
         let findNum = options.findNum == '' ? 1 : options.findNum;
         for (let i = 0; i < parseInt(findNum) ;i++){
           newAddFinds.push(
-            { index: i, checkType: '面料', selcetTabNum: options.selcetTabNum, selcetSecondTabNum: '1', isSelect: false, description: '', files: [{}, {}, {}], address: this.data.defaultAddress }
+            { index: i, cid: this.data.addFinds[0].cid, checkType: this.data.addFinds[0].checkType, find_type: options.selcetTabNum, selcetTabNum: options.selcetTabNum, get_type:'1', selcetSecondTabNum: '1', isSelect: false, desc: '', files: [{}, {}, {}], get_address: this.data.defaultAddress.id, address: this.data.defaultAddress }
           )
         }
         // 设置数据
@@ -475,9 +512,14 @@ Page({
     },
     // 去支付
     goPay () {
-      clearInterval(interval);
+      clearInterval(this.data.interval);
       wx.switchTab({
-        url:'../task/task'
+        url: '../task1/task1',
+        success: function (e) {
+          var page = getCurrentPages().pop();
+          if (page == undefined || page == null) return;
+          page.onLoad();
+        } 
       })
     }
 })

@@ -20,7 +20,7 @@
 }
 .task-find-item{
   display: inline-block;
-  width: 590rpx;
+  width: 640rpx;
   position: relative;
   padding-left: 30rpx;
 }
@@ -44,12 +44,13 @@
   position: relative;
 }
 .task-find-method-img{
-  padding-left: 80rpx;
+  padding-left: 30rpx;
 }
 .task-find-method-img image{
   width: 100rpx;
   height: 100rpx;
   margin-right: 50rpx;
+  border-radius:10rpx; 
 }
 .task-find-price{
   position: absolute;
@@ -69,6 +70,7 @@
   line-height: 120rpx;
   font-size: 30rpx;
   overflow: hidden;
+  position: relative;
 }
 .task-pay view{
   padding-left: 30rpx;
@@ -79,14 +81,17 @@
   background-color: #c81a29;
   text-align: center;
   color: #fff;
-  float: right;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+.task-pay-price{
+  
 }
 .task-find-sum{
   text-align: right;
   padding-right: 20rpx;
   border-top: 1rpx solid #f4f4f4; 
-  margin-top: 30rpx; 
-  padding-top: 30rpx;
 }
 .bottom-border{
   border-bottom: 1rpx solid #f4f4f4; 

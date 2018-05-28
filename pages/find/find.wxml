@@ -12,7 +12,7 @@
             <view class="width-200 word-spacing">
                 <text class="text-theme">*</text> 描 述 ：</view>
 
-            <textarea class="flex-1 height-200" name="field_desc" data-index='{{idx}}' bindinput='getDescription' value="{{item.description}}" placeholder='(注：请详细描述物料的名称、用途、材质、交货时间)'>
+            <textarea class="flex-1 height-200" name="field_desc" data-index='{{idx}}' bindinput='getDescription' value="{{item.desc}}" placeholder='(注：请详细描述物料的名称、用途、材质、交货时间)'>
             </textarea>
         </view>
 
@@ -84,16 +84,16 @@
 
               <view data-index='{{idx}}' bindtap='goConsigneeAddress' hidden='{{!item.address}}' class="flex-1 address-info fs30">
                   <view class="flex">
-                      <text>档口名称: {{item.address.dangkou}}</text>
+                      <text>档口名称: {{item.address.stall}}</text>
                   </view>
                   <view class="flex">
-                      <text>收货人<text class='mgl-30'>:</text> {{item.address.contacts_name}}</text>
-                      <text>{{item.address.contacts_phone}}</text>
+                      <text>收货人<text class='mgl-30'>:</text> {{item.address.consignee}}</text>
+                      <text>{{item.address.mobile}}</text>
                   </view>
 
                   <view>
                       <text>收货地址：</text>
-                      <text>{{item.address.province}} {{item.address.city}} {{item.address.district}} {{item.address.address}}</text>
+                      <text>{{item.address.city_str}} {{item.address.address}}</text>
                   </view>
 
               </view>
@@ -101,20 +101,9 @@
               <view data-index='{{idx}}' bindtap='goConsigneeAddress'  hidden='{{item.address}}' class="text-666 h100 lh100 flex-1">
                   点击添加收货地址
               </view>
-
           </view>
-
       </view>
-
-
     </view>
-
-
-
-   
-
-    
-
 
     <!--提交按钮  -->
     <view class='add-find' bindtap='addFind'>

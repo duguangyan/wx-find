@@ -37,12 +37,12 @@
 }
 
 .upload-view view:nth-of-type(2) image {
-    background: #f2f2f2 url(https://static.yidap.com/miniapp/upload/upload2.png);
+    background: #f2f2f2 url(https://static.yidap.com/miniapp/upload/upload3.png);
     background-size:  200rpx 200rpx;
 }
 
 .upload-view view:nth-of-type(3) image {
-    background: #f2f2f2 url(https://static.yidap.com/miniapp/upload/upload3.png);
+    background: #f2f2f2 url(https://static.yidap.com/miniapp/upload/upload2.png);
     background-size:  200rpx 200rpx;
 }
 
@@ -242,4 +242,7 @@
 .go-pay{
   background-color: #f23030;
   color:#fff;
+}
+.address-info{
+  padding-bottom: 30rpx; 
 }

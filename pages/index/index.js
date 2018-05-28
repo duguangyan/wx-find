@@ -20,6 +20,7 @@ Page({
     },
     // 弹窗件数input失去焦点
     findNumBlur (e) {
+      console.log(e.detail.value);
       let n = e.detail.value;
       if(n==''){
         this.setData({
@@ -31,13 +32,13 @@ Page({
     findNumChange (e) {
       let n = e.detail.value;
       if(n<=1 && n!=''){
-        this.setData({
-          findNum: 1
-        })
         wx.showToast({
           title: '最少1个找料任务',
           icon: 'none',
           duration: 2000
+        })
+        this.setData({
+          findNum: 1
         })
         return false;
       }
@@ -59,6 +60,11 @@ Page({
     // 减法
     sub () {
       if (this.data.findNum<=1){
+        wx.showToast({
+          title: '最少1个找料单',
+          icon: 'none',
+          duration: 2000
+        })
         return false;
       }
       this.data.findNum--;
@@ -103,7 +109,7 @@ Page({
     },
     // 去找料
     goFind() {
-        let token = app.globalData.token;
+        let token = app.globalData.token || true;
         //let token = wx.getStorageSync('token')
         //let token = true;
         if (token) {

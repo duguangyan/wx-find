@@ -1,5 +1,6 @@
 const api = require('../../utils/api.js');
 const util = require('../../utils/util.js');
+const bmap = require('../../libs/bmap-wx.min.js');
 Page({
 
   /**
@@ -7,14 +8,20 @@ Page({
    */
   data: {
     addressInfo: {
+      isSugShow:false,
       consignee: '',
       mobile: '',
       address: '',
+      mapInputValue:''
     },
     // 是否默认
     is_default: 0,
     multiIndex: [2, 0, 0]
 
+  },
+  editStall (e) {
+    let stall = e.detail.value;
+    this.data.addressInfo.stall = stall
   },
   // 收货人修改
   editConsignee(e) {
@@ -26,19 +33,40 @@ Page({
     let mobile = e.detail.value;
     this.data.addressInfo.mobile = mobile
   },
-  // 详细地址修改该
+  // 详细地址修改
   editDetailAddress(e) {
     let address = e.detail.value;
     this.data.addressInfo.address = address;
   },
-
-
+  // 详细地址修改该
+  editDetailRemark (e) {
+    let remark = e.detail.value;
+    this.data.addressInfo.remark = remark;
+  },
   //地区选择器
   bindMultiPickerChange: function (e) {
-    //console.log('picker发送选择改变，地区', e, e.detail.value)
+    console.log('picker发送选择改变，地区', e, e.detail.value)
+    let old_region_name = this.data.multiArray[this.data.multiIndex[0]].children[this.data.multiIndex[1]].region_name;
     this.setData({
       multiIndex: e.detail.value
     })
+    const [one, two, three] = this.data.multiIndex;
+    this.data.mapRegion = this.data.multiArray[one].children[two].region_name;
+    this.setData({
+      mapRegion: this.data.mapRegion
+    })
+    console.log(old_region_name)
+    console.log(this.data.mapRegion)
+    // 清空地图数据
+    if (old_region_name != this.data.mapRegion){
+      this.data.addressInfo.address = '';
+      this.data.addressInfo.longitude = '';
+      this.data.addressInfo.latitude = '';
+      this.setData({
+        addressInfo: this.data.addressInfo
+      })
+    }
+   
   },
   bindMultiPickerColumnChange: function (e) {
     console.log('bindMultiPickerColumnChange改变 ==', e, e.detail.value);
@@ -103,7 +131,7 @@ Page({
 
     // 判断地址
 
-    if (addressInfo.address.length === 0) {
+    if (!addressInfo.address) {
       util.errorTips('请确认详细地址');
       return false;
     }
@@ -112,8 +140,8 @@ Page({
     console.log(this, is_default)
 
     if (type === 'new') {
-
       api.addAddress({
+        method:"POST",
         data: {
           consignee: addressInfo.consignee,
           province,
@@ -121,8 +149,11 @@ Page({
           district,
           address: addressInfo.address,
           mobile: addressInfo.mobile,
-          is_default
-
+          is_default,
+          search_address: addressInfo.search_address,
+          stall: addressInfo.stall,
+          longitude: addressInfo.longitude || '',
+          latitude: addressInfo.latitude || ''
         }
       }).then((res) => {
 
@@ -138,17 +169,21 @@ Page({
 
       // 编辑提交
       api.editAddress({
+        method:'PUT',
         data: {
-          address_id: addressInfo.id,
           consignee: addressInfo.consignee,
           province,
           city,
           district,
           address: addressInfo.address,
           mobile: addressInfo.mobile,
-          is_default
+          is_default,
+          search_address: addressInfo.search_address,
+          stall: addressInfo.stall,
+          longitude: addressInfo.longitude || '',
+          latitude: addressInfo.latitude || ''
         }
-      }).then((res) => {
+      }, this.data.id).then((res) => {
 
         // 修改上一个页面栈数据
 
@@ -250,7 +285,74 @@ Page({
 
 
   },
+  // 获取地图地址数据
+  mapKeyInput: function (e) {
+    
+    this.data.isSugShow = true;
+    this.data.addressInfo.address = e.detail.value;
+    this.data.addressInfo.longitude = '';
+    this.data.addressInfo.latitude = '';
 
+    this.setData({
+      isSugShow: this.data.isSugShow,
+      addressInfo: this.data.addressInfo
+    })
+    setTimeout(() => { 
+      this.setData({
+        addressInfo: this.data.addressInfo
+      })
+    }, 500)
+
+    let that = this;
+    if (e.detail.value === '') {
+      that.setData({
+        sugData: ''
+      });
+      return;
+    }
+    let BMap = new bmap.BMapWX({
+      ak: '3jSXyNSuxGsuVGHK0zGHr4K4doVSxg9c'
+    });
+    let fail = function (data) {
+      console.log(data)
+    };
+    let success = function (data) {
+      let sugData = data.result;
+      console.log(data.result);
+      // for (var i = 0; i < data.result.length; i++) {
+      //   sugData = sugData + data.result[i].name + '\n';
+      //   console.log(data);
+      // }
+      that.setData({
+        sugData: sugData
+      });
+
+    }
+    BMap.suggestion({
+      query: e.detail.value,
+      region: this.data.mapRegion, // '深圳'
+      city_limit: true,
+      fail: fail,
+      success: success
+    });
+  },
+  // 地图选中
+  mapCheck(e) {
+    let index = e.target.dataset.index;
+    this.data.addressInfo.address = this.data.sugData[index].name;
+    this.data.addressInfo.search_address = this.data.sugData[index].name;
+    this.data.addressInfo.longitude = this.data.sugData[index].location.lat;
+    this.data.addressInfo.latitude = this.data.sugData[index].location.lng;
+    this.data.mapInputValue = this.data.sugData[index].name;
+    this.data.isSugShow = false;
+    this.setData({
+      addressInfo: this.data.addressInfo,
+      mapInputValue: this.data.mapInputValue,
+      isSugShow: this.data.isSugShow
+    })
+    
+    console.log(index);
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
@@ -295,11 +397,7 @@ Page({
 
   // 请求输出编辑信息
   getInfo(id) {
-    api.infoAddress({
-      data: {
-        address_id: id
-      }
-    }).then((res) => {
+    api.infoAddress({},id).then((res) => {
 
       let addressInfo = res.data,
         { province, city, district, is_default } = addressInfo,

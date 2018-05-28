@@ -18,22 +18,23 @@ Page({
         let id = e.currentTarget.dataset.id,
             index = e.currentTarget.dataset.index;
         api.setDefaultAddress({
+            method:'POST',
             data: {
                 address_id: id
             }
-        }).then((res) => {
+        }).then((res) => { 
             console.log(res.data);
-            app.globalData.addressChecked = res.data;
-            // 默认地址
-            var pages = getCurrentPages();
-            var currPage = pages[pages.length - 1];   //当前页面
-            var prevPage = pages[pages.length - 2];  //上一个页面
-            this.data.addFinds[app.globalData.addressIndex].address = res.data;
+            // app.globalData.addressChecked = res.data;
+            // // 默认地址
+            // var pages = getCurrentPages();
+            // var currPage = pages[pages.length - 1];   //当前页面
+            // var prevPage = pages[pages.length - 2];  //上一个页面
+            // this.data.addFinds[app.globalData.addressIndex].address = res.data;
 
-            prevPage.setData({
-              defaultAddress: res.data,
-              addFinds: this.data.addFinds
-            })
+            // prevPage.setData({
+            //   defaultAddress: res.data,
+            //   addFinds: this.data.addFinds
+            // })
           
             let addressList = this.data.addressList;
             addressList.forEach((ele) => {
@@ -54,23 +55,37 @@ Page({
         })
     },
     // 点击选中地址返回
-    // goBlack (e) {
-    //   // 获取当前点击地址数据
-    //   let item = e.currentTarget.dataset.item;
-    //   console.log(item);
-    //   // 更新上一页的地址数据
-    //   var pages = getCurrentPages();
-    //   var currPage = pages[pages.length - 1];   //当前页面
-    //   var prevPage = pages[pages.length - 2];  //上一个页面
-    //   this.data.addFinds[app.globalData.addressIndex].address = item;
-    //   prevPage.setData({
-    //     addFinds: this.data.addFinds
-    //   })
-    //   // 返回上一页
-    //   wx.navigateBack({
-    //     delta: 1
-    //   })
-    // },
+     goBlack (e) {
+       // 获取当前点击地址数据
+       let item = e.currentTarget.dataset.item;
+       console.log(item);
+       var pages = getCurrentPages();
+       var currPage = pages[pages.length - 1];   //当前页面
+       var prevPage = pages[pages.length - 2];  //上一个页面
+       if (this.data.hasFormFind){
+         // 更新上一页的地址数据  来自找料任务页面
+         this.data.addFinds[app.globalData.addressIndex].address = item;
+         this.data.addFinds[app.globalData.addressIndex].get_address = item.id;
+         prevPage.setData({
+           addFinds: this.data.addFinds
+         })
+       } else if (this.data.taskPayIndex){
+         // 更新上一页的地址数据  来自订单支付页面
+         if (this.data.taskPayIndex == 1){
+           prevPage.setData({
+             findsAddress: item
+           })
+         } else if (this.data.taskPayIndex == 2){
+           prevPage.setData({
+             fetchsAddress: item
+           })
+         }
+       }
+       // 返回上一页
+        wx.navigateBack({
+          delta: 1
+        })
+     },
     // 编辑
     edit(e) {
         let id = e.currentTarget.dataset.id;
@@ -94,10 +109,8 @@ Page({
                     console.log('用户点击确定');
                     // 确定删除
                     api.deleteAddress({
-                        data: {
-                            address_id: id
-                        }
-                    }).then((res) => {
+                      method: 'DELETE'
+                    },id).then((res) => {
 
                         wx.showToast({
                             title: '删除成功',
@@ -127,11 +140,18 @@ Page({
       if (options.addFinds){
         var addFinds = JSON.parse(options.addFinds);
         this.setData({
-          addFinds
+          addFinds,
+          hasFormFind:true
+        })
+        console.log('获取上一级addFinds数据');
+        console.log(this.data.addFinds);
+      }
+      if (options.taskPayIndex){
+        this.setData({
+          taskPayIndex: options.taskPayIndex
         })
       }
-      console.log('获取上一级addFinds数据');
-      console.log(this.data.addFinds);
+      
         // 获取列表数据
         if (firstIn) {
             this.getAddressListData();

@@ -2,7 +2,7 @@
 <wxs src="../../utils/filter.wxs" module="filter" />
 <view class="item-box">
 
-  <view class='box-shadow lh90'>
+  <view class='box-shadow lh90' wx:if='{{finds.length>0}}'>
       <view class='fs30 bb-1'>
           <text bindtap='findCheckAll' data-check='true' wx:if='{{finds[0].checkAll}}' class="iconfont icon-dui fs40 text-theme mgl-20"></text>
           <text bindtap='findCheckAll' data-check='false' wx:if='{{!finds[0].checkAll}}' class="iconfont icon-yuan fs40 mgl-20 text-eb"></text>
@@ -29,7 +29,7 @@
                             <image data-index="{{index}}" class='task-find-img' src='{{item.form_data.back_img}}'></image>    
                         </view>
                         <view data-index="{{index}}" class='task-find-method-2' wx:if="{{ item.form_data.find_type == '2'}}">
-                            <text data-index="{{index}}">取料地址: {{item.form_data.get_address}}</text>
+                            <text data-index="{{index}}">取料地址: {{item.address.city_str}} {{item.address.address}}</text>
                         </view> 
                         <text data-index="{{index}}" class='task-find-price' style="top:{{item.form_data.find_type == '3'?'110rpx':''}}">金额: <text data-index="{{index}}" class='text-red fs30'>￥{{filter.formatMoney(item.form_data.fee)}}</text></text>
                     </view>
@@ -45,7 +45,7 @@
 
 
 <!-- 取料任务 -->
-<view class="item-box task-fetch">
+<view class="item-box task-fetch" wx:if='{{fetchs.length>0}}'>
   <view class='box-shadow lh90'>
       <view class='fs30 bb-1'>
           <text  bindtap='fetchCheckAll' data-check='true' wx:if='{{fetchs[0].checkAll}}' class="iconfont icon-dui fs40 text-theme mgl-20"></text>
@@ -67,7 +67,7 @@
                     <view data-index="{{index}}" class='task-find-text task-find-describe'>物料描述: {{item.form_data.desc}}</view>
                     <view data-index="{{index}}" class='task-find-method'>
                         <view data-index="{{index}}" class='task-find-method-2'>
-                            <text data-index="{{index}}">取料地址: {{item.form_data.get_address}}</text>
+                            <text data-index="{{index}}">取料地址: {{item.address.city_str}} {{item.address.address}}</text>
                         </view> 
 
                         <text data-index="{{index}}" class='task-fetch-price'>金额: <text data-index="{{index}}" class='text-red fs30'>￥{{filter.formatMoney(item.form_data.fee)}}</text></text>
@@ -82,7 +82,12 @@
   
 </view>  
 
-<view class='task-pay box-shadow lh90 fs30 mgb-30' hidden="{{taskDates=='' ? true : false}}">
+<view class='no-data' wx:if='{{finds.length<=0 && fetchs.length<=0}}'>
+    <image src='../../public/images/icon/no_order.png'></image>
+    <view>暂无任务</view>
+</view> 
+
+<view class='task-pay box-shadow lh90 fs30 mgb-30' wx:if='{{finds.length>0 || fetchs.length>0}}'>
       <view class='mgl-30'>
         <text bindtap='checkAll' data-check='true' wx:if='{{isCheckAll}}' class="iconfont icon-dui fs40 pdr-20 text-theme"></text>
         <text bindtap='checkAll' data-check='false' wx:if='{{!isCheckAll}}' class="iconfont icon-yuan fs40 pdr-20 text-eb"></text>

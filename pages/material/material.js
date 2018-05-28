@@ -1,4 +1,6 @@
 // pages/material/material.js
+const api = require('../../utils/api.js');
+let app = getApp();
 Page({
 
   /**
@@ -6,33 +8,50 @@ Page({
    */
   data: {
     isSelect:false,
-    checkTypes: ['面料', '五金', '辅料', '其他'],
-    checkType: '面料', // 物料品类
+    checkTypes: '',
+    checkType:'',
+    checkTypes_cid:'',
     findNum:1  , // 物料数量
     describeValue:''                  
   },
   // 切换类型
   checkType(e) {
+    this.data.isSelect = true;
+    this.setData({
+      isSelect: this.data.isSelect
+    })
     let index = e.currentTarget.dataset.index;
     console.log(index);
     let _this = this;
+    let itemList = [];
+    for (let i = 0; i < this.data.checkTypes.length;i++){
+      itemList.push(this.data.checkTypes[i].name);
+    }
+    
     wx.showActionSheet({
-      itemList: this.data.checkTypes,
+      itemList: itemList,
       success: function (res) {
         console.log(res);
+        _this.data.isSelect = false;
         _this.setData({
-          checkType: _this.data.checkTypes[res.tapIndex]
+          checkType: _this.data.checkTypes[res.tapIndex].name,
+          checkTypes_cid: _this.data.checkTypes[res.tapIndex].id,
+          isSelect: _this.data.isSelect
         })
       },
       fail: function (res) {
         console.log(res.errMsg)
+        _this.data.isSelect = false;
+        _this.setData({
+          isSelect: _this.data.isSelect
+        })
       }
     })
   },
   // 弹窗件数input失去焦点
   findNumBlur(e) {
-    let n = e.detail.value;
-    if (n == '') {
+    let v = e.detail.value;
+    if (v) {
       this.setData({
         findNum: 1
       })
@@ -70,6 +89,11 @@ Page({
   // 减法
   sub() {
     if (this.data.findNum <= 1) {
+      wx.showToast({
+        title: '最少1个取料单',
+        icon: 'none',
+        duration: 2000
+      })
       return false;
     }
     this.data.findNum--;
@@ -81,7 +105,7 @@ Page({
   plu() {
     if (this.data.findNum >= 10) {
       wx.showToast({
-        title: '最多10个找料单',
+        title: '最多10个取料单',
         icon: 'none',
         duration: 2000
       })
@@ -92,11 +116,25 @@ Page({
       findNum: this.data.findNum
     })
   },
+  // 获取物料类型数据
+  getCheckTypes() {
+    api.getCheckTypes({}).then((res) => { 
+      console.log(res);
+      if (res.code == 200) {
+        this.setData({
+          checkTypes: res.data,
+          checkTypes_cid:res.data[0].id,
+          checkType: res.data[0].name
+        })
+      }
+    })
+  },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-  
+      // 获取物料类型
+    this.getCheckTypes();
   },
 
   /**

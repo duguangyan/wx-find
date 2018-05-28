@@ -41,32 +41,42 @@ Page({
   init() {
     api.getTaskInit({}, '0').then((res) => {
       if (res.code == 200) {
-        let finds = res.data.find;
-        finds[0].checkAll = true;
-        let fetchs = res.data.fetch;
-        fetchs[0].checkAll = true;
-        for(let i=0;i<finds.length;i++){
-          finds[i].txtStyle = '';
-          finds[i].check = true;
-          if (finds[i].form_data.find_type=='1'){
-            finds[i].form_data.find_type_name = '按图找料'
-          } else if (finds[i].form_data.find_type == '2'){
-            finds[i].form_data.find_type_name = '按样找料'
-          } else if (finds[i].form_data.find_type == '3'){
-            finds[i].form_data.find_type_name = '按描述找料'
-          }else{
-            finds[i].form_data.find_type_name = '暂无数据'
-          }
-        }
-        for (let i = 0; i < fetchs.length; i++) {
-          fetchs[i].txtStyle = '';
-          fetchs[i].check = true;
-        }
         this.setData({
           taskDates: res.data,
-          fetchs: fetchs,
-          finds: finds
         })
+        if (res.data.find.length>0){
+          let finds = res.data.find;
+          finds[0].checkAll = true;
+          for (let i = 0; i < finds.length; i++) {
+            finds[i].txtStyle = '';
+            finds[i].check = true;
+            finds[i].address = JSON.parse(finds[i].address);
+            if (finds[i].form_data.find_type == '1') {
+              finds[i].form_data.find_type_name = '按图找料'
+            } else if (finds[i].form_data.find_type == '2') {
+              finds[i].form_data.find_type_name = '按样找料'
+            } else if (finds[i].form_data.find_type == '3') {
+              finds[i].form_data.find_type_name = '按描述找料'
+            } else {
+              finds[i].form_data.find_type_name = '暂无数据'
+            }
+          }
+          this.setData({
+            finds: finds
+          })
+        }
+        if (res.data.fetch.length > 0){
+          let fetchs = res.data.fetch;
+          fetchs[0].checkAll = true;
+          for (let i = 0; i < fetchs.length; i++) {
+            fetchs[i].txtStyle = '';
+            fetchs[i].check = true;
+            fetchs[i].address = JSON.parse(fetchs[i].address);
+          }
+          this.setData({
+            fetchs: fetchs,
+          })
+        }
         // 统计合计金额
         this.doSumPrice();
       }
@@ -254,7 +264,7 @@ Page({
             finds: _this.data.finds
           });
           // 统计合计金额
-          this.doSumPrice();
+          _this.doSumPrice();
         } else {
           initdata(_this)
         }
@@ -288,7 +298,7 @@ Page({
             fetchs: _this.data.fetchs
           });
           // 统计合计金额
-          this.doSumPrice();
+          _this.doSumPrice();
         } else {
           initdataFetch(_this)
         }
@@ -452,10 +462,37 @@ Page({
     console.log(this.data.sumPrice);
   },
   // 点击结算
-  saveTask () {
-    let data = {};
+  saveTask () { 
     console.log(this.data.finds);
     console.log(this.data.fetchs);
+    let newFinds = [];
+    let newFetchs = [];
+    let task_ids =[];
+    // 刷选选中的找料任务
+    for (let i = 0; i < this.data.finds.length;i++){
+      if (this.data.finds[i].check){
+        newFinds.push(this.data.finds[i]);
+        task_ids.push(this.data.finds[i].id);
+      }
+    }
+    // 刷选选中的取料任务
+    for (let j = 0; j < this.data.fetchs.length; j++) {
+      if (this.data.fetchs[j].check) {
+        newFetchs.push(this.data.fetchs[j]);
+        task_ids.push(this.data.fetchs[j].id);
+      }
+    }
+    let taskPayList = { 
+      task_ids: task_ids,
+      finds: newFinds,
+      fetchs: newFetchs
+    }
+    wx.setStorageSync('taskPayList', taskPayList);
+
+    wx.navigateTo({
+      url: '../taskPay/taskPay'
+    })
+
     // api.saveTask({ method: 'POST',data }, id).then((res) => {
     //   console.log(res);
     //   if (res.code == 200) {

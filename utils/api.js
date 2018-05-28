@@ -170,36 +170,36 @@ const cartNumber = (params) => {
 
 // 订单收货地址列表
 const listAddress = (params) => {
-  return myRequest(params, `${apiUrl}/api/member/address/list`)
+  return myRequest(params, `${apiUrl}/api/member/address`)
 }
 // 订单收货地址详情
-const infoAddress = (params) => {
-  return myRequest(params, `${apiUrl}/find/api/address`)
+const infoAddress = (params,id) => {
+  return myRequest(params, `${apiUrl}/api/member/address`,id)
 }
 
 // 订单新增收货地址
 const addAddress = (params) => {
-  return myRequest(params, `${apiUrl}/find/api/address`)
+  return myRequest(params, `${apiUrl}/api/member/address`)
 }
 
 // 订单编辑收货地址
-const editAddress = (params) => {
-    return myRequest(params, `${apiUrl}/auth/member/address/edit`)
+const editAddress = (params,id) => {
+    return myRequest(params, `${apiUrl}/api/member/address`,id)
 }
 
 // 获取订单默认收货地址资料
-const defaultAddress = (params,id) => {
-  return myRequest(params, `${apiUrl}/find/api/address/getdefault`,id)
+const defaultAddress = (params) => {
+  return myRequest(params, `${apiUrl}/api/member/address_default`)
 }
 
 // 设置默认收货地址
-const setDefaultAddress = (params) => {
-    return myRequest(params, `${apiUrl}/auth/member/address/edit-default`)
+const setDefaultAddress = (params,id) => {
+  return myRequest(params, `${apiUrl}/api/member/address/edit-default`,id)
 }
 
 // 删除收货地址
-const deleteAddress = (params) => {
-    return myRequest(params, `${apiUrl}/auth/member/address/delete`)
+const deleteAddress = (params,id) => {
+  return myRequest(params, `${apiUrl}/api/member/address`,id)
 }
 
 // 结算 添加订单
@@ -222,9 +222,14 @@ const cancelOrder = (params) => {
     return myRequest(params, `${apiUrl}/ec/order/delete`)
 }
 
-// 支付接口
+// 任务中心去支付支付
 const payment = (params) => {
-    return myRequest(params, `${apiUrl}/ec/order/pay`)
+  return myRequest(params, `${apiUrl}/find/api/order`)
+}
+
+// 微信支付
+const wxPay = (params) => {
+  return myRequest(params, `${apiUrl}/api/wechat/unify`)
 }
 
 // 确认收货
@@ -330,8 +335,12 @@ const delTask = (params,id) => myRequest(params, `${apiUrl}/find/api/task`,id);
 // 任务中心结算
 const saveTask = (params) => myRequest(params, `${apiUrl}/find/api/task`);
 
+// 加入小鹿任务
+const joinTask = (params) => myRequest(params, `${apiUrl}/find/api/task`);
 
 module.exports = {
+    wxPay,
+    joinTask,
     saveTask,
     delTask,
     getTaskInit,

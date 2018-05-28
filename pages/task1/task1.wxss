@@ -127,3 +127,16 @@ view{
   height: 200rpx;
   line-height: 200rpx;
 }
+.no-data{
+  width: 100rpx;
+  margin: 0 auto;
+}
+.no-data image{
+  width: 100rpx;
+  height: 120rpx;
+  margin-top: 200rpx;
+}
+.no-data text{
+  text-align: center;
+  margin-top: 20rpx;
+}

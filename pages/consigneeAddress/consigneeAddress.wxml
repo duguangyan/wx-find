@@ -22,19 +22,19 @@
             </view> -->
             <image hidden='{{!item.is_default}}' src="https://m.yidap.com/assets/imgs/order_address_icon_1.png" style="position:absolute;left:0;width:40rpx;height:40rpx;"></image>
 
-            <view class="address-item-center border-bottom">
+            <view class="address-item-center border-bottom"  data-item='{{item}}' bindtap='goBlack'>
                 <view class="bold " style="line-height:78rpx;">
-                    <text class="mgr-14 fs36">档口名称：{{item.dangkou}}</text>
+                    <text class="mgr-14 fs36">档口名称：{{item.stall}}</text>
                 </view>
 
                 <view class="bold " style="line-height:78rpx;">
-                    <text class="mgr-14 fs36">{{item.contacts_name}}</text>
-                    <text>{{item.contacts_phone}}</text>
+                    <text class="mgr-14 fs36">{{item.consignee}}</text>
+                    <text>{{item.mobile}}</text>
                 </view>
 
                 <view class="ellipsis-line3 text-666">
                     <text hidden='{{!item.is_default}}' class="text-theme">[选中地址]</text>
-                    <text> {{item.country}} {{item.city}} {{item.district}} </text>
+                    <text> {{item.city_str}} </text>
                     <text class='flr'> {{item.address}}</text>
                 </view>
 

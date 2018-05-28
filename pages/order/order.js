@@ -8,7 +8,7 @@ Page({
    */
   data: {
     shopLoading:true,
-    modalShow:false,
+    modalShow:true,
     orderNavNum:1, // nav一级切换
     orderChildNavFindNum: 1,  //  nav二级切换
     orderChildNavGetNum: 1, //  nav二级切换

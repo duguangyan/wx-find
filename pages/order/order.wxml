@@ -65,108 +65,11 @@
               </view>
             </view>
       </view>
-      <view class='loding'>
+      <view wx:if="{{!shopLoading}}" class='loding'>
         已经全部加载完毕
       </view>
-      <view class='loding'>
-        已经全部加载完毕
-      </view>
-      <view class='loding'>
-        已经全部加载完毕
-      </view>
-      <view class='loding'>
-        已经全部加载完毕
-      </view>
-      <view class='loding'>
-        已经全部加载完毕
-      </view>
-      <view class='loding'>
-        已经全部加载完毕
-      </view>
-      <view class='loding'>
-        已经全部加载完毕
-      </view><view class='loding'>
-        已经全部加载完毕
-      </view><view class='loding'>
-        已经全部加载完毕
-      </view><view class='loding'>
-        已经全部加载完毕
-      </view><view class='loding'>
-        已经全部加载完毕
-      </view><view class='loding'>
-        已经全部加载完毕
-      </view><view class='loding'>
-        已经全部加载完毕
-      </view><view class='loding'>
-        已经全部加载完毕
-      </view><view class='loding'>
-        已经全部加载完毕
-      </view><view class='loding'>
-        已经全部加载完毕
-      </view><view class='loding'>
-        已经全部加载完毕
-      </view><view class='loding'>
-        已经全部加载完毕
-      </view><view class='loding'>
-        已经全部加载完毕
-      </view><view class='loding'>
-        已经全部加载完毕
-      </view><view class='loding'>
-        已经全部加载完毕
-      </view><view class='loding'>
-        已经全部加载完毕
-      </view><view class='loding'>
-        已经全部加载完毕
-      </view><view class='loding'>
-        已经全部加载完毕
-      </view><view class='loding'>
-        已经全部加载完毕
-      </view><view class='loding'>
-        已经全部加载完毕
-      </view><view class='loding'>
-        已经全部加载完毕
-      </view><view class='loding'>
-        已经全部加载完毕
-      </view><view class='loding'>
-        已经全部加载完毕
-      </view><view class='loding'>
-        已经全部加载完毕
-      </view><view class='loding'>
-        已经全部加载完毕
-      </view><view class='loding'>
-        已经全部加载完毕
-      </view><view class='loding'>
-        已经全部加载完毕
-      </view><view class='loding'>
-        已经全部加载完毕
-      </view><view class='loding'>
-        已经全部加载完毕
-      </view><view class='loding'>
-        已经全部加载完毕
-      </view><view class='loding'>
-        已经全部加载完毕
-      </view><view class='loding'>
-        已经全部加载完毕
-      </view><view class='loding'>
-        已经全部加载完毕
-      </view><view class='loding'>
-        已经全部加载完毕
-      </view><view class='loding'>
-        已经全部加载完毕
-      </view><view class='loding'>
-        已经全部加载完毕
-      </view><view class='loding'>
-        已经全部加载完毕
-      </view><view class='loding'>
-        已经全部加载完毕
-      </view><view class='loding'>
-        已经全部加载完毕
-      </view><view class='loding'>
-        已经全部加载完毕
-      </view>
-
       <!--加载组件  -->
-        <mainloading modal-show="{{modalShow}}" />
+      <mainloading modal-show="{{modalShow}}" />
       <loading modal-text="加载更多" modal-show="{{shopLoading}}" />
     </scroll-view>
 </view>

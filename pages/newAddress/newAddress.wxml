@@ -1,7 +1,7 @@
 <view class="fs30 address-form">
     <view class="flex cell-padding border-bottom lh100">
         <view>档口名称</view>
-        <input bindinput='editConsignee' style="text-align:right" placeholder='请填写' placeholder-class="text-right" value='{{addressInfo.dangkou}}'></input>
+        <input bindinput='editStall' style="text-align:right" placeholder='请填写' placeholder-class="text-right" value='{{addressInfo.stall}}'></input>
     </view>
     <view class="flex cell-padding border-bottom lh100">
         <view>收货人</view>
@@ -28,14 +28,24 @@
 
     </view>
 
+    <!-- 地图筛选地址 -->
+    <view class="section bb-1">
+      <input class='map-input lh90 pdl-30' style='height:90rpx;' value='{{addressInfo.address}}' placeholder="请填写详细地址"  type="text" bindinput="mapKeyInput"/>
+    </view>
+    <view class="sug_info" wx:if='{{isSugShow}}'>
+      <view class='sug_info_text' wx:for="{{sugData}}" wx:key='this' wx:for-index="index">
+            <text data-index='{{index}}' bindtap='mapCheck'>{{item.name}}</text> 
+      </view>
+    </view>
+<!-- 
     <view class="address-area">
         <textarea bindinput='editDetailAddress' placeholder='请填写详细地址' value='{{addressInfo.address}}'>
 
         </textarea>
 
-    </view>
-    <view class="address-area border-top">
-        <textarea bindinput='editDetailAddress' placeholder='备注' value='{{addressInfo.address}}'>
+    </view> -->
+    <view class="address-area">
+        <textarea bindinput='editDetailRemark' placeholder='备注' value='{{addressInfo.remark}}'>
 
         </textarea>
 

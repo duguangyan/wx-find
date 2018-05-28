@@ -28,3 +28,22 @@ page {
 .border-top{
   border-top:1rpx solid #f4f4f4; 
 }
+map-input {
+    display: block;
+    margin: 10px 10px;
+    background-color: #fff;
+    height: 90rpx;
+    line-height: 90rpx;
+}
+
+.sug_info {
+    margin: 15px 10px;
+}
+.section{
+  height: 90rpx;
+  line-height: 90rpx;
+}
+.sug_info_text{
+  display: block;
+  height: 50rpx;line-height: 50rpx;
+}

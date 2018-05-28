@@ -4,10 +4,10 @@
         <view class='lh90 fs30 pdl-30 border-bottom'>
           物料信息
         </view>
-        <view class='lh90 fs30 pdl-30 bb-1'>
+        <view class='lh90 fs30 pdl-30 bb-1'  bindtap='checkType'>
             <text class="text-theme">*</text> <text>物料品类:</text> <text class='pdl-10'> {{checkType}}</text> 
-            <view wx:if='{{!isSelect}}'  bindtap='checkType' class='iconfont icon-jiantou material-icon flr pdr-30'></view>
-            <view wx:if='{{isSelect}}'  bindtap='checkType' class='iconfont icon-xiangxia material-icon flr pdr-30'></view>
+            <view wx:if='{{!isSelect}}'  class='iconfont icon-jiantou material-icon flr pdr-30'></view>
+            <view wx:if='{{isSelect}}'  class='iconfont icon-xiangxia material-icon flr pdr-30'></view>
         </view>
         <view class='material-number lh90 fs30 pdl-30 cf border-bottom'>
             <text class="text-theme">*</text> <text>物料数量:</text>
