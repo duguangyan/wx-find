@@ -43,7 +43,7 @@
           <view class="cell-padding address flex flex-start">
               <text class="iconfont icon-dizhi fs40 text-gray mgr-20"></text>
 
-              <view data-index='1' bindtap='goConsigneeAddress'  class="flex-1 address-info fs30 pdt-30">
+              <view data-index='1' bindtap='goConsigneeAddress' hidden='{{!findsAddress}}'  class="flex-1 address-info fs30 pdt-30">
                   <view class="flex">
                       <text>档口名称: {{findsAddress.stall}}</text>
                   </view>
@@ -56,7 +56,7 @@
                       <text>{{findsAddress.city_str}} {{findsAddress.address}}</text>
                   </view>
               </view>
-              <view data-index='1' bindtap='goConsigneeAddress'  hidden='{{findsAddress.id}}' class="text-666 h100 lh100 flex-1">
+              <view data-index='1' bindtap='goConsigneeAddress'  hidden='{{findsAddress}}' class="text-666 h100 lh100 flex-1">
                   点击添加收货地址
               </view>
           </view>
@@ -98,7 +98,7 @@
           <view class="cell-padding address flex flex-start">
               <text class="iconfont icon-dizhi fs40 text-gray mgr-20"></text>
 
-              <view data-index='2' bindtap='goConsigneeAddress'  class="flex-1 address-info fs30 pdt-30">
+              <view data-index='2' bindtap='goConsigneeAddress' hidden='{{!fetchsAddress}}'  class="flex-1 address-info fs30 pdt-30">
                   <view class="flex">
                       <text>档口名称: {{fetchsAddress.stall}}</text>
                   </view>
@@ -111,7 +111,7 @@
                       <text>{{fetchsAddress.city_str}} {{fetchsAddress.address}}</text>
                   </view>
               </view>
-              <view data-index='2' bindtap='goConsigneeAddress'  hidden='{{fetchsAddress.id}}' class="text-666 h100 lh100 flex-1">
+              <view data-index='2' bindtap='goConsigneeAddress'  hidden='{{fetchsAddress}}' class="text-666 h100 lh100 flex-1">
                   点击添加收货地址
               </view>
           </view>

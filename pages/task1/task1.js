@@ -82,9 +82,26 @@ Page({
       }
     })
   },
+  // 点击找料修改
+  findEdit (e) {
+    let item = JSON.stringify(e.currentTarget.dataset.item);
+    let index = e.currentTarget.dataset.index;
+    wx.navigateTo({
+      url: '../findEdit/findEdit?item=' + item + "&index=" + index,
+    })
+    console.log(item);
+  },
+  // 点击取料修改
+  fetchEdit(e){
+    let item = JSON.stringify(e.currentTarget.dataset.item);
+    wx.navigateTo({
+      url: '../fecthEdit/fecthEdit?item=' + item,
+    })
+    console.log(item);
+  },
   onLoad: function (options) {
     // 初始化数据
-    this.init();
+    // this.init();
     // 页面初始化 options为页面跳转所带来的参数  
     this.initEleWidth();
   },
@@ -93,6 +110,7 @@ Page({
   },
   onShow: function () {
     // 页面显示  
+    this.init();
   },
   onHide: function () {
     // 页面隐藏  

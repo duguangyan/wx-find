@@ -12,7 +12,7 @@
 }
 .task-success-top{
   margin: 80rpx auto;
-  width: 350rpx;
+  width: 340rpx;
 }
 .border-b20{
   height: 20rpx;
@@ -27,6 +27,13 @@
   text-align: center;
   border:1rpx solid #666;
   border-radius:10rpx;  
-  margin-left :35rpx;
+  margin-left :240rpx;
   margin-top: 60rpx;
+}
+.icon-tijiaochenggong{
+  font-size: 100rpx;
+  color: greenyellow;
+  position: relative;
+  top: -5rpx;
+  left: -5rpx;
 }

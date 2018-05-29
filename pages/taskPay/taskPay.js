@@ -12,6 +12,7 @@ Page({
 
   // 去地址选择页面
   goConsigneeAddress(e) {
+    app.globalData.isFromScope = true;
     let index = e.currentTarget.dataset.index;
     wx.navigateTo({
       url: '../consigneeAddress/consigneeAddress?taskPayIndex=' +index,
@@ -46,7 +47,7 @@ Page({
     console.log(this.data.finds);
     console.log(this.data.fetchs);
     // 获取默认地址
-    this.getSelectedAddress();
+    // this.getSelectedAddress();
   },
   // 收货地址
   getSelectedAddress() {
@@ -98,29 +99,25 @@ Page({
         }).then((res) => {
             console.log(res); 
             if(res.code==200){  
-              wx.requestPayment({  
-                'timeStamp': JSON.stringify(Date.parse(new Date())),
-                'nonceStr': res.data.nonce_str,
-                'package': res.data.prepay_id,
-                'signType': res.data.sign,
-                'paySign': res.data.trade_type,
-                'success': function (res) {
-                  console.log('支付成功');
-                  console.log(res);
-                  wx.navigateTo({
-                    url: '../taskPaySuccess/taskPaySuccess'
-                  })
-                },
-                'fail': function (res) {
-                  console.log('支付失败');
-                  console.log(res);
-                  wx.showToast({
-                    title: '支付失败',
-                    icon: 'none',
-                    duration: 2000
-                  })
-                }
-              })
+              let data = res.data.sdk;
+              let pay_log = JSON.stringify(res.data.pay_log);
+              data.success = function (res){
+                console.log('支付成功');
+                console.log(res);
+                wx.navigateTo({
+                  url: '../taskPaySuccess/taskPaySuccess?pay_log=' + pay_log
+                })
+              }
+              data.fail = function(res){
+                console.log('支付失败');
+                console.log(res);
+                wx.showToast({
+                  title: '支付失败',
+                  icon: 'none',
+                  duration: 2000
+                })
+              }
+              wx.requestPayment(data);
             }
         })
       }

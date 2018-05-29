@@ -10,8 +10,7 @@ Page({
     shopLoading:true,
     modalShow:true,
     orderNavNum:1, // nav一级切换
-    orderChildNavFindNum: 1,  //  nav二级切换
-    orderChildNavGetNum: 1, //  nav二级切换
+    orderChildNavNum: 0, //  nav二级切换
     isDelModel:true, // 取消订单模态框
     delMsg:'', // 取消订单原因数据
     isCommentModel:true, // 评价模态框 
@@ -21,41 +20,59 @@ Page({
     starIndex_2:0, // 星星评价选中
     findList:'', // 找料列表数据
     fecthList:'', // 取料列表数据
+    totalPages:0, // 总页数
+    current_page:1 // 当前页 
   },
   upper: function (e) {
     console.log('上拉')
+    console.log(typeof this.data.current_page);
+    this.data.current_page = this.data.current_page+1;
+    if (this.data.findList.length < this.data.totalPages) {
+      setTimeout(()=>{
+        this.getList(this.data.orderNavNum, this.data.orderChildNavNum, this.data.current_page);
+      },500)
+      
+    }
   },
   lower: function (e) {
     console.log('下拉')
+    
+
   },
   scroll: function (e) {
     console.log(e)
   },
   // nav 一级切换
   checkNav (e) {
+    this.setData({
+      scrollTop: 0
+    })
     let index = e.currentTarget.dataset.index;
     this.setData({
-      orderNavNum: index
+      orderNavNum: index,
+      orderChildNavNum:0,
+      current_page: 1
     })
-    this.getList(index);
+    this.getList(this.data.orderNavNum, this.data.orderChildNavNum);
   },
   // nav 二级切换
-  checkChildFindNav (e) {
+  checkChildNav(e) {
+    this.setData({
+      scrollTop: 0
+    })
     let index = e.currentTarget.dataset.index;
     this.setData({
-      orderChildNavFindNum: index
+      orderChildNavNum: index,
+      current_page: 1
     })
-   
-  },
-  // nav 二级切换
-  checkChildGetNav(e) {
-    let index = e.currentTarget.dataset.index;
-    this.setData({
-      orderChildNavGetNum: index
-    })
+    this.getList(this.data.orderNavNum, this.data.orderChildNavNum);
   },
   // 取消订单
-  delOrder () {
+  delOrder (e) {
+    let id = e.target.dataset.id; 
+    this.setData({
+      delId:id
+    })
     wx.showModal({
       title:'确认取消此订单？',
       confirmText: '确定',
@@ -80,9 +97,28 @@ Page({
   // 隐藏取消订单模态框
   delConfirm () {
     console.log(this.data.delMsg)
-    this.setData({
-      isDelModel: true
+    let data = {
+      remark: this.data.delMsg
+    }
+    api.delOrder({
+      method:'POST',
+      data
+    }, this.data.delId).then((res) => {
+      console.log(res);
+      if(res.code==200){
+        for(let i=0;i<this.data.findList.length;i++){
+          if (this.data.findList[i].id == this.data.delId){
+            this.data.findList[i].button_status.on_cancel = 0;
+            this.data.findList[i].button_status.on_pay = 0;
+          }
+        }
+        this.setData({
+          isDelModel: true,
+          findList: this.data.findList
+        })
+      }
     })
+    
   },
   // 获取取消订单原因数据
   delModelInput (e) {
@@ -91,22 +127,101 @@ Page({
     })
   },
   // 去支付
-  toPay () {
+  toPay (e) {
     console.log('去支付');
+    
+    let id = e.target.dataset.id;
+    api.orderListToPay({
+      method:'POST'
+    },id).then((res)=>{
+      console.log(res);
+      let id = e.target.dataset.id;
+      let order_id = res.data.order_id;
+      let order_type = res.data.order_type;
+      let payInfo = {
+        order_id,
+        order_type,
+        open_id: wx.getStorageSync('open_id')
+      };
+      if(res.code == 200){
+        api.wxPay({
+          method: 'POST',
+          data: payInfo
+        }).then((res) => {
+          console.log(res);
+          if (res.code == 200) {
+            let data = res.data;
+            let pay_log = JSON.stringify(res.data.pay_log);
+            data.success = function (res) {
+              console.log('支付成功');
+              console.log(res);
+              wx.navigateTo({
+                url: '../taskPaySuccess/taskPaySuccess?pay_log=' + pay_log
+              })
+            }
+            data.fail = function (res) {
+              console.log('支付失败');
+              console.log(res);
+              wx.showToast({
+                title: '支付失败',
+                icon: 'none',
+                duration: 2000
+              })
+            }
+            wx.requestPayment(data);
+          }
+        })
+      }
+    })
   },
   // 催单
-  urgeOrder () {
+  urgeOrder (e) {
+    let id = e.target.dataset.id;
+    let mobile = e.target.dataset.mobile
     console.log('催单');
-    wx.showModal({
-      title: "催单成功！",
-      content: "你页可以直接联系找料员、在线客服或致电（400-8088-156），咨询进度",
-      showCancel: false,
-      confirmText: "确定"
+    api.urgeOrder({
+      method:'Post'
+    }, id).then((res)=>{
+      console.log(res);
+      if(res.code==200){
+        wx.showModal({
+          title: "催单成功！",
+          content: "请联系找料员(" + mobile +")或在线客服（400-8088-156），咨询进度",
+          showCancel: false,
+          confirmText: "确定"
+        })
+      }else{
+        wx.showToast({
+          title: '催单失败！',
+          icon: 'none',
+          duration: 2000
+        })
+      }
     })
+    
     
   },
   // 确认收货
-  affirmOrder () {
+  affirmOrder (e) {
+    let id = e.target.dataset.id;
+    let index = e.target.dataset.index;
+    let _this = this;
+    api.affirmOrder({
+      method:'POST'
+    },id).then((res)=>{
+      console.log(res);
+      if(res.code==200){
+        _this.data.findList[index].button_status.on_confirm = 0;
+        _this.setData({
+          findList: _this.data.findList
+        })
+        wx.showToast({
+          title: '收货成功！',
+          icon: 'none',
+          duration: 2000
+        })
+      }
+    })
     console.log('确认收货');
   },
   // 去找料详情
@@ -117,7 +232,7 @@ Page({
     let item = JSON.stringify(this.data.findList[index]);
     console.log(item);
     wx.navigateTo({
-      url: '../findOrderDetail/findOrderDetail?item=' + item
+      url: '../findOrderDetail/findOrderDetail?item=' + item + '&nav=' + this.data.orderNavNum
     })
   },
   // 去找料详情
@@ -128,10 +243,12 @@ Page({
     })
   },
   // 去评价
-  toComment () {
+  toComment (e) {
+    let commentId = e.target.dataset.id;
     console.log('去评价');
     this.setData({
-      isCommentModel: false
+      isCommentModel: false,
+      commentId
     })
   },
   // 获取评价内容
@@ -147,7 +264,31 @@ Page({
     })
   },
   // 取消评价模态框并获取数据
-  commentConfirm () {
+  commentConfirm (e) {
+    let data  = {
+      star:this.data.starIndex_1+1,
+      star_ship: this.data.starIndex_2 + 1,
+      content: this.data.commentMsg
+    }
+    api.toCommentOrder({
+      method:'POST',
+      data
+    }, this.data.commentId).then((res)=>{
+          console.log(res);
+          if(res.code==200){
+            wx.showToast({
+              title: '评价成功！',
+              icon: 'none',
+              duration: 2000
+            })
+          }else{
+            wx.showToast({
+              title: '评价失败！',
+              icon: 'none',
+              duration: 2000
+            })
+          }
+    })
     this.setData({
       isCommentModel: true
     })
@@ -168,10 +309,15 @@ Page({
   },
 
   // 获取订单列表
-  getList(index){
-    api.orderList({}, index).then((res)=>{
+  getList(index,status,page){   
+    api.orderList({}, index, status, page).then((res)=>{
       if(res.code==200){
-        this.data.findList = res.data;
+        if(page){
+          this.data.findList = this.data.findList.concat(res.data);
+        }else{
+          this.data.findList = res.data;
+        }
+        this.data.totalPages = res.total;
         for (let i = 0; i < this.data.findList.length;i++){
           // 1按图找,2按样找3按描述
           if (this.data.findList[i].type == 1){
@@ -181,12 +327,21 @@ Page({
           } else if (this.data.findList[i].type == 3){
             this.data.findList[i].type_name = '按描述找料';
           }
-          // 找料状态 1 待接单 2找料中 3 无法找到 4已找到料
-          
+          // 找料状态 1 待接单 2找料中 3 无法找到 4已找到料 
+        }
+        
+        // 判断是否加载更多
+        if (this.data.findList.length >= this.data.totalPages){
+          this.data.shopLoading = false;
+        }else{
+          this.data.shopLoading = true;
         }
         this.setData({
-          findList: this.data.findList
+          findList: this.data.findList,
+          totalPages: this.data.totalPages,
+          shopLoading: this.data.shopLoading
         })
+
       }
       console.log(res.data);
     })
@@ -196,8 +351,26 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    // 从个人中心过来
+    let method = wx.getStorageSync('method');
+    if (method){
+      let status = wx.getStorageSync('status');
+      this.setData({
+        method,
+        orderNavNum: method,
+        orderChildNavNum: status
+      })
+    }
+    try {
+      wx.removeStorageSync('method');
+      wx.removeStorageSync('status');
+    } catch (e) {
+      // Do something when catch error
+    }
+    
+
     // 初始化获取找料列表
-    this.getList(1);
+    this.getList(this.data.orderNavNum, this.data.orderChildNavNum);
   },
 
   /**

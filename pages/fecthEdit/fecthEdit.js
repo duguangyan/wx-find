@@ -7,15 +7,15 @@ Page({
    * 页面的初始数据
    */
   data: {
-    isSelect:false,
+    isSelect: false,
     checkTypes: '',
-    checkType:'',
-    checkTypes_cid:'',
-    findNum:1  , // 物料数量
-    describeValue:'',
-    fecthPrice:0, // 配送费用
+    checkType: '',
+    checkTypes_cid: '',
+    findNum: 1, // 物料数量
+    describeValue: '',
+    fecthPrice: 0, // 配送费用
     isPopup: false, // 弹窗控制   
-    payNum:10, // 倒计时               
+    payNum: 10, // 倒计时               
   },
   // 切换类型
   checkType(e) {
@@ -27,10 +27,10 @@ Page({
     console.log(index);
     let _this = this;
     let itemList = [];
-    for (let i = 0; i < this.data.checkTypes.length;i++){
+    for (let i = 0; i < this.data.checkTypes.length; i++) {
       itemList.push(this.data.checkTypes[i].name);
     }
-    
+
     wx.showActionSheet({
       itemList: itemList,
       success: function (res) {
@@ -127,12 +127,12 @@ Page({
   },
   // 获取物料类型数据
   getCheckTypes() {
-    api.getCheckTypes({}).then((res) => { 
+    api.getCheckTypes({}).then((res) => {
       console.log(res);
       if (res.code == 200) {
         this.setData({
           checkTypes: res.data,
-          checkTypes_cid:res.data[0].id,
+          checkTypes_cid: res.data[0].id,
           checkType: res.data[0].name
         })
       }
@@ -157,7 +157,7 @@ Page({
         })
       }
     })
-    
+
   },
   // 去地址选择页面
   goConsigneeAddress(e) {
@@ -194,9 +194,9 @@ Page({
 
   },
   // 取料任务提交
-  fethchSubmit () {
+  fethchSubmit() {
     let _this = this;
-    if (!this.data.desc){
+    if (!this.data.desc) {
       wx.showToast({
         title: '请填写描述',
         icon: 'none',
@@ -204,8 +204,8 @@ Page({
       })
       return false
     }
-    
-    if (!this.data.defaultAddress.id) {
+
+    if (!this.data.defaultAddress) {
       wx.showToast({
         title: '请添加地址',
         icon: 'none',
@@ -213,48 +213,45 @@ Page({
       })
       return false
     }
+
     let data ={
-      task_type:2,
-      form_data:[{
-        cid:this.data.checkTypes_cid,
-        desc: this.data.desc,
+      form_data:{
         fetch_num: this.data.findNum,
-        get_address: this.data.defaultAddress.id
-      }]
+        get_address: this.data.get_address,
+        desc: this.data.desc,
+        cid: this.data.checkTypes_cid
+      },
+      id:this.data.id
     }
-    api.joinTask({
+
+
+    api.findEdit({
       method:'POST',
       data
-    }).then((res)=>{ 
+    },this.data.id).then((res)=>{
+        console.log(res);
+        if(res.code==200){
+          wx.navigateBack({
+            delta: 1
+          })
+        }else{
+          wx.showToast({
+            title: '保存失败',
+            icon: 'none',
+            duration: 2000
+          })
+        }
+    })
+   
+  },
+  // 获取找料单价
+  getFindOrFetchPrice() {
+    api.getFindOrFetchPrice({}, 2).then((res) => {
+      console.log('取料单价');
       console.log(res);
       if (res.code == 200) {
         this.setData({
-          isPopup: true
-        })
-        _this.data.interval = setInterval(function () {
-          console.log(_this.data.payNum);
-          _this.data.payNum--;
-          _this.setData({
-            payNum: _this.data.payNum
-          })
-          if (_this.data.payNum == 0) {
-            _this.setData({
-              isPopup: false
-            })
-            _this.goPay();
-          }
-        }, 1000)
-      }
-    })
-  },
-  // 获取找料单价
-  getFindOrFetchPrice () {
-    api.getFindOrFetchPrice({},2).then((res)=>{
-      console.log('取料单价');
-      console.log(res);
-      if(res.code == 200){
-        this.setData({
-          fecthPrice:res.data.fee
+          fecthPrice: res.data.fee
         })
       }
     })
@@ -263,60 +260,77 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    let item = JSON.parse(options.item);
+    console.log(item);
+    this.data.checkType = item.cname;
+    this.data.findNum = item.form_data.fetch_num;
+    this.data.desc = item.form_data.desc;
+    this.data.defaultAddress = item.address;
+    this.data.fecthPrice = item.form_data.fee;
+    this.data.get_address = item.form_data.get_address;
+    this.data.id = item.id;
+    this.setData({
+      checkType: this.data.checkType,
+      findNum:this.data.findNum,
+      desc: this.data.desc,
+      defaultAddress: this.data.defaultAddress,
+      fecthPrice:this.data.fecthPrice,
+      id: this.data.id
+    })
     // 获取物料类型
     this.getCheckTypes();
     // 获取默认地址
     //this.getDefaultAddress();
     // 获取找料单价
-    this.getFindOrFetchPrice();
+    // this.getFindOrFetchPrice();
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-  
+
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-  
+
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-  
+
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-  
+
   },
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-  
+
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-  
+
   },
 
   /**
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-  
+
   }
 })

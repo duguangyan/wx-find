@@ -142,6 +142,24 @@
 					"name": "任务中心--取料任务",
 					"pathName": "pages/material/material",
 					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "充值",
+					"pathName": "pages/recharge/recharge",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "充值成功",
+					"pathName": "pages/rechargeSuccess/rechargeSuccess",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "订单支付成功",
+					"pathName": "pages/taskPaySuccess/taskPaySuccess",
+					"query": ""
 				}
 			]
 		}

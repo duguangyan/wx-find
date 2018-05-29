@@ -312,7 +312,9 @@
 .mgl-140 {
     margin-left: 100rpx;
 }
-
+.mgb-30{
+  margin-bottom: 30rpx;
+}
 .pdt-30 {
     padding-top: 30rpx;
 }
@@ -327,7 +329,9 @@
 .pdb-30{
   padding-bottom: 30rpx;
 }
-
+.pdl-50{
+  padding-left: 50rpx;
+}
 .pdlr-30 {
     padding: 0 30rpx;
 }
@@ -716,7 +720,7 @@
 }
 .wt-30{
   display: inline-block;
-  width: 40rpx;
+  width: 35rpx;
 }
 word-spacing-30{
    word-spacing:30px;

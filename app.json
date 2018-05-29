@@ -22,7 +22,10 @@
     "pages/taskPaySuccess/taskPaySuccess",
     "pages/material/material",
     "pages/myFetchOrder/myFetchOrder",
-    "pages/fetchOrderDetail/fetchOrderDetail"
+    "pages/fetchOrderDetail/fetchOrderDetail",
+    "pages/rechargeSuccess/rechargeSuccess",
+    "pages/findEdit/findEdit",
+    "pages/fecthEdit/fecthEdit"
   ],
   "window": {
     "backgroundTextStyle": "light",

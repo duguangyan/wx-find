@@ -11,7 +11,7 @@
      
       <view class="items">  
         <view wx:for="{{finds}}"  wx:key="{{index}}"  class="item bb-1" style="height:{{item.form_data.find_type == '3'?'200rpx':'300rpx'}}">  
-          <view bindtouchstart="touchS" bindtouchmove="touchM" bindtouchend="touchE" data-index="{{index}}" style="{{item.txtStyle}}" class="inner txt">  
+          <view bindtap='findEdit' data-item='{{item}}' bindtouchstart="touchS" bindtouchmove="touchM" bindtouchend="touchE" data-index="{{index}}" style="{{item.txtStyle}}" class="inner txt">  
 
               <view data-index="{{index}}" class='cf  pdl-20'>
                 <view data-index="{{index}}" class='check-box'>
@@ -55,7 +55,7 @@
      
       <view class="items">  
         <view wx:for="{{fetchs}}"  wx:key="{{index}}"  class="item bb-1 fetch">  
-          <view bindtouchstart="touchSfetch" bindtouchmove="touchMfetch" bindtouchend="touchEfetch" data-index="{{index}}" style="{{item.txtStyle}}" class="inner txt">  
+          <view bindtap='fetchEdit' data-item='{{item}}' bindtouchstart="touchSfetch" bindtouchmove="touchMfetch" bindtouchend="touchEfetch" data-index="{{index}}" style="{{item.txtStyle}}" class="inner txt">  
 
               <view data-index="{{index}}" class='cf  pdl-20'>
                 <view data-index="{{index}}" class='check-box'>

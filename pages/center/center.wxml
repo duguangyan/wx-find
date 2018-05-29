@@ -29,14 +29,14 @@
 <view class="section-order mgt-20">
     <view class="my-order-line flex">
         <view class="fs30">找料订单</view>
-        <view bindtap='toMyOrder' data-id="0" hover-class='hover-click' class="text-999 lh80">
+        <view bindtap='toMyOrder' data-method='1' data-id="0" hover-class='hover-click' class="text-999 lh80">
             <text>查看全部找料订单</text>
             <text class="iconfont icon-jiantou1 "></text>
         </view>
     </view>
     <view class="flex flex-start">
-        <view bindtap='toMyOrder' data-id="{{item.id}}" class="item" wx:for="{{orderTab}}" wx:key="{{i}}">
-            <image mode='aspectFit' src='../../public/images/center/{{item.id}}.png'></image>
+        <view bindtap='toMyOrder' data-method='1' data-id="{{item.id}}" class="item" wx:for="{{orderTab}}" wx:key="{{i}}">
+            <image mode='aspectFit' src='../../public/images/center/{{item.imgId}}.png'></image>
             <text>{{item.name}}</text>
         </view>
     </view>
@@ -45,14 +45,14 @@
 <view class="section-order mgt-20">
     <view class="my-order-line flex">
         <view class="fs30">取料订单</view>
-        <view bindtap='toFetchOrder' data-id="0" hover-class='hover-click' class="text-999 lh80">
+        <view bindtap='toMyOrder' data-method='2' data-id="0" hover-class='hover-click' class="text-999 lh80">
             <text>查看全部取料订单</text>
             <text class="iconfont icon-jiantou1 "></text>
         </view>
     </view>
     <view class="flex flex-start">
-        <view bindtap='toFetchOrder' data-id="{{item.id}}" class="item" wx:for="{{orderTab}}" wx:key="{{i}}">
-            <image mode='aspectFit' src='../../public/images/center/{{item.id}}.png'></image>
+        <view bindtap='toMyOrder' data-method='2' data-id="{{item.id}}" class="item" wx:for="{{orderTab}}" wx:key="{{i}}">
+            <image mode='aspectFit' src='../../public/images/center/{{item.imgId}}.png'></image>
             <text>{{item.name}}</text>
         </view>
     </view>

@@ -1,35 +1,140 @@
-<view class='find-order-detail'>
-  <view class='find-order-detail-top bb-20 lh120 fs30'>
-     <image class='order-icon' src='../../public/images/order/order3.png'></image>  <text class='mgl-30'>找料中</text>
-  </view>
+<view class='find-order-detail fs30'>
+<!-- 找料 -->
+  <view wx:if='{{ nav == 1}}'>
+     <view class='find-order-detail-top bb-20 lh120 fs30' wx:if='{{itemObj.button_status.status ==3}}'>
+      <image class='order-icon' src='../../public/images/order/order1.png'></image>  <text class='mgl-30'>已结束</text>
+    </view>
+    <view class='find-order-detail-top bb-20 lh120 fs30' wx:if='{{itemObj.button_status.status ==4}}'>
+      <image class='order-icon' src='../../public/images/order/order4.png'></image>  <text class='mgl-30'>待支付</text>
+    </view>
+     <view class='find-order-detail-top bb-20 lh120 fs30' wx:if='{{itemObj.button_status.status ==5}}'>
+      <image class='order-icon' src='../../public/images/order/order3.png'></image>  <text class='mgl-30'>待收货</text>
+    </view>
+    <view class='find-order-detail-top bb-20 lh120 fs30' wx:if='{{itemObj.button_status.status ==6}}'>
+      <image class='order-icon' src='../../public/images/order/order2.png'></image>  <text class='mgl-30'>待评价</text>
+    </view>
 
-  <view class='find-order-detail-type bb-20 fs30'>
-      <view class='lh50'>物料类型: 面料</view>
-      <view class='lh50 describe'><text>描 <text class='wt-30 wt-30'></text> 述:</text> <text class='ellipsis-line3'>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</text> </view>
-      <view class='lh50'>找料方式: 上门取料</view>
-  </view>
+    <view class='find-order-detail-type bb-20 fs30'>
+        <view class='lh50'>物料类型: {{itemObj.cname}}</view>
+        <view class='lh50 describe cf'><text>描 <text class='wt-30 wt-30'></text> 述:</text> <text class='ellipsis-line3' style='left:130rpx;top:24rpx;'>{{itemObj.desc}}</text> </view>
+        <view class='lh50'>找料方式: {{itemObj.type_name}}</view>
+    </view>
 
-  <view class='find-order-detail-address bb-20 fs30 pdl-30'>
-    <view class='lh50'> 联 系 人 : xxx xxxxx</view>
-    <view class='address lh50'>联系地址: <text class='ellipsis-line3'> xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</text></view>
-  </view>
+    <view class='find-order-detail-address bb-20 fs30 pdl-30'>
+      <view class='lh50'> 联 系 人 : {{itemObj.findman_name}}</view>
+      <view class='address lh50 pdb-30'>联系地址: <text class='ellipsis-line3 fs30'> {{itemObj.shipping_address.city_str}} {{itemObj.shipping_address.address}}</text></view>
+    </view>
 
-  <view class='find-order-detail-number fs30 pdl-30 bb-20 pdb-30'>
-      <view class='lh50'>订单编号: xxx xxxxx</view>
-      <view class='lh50'>下单时间: xxx xxxxx</view>
-      <view class='lh50'> 找 料 员 : xxx xxxxx</view>
-      <view class='lh50'> 配 送 员 : xxx xxxxx</view>
-  </view>
+    <view class='find-order-detail-number fs30 pdl-30 bb-20 pdb-30'>
+        <view class='lh50'>订单编号: {{itemObj.order_sn}}</view>
+        <view class='lh50'>下单时间: {{itemObj.created_at}}</view>
+        <view class='lh50'> 找 料 员 : {{itemObj.findman_name}}</view>
+        <view class='lh50'> 配 送 员 : {{itemObj.distribution_name}}</view>
+    </view>
 
-  <view class='find-order-detail-price fs30 pdl-30 border-bottom pd-30'>
-      <view><text>服务费用</text><text class='flr'>￥100.00</text></view>
-      <view><text>配送费用</text><text class='flr'>￥100.00</text></view>
-  </view>
-  <view class='fs30 lh90 pd-30 bb-20 tg-r'>
-      <text>实付款： <text class='text-red'>￥80.00</text></text>
-  </view>
+    <view class='find-order-detail-price fs30 pdl-30 border-bottom pd-30'>
+        <view><text>服务费用</text><text class='flr'>￥{{itemObj.shipping_fee}}</text></view>
+    </view>
+    <view class='fs30 lh90  bb-20 tg-r pdr-30'>
+        <text>实付款： <text class='text-red'>￥{{itemObj.pay_fee}}</text></text>
+    </view>
 
-  <view class='find-order-detail-btn'>
-      <text>催单</text>
-  </view> 
+     <view class='find-order-detail-btn' wx:if='{{itemObj.button_status.on_cancel==1 ||itemObj.button_status.on_pay==1||itemObj.button_status.on_prompt==1 ||itemObj.button_status.on_confirm==1 ||itemObj.button_status.on_comment==1}}'>
+                    <text data-id='{{itemObj.id}}' bindtap='delOrder'wx:if='{{itemObj.button_status.on_cancel==1}}'>取消订单</text>
+                    <text data-id='{{itemObj.id}}' bindtap='toPay' wx:if='{{itemObj.button_status.on_pay==1}}' class='order-footer-btn-red'>去支付</text>
+                    <text data-id='{{itemObj.id}}' bindtap='urgeOrder'  wx:if='{{itemObj.button_status.on_prompt==1}}' class='order-footer-btn-red'>催单</text>
+                    <text data-id='{{itemObj.id}}' bindtap='affirmOrder' wx:if='{{itemObj.button_status.on_confirm==1}}' class='order-footer-btn-red' data-index="{{index}}">确认收货</text>
+                    <text data-id='{{itemObj.id}}' bindtap='toComment'  wx:if='{{itemObj.button_status.on_comment==1}}'>评价</text>
+                </view>
+  </view>
+  
+
+  <!-- 取料 -->
+    <view wx:if='{{ nav == 2}}'>
+     <view class='find-order-detail-top bb-20 lh120 fs30' wx:if='{{itemObj.button_status.status ==3}}'>
+      <image class='order-icon' src='../../public/images/order/order1.png'></image>  <text class='mgl-30'>已结束</text>
+    </view>
+    <view class='find-order-detail-top bb-20 lh120 fs30' wx:if='{{itemObj.button_status.status ==4}}'>
+      <image class='order-icon' src='../../public/images/order/order4.png'></image>  <text class='mgl-30'>待支付</text>
+    </view>
+     <view class='find-order-detail-top bb-20 lh120 fs30' wx:if='{{itemObj.button_status.status ==5}}'>
+      <image class='order-icon' src='../../public/images/order/order3.png'></image>  <text class='mgl-30'>待收货</text>
+    </view>
+    <view class='find-order-detail-top bb-20 lh120 fs30' wx:if='{{itemObj.button_status.status ==6}}'>
+      <image class='order-icon' src='../../public/images/order/order2.png'></image>  <text class='mgl-30'>待评价</text>
+    </view>
+
+    <view class='find-order-detail-type bb-20 fs30'>
+        <view class='lh50'>物料类型: {{itemObj.cname}}</view>
+        <view class='lh50'>物料数量: {{itemObj.fetch_num}}</view>
+        <view class='lh50 describe cf'><text class='find-order-detail-describe'>描 <text class='wt-30 wt-30'></text> 述:</text> <text class='ellipsis-line3' style='left:130rpx;top:24rpx;'>{{itemObj.desc}}</text> </view>
+        
+    </view>
+
+    <view class='find-order-detail-address bb-20 fs30 pdl-30'>
+      <view class='lh50'> 联 系 人 : {{itemObj.findman_name}}</view>
+      <view class='address lh50 pdb-30'>取料地址: <text class='ellipsis-line3 fs30'> {{itemObj.shipping_address.city_str}} {{itemObj.shipping_address.address}}</text></view>
+    </view>
+
+    <view class='find-order-detail-address bb-20 fs30 pdl-30'>
+      <view class='lh50'> 联 系 人 : {{itemObj.findman_name}}</view>
+      <view class='address lh50 pdb-30'>送料地址: <text class='ellipsis-line3 fs30'> {{itemObj.get_address.city_str}} {{itemObj.get_address.address}}</text></view>
+    </view>
+
+    <view class='find-order-detail-number fs30 pdl-30 bb-20 pdb-30'>
+        <view class='lh50'>订单编号: {{itemObj.order_sn}}</view>
+        <view class='lh50'>下单时间: {{itemObj.created_at}}</view>
+        <!-- <view class='lh50'> 找 料 员 : {{itemObj.findman_name}}</view> -->
+        <view class='lh50'> 配 送 员 : {{itemObj.distribution_name}}/{{itemObj. distribution_mobile}}</view>
+    </view>
+
+    <view class='find-order-detail-price fs30 pdl-30 border-bottom pd-30'>
+        <view><text>服务费用</text><text class='flr'>￥{{itemObj.shipping_fee}}</text></view>
+    </view>
+    <view class='fs30 lh90  bb-20 tg-r pdr-30'>
+        <text>实付款： <text class='text-red'>￥{{itemObj.pay_fee}}</text></text>
+    </view>
+
+     <view class='find-order-detail-btn' wx:if='{{itemObj.button_status.on_cancel==1 ||itemObj.button_status.on_pay==1||itemObj.button_status.on_prompt==1 ||itemObj.button_status.on_confirm==1 ||itemObj.button_status.on_comment==1}}'>
+                    <text data-id='{{itemObj.id}}' bindtap='delOrder'wx:if='{{itemObj.button_status.on_cancel==1}}'>取消订单</text>
+                    <text data-id='{{itemObj.id}}' bindtap='toPay' wx:if='{{itemObj.button_status.on_pay==1}}' class='order-footer-btn-red'>去支付</text>
+                    <text data-id='{{itemObj.id}}' bindtap='urgeOrder'  wx:if='{{itemObj.button_status.on_prompt==1}}' class='order-footer-btn-red'>催单</text>
+                    <text data-id='{{itemObj.id}}' bindtap='affirmOrder' wx:if='{{itemObj.button_status.on_confirm==1}}' class='order-footer-btn-red' data-index="{{index}}">确认收货</text>
+                    <text data-id='{{itemObj.id}}' bindtap='toComment'  wx:if='{{itemObj.button_status.on_comment==1}}'>评价</text>
+                </view>
+  </view>
 </view>
+
+
+<!-- 填写取消订单原因model -->
+<modal 
+title="请填写取消订单原因" 
+hidden="{{ isDelModel }}" 
+confirm-text="提交" 
+cancel-text="取消" 
+bindconfirm="delConfirm"
+bindcancel="delCancel">
+<input class='bt-1 lh50 pdt-30' type='text' placeholder='请填写取消订单的原因' bindinput='delModelInput'></input>
+</modal>
+
+
+<!-- 填写取消订单原因model -->
+<modal 
+title="评价本次服务" 
+hidden="{{ isCommentModel }}" 
+confirm-text="提交" 
+cancel-text="取消" 
+bindconfirm="commentConfirm"
+bindcancel="commentCancel">
+<view class='star-warp pdt-30 pdb-30'>
+    <view>
+      找料满意度： <text catchtap='satisfact' data-idx='{{index}}' wx:key="{{this}}" wx:for="{{starArr}}" wx:for-item="item" wx:for-index="index" class="star iconfont icon-star {{ starIndex_1 >= index ? 'text-yellow':''}}"></text>
+    </view>
+    <view>
+      配送及时性： 
+      <text catchtap='timely' data-idx='{{index}}' wx:for="{{starArr}}" wx:key="{{this}}" wx:for-item="item" wx:for-index="index" class="star iconfont icon-star {{ starIndex_2 >= index ? 'text-yellow':''}}"></text>
+    </view>
+</view>
+
+<input class='bt-1 lh50 pdt-30' type='text' placeholder='请填写取消订单的原因' bindinput='commentModelInput'></input>
+</modal>

@@ -8,16 +8,16 @@
           <text bindtap='checkNav' data-index='2' class="{{orderNavNum==2?'nav-active':''}}">取料订单</text>
       </view>
       <view class='order-nav order-child-nav fs30 lh90' wx:if="{{orderNavNum==1}}">
-          <text bindtap='checkChildFindNav' data-index='1' class="{{orderChildNavFindNum==1?'nav-child-active':''}}">全部</text>
-          <text bindtap='checkChildFindNav' data-index='2' class="{{orderChildNavFindNum==2?'nav-child-active':''}}">待付款</text>
-          <text bindtap='checkChildFindNav' data-index='3' class="{{orderChildNavFindNum==3?'nav-child-active':''}}">待收货</text>
-          <text bindtap='checkChildFindNav' data-index='4' class="{{orderChildNavFindNum==4?'nav-child-active':''}}">待评价</text>
+          <text bindtap='checkChildNav' data-index='0' class="{{orderChildNavNum==0?'nav-child-active':''}}">全部</text>
+          <text bindtap='checkChildNav' data-index='4' class="{{orderChildNavNum==4?'nav-child-active':''}}">待付款</text>
+          <text bindtap='checkChildNav' data-index='5' class="{{orderChildNavNum==5?'nav-child-active':''}}">待收货</text>
+          <text bindtap='checkChildNav' data-index='6' class="{{orderChildNavNum==6?'nav-child-active':''}}">待评价</text>
       </view> 
       <view class='order-nav order-child-nav fs30 lh90' wx:if="{{orderNavNum==2}}">
-          <text bindtap='checkChildGetNav' data-index='1' class="{{orderChildNavGetNum==1?'nav-child-active':''}}">全部</text>
-          <text bindtap='checkChildGetNav' data-index='2' class="{{orderChildNavGetNum==2?'nav-child-active':''}}">待付款</text>
-          <text bindtap='checkChildGetNav' data-index='3' class="{{orderChildNavGetNum==3?'nav-child-active':''}}">待收货</text>
-          <text bindtap='checkChildGetNav' data-index='4' class="{{orderChildNavGetNum==4?'nav-child-active':''}}">待评价</text>
+          <text bindtap='checkChildNav' data-index='0' class="{{orderChildNavNum==0?'nav-child-active':''}}">全部</text>
+          <text bindtap='checkChildNav' data-index='4' class="{{orderChildNavNum==4?'nav-child-active':''}}">待付款</text>
+          <text bindtap='checkChildNav' data-index='5' class="{{orderChildNavNum==5?'nav-child-active':''}}">待收货</text>
+          <text bindtap='checkChildNav' data-index='6' class="{{orderChildNavNum==6?'nav-child-active':''}}">待评价</text>
       </view> 
     </view>
     <view class='no-order-data' wx:if='{{false}}'>
@@ -26,7 +26,7 @@
         <view class='do-order' bindtap='doOrder'>去下单</view>
     </view>
      <!-- bindscrolltoupper="upper" bindscrolltolower="lower" -->
-    <scroll-view scroll-y="true"   bindscrolltolower="upper" bindscrolltoupper="lower" style="height: 100vh">
+    <scroll-view scroll-y="true" scroll-top="{{scrollTop}}"    bindscrolltolower="upper" bindscrolltoupper="lower" style="height: 100vh">
       <view class='order-content'> 
             <view class='box-shadow task-find'  wx:for="{{findList}}"  wx:key="this">
               <view class='task-find-title fs30'>
@@ -34,7 +34,7 @@
                   <text class='task-find-snname text-red flr pdr-30'>{{item.is_payed?'待支付':'已支付'}}</text>
               </view>
               <view class='task-find-list fs30 cf'>
-                <view bindtap='goFindDetail' data-index="{{index}}" data-xx='xxxx' class='task-find-item-warp'>
+                <view bindtap='goFindDetail' data-index="{{index}}"  class='task-find-item-warp'>
                   <view class='task-find-item'>
                     <view>物料品类：{{item.cname}}</view>
                     <view>物料描述：{{item.desc}}</view>
@@ -43,29 +43,29 @@
                   </view> 
                   <view class='task-find-method bb-1 pdb-20'>
                     <view class='task-find-method-img' wx:if='{{item.type==1}}'>
-                        <image src='../../public/images/task/task_img.png'></image>
-                        <image src='../../public/images/task/task_img.png'></image>
-                        <image src='../../public/images/task/task_img.png'></image>
+                        <image src='{{item.front_img}}'></image>
+                        <image src='{{item.side_img}}'></image>
+                        <image src='{{item.back_img}}'></image>
                     </view> 
-                    <view class='task-find-method-getfind' wx:if='{{item.type==2}}'>
-                        <view>取料地址：{{item.get_address}}</view>
+                    <view class='task-find-method-getfind' wx:if='{{item.type==2 || orderNavNum == 2}}'>
+                        <view>取料地址：{{item.shipping_address.city_str}} {{item.shipping_address.address}}</view>
                     </view> 
                     <view class='task-find-price'>
-                      金额:￥{{filter.formatMoney(item.pay_fee)}}
+                      金额:￥{{filter.formatMoney(item.find_fee)}}
                     </view>   
                   </view> 
                 </view>
-                <view class='order-footer-btn'>
-                    <text bindtap='delOrder'wx:if='{{item.button_status.on_cancel==1}}'>取消订单</text>
-                    <text bindtap='toPay' wx:if='{{item.button_status.on_pay==1}}' class='order-footer-btn-red'>去支付</text>
-                    <text bindtap='urgeOrder'  wx:if='{{item.button_status.on_prompt==1}}' class='order-footer-btn-red'>催单</text>
-                    <text bindtap='affirmOrder' wx:if='{{item.button_status.on_confirm==1}}' class='order-footer-btn-red'>确认收货</text>
-                    <text bindtap='toComment'  wx:if='{{item.button_status.on_comment==1}}'>评价</text>
+                <view class='order-footer-btn' wx:if='{{item.button_status.on_cancel==1 ||item.button_status.on_pay==1||item.button_status.on_prompt==1 ||item.button_status.on_confirm==1 ||item.button_status.on_comment==1}}'>
+                    <text data-id='{{item.id}}' bindtap='delOrder'wx:if='{{item.button_status.on_cancel==1}}'>取消订单</text>
+                    <text data-id='{{item.id}}' bindtap='toPay' wx:if='{{item.button_status.on_pay==1}}' class='order-footer-btn-red'>去支付</text>
+                    <text data-id='{{item.id}}' data-mobile='{{item.findman_mobile}}' bindtap='urgeOrder'  wx:if='{{item.button_status.on_prompt==1}}' class='order-footer-btn-red'>催单</text>
+                    <text data-id='{{item.id}}' bindtap='affirmOrder' wx:if='{{item.button_status.on_confirm==1}}' class='order-footer-btn-red' data-index="{{index}}">确认收货</text>
+                    <text data-id='{{item.id}}' bindtap='toComment'  wx:if='{{item.button_status.on_comment==1}}'>评价</text>
                 </view>
               </view>
             </view>
       </view>
-      <view wx:if="{{!shopLoading}}" class='loding'>
+      <view wx:if="{{!shopLoading}}" class='loding pdb-30'>
         已经全部加载完毕
       </view>
       <!--加载组件  -->

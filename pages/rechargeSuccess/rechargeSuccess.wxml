@@ -1,7 +1,7 @@
 <!--pages/taskPaySuccess/taskPaySuccess.wxml-->
 <view class='task-success'>
   <view class='task-success-top'>
-      <image src='../../public/images/task/task_success.png'></image>
+      <text class='iconfont icon-tijiaochenggong'></text>
       <view class='task-success-msg'>
           <view class='fs48'>支付成功</view>
           <view class='fs24'>{{time}}</view>
@@ -9,12 +9,8 @@
   </view>
   <view class='border-b20'></view>
 
-  <view class='lh90 border-bottom fs30'>
-      <text class='pdl-30'>实付款： <text class='text-red'>￥{{pay_log.pay_amount}}</text></text>
-  </view>
-
   <view class='footer-btn'>
       <view class='text-333' bindtap='goIndex'>返回首页</view>
-      <view class='text-666' bindtap='goFindOrderDetail'>查看订单详情</view>
+      <!-- <view class='text-666' bindtap='goFindOrderDetail'>查看订单详情</view> -->
   </view>
 </view>

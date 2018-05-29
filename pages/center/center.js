@@ -11,13 +11,16 @@ Page({
     data: {
 
         orderTab: [{
-            id: 1,
+            id: 4,
+            imgId:1,
             name: '待付款'
         }, {
-            id: 2,
+            id: 5,
+            imgId: 2,
             name: '待收货'
         }, {
-            id: 3,
+            id: 6,
+            imgId: 3,
             name: '待评价'
         }],
 
@@ -59,15 +62,26 @@ Page({
     // 找料订单跳转
     toMyOrder(e) {
         console.log(e.currentTarget.dataset.id);
-        let statusID = e.currentTarget.dataset.id;
+        let status = e.currentTarget.dataset.id;
+        let method = e.currentTarget.dataset.method;
         let token = app.globalData.token;
 
         console.log(token);
 
         if (token) {
-            wx.navigateTo({
-              url: `../myFindOrder/myFindOrder?status=${statusID}`,
-            })
+            // wx.navigateTo({
+            //   url: `../myFindOrder/myFindOrder?status=${statusID}`,
+            // })
+          wx.setStorageSync('method', method);
+          wx.setStorageSync('status', status);
+          wx.switchTab({
+            url: '../order/order',
+            success: function (e) {
+              var page = getCurrentPages().pop();
+              if (page == undefined || page == null) return;
+              page.onLoad();
+            }
+          }) 
         } else {
             wx.showModal({
                 title: '您尚未登陆',
@@ -88,36 +102,7 @@ Page({
     },
 
 
-    // 取料订单跳转
-    toFetchOrder(e) {
-      console.log(e.currentTarget.dataset.id);
-      let statusID = e.currentTarget.dataset.id;
-      let token = app.globalData.token;
-
-      console.log(token);
-
-      if (token) {
-        wx.navigateTo({
-          url: `../myFetchOrder/myFetchOrder?status=${statusID}`,
-        })
-      } else {
-        wx.showModal({
-          title: '您尚未登陆',
-          content: '是否前往登陆页面',
-          confirmText: '前往',
-          confirmColor: '#c81a29',
-          success: (res) => {
-            if (res.confirm) {
-              wx.navigateTo({
-                url: '../login/login',
-              })
-            } else if (res.cancel) {
-              console.log('用户点击取消')
-            }
-          }
-        })
-      }
-    },
+  
     // 增票资质 自我增加
 
     collatingTickets() {

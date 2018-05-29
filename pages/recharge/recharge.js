@@ -1,4 +1,5 @@
 // pages/recharge/recharge.js
+const api = require('../../utils/api.js');
 Page({
 
   /**
@@ -7,12 +8,61 @@ Page({
   data: {
   
   },
-
+  // 去支付
+  doPay (e) {
+   
+    let id = e.target.dataset.id;
+    let payInfo = {
+      order_id: id,
+      order_type:3,
+      open_id : wx.getStorageSync('open_id')
+    };
+    
+    api.wxPay({
+      method: 'POST',
+      data: payInfo
+    }).then((res) => {
+      console.log(res);
+      if (res.code == 200) {
+        let data = res.data;
+        data.success = function (res) {
+          console.log('支付成功');
+          console.log(res);
+          wx.navigateTo({
+            url: '../rechargeSuccess/rechargeSuccess'
+          })
+        }
+        data.fail = function (res) {
+          console.log('支付失败');
+          console.log(res);
+          wx.showToast({
+            title: '支付失败',
+            icon: 'none',
+            duration: 2000
+          })
+        }
+        wx.requestPayment(data);
+      }
+    })
+  },
+  // 获取充值列表
+  getRechargeList () {
+    api.getRechargeList({}).then((res)=>{
+      console.log(res);
+      if(res.code == 200){
+        let rechargeList = res.data;
+        this.setData({
+          rechargeList
+        })
+      }
+    })
+  },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-  
+      // 获取充值列表
+    this.getRechargeList();
   },
 
   /**

@@ -76,12 +76,14 @@ Page({
             util.errorTips('请确认手机号！');
             return false;
         }
-
+        let open_id = wx.getStorageSync('open_id') || '';
         api.login({
             method: 'POST',
             data: {
                 user_name,
-                password
+                password,
+                from:3,
+                open_id
             }
         }).then((res) => {
             console.log(res);

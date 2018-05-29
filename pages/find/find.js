@@ -131,18 +131,53 @@ Page({
         addFinds: this.data.addFinds
       })
     },
-
+    // 判断是否在配送范围
+    isGoodsAddress(id,index){ 
+      api.isFromScope({}, id).then((res) => {
+        console.log(res);
+        if (res.code == 200) {
+          app.globalData.isFromScope = true;  // 在服务区
+          this.data.addFinds[index].address.isGoodsAddress = true;
+        } else {
+          app.globalData.isFromScope = false; // 不在服务区
+          this.data.addFinds[index].address.isGoodsAddress = false;
+        }
+      }).catch((err) => {
+        if (err.code == 400) {
+          app.globalData.isFromScope = false;
+          this.data.addFinds[index].address.isGoodsAddress = false;
+        }
+      })
+    },
     // 按样找料切换方式
-    selcetSecondTab (e) {
+    selcetSecondTab (e) { 
+      
       let index = e.currentTarget.dataset.index;
       let id = e.currentTarget.dataset.id;
+
+      // 判断是否在配送范围
+      if (id == 1){
+        app.globalData.isFromScope = false;
+        this.isGoodsAddress(this.data.addFinds[index].address.id ,index);
+
+        if (app.globalData.isFromScope) {
+          this.data.addFinds[index].address.isGoodsAddress = true;
+        } else {
+          this.data.addFinds[index].address.isGoodsAddress = false;
+        }
+      }else{
+        app.globalData.isFromScope = true;
+        this.data.addFinds[index].address.isGoodsAddress = true;
+      }
+      
       this.data.addFinds[index].selcetSecondTabNum = id;
       this.data.addFinds[index].get_type = id;
       console.log(id);
+      
       this.setData({
         addFinds: this.data.addFinds
       })
-      console.log(this.data.addFinds)
+      console.log(app.globalData.isFromScope)
     },
     // 选择找料方式
     selcetTab(e) {
@@ -151,6 +186,10 @@ Page({
         this.data.addFinds[index].selcetTabNum = id;
         this.data.addFinds[index].find_type = id;
         console.log(id);
+        // 设置不需要判断服务范围
+        if (id==2){
+          this.data.addFinds[index].address.isGoodsAddress = false;
+        }
         this.setData({
           addFinds: this.data.addFinds
         })
@@ -296,7 +335,7 @@ Page({
   
         } else if (this.data.addFinds[i].selcetTabNum == '2') {   // 按样找料判断
           // 按样找料地址是否存在
-          if (this.data.addFinds[i].address.id == '' || !this.data.addFinds[i].address.id){
+          if (this.data.addFinds[i].address.id == '' || !this.data.addFinds[i].address.id || !this.data.addFinds[i].address.isGoodsAddress){
             wx.showToast({
               title: '第' + (i + 1) + '个任务，请添加地址',
               icon: 'none',
@@ -352,6 +391,7 @@ Page({
         console.log('--------');
         console.log(options.findNum);
         console.log(this.data.defaultAddress);
+        this.data.defaultAddress.isGoodsAddress = false;
         // 获取上一级页面传过来的数据
         this.setData({
           findNum: options.findNum,
@@ -362,7 +402,7 @@ Page({
         let findNum = options.findNum == '' ? 1 : options.findNum;
         for (let i = 0; i < parseInt(findNum) ;i++){
           newAddFinds.push(
-            { index: i, cid: this.data.addFinds[0].cid, checkType: this.data.addFinds[0].checkType, find_type: options.selcetTabNum, selcetTabNum: options.selcetTabNum, get_type:'1', selcetSecondTabNum: '1', isSelect: false, desc: '', files: [{}, {}, {}], get_address: this.data.defaultAddress.id, address: this.data.defaultAddress }
+            { index: i, cid: this.data.addFinds[0].cid, checkType: this.data.addFinds[0].checkType, find_type: options.selcetTabNum, selcetTabNum: options.selcetTabNum, get_type: '1', selcetSecondTabNum: '1', isSelect: false, desc: '', files: [{}, {}, {}], get_address: this.data.defaultAddress.id, address: this.data.defaultAddress} 
           )
         }
         // 设置数据
@@ -497,8 +537,14 @@ Page({
     },
     // 去地址选择页面
     goConsigneeAddress (e) {
+      app.globalData.isFromScope = false;
       let index = e.currentTarget.dataset.index;
       app.globalData.addressIndex = index;
+      if (this.data.addFinds[index].selcetTabNum==2){
+        if (this.data.addFinds[index].selcetSecondTabNum == 1){
+          app.globalData.isFromScope = true;
+        }
+      }
       wx.navigateTo({
         url: '../consigneeAddress/consigneeAddress?addFinds='+ JSON.stringify(this.data.addFinds),
       })
@@ -506,8 +552,11 @@ Page({
     // 返回上一层，继续找料
     goBack () {
       clearInterval(interval);
-      wx.navigateBack({
-        delta: 1
+      // wx.navigateBack({
+      //   delta: 1
+      // })
+      this.setData({
+        isPopup:false
       })
     },
     // 去支付

@@ -1,128 +1,32 @@
-<view class="fs30">
-    <!--包月套餐  -->
+<wxs src="../../utils/filter.wxs" module="filter" />
+<view class="recharge  cf fs30">
+  <view class='recharge-title lh90 pdl-30 bb-1 text-666'>选中充值金额</view>
+  <view class='recharge-list cf'>
+    <view class='recharge-list-li' wx:for='{{rechargeList}}' wx:key='this' data-id='{{item.id}}' bindtap='doPay'>
+      <view  data-id='{{item.id}}'>
+        <text data-id='{{item.id}}' class='recharge-list-text text-red mgt-30'>冲{{item.values}}元</text>
+        <text data-id='{{item.id}}' class='recharge-list-text text-red' style='padding-left:50rpx;'>送{{item.arrival_values - item.values }}元</text>
+      </view>
+    </view>
+  </view>
+  <view class='recharge-explain cf fs30'>
+    <view style='padding-top: 30rpx;'>充值说明：</view>
     <view>
-        <view class="lh90 bold cell-padding border-bottom">
-            <text>包月充值套餐</text>
-            <text data-info="month" bindtap='packageInfo' class="iconfont icon-wenhao pd-20 fs34"></text>
-        </view>
-
-        <view class="flex flex-start pdb-36">
-
-            <view wx:for="{{monthPackage}}" wx:key="{{i}}" bindtap='selectPackage' data-mounth="{{item.mounth}}" data-type="{{item.type}}" data-id="{{item.id}}" data-price="{{item.pay_price}}"  data-name="{{item.name}}" class="package-item flex text-center {{selected == item.id ? 'selected' : ''}} {{item.enabled == 2 ? 'disabled' : ''}}">
-
-                <view class="item-info flex-1">
-                    <view class="fs28">{{item.mounth ? item.mounth + '个月' : ''}}</view>
-                    <view class='fs24'>({{item.pay_price ? '￥' + item.pay_price : ''}})</view>
-
-                </view>
-
-                <view class="fs20 item-discount">
-                    <view>{{(item.discount && item.discount != '1')  ? item.zhe + '折' : '无折扣'}}</view>
-                </view>
-            </view>
-
-        </view>
+      1、账户充值仅限微信在线方式支付，目前暂不支持其它支付方式；
     </view>
-
-    <!--按次套餐  -->
-
-    <view class="bg h20"></view>
-
     <view>
-        <view class="lh90 bold cell-padding border-bottom">
-            <text>按次充值套餐</text>
-            <text  data-info="time" bindtap='packageInfo' class="iconfont icon-wenhao pd-20 fs34"></text>
-        </view>
-
-        <view class="flex flex-start pdb-36">
-
-            <view wx:for="{{timePackage}}" wx:key="{{i}}" bindtap='selectPackage' data-mounth="{{item.mounth}}" data-type="{{item.type}}" data-id="{{item.id}}" data-price="{{item.pay_price}}" data-name="{{item.name}}" class="package-item flex text-center {{selected == item.id ? 'selected' : ''}} {{item.enabled == 2 ? 'disabled' : ''}}">
-
-                <view class="item-info flex-1">
-                    <view class="fs28">{{item.times ? item.times + '次' : ''}}</view>
-                    <view class='fs24'>({{item.pay_price ? '￥' + item.pay_price : ''}})</view>
-
-                </view>
-
-                <view class="fs20 item-discount">
-                    <view>{{(item.discount && item.discount != '1')  ? item.zhe + '折' : '无折扣'}}</view>
-                </view>
-            </view>
-
-        </view>
+      3、账户充值成功后不支持退款且不可提现；
     </view>
-
-    <view class="bg h20"></view>
-
-    <view wx:if="{{service}}">
-
-        <view class="lh90 bold cell-padding border-bottom">
-            <text>配送服务</text>
-            <text  data-info="service" bindtap='packageInfo' class="iconfont icon-wenhao pd-20 fs34"></text>
-        </view>
-
-
-        <!-- <view class="flex border-bottom pd-20">
-
-            <view>*配送地址：</view>
-
-            <view class="flex-1"></view>
-
-        </view> -->
-        <!--配送地址 S  -->
-        <view class="flex pd-20 border-bottom">
-            <view>
-                <text class="text-theme">*</text>配送地址：</view>
-            <picker class="flex-1" mode="multiSelector" bindchange="bindMultiPickerChange" bindcolumnchange="bindMultiPickerColumnChange" value="{{multiIndex}}" range-key="region_name" range="{{[multiArray,multiArray[province].children, multiArray[province].children[city].children]}}">
-                <view class="picker" style="text-align:right;">
-                    {{multiArray[multiIndex[0]].region_name}} {{multiArray[multiIndex[0]].children[multiIndex[1]].region_name}} {{multiArray[multiIndex[0]].children[multiIndex[1]].children[multiIndex[2]].region_name}}
-                </view>
-
-            </picker>
-            <text class="iconfont icon-jiantou"></text>
-        </view>
-        <!--配送地址 E  -->
-
-        <view class="flex border-bottom pd-20">
-
-            <view>配送价格：</view>
-
-            <view>{{multiArray[multiIndex[0]].children[multiIndex[1]].children[multiIndex[2]].info.price ? '￥' + multiArray[multiIndex[0]].children[multiIndex[1]].children[multiIndex[2]].info.price : ''}}</view>
-
-        </view>
+    <view>
+      4、账户余额仅限用于支付小鹿快找业务相关服务费用；
     </view>
-
-    <view class="h150"></view>
-
-</view>
-
-<view bindtap='recharge' hover-class="hover-style" class="bottom-fixed text-center text-white h100 lh100 fs32  {{isGo ?'disabled-c': ''}}">
-    立即充值
-</view>
-
-
-<!--三个说明框  -->
-<view wx:if="{{masking}}" bindtap='hideMasking' class="masking fs30">
-
-    <view  wx:if="{{packageInfo === 'month'}}" class="detail-info-box">
-        <view class="title fs38 text-center mgb-40">按月套餐详情</view>
-        <view>1.按月充值套餐可享受相应折扣，充值成功后，次日开始生效；</view>
-        <view>2.月套餐根据充值金额，分别享受60次、90次、140次找料及代买样板服务；</view>
-        <view>3.超过有效期，用户需重新购买套餐，否则将按每次发布找料需求实际需支付金额支付。</view>
+    <view>
+      5、账户余额有效期：自充值日起至用完即止；
     </view>
-
-    <view data-info="time" wx:if="{{packageInfo === 'time'}}" class="detail-info-box">
-        <view class="title fs38 text-center mgb-40">按次套餐详情</view>
-        <view>1.按次充值套餐可享受相应折扣，最低充值12次；</view>
-        <view>2.每发布一次找料需求将扣件次数，直至 扣完；</view>
-        <view>3.充值次数为0时，用户需重新购买套餐，否则将按每次发布找料需求实际需支付金额支付。</view>
+    <view>
+      6、如需咨询，可拨打客服热线<text class='text-red'>400-8088-156</text>。
     </view>
-
-    <view data-info="service" wx:if="{{packageInfo === 'service'}}" class="detail-info-box">
-        <view class="title fs38 text-center mgb-40">配送服务说明</view>
-        <view>1.除了广州市花都狮岭地区客户外，其他地区暂时不支持免费送样上门服务； </view>
-        <view>2.选择配送地址后，系统将默认与所购买的套餐次数绑定，按照物流收费标准收取物流费用（次数*单次配送费）； </view>
-        <view>3.未选择配送地址的客户配送方式默认到付 </view>
-    </view>
-
+    <text class='position'></text>
+  </view>
+    
 </view>

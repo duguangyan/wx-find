@@ -37,7 +37,7 @@
           <view class="address flex flex-start pdt-30 pdb-30 pdl-20 pdr-20" >
               <text class="iconfont icon-dizhi fs40 text-gray mgr-20"></text>
 
-              <view data-index='{{idx}}' bindtap='goConsigneeAddress'  wx:if='{{defaultAddress.id}}' class="flex-1 address-info fs30">
+              <view data-index='{{idx}}' bindtap='goConsigneeAddress' class="flex-1 address-info fs30">
                   <view class="flex">
                       <text>档口名称: {{defaultAddress.stall}}</text>
                   </view>
@@ -67,17 +67,8 @@
               <text class='flr pdr-30'>￥{{filter.formatMoney(fecthPrice)}}</text>
           </view>
       </view>
-      <view class='join-find lh90 fs30 mgb-30' bindtap='fethchSubmit'>加入小鹿任务</view>
+      <view class='join-find lh90 fs30 mgb-30' bindtap='fethchSubmit'>确认</view>
       <view style='height:30rpx;'></view>
 </view>
 
-<view class='index-popup' wx:if="{{isPopup}}">
-    <view class='index-popup-bg' catchtap='closePopup'></view>
-    <view class='index-popup-content'>
-        <view class='index-popup-title'>加入小鹿任务成功！</view>
-        <view class='index-popup-btn'>
-            <view class='go-pay' catchtap='goPay'>去结算({{payNum}}s)</view>
-            <view catchtap='goBack'>继续取料</view>
-        </view>   
-    </view>
-</view>
+

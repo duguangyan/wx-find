@@ -5,7 +5,6 @@
             <view  data-index='{{idx}}' bindtap='checkType'>
               <text class="text-theme">*</text>物料类型 : <text>{{item.checkType}}</text>  <text class='mgl-20 iconfont icon-jiantou'></text>
             </view>
-            <view class='close_btn' data-index='{{idx}}' bindtap='closed'><image src='../../public/images/find/close_btn.png'></image></view>
         </view>
 
         <view class="pd-20 flex align-start">
@@ -104,26 +103,6 @@
           </view>
       </view>
     </view>
-
-    <!--提交按钮  -->
-    <view class='add-find' bindtap='addFind'>
-      <image src='../../public/images/find/add-find.png'></image>
-      <text>点击添加找料</text>
-    </view>
-    <view class="cell-padding submit-form">
-        <button bindtap="findSubmit">加入小鹿任务</button>
-    </view>
-
-
+    <view class='section-order submit lh90 fs30' bindtap='submit'>确认</view>
 </form>
 
-<view class='index-popup' wx:if="{{isPopup}}">
-    <view class='index-popup-bg' catchtap='closePopup'></view>
-    <view class='index-popup-content'>
-        <view class='index-popup-title'>加入小鹿任务成功！</view>
-        <view class='index-popup-btn'>
-            <view class='go-pay' catchtap='goPay'>去结算({{payNum}}s)</view>
-            <view catchtap='goBack'>继续取料</view>
-        </view>   
-    </view>
-</view>

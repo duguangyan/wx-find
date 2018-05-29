@@ -153,7 +153,8 @@ Page({
           search_address: addressInfo.search_address,
           stall: addressInfo.stall,
           longitude: addressInfo.longitude || '',
-          latitude: addressInfo.latitude || ''
+          latitude: addressInfo.latitude || '',
+          remark: addressInfo.remark
         }
       }).then((res) => {
 
@@ -295,14 +296,8 @@ Page({
 
     this.setData({
       isSugShow: this.data.isSugShow,
-      addressInfo: this.data.addressInfo
+      //addressInfo: this.data.addressInfo
     })
-    setTimeout(() => { 
-      this.setData({
-        addressInfo: this.data.addressInfo
-      })
-    }, 500)
-
     let that = this;
     if (e.detail.value === '') {
       that.setData({
@@ -313,7 +308,7 @@ Page({
     let BMap = new bmap.BMapWX({
       ak: '3jSXyNSuxGsuVGHK0zGHr4K4doVSxg9c'
     });
-    let fail = function (data) {
+    let fail = function (data) { 
       console.log(data)
     };
     let success = function (data) {

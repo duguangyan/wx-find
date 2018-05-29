@@ -1,4 +1,4 @@
-// pages/taskPaySuccess/taskPaySuccess.js
+// pages/rechargeSuccess/rechargeSuccess.js
 const util = require('../../utils/util.js');
 Page({
 
@@ -8,31 +8,18 @@ Page({
   data: {
   
   },
-
-  /**
-   * 返回首页
-   */
-  goIndex () {
+  goIndex() {
     wx.switchTab({
       url: '../index/index'
-    })
-  },
-  // 去订单详情
-  goFindOrderDetail () {
-    wx.navigateTo({
-      url: '../findOrderDetail/findOrderDetail'
     })
   },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    let pay_log = JSON.parse(options.pay_log);
-
     this.data.time = util.getNowFormatDate();
     this.setData({
-      time: this.data.time,
-      pay_log
+      time:this.data.time
     })
   },
 

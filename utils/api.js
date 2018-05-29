@@ -18,7 +18,8 @@ Promise.prototype.finally = function (callback) {
  * @param {*} fail Function
  * @param {*} complete Function
  */
-const myRequest = function (params = {}, url , id) {
+// id 类型或id   st 状态
+const myRequest = function (params = {}, url , id, st, page) {
 
     return new Promise((resolve, reject) => {
         let data = params.data || {};
@@ -30,7 +31,12 @@ const myRequest = function (params = {}, url , id) {
         if (id!=undefined){
           apiUrl = url +'/'+id
         }
-        
+        if (st != undefined) {
+          apiUrl = apiUrl + '/' + st
+        }
+        if (page != undefined) {
+          apiUrl = apiUrl + '?page=' + page
+        }
         wx.request({
             url: apiUrl,
             method: params.method || 'GET',
@@ -68,7 +74,7 @@ const myRequest = function (params = {}, url , id) {
                 if (err.errMsg || err.errMsg === "request:fail timeout") {
                     wx.showToast({
                         title: '网络请求超时',
-                        image: '../../images/icons/error.png',
+                        image: '../../public/images/icon/error.png',
                         duration: 3000
                     })
                 }
@@ -207,9 +213,9 @@ const addOrder = (params) => {
     return myRequest(params, `${apiUrl}/ec/order/add`)
 }
 
-// 订单列表
-const orderList = (params,id) => {
-  return myRequest(params, `${apiUrl}/find/api/order/type`,id)
+// 订单列表 id:1找料 2取料 订单状态st: 0所有状态4未支付5待收货6待评价
+const orderList = (params,id,st,page) => {
+  return myRequest(params, `${apiUrl}/find/api/order/type`, id, st, page)
 }
 
 // 订单详情
@@ -338,60 +344,95 @@ const saveTask = (params) => myRequest(params, `${apiUrl}/find/api/task`);
 // 加入小鹿任务
 const joinTask = (params) => myRequest(params, `${apiUrl}/find/api/task`);
 
+// 充值列表
+const getRechargeList = (params) => myRequest(params, `${apiUrl}/find/api/recharge`);
+
+// 找料或取料单价
+const getFindOrFetchPrice = (params,id) => myRequest(params, `${apiUrl}/find/api/taskfee`,id);
+
+// 催单
+const urgeOrder = (params, id) => myRequest(params, `${apiUrl}/find/api/order/prompt`, id);
+// 取消订单
+const delOrder = (params, id) => myRequest(params, `${apiUrl}/find/api/order/cancel`, id);
+
+// 订单列表 订单支付
+const orderListToPay = (params, id) => myRequest(params, `${apiUrl}/find/api/order/repay`, id);
+
+// 订单列表 确认收货
+const affirmOrder = (params, id) => myRequest(params, `${apiUrl}/find/api/order/confirm`, id);
+
+// 订单评价
+const toCommentOrder = (params, id) => myRequest(params, `${apiUrl}/find/api/order/comment`, id);
+
+// 判断配送是否范围
+const isFromScope = (params, id) => myRequest(params, `${apiUrl}/api/member/address_check`, id);
+
+// 修改任务
+const findEdit = (params, id) => myRequest(params, `${apiUrl}/find/api/task`, id);
+
 module.exports = {
-    wxPay,
-    joinTask,
-    saveTask,
-    delTask,
-    getTaskInit,
-    getCheckTypes,
-    apiUrl,
-    wxLogin,
-    wxDatacrypt,
-    associateAccount,
-    login,
-    memberInfo,
-    modifyMemberInfo,
-    memberExit,
-    regSMS,
-    register,
-    restSMS,
-    restpwd,
-    addCart,
-    getCartList,
-    updateNumber,
-    deleteCart,
-    cartNumber,
-    listAddress,
-    infoAddress,
-    addAddress,
-    editAddress,
-    defaultAddress,
-    setDefaultAddress,
-    deleteAddress,
-    addOrder,
-    orderList,
-    orderDetail,
-    cancelOrder,
-    payment,
-    confirmReceipt,
-    search,
-    getCategoryList,
-    getGoodsList,
-    getGoodsDetail,
-    getAddress,
-    brandShow,
-    serviceNum,
-    demandPrice,
-    addDemand,
-    demandPay,
-    demandInfo,
-    demandList,
-    packageList,
-    packageService,
-    addPackageOrder,
-    packageOrderPay,
-    myPackageOrderList,
-    activity,
-    activitySubmit
+  findEdit,
+  isFromScope,
+  toCommentOrder,
+  affirmOrder,
+  orderListToPay,
+  delOrder,
+  urgeOrder,
+  getFindOrFetchPrice,
+  getRechargeList,
+  wxPay,
+  joinTask,
+  saveTask,
+  delTask,
+  getTaskInit,
+  getCheckTypes,
+  apiUrl,
+  wxLogin,
+  wxDatacrypt,
+  associateAccount,
+  login,
+  memberInfo,
+  modifyMemberInfo,
+  memberExit,
+  regSMS,
+  register,
+  restSMS,
+  restpwd,
+  addCart,
+  getCartList,
+  updateNumber,
+  deleteCart,
+  cartNumber,
+  listAddress,
+  infoAddress,
+  addAddress,
+  editAddress,
+  defaultAddress,
+  setDefaultAddress,
+  deleteAddress,
+  addOrder,
+  orderList,
+  orderDetail,
+  cancelOrder,
+  payment,
+  confirmReceipt,
+  search,
+  getCategoryList,
+  getGoodsList,
+  getGoodsDetail,
+  getAddress,
+  brandShow,
+  serviceNum,
+  demandPrice,
+  addDemand,
+  demandPay,
+  demandInfo,
+  demandList,
+  packageList,
+  packageService,
+  addPackageOrder,
+  packageOrderPay,
+  myPackageOrderList,
+  activity,
+  activitySubmit
 }
