@@ -370,7 +370,15 @@ const isFromScope = (params, id) => myRequest(params, `${apiUrl}/api/member/addr
 // 修改任务
 const findEdit = (params, id) => myRequest(params, `${apiUrl}/find/api/task`, id);
 
+// 找料订单详情
+const getOrderDetail = (params, id) => myRequest(params, `${apiUrl}/find/api/order`, id);
+
+// 获取公司地址
+const getCompanyaddress = (params) => myRequest(params, `${apiUrl}/api/company/address`);
+
 module.exports = {
+  getCompanyaddress,
+  getOrderDetail,
   findEdit,
   isFromScope,
   toCommentOrder,

@@ -16,12 +16,12 @@
 
     <view class='find-order-detail-type bb-20 fs30'>
         <view class='lh50'>物料类型: {{itemObj.cname}}</view>
-        <view class='lh50 describe cf'><text>描 <text class='wt-30 wt-30'></text> 述:</text> <text class='ellipsis-line3' style='left:130rpx;top:24rpx;'>{{itemObj.desc}}</text> </view>
+        <view class='lh50 describe cf'><text class='describe-title'>描 <text class='wt-30 wt-30'></text> 述:</text> <text class='ellipsis-line3 describe-content'>{{itemObj.desc}}</text> </view>
         <view class='lh50'>找料方式: {{itemObj.type_name}}</view>
     </view>
 
     <view class='find-order-detail-address bb-20 fs30 pdl-30'>
-      <view class='lh50'> 联 系 人 : {{itemObj.findman_name}}</view>
+      <view class='lh50'> 联 系 人 : {{itemObj.shipping_address.consignee}}  {{itemObj.shipping_address.mobile}} </view>
       <view class='address lh50 pdb-30'>联系地址: <text class='ellipsis-line3 fs30'> {{itemObj.shipping_address.city_str}} {{itemObj.shipping_address.address}}</text></view>
     </view>
 
@@ -33,10 +33,10 @@
     </view>
 
     <view class='find-order-detail-price fs30 pdl-30 border-bottom pd-30'>
-        <view><text>服务费用</text><text class='flr'>￥{{itemObj.shipping_fee}}</text></view>
+        <view><text>服务费用</text><text class='flr'>￥{{itemObj.find_fee}}</text></view>
     </view>
     <view class='fs30 lh90  bb-20 tg-r pdr-30'>
-        <text>实付款： <text class='text-red'>￥{{itemObj.pay_fee}}</text></text>
+        <text>实付款： <text class='text-red'>￥{{itemObj.find_fee}}</text></text>
     </view>
 
      <view class='find-order-detail-btn' wx:if='{{itemObj.button_status.on_cancel==1 ||itemObj.button_status.on_pay==1||itemObj.button_status.on_prompt==1 ||itemObj.button_status.on_confirm==1 ||itemObj.button_status.on_comment==1}}'>
@@ -67,7 +67,7 @@
     <view class='find-order-detail-type bb-20 fs30'>
         <view class='lh50'>物料类型: {{itemObj.cname}}</view>
         <view class='lh50'>物料数量: {{itemObj.fetch_num}}</view>
-        <view class='lh50 describe cf'><text class='find-order-detail-describe'>描 <text class='wt-30 wt-30'></text> 述:</text> <text class='ellipsis-line3' style='left:130rpx;top:24rpx;'>{{itemObj.desc}}</text> </view>
+        <view class='lh50 describe cf'><text class='find-order-detail-describe'>描 <text class='wt-30 wt-30'></text> 述:</text> <text class='ellipsis-line3' style='left: 140rpx;'>{{itemObj.desc}}</text> </view>
         
     </view>
 
@@ -85,14 +85,14 @@
         <view class='lh50'>订单编号: {{itemObj.order_sn}}</view>
         <view class='lh50'>下单时间: {{itemObj.created_at}}</view>
         <!-- <view class='lh50'> 找 料 员 : {{itemObj.findman_name}}</view> -->
-        <view class='lh50'> 配 送 员 : {{itemObj.distribution_name}}/{{itemObj. distribution_mobile}}</view>
+        <view class='lh50'> 配 送 员 : {{itemObj.distribution_name}} {{itemObj. distribution_mobile}}</view>
     </view>
 
     <view class='find-order-detail-price fs30 pdl-30 border-bottom pd-30'>
-        <view><text>服务费用</text><text class='flr'>￥{{itemObj.shipping_fee}}</text></view>
+        <view><text>服务费用</text><text class='flr'>￥{{itemObj.find_fee}}</text></view>
     </view>
     <view class='fs30 lh90  bb-20 tg-r pdr-30'>
-        <text>实付款： <text class='text-red'>￥{{itemObj.pay_fee}}</text></text>
+        <text>实付款： <text class='text-red'>￥{{itemObj.find_fee}}</text></text>
     </view>
 
      <view class='find-order-detail-btn' wx:if='{{itemObj.button_status.on_cancel==1 ||itemObj.button_status.on_pay==1||itemObj.button_status.on_prompt==1 ||itemObj.button_status.on_confirm==1 ||itemObj.button_status.on_comment==1}}'>

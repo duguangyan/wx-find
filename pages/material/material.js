@@ -180,7 +180,7 @@ Page({
   },
   // 返回上一层，继续找料
   goBack() {
-    clearInterval(interval);
+    clearInterval(this.data.interval);
     wx.navigateBack({
       delta: 1
     })

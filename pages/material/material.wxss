@@ -65,12 +65,22 @@
   color: #fff; 
 }
 .field-desc{
-  z-index: 9
+  display: inline-block;
+  width: 500rpx;
+  float: right;
+}
+.field-txt{
+  float: left;
+  width: 150rpx;
+}
+.field-warp{
+  position: relative;
+  z-index: 9;
 }
 .index-popup{
   width: 100%;
   height: 100%;
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   z-index: 999999;
@@ -83,6 +93,7 @@
   position: absolute;
   left: 0;
   top: 0;
+  z-index: 9999;
 }
 .index-popup-content{
   width: 700rpx;
@@ -92,6 +103,7 @@
   top: 20%;
   left: 25rpx;
   border-radius: 10rpx; 
+  z-index: 9999;
 }
 .index-popup-title{
   height: 150rpx;

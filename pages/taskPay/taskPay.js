@@ -12,8 +12,13 @@ Page({
 
   // 去地址选择页面
   goConsigneeAddress(e) {
-    app.globalData.isFromScope = true;
+    
     let index = e.currentTarget.dataset.index;
+    if(index == 1){
+      app.globalData.isFromScope = false;
+    }else{
+      app.globalData.isFromScope = true;
+    }
     wx.navigateTo({
       url: '../consigneeAddress/consigneeAddress?taskPayIndex=' +index,
     })
@@ -80,12 +85,25 @@ Page({
   },
 
   // 支付
-  doPay () {
-    let payDates = {
-      task_ids: this.data.task_ids,
-      shipping_address_find: this.data.findsAddress.id,
-      shipping_address_fetch: this.data.fetchsAddress.id
+  doPay () { 
+    let payDates = {};
+    payDates.task_ids = this.data.task_ids;
+    
+    if (this.data.findsAddress || this.data.fetchsAddress){
+      if (this.data.findsAddress) {
+        payDates.shipping_address_find = this.data.findsAddress.id
+      }
+      if (this.data.fetchsAddress) {
+        payDates.shipping_address_fetch = this.data.fetchsAddress.id
+      }
+    }else{
+      wx.showToast({
+        title: '请添加地址',
+        icon: 'none',
+        duration: 2000
+      })
     }
+    
     api.payment({
       method:'POST',
       data: payDates

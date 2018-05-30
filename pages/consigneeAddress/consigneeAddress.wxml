@@ -32,10 +32,10 @@
                     <text>{{item.mobile}}</text>
                 </view>
 
-                <view class="ellipsis-line3 text-666">
+                <view class="text-666">
                     <text hidden='{{!item.is_default}}' class="text-theme">[选中地址]</text>
                     <text> {{item.city_str}} </text>
-                    <text class='flr'> {{item.address}}</text>
+                    <text> {{item.address}}</text>
                 </view>
 
                 <view class="bold text-666" style="line-height:78rpx;">

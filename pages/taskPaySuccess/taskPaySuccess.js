@@ -20,7 +20,7 @@ Page({
   // 去订单详情
   goFindOrderDetail () {
     wx.navigateTo({
-      url: '../findOrderDetail/findOrderDetail'
+      url: '../findOrderDetail/findOrderDetail?id=' + this.data.pay_log.id
     })
   },
   /**

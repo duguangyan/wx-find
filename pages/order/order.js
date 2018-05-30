@@ -150,7 +150,7 @@ Page({
         }).then((res) => {
           console.log(res);
           if (res.code == 200) {
-            let data = res.data;
+            let data = res.data.sdk;
             let pay_log = JSON.stringify(res.data.pay_log);
             data.success = function (res) {
               console.log('支付成功');
@@ -228,11 +228,12 @@ Page({
   goFindDetail (e) {
     console.log('去详情页');
     let index = e.currentTarget.dataset.index;
+    let id = e.currentTarget.dataset.id;
     console.log(index);
     let item = JSON.stringify(this.data.findList[index]);
     console.log(item);
     wx.navigateTo({
-      url: '../findOrderDetail/findOrderDetail?item=' + item + '&nav=' + this.data.orderNavNum
+      url: '../findOrderDetail/findOrderDetail?id=' + id + '&nav=' + this.data.orderNavNum
     })
   },
   // 去找料详情
@@ -309,13 +310,21 @@ Page({
   },
 
   // 获取订单列表
-  getList(index,status,page){   
+  getList(index,status,page){  
+    wx.showLoading({
+      title: '加载中',
+    }) 
     api.orderList({}, index, status, page).then((res)=>{
       if(res.code==200){
         if(page){
           this.data.findList = this.data.findList.concat(res.data);
         }else{
           this.data.findList = res.data;
+        }
+        if (!this.data.findList || this.data.findList.length<=0){
+          this.setData({
+            isData:true
+          })
         }
         this.data.totalPages = res.total;
         for (let i = 0; i < this.data.findList.length;i++){
@@ -342,7 +351,12 @@ Page({
           shopLoading: this.data.shopLoading
         })
 
+      }else{
+        this.setData({
+          isData: true
+        })
       }
+      wx.hideLoading();
       console.log(res.data);
     })
   },
@@ -368,16 +382,15 @@ Page({
       // Do something when catch error
     }
     
-
-    // 初始化获取找料列表
-    this.getList(this.data.orderNavNum, this.data.orderChildNavNum);
+    
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-  
+    // 初始化获取找料列表
+    this.getList(this.data.orderNavNum, this.data.orderChildNavNum);
   },
 
   /**

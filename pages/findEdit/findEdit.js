@@ -180,15 +180,19 @@ Page({
     console.log(app.globalData.isFromScope)
   },
   // 选择找料方式
-  selcetTab(e) {
+  selcetTab(e) { 
     let index = e.currentTarget.dataset.index;
     let id = e.currentTarget.dataset.id;
     this.data.addFinds[index].selcetTabNum = id;
+    
     this.data.addFinds[index].find_type = id;
+    this.data.addFinds[index].address = this.data.defaultAddress;
+ 
     console.log(id);
     // 设置不需要判断服务范围
     if (id == 2) {
       this.data.addFinds[index].address.isGoodsAddress = false;
+      this.data.addFinds[index].selcetSecondTabNum = 1;
     }
     this.setData({
       addFinds: this.data.addFinds
@@ -378,28 +382,72 @@ Page({
       }
     })
   },
-
+  // 获取公司地址
+  getCompanyaddress() {
+    api.getCompanyaddress({}).then((res) => {
+      if (res.code == 200) {
+        console.log('公司地址');
+        console.log(res.data.address);
+        let companyaddress = res.data;
+        this.setData({
+          companyaddress
+        })
+      }
+    })
+  },
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
+  onLoad: function (options) { 
+    // 获取公司地址
+    this.getCompanyaddress();
+
     let item = JSON.parse(options.item);
     let index = options.index
     console.log(item);
+    let files = [{
+      url: item.form_data.front_img,
+        //pct: 'wait'
+      },{
+        url: item.form_data.side_img,
+        //pct: 'wait'
+      }, {
+        url: item.form_data.back_img,
+        //pct: 'wait'
+      }
 
-    // this.data.addFinds.selcetTabNum = item.form_data.find_type;
-    // this.data.addFinds.selcetSecondTabNum = item.form_data.get_type;
-    
+    ];
+
+
+    if (item.form_data.front_img){
+      files[0].pct = '100%'
+    }
+
+    if (item.form_data.side_img) {
+      files[1].pct = '100%'
+    }
+
+    if (item.form_data.back_img) {
+      files[2].pct = '100%'
+    }
     this.data.addFinds[0] = item.form_data;
     this.data.addFinds[0].id = item.id;
-    this.data.addFinds[0].files= [{}, {}, {}];
+    this.data.addFinds[0].files = files;
     this.data.addFinds[0].index = index;
+    this.data.addFinds[0].selcetTabNum = item.form_data.find_type;
+    if (this.data.addFinds[0].selcetTabNum == 3){
+      this.data.addFinds[0].isSelect = true
+    }
+    this.data.addFinds[0].selcetSecondTabNum = item.form_data.get_type;
+
     // 获取找料类型数据
     this.getCheckTypes();
     
     this.setData({
       addFinds: this.data.addFinds,
     })
+    // 获取默认地址
+    this.getSelectedAddress();
     console.log(this.data.addFinds);
   },
 
@@ -561,6 +609,27 @@ Page({
     })
   },
   submit(){
+
+    if (!this.data.addFinds[0].desc){
+      wx.showToast({
+        title: '请填写描述',
+        icon: 'none',
+        duration: 2000
+      })
+      return false
+    }
+    if (this.data.addFinds[0].selcetTabNum == 2){
+      if (!this.data.addFinds[0].address.isGoodsAddress) {
+        wx.showToast({
+          title: '请填写地址',
+          icon: 'none',
+          duration: 2000
+        })
+        return false
+      }
+    }
+    
+
     let data = {
       form_data: this.data.addFinds[0],
       id: this.data.addFinds[0].id

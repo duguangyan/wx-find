@@ -56,6 +56,9 @@ Page({
     },
     // 点击选中地址返回
      goBlack (e) {  
+       if (this.data.center){
+         return false;
+       }
        // 获取当前点击地址数据
        let item = e.currentTarget.dataset.item;
        console.log(item);
@@ -99,24 +102,30 @@ Page({
      },
      // 返回上一级
      navigateBack(item) {
-       // 返回上一页
-       var pages = getCurrentPages();
-       var currPage = pages[pages.length - 1];   //当前页面
-       var prevPage = pages[pages.length - 2];  //上一个页面
        if (this.data.hasFormfetch) {
          // 更新上一页的地址数据  来自找料任务页面
+         let pages = getCurrentPages();
+         let currPage = pages[pages.length - 1];   //当前页面
+         let prevPage = pages[pages.length - 2];  //上一个页面
          prevPage.setData({
            defaultAddress: item
          })
        } else if (this.data.hasFormFind) {
          // 更新上一页的地址数据  来自找料任务页面
+         let pages = getCurrentPages();
+         let currPage = pages[pages.length - 1];   //当前页面
+         let prevPage = pages[pages.length - 2];  //上一个页面
          this.data.addFinds[app.globalData.addressIndex].address = item;
          this.data.addFinds[app.globalData.addressIndex].get_address = item.id;
          prevPage.setData({
-           addFinds: this.data.addFinds
+           addFinds: this.data.addFinds,
+           defaultAddress:item
          })
        } else if (this.data.taskPayIndex) {
          // 更新上一页的地址数据  来自订单支付页面
+         let pages = getCurrentPages();
+         let currPage = pages[pages.length - 1];   //当前页面
+         let prevPage = pages[pages.length - 2];  //上一个页面
          if (this.data.taskPayIndex == 1) {
            prevPage.setData({
              findsAddress: item
@@ -183,6 +192,7 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
+      this.data.center = options.center;
       if(options.fetchs){
         this.setData({
           hasFormfetch: true

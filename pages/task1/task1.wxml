@@ -59,8 +59,8 @@
 
               <view data-index="{{index}}" class='cf  pdl-20'>
                 <view data-index="{{index}}" class='check-box'>
-                  <text bindtap='fetchCheck' data-index="{{index}}" wx:if='{{item.check}}' class="iconfont icon-dui fs40 pdr-20 text-theme"></text>
-                  <text bindtap='fetchCheck' data-index="{{index}}" wx:if='{{!item.check}}' class="iconfont icon-yuan fs40 pdr-20 text-eb"></text>
+                  <text catchtap='fetchCheck' data-index="{{index}}" wx:if='{{item.check}}' class="iconfont icon-dui fs40 pdr-20 text-theme"></text>
+                  <text catchtap='fetchCheck' data-index="{{index}}" wx:if='{{!item.check}}' class="iconfont icon-yuan fs40 pdr-20 text-eb"></text>
                 </view>
                 <view data-index="{{index}}" class='task-find fs30 pdt-30'>
                     <view data-index="{{index}}" class='task-find-text'>物料名称: {{item.cname}}</view>
@@ -82,15 +82,15 @@
   
 </view>  
 
-<view class='no-data' wx:if='{{finds.length<=0 && fetchs.length<=0}}'>
+<view class='no-data' wx:if='{{isData}}'>
     <image src='../../public/images/icon/no_order.png'></image>
     <view>暂无任务</view>
 </view> 
 
 <view class='task-pay box-shadow lh90 fs30 mgb-30' wx:if='{{finds.length>0 || fetchs.length>0}}'>
       <view class='mgl-30'>
-        <text bindtap='checkAll' data-check='true' wx:if='{{isCheckAll}}' class="iconfont icon-dui fs40 pdr-20 text-theme"></text>
-        <text bindtap='checkAll' data-check='false' wx:if='{{!isCheckAll}}' class="iconfont icon-yuan fs40 pdr-20 text-eb"></text>
+        <text catchtap='checkAll' data-check='true' wx:if='{{isCheckAll}}' class="iconfont icon-dui fs40 pdr-20 text-theme"></text>
+        <text catchtap='checkAll' data-check='false' wx:if='{{!isCheckAll}}' class="iconfont icon-yuan fs40 pdr-20 text-eb"></text>
           <text class='text-underline mgr-50'>全选</text>
           <text class='mgr-50'>合计：<text class='text-red'>￥{{filter.formatMoney(sumPrice)}}</text></text>
           <text wx:if="{{sumPrice!=0}}" class='task-pay-btn text-underline' bindtap='saveTask'>结算</text> 

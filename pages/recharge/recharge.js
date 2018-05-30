@@ -24,8 +24,8 @@ Page({
     }).then((res) => {
       console.log(res);
       if (res.code == 200) {
-        let data = res.data;
-        data.success = function (res) {
+        let data = res.data.sdk;
+        data.success = function (res) { 
           console.log('支付成功');
           console.log(res);
           wx.navigateTo({

@@ -41,11 +41,16 @@
 
 .together-box {
     width: 230rpx;
-    display: inline-block;
-    margin-left:90rpx; 
-    margin-top: 60rpx;
+    float: left;
+    margin-left: 105rpx;
+    margin-top: 50rpx;
 }
-
+.recharge-box {
+    width: 230rpx;
+    float: left;
+    margin-left: 80rpx;
+    margin-top: 50rpx;
+}
 .together-box button {
     height: 90rpx;
     line-height: 90rpx;
@@ -54,12 +59,7 @@
     font-size: 28rpx;
 }
 
-.recharge-box {
-    width: 230rpx;
-    display: inline-block;
-    margin-left:130rpx;
-    margin-top: 60rpx;
-}
+
 
 .recharge-box button {
     height: 90rpx;

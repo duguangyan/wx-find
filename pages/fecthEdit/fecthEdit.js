@@ -256,6 +256,18 @@ Page({
       }
     })
   },
+
+  // 获取公司地址
+  getCompanyaddress() {
+    api.getCompanyaddress({}).then((res) => {
+      if (res.code == 200) {
+        let companyaddress = res.data;
+        this.setData({
+          companyaddress
+        })
+      }
+    })
+  },
   /**
    * 生命周期函数--监听页面加载
    */
@@ -279,6 +291,8 @@ Page({
     })
     // 获取物料类型
     this.getCheckTypes();
+    // 获取公司地址
+    this.getCompanyaddress();
     // 获取默认地址
     //this.getDefaultAddress();
     // 获取找料单价

@@ -30,7 +30,7 @@ Page({
       let token = app.globalData.token;
       if (token){
         wx.navigateTo({
-          url: '../consigneeAddress/consigneeAddress',
+          url: '../consigneeAddress/consigneeAddress?center=1',
         })
       }else{
         wx.showModal({
@@ -173,7 +173,6 @@ Page({
     onShow: function () {
         // 更新用户信息
       // 用于注册返回更新用户状态
-      if (app.globalData.token){
         api.memberInfo({
 
         }).then((res) => {
@@ -185,7 +184,7 @@ Page({
         }).catch((res) => {
 
         })
-      }
+      
       
 
     },

@@ -12,7 +12,7 @@
             <view class="width-200 word-spacing">
                 <text class="text-theme">*</text> 描 述 ：</view>
 
-            <textarea class="flex-1 height-200" name="field_desc" data-index='{{idx}}' bindinput='getDescription' value="{{item.desc}}" placeholder='(注：请详细描述物料的名称、用途、材质、交货时间)'>
+            <textarea class="flex-1 height-200"  wx:if="{{!isPopup}}" name="field_desc" data-index='{{idx}}' bindinput='getDescription' value="{{item.desc}}" placeholder='(注：请详细描述物料的名称、用途、材质、交货时间)'>
             </textarea>
         </view>
 
@@ -76,13 +76,12 @@
               <input class="hidden" value="{{addressId}}" name="address_id"></input>
           </view>
           <view class="cell-padding fs30 mgt-30" wx:if='{{item.selcetSecondTabNum==2}}'>
-              <text class="text-theme">*</text>寄样地址
+              <text class="text-theme"> </text>寄样地址
               <input class="hidden" value="{{addressId}}" name="address_id"></input>
           </view>
           <view class="border-bottom cell-padding address flex flex-start">
-              <text class="iconfont icon-dizhi fs40 text-gray mgr-20"></text>
-
-              <view data-index='{{idx}}' bindtap='goConsigneeAddress' hidden='{{ !item.address.isGoodsAddress}}' class="flex-1 address-info fs30">
+              <text class="iconfont icon-dizhi fs40 text-gray mgr-20" wx:if='{{item.selcetSecondTabNum==1}}'></text>
+              <view data-index='{{idx}}' bindtap='goConsigneeAddress' wx:if='{{ item.selcetSecondTabNum == 1 }}' hidden='{{ !item.address}}' class="flex-1 address-info fs30">
                   <view class="flex">
                       <text>档口名称: {{item.address.stall}}</text>
                   </view>
@@ -98,7 +97,20 @@
 
               </view>
 
-              <view data-index='{{idx}}' bindtap='goConsigneeAddress'  hidden='{{item.address.isGoodsAddress}}' class="text-666 h100 lh100 flex-1">
+            <view data-index='{{idx}}'  wx:if='{{ item.selcetSecondTabNum == 2 }}' class="flex-1 address-info fs30">
+                  <view class="flex">
+                      <text>收货人<text class='mgl-30'>:</text> {{companyaddress.consignee}}</text>
+                      <text>{{companyaddress.mobile}}</text>
+                  </view>
+
+                  <view>
+                      <text>收货地址：</text>
+                      <text class='ellipsis' style='width:500rpx;float:right;'>{{companyaddress.address}}</text>
+                  </view>
+
+              </view>
+
+              <view data-index='{{idx}}' bindtap='goConsigneeAddress'  hidden='{{item.address || item.selcetSecondTabNum == 2 }}' class="text-666 h100 lh100 flex-1">
                   点击添加收货地址
               </view>
           </view>
@@ -123,7 +135,7 @@
         <view class='index-popup-title'>加入小鹿任务成功！</view>
         <view class='index-popup-btn'>
             <view class='go-pay' catchtap='goPay'>去结算({{payNum}}s)</view>
-            <view catchtap='goBack'>继续取料</view>
+            <view catchtap='goBack'>继续找料</view>
         </view>   
     </view>
 </view>

@@ -29,7 +29,7 @@ page {
     flex-direction: column;
     justify-content: space-around;
     align-items: flex-start;
-    padding-right: 90rpx;
+
     padding-bottom: 30rpx;
     position: relative;
 }

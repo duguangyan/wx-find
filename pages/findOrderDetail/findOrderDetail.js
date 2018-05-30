@@ -199,14 +199,35 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
-      let nav = options.nav,
-          itemObj = JSON.parse(options.item)
-      this.setData({
-        nav,
-        itemObj
-      })
+      if (options.id){
+        api.getOrderDetail({}, options.id).then((res)=>{
+            console.log(res);
+            if(res.code == 200 ){
+              let nav = options.nav,
+                itemObj = res.data;
+              if (itemObj.type == 1){
+                itemObj.type_name = '按图找料'
+              } else if (itemObj.type == 2){
+                itemObj.type_name = '按样找料'
+              } else if (itemObj.type == 3){
+                itemObj.type_name = '按描述找料'
+              }
+              this.setData({
+                nav,
+                itemObj
+              })
+            }
+           
+        })
+      }
 
-      console.log(JSON.parse(options.item));
+      // let nav = options.nav,
+      //     itemObj = JSON.parse(options.item)
+      // this.setData({
+      //   nav,
+      //   itemObj
+      // })
+
 
 
     },

@@ -31,10 +31,10 @@
             <view class='box-shadow task-find'  wx:for="{{findList}}"  wx:key="this">
               <view class='task-find-title fs30'>
                   <text class='task-find-sn ellipsis'>订单编号: {{item.order_sn}}</text>
-                  <text class='task-find-snname text-red flr pdr-30'>{{item.is_payed?'待支付':'已支付'}}</text>
+                  <text class='task-find-snname text-red flr pdr-30'>{{item.is_payed?'已支付':'待支付'}}</text>
               </view>
               <view class='task-find-list fs30 cf'>
-                <view bindtap='goFindDetail' data-index="{{index}}"  class='task-find-item-warp'>
+                <view bindtap='goFindDetail' data-id='{{item.id}}' data-index="{{index}}"  class='task-find-item-warp'>
                   <view class='task-find-item'>
                     <view>物料品类：{{item.cname}}</view>
                     <view>物料描述：{{item.desc}}</view>

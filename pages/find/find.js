@@ -158,18 +158,7 @@ Page({
       // 判断是否在配送范围
       if (id == 1){
         app.globalData.isFromScope = false;
-        this.isGoodsAddress(this.data.addFinds[index].address.id ,index);
-
-        if (app.globalData.isFromScope) {
-          this.data.addFinds[index].address.isGoodsAddress = true;
-        } else {
-          this.data.addFinds[index].address.isGoodsAddress = false;
-        }
-      }else{
-        app.globalData.isFromScope = true;
-        this.data.addFinds[index].address.isGoodsAddress = true;
       }
-      
       this.data.addFinds[index].selcetSecondTabNum = id;
       this.data.addFinds[index].get_type = id;
       console.log(id);
@@ -185,11 +174,7 @@ Page({
         let id = e.currentTarget.dataset.id;
         this.data.addFinds[index].selcetTabNum = id;
         this.data.addFinds[index].find_type = id;
-        console.log(id);
-        // 设置不需要判断服务范围
-        if (id==2){
-          this.data.addFinds[index].address.isGoodsAddress = false;
-        }
+    
         this.setData({
           addFinds: this.data.addFinds
         })
@@ -378,12 +363,27 @@ Page({
           }
       })
     },
-
+    // 获取公司地址
+    getCompanyaddress(){ 
+      api.getCompanyaddress({}).then((res)=>{
+        if(res.code == 200){
+          console.log('公司地址');
+          console.log(res.data.address);
+          let companyaddress = res.data;
+          this.setData({
+            companyaddress
+          })
+        }
+      })
+    },
+    
+    
     /**
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
-
+      // 获取公司地址
+      this.getCompanyaddress();
       // 获取找料类型数据
       this.getCheckTypes();
       // 获取默认地址
@@ -391,7 +391,6 @@ Page({
         console.log('--------');
         console.log(options.findNum);
         console.log(this.data.defaultAddress);
-        this.data.defaultAddress.isGoodsAddress = false;
         // 获取上一级页面传过来的数据
         this.setData({
           findNum: options.findNum,
@@ -477,7 +476,8 @@ Page({
             } else {
               this.data.addFinds[app.globalData.addressIndex].address = res.data;
                 this.setData({
-                    defaultAddress,
+                   // 设置为空
+                    defaultAddress:false,
                     addressId: defaultAddress.id,
                     addFinds: this.data.addFinds
                 }) 

@@ -109,38 +109,17 @@ Page({
     },
     // 去找料
     goFind() {
-        let token = app.globalData.token || true;
-        //let token = wx.getStorageSync('token')
-        //let token = true;
-        if (token) {
-          this.setData({
-            isPopup:true
-          })
-        } else {
-            // 跳转关联页面
-            wx.navigateTo({
-              url: '../login/login',
-            })
-        }
+      this.setData({
+        isPopup: true
+      })
     },
     // 立刻取料  
     goMaterial() {
-      let token = app.globalData.token;
-      //let token = true;
-      if (token) {
-        this.setData({
-          isPopup: true
-        })
-      } else {
-        // 跳转关联页面
-        wx.navigateTo({
-          url: '../material/material',
-        })
-      }
-  
+      // 跳转关联页面
+      wx.navigateTo({
+        url: '../material/material',
+      })
     },
-
-
 
     /**
      * 生命周期函数--监听页面加载

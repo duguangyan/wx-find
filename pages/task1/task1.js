@@ -38,9 +38,17 @@ Page({
     ]
   },
   //初始话任务中心数据
-  init() {
+  init() { 
+    wx.showLoading({
+      title: '加载中',
+    })
     api.getTaskInit({}, '0').then((res) => {
       if (res.code == 200) {
+        if (!res.data || res.data.find.length <= 0 || res.data.fetch.length<=0 ){
+          this.setData({
+            isData: true,
+          })
+        }
         this.setData({
           taskDates: res.data,
         })
@@ -50,7 +58,13 @@ Page({
           for (let i = 0; i < finds.length; i++) {
             finds[i].txtStyle = '';
             finds[i].check = true;
-            finds[i].address = JSON.parse(finds[i].address);
+            // 判断地址是否为空
+            if (finds[i].address==''){
+              finds[i].address = finds[i].address;
+            }else{
+              finds[i].address = JSON.parse(finds[i].address);
+            }
+            
             if (finds[i].form_data.find_type == '1') {
               finds[i].form_data.find_type_name = '按图找料'
             } else if (finds[i].form_data.find_type == '2') {
@@ -79,7 +93,12 @@ Page({
         }
         // 统计合计金额
         this.doSumPrice();
+      }else{
+        this.setData({
+          isData: true,
+        })
       }
+      wx.hideLoading();
     })
   },
   // 点击找料修改

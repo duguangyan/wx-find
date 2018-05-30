@@ -51,13 +51,15 @@
         <view>免费服务<text class="text-theme">{{serviceData.num_task || ''}}</text> 次</view>
         <view>免费服务<text class="text-theme">{{serviceData.num_people || ''}}</text>人</view>
     </view>
-    <view class="together-box">
-        <button bindtap='goFind'>立即找料</button>
+    <view class='cf'>
+      <view class="together-box">
+          <button catchtap='goFind'>立即找料</button>
+      </view>
+      <view class="recharge-box">
+          <button catchtap='goMaterial'>立刻取料</button>
+      </view>
     </view>
-
-     <view class="recharge-box">
-        <button bindtap='goMaterial'>立刻取料</button>
-    </view>
+    
     <view bindtap='contact' class="text-theme contact">
         <text class="iconfont icon-dianhua"></text>
         <text>联系小鹿快找：400-8088-156</text>
