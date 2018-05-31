@@ -20,7 +20,7 @@
             <view class="section-item-title fs35 bold-800">
                 <text class='fs36'>快</text>
             </view>
-            <view>
+            <view style='width:220rpx'>
                 <text class="text-666">3分钟响应、3小时反馈、8小时内找到 </text>
             </view>
         </view>
@@ -100,7 +100,7 @@
           </view>
         </view>
 
-        <view class='doSubmit' catchtap='doSubmit'>
+        <view class='doSubmit btn-shadow' catchtap='doSubmit'>
           提交
         </view> 
     </view>

@@ -9,36 +9,62 @@
           <text class='mgl-20'>找料任务</text>
       </view>
      
-      <view class="items">  
-        <view wx:for="{{finds}}"  wx:key="{{index}}"  class="item bb-1" style="height:{{item.form_data.find_type == '3'?'200rpx':'300rpx'}}">  
-          <view bindtap='findEdit' data-item='{{item}}' bindtouchstart="touchS" bindtouchmove="touchM" bindtouchend="touchE" data-index="{{index}}" style="{{item.txtStyle}}" class="inner txt">  
+      <view class="items cf">  
+        <view wx:for="{{finds}}"  wx:key="{{index}}"  class="item bb-1 fetch cf">  
+          <view bindtap='findEdit' data-item='{{item}}' data-nav='1' bindtouchstart="touchS" bindtouchmove="touchM" bindtouchend="touchE" data-index="{{index}}" style="{{item.txtStyle}}" class="inner txt">  
 
-              <view data-index="{{index}}" class='cf  pdl-20'>
-                <view data-index="{{index}}" class='check-box'>
-                  <text style="top:{{item.form_data.find_type == '3'?'50rpx':'80rpx'}}" catchtap='findCheck' data-index="{{index}}" wx:if='{{item.check}}' class="iconfont icon-dui fs40 pdr-20 text-theme"></text>
-                  <text style="top:{{item.form_data.find_type == '3'?'50rpx':'80rpx'}}" catchtap='findCheck' data-index="{{index}}" wx:if='{{!item.check}}' class="iconfont icon-yuan fs40 pdr-20 text-eb"></text>
+              <view data-index="{{index}}" data-nav='1' class='cf  pdl-30'>
+                <view data-index="{{index}}"  data-nav='1' class='check-box'>
+                  <text style="top:{{item.form_data.find_type == '3'?'50rpx':'80rpx'}}" catchtap='findCheck'  data-nav='1' data-index="{{index}}" wx:if='{{item.check}}' class="iconfont icon-dui fs40 pdr-20 text-theme"></text>
+                  <text style="top:{{item.form_data.find_type == '3'?'50rpx':'80rpx'}}" catchtap='findCheck'  data-nav='1' data-index="{{index}}" wx:if='{{!item.check}}' class="iconfont icon-yuan fs40 pdr-20 text-eb"></text>
                 </view>
-                <view data-index="{{index}}" class='task-find fs30 pdt-30'>
-                    <view data-index="{{index}}" class='task-find-text'>物料类型: {{item.cname}}</view>
-                    <view data-index="{{index}}" class='task-find-text task-find-describe'>物料描述: {{item.form_data.desc}}</view>
-                    <view data-index="{{index}}" class='task-find-text'>提供找料方式: {{item.form_data.find_type_name}}</view>
-                    <view data-index="{{index}}" class='task-find-method'>
-                        <view data-index="{{index}}" class='task-find-method-1' wx:if="{{ item.form_data.find_type == '1'}}">
-                            <image data-index="{{index}}" class='task-find-img' src='{{item.form_data.front_img}}'></image> 
-                            <image data-index="{{index}}" class='task-find-img' src='{{item.form_data.side_img}}'></image> 
-                            <image data-index="{{index}}" class='task-find-img' src='{{item.form_data.back_img}}'></image>    
-                        </view>
-                        <view data-index="{{index}}" class='task-find-method-2' wx:if="{{ item.form_data.find_type == '2'}}">
-                            <text data-index="{{index}}">取料地址: {{item.address.city_str}} {{item.address.address}}</text>
-                        </view> 
-                        <text data-index="{{index}}" class='task-find-price' style="top:{{item.form_data.find_type == '3'?'110rpx':''}}">金额: <text data-index="{{index}}" class='text-red fs30'>￥{{filter.formatMoney(item.form_data.fee)}}</text></text>
+                <view data-index="{{index}}"  data-nav='1' class='task-find fs30 pdt-30'>
+                    <view data-index="{{index}}"  data-nav='1' class='task-find-text'>物料类型: {{item.cname}}
+                    <text data-index="{{index}}"  data-nav='1' class='task-find-price flr' 
+                    style="top:{{item.form_data.find_type == '3'?'110rpx':''}}">金额: <text data-index="{{index}}"  data-nav='1' class='fs30'>￥{{filter.formatMoney(item.form_data.fee)}}</text></text>
                     </view>
+                    <view data-index="{{index}}" data-nav='1' class='task-find-text task-find-describe'>物料描述: {{item.form_data.desc}}</view>
+                    <view data-index="{{index}}" data-nav='1' class='task-find-text'>
+                       提供找料方式: {{item.form_data.find_type_name}}
+                    </view>
+                    
+                    <view data-index="{{index}}" 
+                          data-nav='1' 
+                          class='task-find-text' 
+                          wx:if="{{ item.form_data.find_type == '2'}}">
+                        档口: {{item.address.stall}} 
+                    </view>
+                    <view data-index="{{index}}" 
+                          data-nav='1' 
+                          class='task-find-text'
+                          wx:if="{{ item.form_data.find_type == '2'}}">
+                        联系人: {{item.address.consignee}} {{item.address.mobile}}
+                    </view>
+                    <view data-index="{{index}}" style='line-height:50rpx;' data-nav='1' class='' wx:if="{{ item.form_data.find_type == '2'}}">
+                          <text style='white-space: pre-wrap' data-index="{{index}}">取料地址: {{item.address.city_str}} {{item.address.address}}</text>
+                      </view> 
+                    <view data-index="{{index}}" data-nav='1' class='task-find-method'>
+                        <view data-index="{{index}}" data-nav='1' class='task-find-method-1' wx:if="{{ item.form_data.find_type == '1'}}">
+                            <image data-index="{{index}}" data-nav='1' class='task-find-img' src='{{item.form_data.front_img}}'></image> 
+                            <image data-index="{{index}}" data-nav='1' class='task-find-img' src='{{item.form_data.side_img}}'></image> 
+                            <image data-index="{{index}}" data-nav='1' class='task-find-img' src='{{item.form_data.back_img}}'></image>    
+                        </view>
+                         
+                      
+                    </view>
+                    <image data-index="{{index}}" data-nav='1' class='task-find-image'
+                     style="top:{{item.form_data.find_type == '3'?'80rpx':'100rpx'}}"
+                     src='../../public/images/task/task_find.png'></image>
                 </view>
               </view>
             </view>  
-            <view data-index="{{index}}" data-id='{{item.id}}' bindtap="delItemFind" class="inner del" style="line-height:{{item.form_data.find_type == '3'?'200rpx':'300rpx'}}" >删除</view>  
+            <view data-index="{{index}}" data-id='{{item.id}}' mode="widthFix" bindtap="delItemFind" class="inner del" 
+            style="line-height:{{item.form_data.find_type == '3'?'200rpx':'300rpx'}}" >删除</view>  
           </view>  
         </view>  
+        <view class='lh90 flr fs30 pdr-30'>
+            共{{finds.length}}个任务,小计 <text class='text-red'>￥{{filter.formatMoney(totalFindsPrice)}}</text>
+        </view> 
       </view>  
   
 </view>  
@@ -55,31 +81,42 @@
      
       <view class="items">  
         <view wx:for="{{fetchs}}"  wx:key="{{index}}"  class="item bb-1 fetch">  
-          <view bindtap='fetchEdit' data-item='{{item}}' bindtouchstart="touchSfetch" bindtouchmove="touchMfetch" bindtouchend="touchEfetch" data-index="{{index}}" style="{{item.txtStyle}}" class="inner txt">  
+          <view bindtap='fetchEdit' data-item='{{item}}' data-nav='2' bindtouchstart="touchS" bindtouchmove="touchM" bindtouchend="touchE" data-index="{{index}}" style="{{item.txtStyle}}" class="inner txt">  
 
-              <view data-index="{{index}}" class='cf  pdl-20'>
-                <view data-index="{{index}}" class='check-box'>
-                  <text catchtap='fetchCheck' data-index="{{index}}" wx:if='{{item.check}}' class="iconfont icon-dui fs40 pdr-20 text-theme"></text>
-                  <text catchtap='fetchCheck' data-index="{{index}}" wx:if='{{!item.check}}' class="iconfont icon-yuan fs40 pdr-20 text-eb"></text>
+              <view data-index="{{index}}" data-nav='2' class='cf  pdl-30'>
+                <view data-index="{{index}}" data-nav='2' class='check-box'>
+                  <text catchtap='fetchCheck' data-index="{{index}}" data-nav='2' wx:if='{{item.check}}' class="iconfont icon-dui fs40 pdr-20 text-theme"></text>
+                  <text catchtap='fetchCheck' data-index="{{index}}" data-nav='2' wx:if='{{!item.check}}' class="iconfont icon-yuan fs40 pdr-20 text-eb"></text>
                 </view>
-                <view data-index="{{index}}" class='task-find fs30 pdt-30'>
-                    <view data-index="{{index}}" class='task-find-text'>物料名称: {{item.cname}}</view>
-                    <view data-index="{{index}}" class='task-find-text task-find-describe'>物料描述: {{item.form_data.desc}}</view>
-                    <view data-index="{{index}}" class='task-find-method'>
-                        <view data-index="{{index}}" class='task-find-method-2'>
-                            <text data-index="{{index}}">取料地址: {{item.address.city_str}} {{item.address.address}}</text>
+                <view data-index="{{index}}" data-nav='2' class='task-find fs30 pdt-30 cf'>
+                    <view data-index="{{index}}" data-nav='2' class='task-find-text'>
+                    物料名称: {{item.cname}}
+                     <text data-index="{{index}}" data-nav='2' class='task-fetch-price flr'>金额: <text data-index="{{index}}" class='fs30'>￥{{filter.formatMoney(item.form_data.fee)}}</text></text>
+                    </view>
+                    <view data-index="{{index}}" data-nav='2' class='task-find-text task-find-describe'>物料描述: {{item.form_data.desc}}</view>
+                    <view data-index="{{index}}" data-nav='2' class='task-find-method'>
+                        <view data-index="{{index}}" data-nav='2' class='task-find-method-2'>
+                            <text data-index="{{index}}" data-nav='2'>取料地址: {{item.address.city_str}} {{item.address.address}}</text>
                         </view> 
 
-                        <text data-index="{{index}}" class='task-fetch-price'>金额: <text data-index="{{index}}" class='text-red fs30'>￥{{filter.formatMoney(item.form_data.fee)}}</text></text>
+                       
                     </view>
+                    <image data-index="{{index}}" data-nav='2' class='task-get-image'
+                     src='../../public/images/task/task_get.png'></image>
                 </view>
+                
               </view>
+             
             </view>  
-            <view data-index="{{index}}" data-id='{{item.id}}' bindtap = "delItemFetch" class="inner del" style='height:200rpx;line-height:200rpx;'>删除</view>  
+            
+            <view data-index="{{index}}" data-id='{{item.id}}' mode="widthFix" bindtap="delItemFetch" class="inner del" style='height:200rpx;line-height:200rpx;'>删除</view>  
           </view>  
-        </view>  
+        </view> 
+        <view class='lh90 flr fs30 pdr-30'>
+            共{{fetchs.length}}个任务,小计 <text class='text-red'>￥{{filter.formatMoney(totalFetchsPrice)}}</text>
+        </view> 
       </view>  
-  
+              
 </view>  
 
 <view class='no-data' wx:if='{{isData}}'>
@@ -89,7 +126,9 @@
         去添加任务
     </view>
 </view> 
+<view style='height:200rpx;'>
 
+</view>
 <view class='task-pay box-shadow lh90 fs30 mgb-30' wx:if='{{finds.length>0 || fetchs.length>0}}'>
       <view class='mgl-30'>
         <text catchtap='doCheckAll' data-check='1' wx:if='{{isCheckAll}}' class="iconfont icon-dui fs40 pdr-20 text-theme"></text>

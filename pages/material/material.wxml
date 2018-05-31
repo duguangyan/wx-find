@@ -2,15 +2,15 @@
 <wxs src="../../utils/filter.wxs" module="filter" />
 <view class='material'>
     <view class='box-shadow'>
-        <view class='lh90 fs30 pdl-30 border-bottom'>
+        <view class='lh90 fs30 pdl-20 border-bottom'>
           物料信息
         </view>
-        <view class='lh90 fs30 pdl-30 bb-1'  bindtap='checkType'>
-            <text class="text-theme">*</text> <text>物料品类:</text> <text class='pdl-10'> {{checkType}}</text> 
+        <view class='lh90 fs30 pdl-20 bb-1'  bindtap='checkType'>
+            <text class="text-theme">*</text> <text>物料品类:</text> <text style='padding-left:160rpx;'> {{checkType}}</text> 
             <view wx:if='{{!isSelect}}'  class='iconfont icon-jiantou material-icon flr pdr-30'></view>
             <view wx:if='{{isSelect}}'  class='iconfont icon-xiangxia material-icon flr pdr-30'></view>
         </view>
-        <view class='material-number lh90 fs30 pdl-30 cf border-bottom'>
+        <view class='material-number lh90 fs30 pdl-20 cf border-bottom'>
             <text class="text-theme">*</text> <text>物料数量:</text>
             <text class='sub' bindtap='sub'>-</text>
             <input class='material-input' bindinput='findNumChange' bindblur='findNumBlur' type='number' value='{{findNum}}'></input>
@@ -30,7 +30,7 @@
 
      <!--收货地址  -->
       <view class="fs30 box-shadow">
-          <view class="cell-padding fs30 lh90 border-bottom mgt-30">
+          <view class="cell-padding fs30 lh90 border-bottom mgt-20">
               取料地址
               <input class="hidden" value="{{addressId}}" name="address_id"></input>
           </view>
@@ -64,7 +64,7 @@
           </view>
           <view class='lh90 fs30 pdl-30'>
               <text>共{{findNum}}件</text>
-              <text class='flr pdr-30'>￥{{filter.formatMoney(fecthPrice)}}</text>
+              <text class='flr pdr-30 text-red'>￥{{filter.formatMoney(fecthPrice)}}</text>
           </view>
       </view>
       <view class='join-find lh90 fs30 mgb-30' bindtap='fethchSubmit'>加入小鹿任务</view>

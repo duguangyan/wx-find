@@ -53,7 +53,7 @@ Page({
             })
 
             api.memberExit({
-                method: 'POST',
+                method: 'GET',
                 data: {
                     user_name: account
                 }

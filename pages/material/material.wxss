@@ -20,15 +20,15 @@
   margin-top: 10rpx; 
 }
 .material-input{
-  margin: 0 20rpx;
-  width: 80rpx;
-  border: 1rpx solid #eeeeee;
-  height: 68rpx;
-  display: inline-block;
-  float: left;
+  margin:0 20rpx;
+  width:70rpx;
+  border:1rpx solid #eeeeee;
+  height:68rpx;
+  display:inline-block;
+  float:left;
   border-radius:10rpx;
-  margin-top: 10rpx;
-  padding-left: 20rpx;
+  margin-top:10rpx;
+  padding-left:39rpx;
 }
 .material-describe{
 

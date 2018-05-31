@@ -221,7 +221,7 @@ Page({
         desc: this.data.desc,
         cid: this.data.checkTypes_cid
       },
-      id:this.data.id
+      id: this.data.defaultAddress.id
     }
 
 

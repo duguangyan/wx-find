@@ -20,6 +20,8 @@ page{
 .section-item image {
     width: 62rpx;
     height: 62rpx;
+    border-radius:50%;
+    box-shadow: 0 2px 10rpx rgba(102, 102, 102, .3);
 }
 
 .section-item-title {
@@ -29,12 +31,13 @@ page{
 .now-btn {
     margin: 0 auto 50rpx;
     width: 260rpx;
-    border: 1rpx #c81a29 solid;
+    border: 2rpx #c81a29 solid;
     border-radius: 25rpx;
     line-height: 50rpx;
     font-size: 28rpx;
     text-align: center;
     font-weight: 700;
+    box-shadow: 0 2px 10rpx rgba(102, 102, 102, .3);
 }
 
 .free-service {
@@ -46,12 +49,17 @@ page{
     float: left;
     margin-left: 105rpx;
     margin-top: 50rpx;
+    box-shadow: 0 2px 10rpx rgba(102, 102, 102, .3);
+    border-radius:10rpx; 
 }
 .recharge-box {
     width: 230rpx;
     float: left;
     margin-left: 80rpx;
     margin-top: 50rpx;
+    box-shadow: 0 2px 10rpx rgba(102, 102, 102, .3);
+    border-radius:10rpx;
+    border:2rpx #c81a29 solid;
 }
 .together-box button {
     height: 90rpx;

@@ -120,8 +120,8 @@
 
       
   </view> 
-
-  <view class='task-pay box-shadow pdl-30' wx:if='{{fetchs.length>0 ||finds.length>0}}'>
+  <view style='height:120rpx;'></view>
+  <view class='task-pay fs30 lh90 box-shadow pdl-30' wx:if='{{fetchs.length>0 ||finds.length>0}}'>
       应付款：<text class='text-red'>￥{{filter.formatMoney(findsTotalPrice + fetchsTotalPrice)}}</text>
       <text class='task-pay-btn text-underline' bindtap='doPay'>支付</text> 
   </view>

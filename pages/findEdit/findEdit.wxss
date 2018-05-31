@@ -12,7 +12,10 @@
 .height-200 {
     height: 200rpx;
 }
-
+.find-desc{
+  position: relative;
+  top: -10rpx;
+}
 .align-start {
     align-items: flex-start;
     border-bottom:1px solid #f0eff5; 

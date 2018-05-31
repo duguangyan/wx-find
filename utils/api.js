@@ -77,6 +77,7 @@ const myRequest = function (params = {}, url , id, st, page) {
                         image: '../../public/images/icon/error.png',
                         duration: 3000
                     })
+                    wx.hideLoading();
                 }
 
                 //reject(err);
@@ -129,7 +130,7 @@ const memberExit = (params) => {
 
 // 用户注册短信发送
 const regSMS = (params) => {
-    return myRequest(params, `${apiUrl}/auth/member/register/sms`)
+  return myRequest(params, `${apiUrl}/api/sms/send`)
 }
 
 // 注册接口
@@ -144,7 +145,7 @@ const restSMS = (params) => {
 
 // 修改密码
 const restpwd = (params) => {
-    return myRequest(params, `${apiUrl}/auth/member/psw/update`)
+  return myRequest(params, `${apiUrl}/api/member/reset`)
 }
 
 // 添加到购物车

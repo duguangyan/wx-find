@@ -14,6 +14,8 @@ Page({
       this.setData({
         isPopup: false
       })
+      console.log('添加几页');
+      console.log(this.data.findNum);
       wx.navigateTo({
         url: '../find/find?findNum=' + this.data.findNum + '&selcetTabNum=' + this.data.selcetTabNum,
       })
@@ -21,8 +23,11 @@ Page({
     // 弹窗件数input失去焦点
     findNumBlur (e) {
       console.log(e.detail.value);
-      let n = e.detail.value;
-      if(n==''){
+      let v = e.detail.value;
+      let re = /^[1-9]+[0-9]*]*$/;
+      console.log(re.test(v));
+  
+      if (!re.test(v)){
         this.setData({
           findNum: 1
         })
@@ -42,7 +47,7 @@ Page({
         })
         return false;
       }
-      if (n >= 10) {
+      if (n > 10) {
         this.setData({
           findNum: 10
         })

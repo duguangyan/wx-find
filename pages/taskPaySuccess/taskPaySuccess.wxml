@@ -15,6 +15,6 @@
 
   <view class='footer-btn'>
       <view class='text-333' bindtap='goIndex'>返回首页</view>
-      <view class='text-666' bindtap='goFindOrderDetail'>查看订单详情</view>
+      <view class='text-666' bindtap='goFindOrderDetail'>查看订单</view>
   </view>
 </view>

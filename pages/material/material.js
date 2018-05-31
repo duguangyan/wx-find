@@ -54,7 +54,9 @@ Page({
   // 弹窗件数input失去焦点
   findNumBlur(e) {
     let v = e.detail.value;
-    if (v) {
+    let re = /^[1-9]+[0-9]*]*$/; 
+    console.log(re.test(v));
+    if (!re.test(v)){
       this.setData({
         findNum: 1
       })
@@ -136,6 +138,10 @@ Page({
           checkType: res.data[0].name
         })
       }
+
+      // 继续请求
+      // 获取找料单价
+      this.getFindOrFetchPrice();
     })
   },
   // 获取默认地址
@@ -170,7 +176,7 @@ Page({
   goPay() {
     clearInterval(this.data.interval);
     wx.switchTab({
-      url: '../task1/task1',
+      url: '../task3/task3',
       success: function (e) {
         var page = getCurrentPages().pop();
         if (page == undefined || page == null) return;
@@ -268,8 +274,7 @@ Page({
     this.getCheckTypes();
     // 获取默认地址
     //this.getDefaultAddress();
-    // 获取找料单价
-    this.getFindOrFetchPrice();
+    
   },
 
   /**

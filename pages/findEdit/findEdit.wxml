@@ -11,7 +11,7 @@
             <view class="width-200 word-spacing">
                 <text class="text-theme">*</text> 描 述 ：</view>
 
-            <textarea class="flex-1 height-200" name="field_desc" data-index='{{idx}}' bindinput='getDescription' value="{{item.desc}}" placeholder='(注：请详细描述物料的名称、用途、材质、交货时间)'>
+            <textarea class="flex-1 height-200 find-desc" name="field_desc" data-index='{{idx}}' bindinput='getDescription' value="{{item.desc}}" placeholder='(注：请详细描述物料的名称、用途、材质、交货时间)'>
             </textarea>
         </view>
 
@@ -104,7 +104,7 @@
 
                   <view>
                       <text>收货地址：</text>
-                      <text class='ellipsis' style='width:440rpx;float:right;'>{{companyaddress.address}}</text>
+                      <text class='ellipsis' style='width:500rpx;float:right;'>{{companyaddress.address}}</text>
                   </view>
 
               </view>

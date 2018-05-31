@@ -3,7 +3,9 @@
     <view class='section-order mgb-20' wx:for="{{addFinds}}" wx:for-index="idx"  wx:key='addFindKey' wx:for-item="item">
         <view class="cell-padding lh90 flex border-bottom">
             <view  data-index='{{idx}}' bindtap='checkType'>
-              <text class="text-theme">*</text>物料类型 : <text>{{item.checkType}}</text>  <text class='mgl-20 iconfont icon-jiantou'></text>
+              <text class="text-theme">*</text>物料类型 : 
+              <text style='padding-left:150rpx'>{{item.checkType}}</text>  
+<text class='mgl-20 iconfont icon-jiantou'></text>
             </view>
             <view class='close_btn' data-index='{{idx}}' bindtap='closed'><image src='../../public/images/find/close_btn.png'></image></view>
         </view>
@@ -12,7 +14,7 @@
             <view class="width-200 word-spacing">
                 <text class="text-theme">*</text> 描 述 ：</view>
 
-            <textarea class="flex-1 height-200"  wx:if="{{!isPopup}}" name="field_desc" data-index='{{idx}}' bindinput='getDescription' value="{{item.desc}}" placeholder='(注：请详细描述物料的名称、用途、材质、交货时间)'>
+            <textarea class="flex-1 find-desc height-200"  wx:if="{{!isPopup}}" name="field_desc" data-index='{{idx}}' bindinput='getDescription' value="{{item.desc}}" placeholder='(注：请详细描述物料的名称、用途、材质、交货时间)'>
             </textarea>
         </view>
 
@@ -46,7 +48,12 @@
               <view hidden='{{item.selcetTabNum != 1}}' class="pd-20 upload-view flex">
                   <view wx:for="{{item.files}}"  wx:for-index="fileIdx" wx:for-item="fileItem" data-index='{{idx}}'  data-id="{{fileIdx}}" wx:key="{{i}}" bindtap='chooseImage' class="relative">
                       <image src='{{fileItem.url}}'></image>
-                      <image data-id="{{fileIdx}}"   data-index='{{idx}}' catchtap='deleteItem' wx:if="{{fileItem.pct}}" style="width:44rpx;height:44rpx;position:absolute;right:0;top:0rpx;background-color: transparent;z-index:999;" src='../../public/images/icon/del.png'></image>
+                      <image 
+                       data-id="{{fileIdx}}"  
+                       data-index='{{idx}}' 
+                       catchtap='deleteItem' 
+                       wx:if="{{fileItem.pct}}" 
+style="width:44rpx;height:44rpx;position:absolute;right:0;top:0rpx;background-color: transparent; border-radius:50%;z-index:999;" src='../../public/images/icon/del.png'></image>
 
                       <view wx:if="{{fileItem.pct}}" style="width:200rpx;height:200rpx;background:rgba(0,0,0,0.4);position:absolute;left:0;top:0;text-align:center;line-height:200rpx;color:white;font-size:30rpx;">{{fileItem.pct}}</view>
                   <input class="hidden" value="{{fileItem.images_id}}" name="{{'img' + ( fileIdx +1 )}}"></input>
@@ -86,13 +93,13 @@
                       <text>档口名称: {{item.address.stall}}</text>
                   </view>
                   <view class="flex">
-                      <text>收货人<text class='mgl-30'>:</text> {{item.address.consignee}}</text>
+                      <text>联系人<text class='mgl-30'>:</text> {{item.address.consignee}}</text>
                       <text>{{item.address.mobile}}</text>
                   </view>
 
                   <view>
                       <text>收货地址：</text>
-                      <text class='ellipsis' style='width:440rpx;float:right;'>{{item.address.city_str}} {{item.address.address}}</text>
+                      <text style='width:440rpx;float:right;'>{{item.address.city_str}} {{item.address.address}}</text>
                   </view>
 
               </view>
@@ -104,8 +111,8 @@
                   </view>
 
                   <view>
-                      <text>收货地址：</text>
-                      <text class='ellipsis' style='width:500rpx;float:right;'>{{companyaddress.address}}</text>
+                      <text>寄样地址：</text>
+                      <text style='width:500rpx;float:right;'>{{companyaddress.address}}</text>
                   </view>
 
               </view>
@@ -118,7 +125,7 @@
     </view>
 
     <!--提交按钮  -->
-    <view class='add-find' bindtap='addFind'>
+    <view class='add-find' bindtap='addFind' wx:if='{{isAddShow}}'>
       <image src='../../public/images/find/add-find.png'></image>
       <text>点击添加找料</text>
     </view>
@@ -134,8 +141,8 @@
     <view class='index-popup-content'>
         <view class='index-popup-title'>加入小鹿任务成功！</view>
         <view class='index-popup-btn'>
-            <view class='go-pay' catchtap='goPay'>去结算({{payNum}}s)</view>
-            <view catchtap='goBack'>继续找料</view>
+            <view class='go-pay btn-shadow' catchtap='goPay'>去结算({{payNum}}s)</view>
+            <view class='text-red btn-shadow' catchtap='goBack'>继续找料</view>
         </view>   
     </view>
 </view>

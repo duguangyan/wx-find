@@ -39,6 +39,23 @@ Page({
 
     ]
   },
+  // 统计价格
+  doTotalPrice(){
+    let finds = this.data.finds,
+      fetchs = this.data.fetchs;
+    this.data.totalFindsPrice = 0;
+    this.data.totalFetchsPrice= 0;
+    for (let i = 0; i < finds.length;i++){
+      this.data.totalFindsPrice += finds[i].form_data.fee;
+    }
+    for (let i = 0; i < fetchs.length; i++) {
+      this.data.totalFetchsPrice += fetchs[i].form_data.fee;
+    }
+    this.setData({
+      totalFindsPrice  : this.data.totalFindsPrice,
+      totalFetchsPrice : this.data.totalFetchsPrice
+    })
+  },
   // 返回首页
   goIndex(){
     console.log('index');
@@ -77,7 +94,10 @@ Page({
         if (res.data.find.length>0){
           finds = res.data.find;
           this.data.findsCheckAll = true;
+          this.data.totalFindsPrice = 0;
           for (let i = 0; i < finds.length; i++) {
+            // 获取总价格
+            this.data.totalFindsPrice += finds[i].form_data.fee;
             finds[i].txtStyle = '';
             finds[i].check = true;
             // 判断地址是否为空
@@ -99,13 +119,17 @@ Page({
           }
           this.setData({
             finds: finds,
-            findsCheckAll: this.data.findsCheckAll
+            findsCheckAll: this.data.findsCheckAll,
+            totalFindsPrice: this.data.totalFindsPrice
           })
         }
         if (res.data.fetch.length > 0){
           fetchs = res.data.fetch;
           this.data.fetchsCheckAll = true;
+          this.data.totalFetchsPrice = 0;
           for (let i = 0; i < fetchs.length; i++) {
+            // 获取总价格
+            this.data.totalFetchsPrice += fetchs[i].form_data.fee;
             fetchs[i].txtStyle = '';
             fetchs[i].check = true;
             if (fetchs[i].address){
@@ -115,7 +139,8 @@ Page({
           }
           this.setData({
             fetchs: fetchs,
-            fetchsCheckAll: this.data.fetchsCheckAll
+            fetchsCheckAll: this.data.fetchsCheckAll,
+            totalFetchsPrice: this.data.totalFetchsPrice
           })
         }
         // 统计合计金额
@@ -129,7 +154,8 @@ Page({
     })
   },
   // 点击找料修改
-  findEdit (e) {
+  findEdit(e) {
+    
     let item = JSON.stringify(e.currentTarget.dataset.item);
     let index = e.currentTarget.dataset.index;
     wx.navigateTo({
@@ -138,7 +164,7 @@ Page({
     console.log(item);
   },
   // 点击取料修改
-  fetchEdit(e){
+  fetchEdit(e){ 
     let item = JSON.stringify(e.currentTarget.dataset.item);
     wx.navigateTo({
       url: '../fecthEdit/fecthEdit?item=' + item,
@@ -172,7 +198,7 @@ Page({
       });
     }
   },
-  touchM: function (e) {
+  touchM: function (e) { 
     var that = this
     initdata(that)
     if (e.touches.length == 1) {
@@ -193,76 +219,30 @@ Page({
       }
       //获取手指触摸的是哪一项  
       var index = e.target.dataset.index;
-      var finds = this.data.finds;
-      finds[index].txtStyle = txtStyle;
-      //更新列表的状态  
-      this.setData({
-        finds: finds
-      });
-    }
-  },
-
-  touchE: function (e) {
-    if (e.changedTouches.length == 1) {
-      //手指移动结束后水平位置  
-      var endX = e.changedTouches[0].clientX;
-      //触摸开始与结束，手指移动的距离  
-      var disX = this.data.startX - endX;
-      var delBtnWidth = this.data.delBtnWidth;
-      //如果距离小于删除按钮的1/2，不显示删除按钮  
-      var txtStyle = disX > delBtnWidth / 2 ? "left:-" + delBtnWidth + "px" : "left:0px";
-      //获取手指触摸的是哪一项  
-      var index = e.target.dataset.index;
-      var finds = this.data.finds;
-      finds[index].txtStyle = txtStyle;
-      //更新列表的状态  
-      this.setData({
-        finds: finds
-      });
-    }
-  },
-
-  //fetch
-
-  touchSfetch: function (e) {
-    if (e.touches.length == 1) {
-      this.setData({
-        //设置触摸起始点水平方向位置  
-        startX: e.touches[0].clientX
-      });
-    }
-  },
-  touchMfetch: function (e) {
-    var that = this
-    initdataFetch(that)
-    if (e.touches.length == 1) {
-      //手指移动时水平方向位置  
-      var moveX = e.touches[0].clientX;
-      //手指起始点位置与移动期间的差值  
-      var disX = this.data.startX - moveX;
-      var delBtnWidth = this.data.delBtnWidth;
-      var txtStyle = "";
-      if (disX == 0 || disX < 0) {//如果移动距离小于等于0，文本层位置不变  
-        txtStyle = "left:0px";
-      } else if (disX > 0) {//移动距离大于0，文本层left值等于手指移动距离  
-        txtStyle = "left:-" + disX + "px";
-        if (disX >= delBtnWidth) {
-          //控制手指移动距离最大值为删除按钮的宽度  
-          txtStyle = "left:-" + delBtnWidth + "px";
+      var nav = e.target.dataset.nav;
+      if (index >= 0) {
+        if (nav == 1) {
+          this.data.finds[index].txtStyle = txtStyle;
+          //更新列表的状态  
+          this.setData({
+            finds: this.data.finds
+          });
+        } else {
+          this.data.fetchs[index].txtStyle = txtStyle;
+          //更新列表的状态  
+          this.setData({
+            fetchs: this.data.fetchs
+          });
         }
       }
-      //获取手指触摸的是哪一项  
-      var index = e.target.dataset.index;
-      var fetchs = this.data.fetchs;
-      fetchs[index].txtStyle = txtStyle;
-      //更新列表的状态  
-      this.setData({
-        fetchs: fetchs
-      });
+      
+      
     }
   },
-
-  touchEfetch: function (e) {
+ 
+  touchE: function (e) { 
+    console.log(this.data.finds);
+    console.log(this.data.fetchs);
     if (e.changedTouches.length == 1) {
       //手指移动结束后水平位置  
       var endX = e.changedTouches[0].clientX;
@@ -273,14 +253,28 @@ Page({
       var txtStyle = disX > delBtnWidth / 2 ? "left:-" + delBtnWidth + "px" : "left:0px";
       //获取手指触摸的是哪一项  
       var index = e.target.dataset.index;
-      var fetchs = this.data.fetchs;
-      fetchs[index].txtStyle = txtStyle;
-      //更新列表的状态  
-      this.setData({
-        fetchs: fetchs
-      });
+      var nav = e.target.dataset.nav;
+      if (index >= 0) {
+        if (nav == 1) {
+          this.data.finds[index].txtStyle = txtStyle;
+          //更新列表的状态  
+          this.setData({
+            finds: this.data.finds
+          });
+        } else {
+          this.data.fetchs[index].txtStyle = txtStyle;
+          //更新列表的状态  
+          this.setData({
+            fetchs: this.data.fetchs
+          });
+        }
+      }
+     
+      
     }
   },
+
+  
 
   //获取元素自适应后的实际宽度  
   getEleWidth: function (w) {
@@ -331,6 +325,8 @@ Page({
           _this.doSumPrice();
           // 判断是否还有数据
           _this.isHasData();
+          // 统计小计金额
+          _this.doTotalPrice();
         } else {
           initdata(_this)
         }
@@ -367,6 +363,8 @@ Page({
           _this.doSumPrice();
           // 判断是否还有数据
           _this.isHasData();
+          // 统计小计金额
+          _this.doTotalPrice();
         } else {
           initdataFetch(_this)
         }

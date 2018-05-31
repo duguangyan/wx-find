@@ -19,9 +19,17 @@ Page({
   },
   // 去订单详情
   goFindOrderDetail () {
-    wx.navigateTo({
-      url: '../findOrderDetail/findOrderDetail?id=' + this.data.pay_log.order_id
-    })
+    // wx.navigateTo({
+    //   url: '../order/order?id=' + this.data.pay_log.order_id
+    // })
+    wx.switchTab({
+      url: '../order/order',
+      success: function (e) {
+        var page = getCurrentPages().pop();
+        if (page == undefined || page == null) return;
+        page.onLoad();
+      }
+    }) 
   },
   /**
    * 生命周期函数--监听页面加载

@@ -1,0 +1,86 @@
+.touch-item {
+ font-size: 14px;
+ display: flex;
+ justify-content: space-between;
+ border-bottom:1px solid #ccc;
+ width: 100%;
+ overflow: hidden
+}
+.content {
+ width: 100%;
+ padding: 10px;
+ line-height: 22px;
+ margin-right:0;
+ -webkit-transition: all 0.4s;
+ transition: all 0.4s;
+ -webkit-transform: translateX(90px);
+ transform: translateX(90px);
+ margin-left: -90px;
+ position: relative;
+}
+.del {
+ background-color: #d5393c;
+ width: 90px;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ justify-content: center;
+ color: #fff;
+ -webkit-transform: translateX(90px);
+ transform: translateX(90px);
+ -webkit-transition: all 0.4s;
+ transition: all 0.4s;
+}
+.touch-move-active .content,
+.touch-move-active .del {
+ -webkit-transform: translateX(0);
+ transform: translateX(0);
+}
+.check-btn{
+  position: absolute;
+  top: 30%;
+}
+.image-bg{
+  width:100rpx;
+  height:100rpx;
+  position:absolute;
+  right:30rpx;
+  top:40%;
+}
+.image-bg image{
+  width: 100%;
+  height: 100%;
+}
+.task-content{
+  padding-left: 70rpx; 
+}
+.item-img{
+  width: 100rpx;
+  height: 100rpx;
+  margin-right: 30rpx;
+  border-radius:10rpx; 
+}
+.task-pay{
+  width: 710rpx;
+  position: fixed;
+  bottom: 0;
+  z-index: 999;
+  overflow: hidden;
+}
+.task-pay-btn{
+  width: 200rpx;
+  display: inline-block;
+  background-color: #c81a29;
+  text-align: center;
+  color: #fff;
+  float: right;
+  
+}
+.task-pay-btn-default{
+  width: 200rpx;
+  display: inline-block;
+  background-color: #999;
+  text-align: center;
+  color: #fff;
+  float: right;
+}

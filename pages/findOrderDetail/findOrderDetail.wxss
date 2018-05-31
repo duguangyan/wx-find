@@ -1,4 +1,4 @@
-view{
+page{
   background-color: #fff;
 }
 .order-icon{

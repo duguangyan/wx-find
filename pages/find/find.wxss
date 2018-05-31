@@ -17,7 +17,10 @@
     align-items: flex-start;
     border-bottom:1px solid #f0eff5; 
 }
-
+.find-desc{
+  position: relative;
+  top: -10rpx;
+}
 /*上传图片  */
 
 .upload-view {

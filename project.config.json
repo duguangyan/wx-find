@@ -160,6 +160,12 @@
 					"name": "订单支付成功",
 					"pathName": "pages/taskPaySuccess/taskPaySuccess",
 					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "task3",
+					"pathName": "pages/task3/task3",
+					"query": ""
 				}
 			]
 		}

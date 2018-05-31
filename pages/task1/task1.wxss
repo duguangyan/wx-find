@@ -4,15 +4,18 @@ view{
 }  
 .item-box{  
     width: 750rpx;  
-    margin: 0 auto;    
+    margin: 0 auto;  
 }  
+.task-fetch{
+   
+}
 .items{  
     width: 100%;  
 }  
 .item{  
     position: relative;  
     border-top: 2rpx solid #eee;  
-    height: 300rpx;  
+    min-height: 300rpx;  
     overflow: hidden;  
 }  
 .item:last-child{  
@@ -71,25 +74,32 @@ view{
   border-radius: 10rpx;
   margin-right: 20rpx; 
 }
+.task-find-image{
+  position: absolute;
+  top: 100rpx;
+  right: 10rpx;
+  width: 100rpx;
+  height: 100rpx;
+}
+.task-get-image{
+  position: absolute;
+  top: 80rpx;
+  right: 10rpx;
+  width: 100rpx;
+  height: 100rpx;
+}
 .task-find-text{
   height: 50rpx;
   line-height: 50rpx;
 }
 .task-find-price{
-  position: absolute;
-  bottom: 0;
-  right: -30rpx;
+ 
 }
 .task-fetch-price{
-   position: absolute;
-   bottom: 0;
-   right: -30rpx;
+
 }
 .task-find-method-2{
     width:200px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
 }
 .task-find-describe{
     width:200px;
@@ -104,6 +114,12 @@ view{
 .box-shadow {
   overflow: hidden;
 }
+.task-pay{
+  width: 710rpx;
+  position: fixed;
+  bottom: 0;
+  z-index: 999;
+}
 .task-pay-btn{
   width: 200rpx;
   display: inline-block;
@@ -111,6 +127,7 @@ view{
   text-align: center;
   color: #fff;
   float: right;
+
 }
 .task-pay-btn-default{
   width: 200rpx;
@@ -121,7 +138,7 @@ view{
   float: right;
 }
 .fetch{
-  height: 225rpx;
+
 }
 .height200{
   height: 200rpx;

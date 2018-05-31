@@ -66,11 +66,11 @@
   white-space: nowrap;
 }
 .task-pay{
-  height: 120rpx;
-  line-height: 120rpx;
-  font-size: 30rpx;
+  width: 680rpx;
+  position: fixed;
+  bottom: 0;
+  z-index: 999;
   overflow: hidden;
-  position: relative;
 }
 .task-pay view{
   padding-left: 30rpx;

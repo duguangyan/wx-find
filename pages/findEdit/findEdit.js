@@ -395,12 +395,15 @@ Page({
     if (item.form_data.back_img) {
       files[2].pct = '100%'
     }
-    this.data.addFinds[0] = item.form_data; 
+    
+    this.data.addFinds[0] = item.form_data;
+    this.data.addFinds[0].address = item.address; 
     this.data.addFinds[0].id = item.id;
     this.data.addFinds[0].files = files;
     this.data.addFinds[0].index = index;
+    this.data.addFinds[0].desc = item.form_data.desc;
     this.data.addFinds[0].selcetTabNum = item.form_data.find_type;
-    this.data.addFinds[0].selcetSecondTabNum = 1;
+    this.data.addFinds[0].selcetSecondTabNum = item.form_data.get_type;
     if (this.data.addFinds[0].selcetTabNum == 3){
       this.data.addFinds[0].isSelect = true
     }
@@ -576,7 +579,7 @@ Page({
     })
   },
   submit(){
-
+ 
     if (!this.data.addFinds[0].desc){
       wx.showToast({
         title: '请填写描述',
@@ -585,7 +588,7 @@ Page({
       })
       return false
     }
-    if (this.data.addFinds[0].selcetSecondTabNum==1){
+    if (this.data.addFinds[0].selcetTabNum==2 && this.data.addFinds[0].selcetSecondTabNum==1){
 
       if (!this.data.addFinds[0].address || this.data.addFinds[0].address == "") {
         wx.showToast({

@@ -36,10 +36,10 @@
               <view class='task-find-list fs30 cf'>
                 <view bindtap='goFindDetail' data-id='{{item.id}}' data-index="{{index}}"  class='task-find-item-warp'>
                   <view class='task-find-item'>
-                    <view>物料品类：{{item.cname}}</view>
+                    <view style='width:650rpx;'>物料品类：{{item.cname}} <text class='flr'>金额:￥{{filter.formatMoney(item.find_fee)}}</text></view>
                     <view>物料描述：{{item.desc}}</view>
                     <view>找料方式：{{item.type_name}}</view>
-                    <image class='task-find-img' style="top:{{item.type==3?'-12rpx':'20rpx'}}" src='../../public/images/task/task_find.png'></image>
+                    <image class='task-find-img' src='../../public/images/task/task_find.png'></image>
                   </view> 
                   <view class='task-find-method bb-1 pdb-20'>
                     <view class='task-find-method-img' wx:if='{{item.type==1}}'>
@@ -47,11 +47,12 @@
                         <image src='{{item.side_img}}'></image>
                         <image src='{{item.back_img}}'></image>
                     </view> 
-                    <view class='task-find-method-getfind' wx:if='{{item.type==2 || orderNavNum == 2}}'>
+                    <view class='task-find-method-getfind bt-1' wx:if='{{item.type==2 || orderNavNum == 2}}'>
+                        <view>档口名称{{item.shipping_address.stall}} </view>
+                        <view>联系人：{{item.shipping_address.consignee}}  
+                          <text class='flr pdr-30'>{{item.shipping_address.mobile}}</text>
+                        </view>
                         <view>取料地址：{{item.shipping_address.city_str}} {{item.shipping_address.address}}</view>
-                    </view> 
-                    <view class='task-find-price'>
-                      金额:￥{{filter.formatMoney(item.find_fee)}}
                     </view>   
                   </view> 
                 </view>
@@ -70,7 +71,7 @@
       </view>
       <!--加载组件  -->
       <mainloading modal-show="{{modalShow}}" />
-      <loading modal-text="加载更多" modal-show="{{shopLoading}}" />
+      <loading modal-text="加载更多" wx:if='{{!isData}}' modal-show="{{shopLoading}}" />
     </scroll-view>
 </view>
 

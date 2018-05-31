@@ -15,14 +15,14 @@
   text-align: center;
 }
 .order-nav text{
-  border-right:1rpx solid #f4f4f4; 
+  border-right:1rpx solid #ddd; 
 }
 .order-nav text:last-child{
   border-right:none; 
 }
 .nav-active{
   color: #c81a29;
-  border-bottom: 2rpx solid #c81a29;  
+  border-bottom: 4rpx solid #c81a29;  
 }
 
 .order-child-nav text{
@@ -36,7 +36,7 @@
   content: '';
   display: block;
   width: 100rpx;
-  height: 2rpx;
+  height: 4rpx;
   background-color: #c81a29;
   position: absolute;
   bottom: 0;
@@ -75,6 +75,7 @@
   width: 660rpx;
   position: relative;
   padding-left: 30rpx;
+  padding-bottom: 50rpx;
 }
 .task-find-item view{
   display: block;
@@ -89,7 +90,7 @@
   width: 125rpx;
   height: 125rpx;
   position: absolute;
-  top: 20rpx;
+  top: 50rpx;
   right:0;
 }
 .task-find-method{
@@ -110,11 +111,10 @@
 }
 .task-find-method-getfind view{
   padding-left: 30rpx;
-  width: 420rpx;
   display: block;
-  overflow: hidden;
-  text-overflow:ellipsis;
-  white-space: nowrap;
+}
+.task-find-method-getfind{
+  padding-top: 10rpx;
 }
 .order-footer-btn{
   float: right;
@@ -160,9 +160,9 @@
 }
 .task-find-snname{
   position: relative;
-  top: -60rpx;
+  top: -86rpx;
 }
 .task-find-item-warp{
   position: relative;
-  top: -40rpx;
+  top: -75rpx;
 }

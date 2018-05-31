@@ -47,6 +47,26 @@ Page({
     let payDates = {};
     payDates.task_ids = this.data.task_ids;
     
+    if (this.data.finds.length>0){
+      if (!this.data.findsAddress){
+        wx.showToast({
+          title: '请添加找料地址',
+          icon: 'none',
+          duration: 2000
+        })
+        return false;
+      }
+    }
+    if (this.data.fetchs.length > 0) {
+      if (!this.data.fetchsAddress) {
+        wx.showToast({
+          title: '请添加取料地址',
+          icon: 'none',
+          duration: 2000
+        })
+        return false;
+      }
+    }
     if (this.data.findsAddress || this.data.fetchsAddress){
       if (this.data.findsAddress) {
         payDates.shipping_address_find = this.data.findsAddress.id
@@ -60,13 +80,25 @@ Page({
         icon: 'none',
         duration: 2000
       })
+      return false;
     }
     
     api.payment({
       method:'POST',
       data: payDates
     }).then((res)=>{
-      if (res.code == 200) {
+      if (res.code == 200) { 
+        if (res.data.pay_status ==1){
+          wx.switchTab({
+            url: '../order/order',
+            success: function (e) {
+              var page = getCurrentPages().pop();
+              if (page == undefined || page == null) return;
+              page.onLoad();
+            }
+          }) 
+          return false;
+        }
         let payInfo = res.data;
         payInfo.open_id = wx.getStorageSync('open_id'); 
         api.wxPay({
@@ -95,6 +127,12 @@ Page({
               }
               wx.requestPayment(data);
             }
+        })
+      }else{
+        wx.showToast({
+          title: '支付失败',
+          icon: 'none',
+          duration: 2000
         })
       }
       console.log(res);

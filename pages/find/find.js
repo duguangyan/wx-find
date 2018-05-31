@@ -8,6 +8,7 @@ Page({
      * 页面的初始数据
      */
     data: {
+        isAddShow:'true',
         interval:'',
         payNum:10, // 支付倒计时
         isPopup:false, // 弹窗控制
@@ -82,6 +83,10 @@ Page({
           title: '最多10个找料任务',
           icon: 'none',
           duration: 2000
+        })
+        this.data.isAddShow = false;
+        this.setData({
+          isAddShow: this.data.isAddShow
         })
         return false;
       }
@@ -358,6 +363,10 @@ Page({
           this.setData({
             companyaddress
           })
+
+
+          
+
         }
       })
     },
@@ -367,13 +376,16 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
+      
       app.globalData.isFromScope = true;
       // 获取公司地址
       this.getCompanyaddress();
+      // 继续请求
+
       // 获取找料类型数据
       this.getCheckTypes();
       // 获取默认地址
-      this.getSelectedAddress(()=>{
+      this.getSelectedAddress(() => {
         console.log('--------');
         console.log(options.findNum);
         console.log(this.data.defaultAddress);
@@ -385,10 +397,14 @@ Page({
         // 根据上一级findNum创建找料单数
         let newAddFinds = [];
         let findNum = options.findNum == '' ? 1 : options.findNum;
-        for (let i = 0; i < parseInt(findNum) ;i++){
+        for (let i = 0; i < parseInt(findNum); i++) {
           newAddFinds.push(
-            { index: i, cid: this.data.addFinds[0].cid, checkType: this.data.addFinds[0].checkType, find_type: options.selcetTabNum, selcetTabNum: options.selcetTabNum, get_type: '1', selcetSecondTabNum: '1', isSelect: false, desc: '', files: [{}, {}, {}], get_address: this.data.defaultAddress.id, address: this.data.defaultAddress} 
+            { index: i, cid: this.data.addFinds[0].cid, checkType: this.data.addFinds[0].checkType, find_type: options.selcetTabNum, selcetTabNum: options.selcetTabNum, get_type: '1', selcetSecondTabNum: '1', isSelect: false, desc: '', files: [{}, {}, {}], get_address: this.data.defaultAddress.id, address: this.data.defaultAddress }
           )
+          // 设置数据
+          this.setData({
+            addFinds: newAddFinds
+          });
         }
         // 设置数据
         this.setData({
@@ -396,6 +412,24 @@ Page({
         });
         console.log(this.data.addFinds);
       });
+
+      if (this.data.addFinds.length >= 10) {
+        wx.showToast({
+          title: '最多10个找料任务',
+          icon: 'none',
+          duration: 2000
+        })
+        this.data.isAddShow = false;
+        this.setData({
+          isAddShow: this.data.isAddShow
+        })
+
+      } else {
+        this.data.isAddShow = true;
+        this.setData({
+          isAddShow: this.data.isAddShow
+        })
+      }
       
     },
 
@@ -460,7 +494,7 @@ Page({
                     addressId: ''
                 })
             } else {
-              this.data.addFinds[app.globalData.addressIndex].address = res.data;
+                this.data.addFinds[app.globalData.addressIndex].address = false;
                 this.setData({
                    // 设置为空
                     defaultAddress:false,
@@ -547,7 +581,7 @@ Page({
     goPay () {
       clearInterval(this.data.interval);
       wx.switchTab({
-        url: '../task1/task1',
+        url: '../task3/task3',
         success: function (e) {
           var page = getCurrentPages().pop();
           if (page == undefined || page == null) return;

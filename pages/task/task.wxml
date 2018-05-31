@@ -19,7 +19,7 @@
                <view>提供找料方式：{{item.type==1?'找料任务':'取料任务'}}</view>
                <image class='task-find-img' src='../../public/images/task/task_find.png'></image>
             </view> 
-            <view class='task-find-method'>
+            <view class='task-find-task_findmethod'>
               <view class='task-find-method-img'>
                   <image src='../../public/images/task/task_img.png'></image>
                   <image src='../../public/images/task/task_img.png'></image>
