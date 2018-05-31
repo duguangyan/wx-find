@@ -1,3 +1,6 @@
+page{
+  background-color: #efeff4;
+}
 .bg-theme {
     background-color: #c81a29 !important;
 }
@@ -706,7 +709,8 @@
 .box-shadow{
   border-radius:10rpx;
   margin: 20rpx;
-  box-shadow: 0 0 10rpx rgba(102, 102, 102, .3)  
+  box-shadow: 0 2px 10rpx rgba(102, 102, 102, .3);
+  background-color: #fff;  
 }
 /* 下边框 */
 .bb-20{

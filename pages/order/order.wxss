@@ -1,7 +1,7 @@
 /* pages/order/order.wxss */
 .ordder-top-hidden{
   height: 30rpx;
-  background-color: #fff;
+  background-color: #efeff4;
   position: fixed;
   top: 0;
   width: 100%;

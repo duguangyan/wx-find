@@ -4,8 +4,8 @@
 
   <view class='box-shadow lh90' wx:if='{{finds.length>0}}'>
       <view class='fs30 bb-1'>
-          <text bindtap='findCheckAll' data-check='true' wx:if='{{finds[0].checkAll}}' class="iconfont icon-dui fs40 text-theme mgl-20"></text>
-          <text bindtap='findCheckAll' data-check='false' wx:if='{{!finds[0].checkAll}}' class="iconfont icon-yuan fs40 mgl-20 text-eb"></text>
+          <text bindtap='findCheckAll' data-check='1' wx:if='{{findsCheckAll}}' class="iconfont icon-dui fs40 text-theme mgl-20"></text>
+          <text bindtap='findCheckAll' data-check='2' wx:if='{{!findsCheckAll}}' class="iconfont icon-yuan fs40 mgl-20 text-eb"></text>
           <text class='mgl-20'>找料任务</text>
       </view>
      
@@ -48,8 +48,8 @@
 <view class="item-box task-fetch" wx:if='{{fetchs.length>0}}'>
   <view class='box-shadow lh90'>
       <view class='fs30 bb-1'>
-          <text  bindtap='fetchCheckAll' data-check='true' wx:if='{{fetchs[0].checkAll}}' class="iconfont icon-dui fs40 text-theme mgl-20"></text>
-          <text  bindtap='fetchCheckAll' data-check='false' wx:if='{{!fetchs[0].checkAll}}' class="iconfont icon-yuan fs40 mgl-20 text-eb"></text>
+          <text  bindtap='fetchCheckAll' data-check='1' wx:if='{{fetchsCheckAll}}' class="iconfont icon-dui fs40 text-theme mgl-20"></text>
+          <text  bindtap='fetchCheckAll' data-check='2' wx:if='{{!fetchsCheckAll}}' class="iconfont icon-yuan fs40 mgl-20 text-eb"></text>
           <text class='mgl-20'>取料任务</text>
       </view>
      
@@ -84,13 +84,16 @@
 
 <view class='no-data' wx:if='{{isData}}'>
     <image src='../../public/images/icon/no_order.png'></image>
-    <view>暂无任务</view>
+    <view class='no-data-text'>你没有相关任务</view>
+    <view class='no-data-btn'  bindtap='goIndex'>
+        去添加任务
+    </view>
 </view> 
 
 <view class='task-pay box-shadow lh90 fs30 mgb-30' wx:if='{{finds.length>0 || fetchs.length>0}}'>
       <view class='mgl-30'>
-        <text catchtap='checkAll' data-check='true' wx:if='{{isCheckAll}}' class="iconfont icon-dui fs40 pdr-20 text-theme"></text>
-        <text catchtap='checkAll' data-check='false' wx:if='{{!isCheckAll}}' class="iconfont icon-yuan fs40 pdr-20 text-eb"></text>
+        <text catchtap='doCheckAll' data-check='1' wx:if='{{isCheckAll}}' class="iconfont icon-dui fs40 pdr-20 text-theme"></text>
+        <text catchtap='doCheckAll' data-check='2' wx:if='{{!isCheckAll}}' class="iconfont icon-yuan fs40 pdr-20 text-eb"></text>
           <text class='text-underline mgr-50'>全选</text>
           <text class='mgr-50'>合计：<text class='text-red'>￥{{filter.formatMoney(sumPrice)}}</text></text>
           <text wx:if="{{sumPrice!=0}}" class='task-pay-btn text-underline' bindtap='saveTask'>结算</text> 

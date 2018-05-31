@@ -17,6 +17,8 @@ var initdataFetch = function (that) {
 
 Page({
   data: {
+    findsCheckAll:true,
+    fetchsCheckAll:true,
     sumPrice:'',
     isCheckAll:true, // 结算全选
     delBtnWidth: 180,//删除按钮宽度单位（rpx）  
@@ -37,24 +39,44 @@ Page({
 
     ]
   },
+  // 返回首页
+  goIndex(){
+    console.log('index');
+    wx.switchTab({
+      url: '../index/index'
+    })
+  },
   //初始话任务中心数据
   init() { 
+    this.setData({
+      finds: [],
+      fetchs: [],
+      isData:true
+    })
     wx.showLoading({
       title: '加载中',
     })
-    api.getTaskInit({}, '0').then((res) => {
+    api.getTaskInit({}, '0').then((res) => {  
+    
       if (res.code == 200) {
-        if (!res.data || res.data.find.length <= 0 || res.data.fetch.length<=0 ){
+        
+        if (res.data.find.length <= 0 && res.data.fetch.length<=0 ){
           this.setData({
             isData: true,
+          })
+        }else{
+          this.setData({
+            isData: false,
           })
         }
         this.setData({
           taskDates: res.data,
         })
+        let finds = res.data.find;
+        let fetchs = res.data.fetch;
         if (res.data.find.length>0){
-          let finds = res.data.find;
-          finds[0].checkAll = true;
+          finds = res.data.find;
+          this.data.findsCheckAll = true;
           for (let i = 0; i < finds.length; i++) {
             finds[i].txtStyle = '';
             finds[i].check = true;
@@ -76,19 +98,24 @@ Page({
             }
           }
           this.setData({
-            finds: finds
+            finds: finds,
+            findsCheckAll: this.data.findsCheckAll
           })
         }
         if (res.data.fetch.length > 0){
-          let fetchs = res.data.fetch;
-          fetchs[0].checkAll = true;
+          fetchs = res.data.fetch;
+          this.data.fetchsCheckAll = true;
           for (let i = 0; i < fetchs.length; i++) {
             fetchs[i].txtStyle = '';
             fetchs[i].check = true;
-            fetchs[i].address = JSON.parse(fetchs[i].address);
+            if (fetchs[i].address){
+              fetchs[i].address = JSON.parse(fetchs[i].address);
+            }
+            
           }
           this.setData({
             fetchs: fetchs,
+            fetchsCheckAll: this.data.fetchsCheckAll
           })
         }
         // 统计合计金额
@@ -302,6 +329,8 @@ Page({
           });
           // 统计合计金额
           _this.doSumPrice();
+          // 判断是否还有数据
+          _this.isHasData();
         } else {
           initdata(_this)
         }
@@ -336,12 +365,23 @@ Page({
           });
           // 统计合计金额
           _this.doSumPrice();
+          // 判断是否还有数据
+          _this.isHasData();
         } else {
           initdataFetch(_this)
         }
       }
     })
 
+  },
+
+  // 判断是否还有数据
+  isHasData(){
+    if (this.data.finds.length <= 0 && this.data.fetchs.length <= 0) {
+      this.setData({
+        isData: true,
+      })
+    }
   },
   // 遍历 
   selectCheckForEarch (obj,bool) {
@@ -351,15 +391,16 @@ Page({
   },
   // finds找料任务全选切换
   findCheckAll  (e)  {
-    if (e.target.dataset.check == "true"){
-      this.data.finds[0].checkAll = false;
+    if (e.target.dataset.check=='1'){
+      this.data.findsCheckAll = false;
       this.selectCheckForEarch(this.data.finds,false);
-    }else{
-      this.data.finds[0].checkAll = true;
+    } else if (e.target.dataset.check == '2'){
+      this.data.findsCheckAll = true;
       this.selectCheckForEarch(this.data.finds, true);
     }
     this.setData({
-      finds: this.data.finds
+      finds: this.data.finds,
+      findsCheckAll: this.data.findsCheckAll
     })
     this.judgeIsAllCheck();
     // 统计合计金额
@@ -367,24 +408,26 @@ Page({
   }, 
   // 找料任务单个任务切换
   findCheck (e) {
+    let num = 0;
     let index = e.target.dataset.index;
     if(this.data.finds[index].check){
       this.data.finds[index].check = false;
-      this.data.finds[0].checkAll = false;
+      this.data.findsCheckAll = false;
     }else{
       this.data.finds[index].check = true;
-      let num = 0;
+      
       for (let i = 0; i < this.data.finds.length; i++) {
         if (this.data.finds[i].check){
          num++;
         }
       }
       if (num == this.data.finds.length){
-        this.data.finds[0].checkAll = true;
+        this.data.findsCheckAll = true;
       }
     }
     this.setData({
-      finds:this.data.finds
+      finds:this.data.finds,
+      findsCheckAll: this.data.findsCheckAll
     })
     this.judgeIsAllCheck();
     // 统计合计金额
@@ -393,15 +436,16 @@ Page({
   },
 // fetch找料任务全选切换
   fetchCheckAll  (e)  {
-    if(e.target.dataset.check == "true") {
-      this.data.fetchs[0].checkAll = false;
+    if(e.target.dataset.check == "1") {
+      this.data.fetchsCheckAll = false;
       this.selectCheckForEarch(this.data.fetchs, false);
-    }else{
-      this.data.fetchs[0].checkAll = true;
+    } else if (e.target.dataset.check == "2"){
+      this.data.fetchsCheckAll = true;
       this.selectCheckForEarch(this.data.fetchs, true);
     }
     this.setData({
-      fetchs: this.data.fetchs
+      fetchs: this.data.fetchs,
+      fetchsCheckAll: this.data.fetchsCheckAll
     })
     this.judgeIsAllCheck();
     // 统计合计金额
@@ -409,24 +453,26 @@ Page({
   }, 
   // 取料任务单个任务切换
   fetchCheck(e) {
+    let num = 0;
     let index = e.target.dataset.index;
     if (this.data.fetchs[index].check) {
       this.data.fetchs[index].check = false;
-      this.data.fetchs[0].checkAll = false;
+      this.data.fetchsCheckAll = false;
     } else {
       this.data.fetchs[index].check = true;
-      let num = 0;
+
       for (let i = 0; i < this.data.fetchs.length; i++) {
         if (this.data.fetchs[i].check) {
           num++;
         }
       }
       if (num == this.data.fetchs.length) {
-        this.data.fetchs[0].checkAll = true;
+        this.data.fetchsCheckAll = true;
       }
     }
     this.setData({
-      fetchs: this.data.fetchs
+      fetchs: this.data.fetchs,
+      fetchsCheckAll: this.data.fetchsCheckAll
     })
     this.judgeIsAllCheck();
     // 统计合计金额
@@ -435,29 +481,33 @@ Page({
   },
 
   //结算全选
-  checkAll (e) {
+  doCheckAll (e) {
     let check = e.target.dataset.check;
-    if (check == 'true'){
+    if (check == '1'){
       this.data.isCheckAll = false;
       this.selectCheckForEarch(this.data.finds, false);
-      this.data.finds[0].checkAll = false;
+      this.data.findsCheckAll = false;
       this.selectCheckForEarch(this.data.fetchs, false);
-      this.data.fetchs[0].checkAll = false;
+      this.data.fetchsCheckAll = false;
       this.setData({
         isCheckAll: this.data.isCheckAll,
         finds: this.data.finds,
-        fetchs: this.data.fetchs
+        fetchs: this.data.fetchs,
+        findsCheckAll: this.data.findsCheckAll,
+        fetchsCheckAll: this.data.fetchsCheckAll
       })
-    }else{
+    } else if (check == '2'){
       this.data.isCheckAll = true;
       this.selectCheckForEarch(this.data.finds, true);
-      this.data.finds[0].checkAll = true;
+      this.data.findsCheckAll = true;
       this.selectCheckForEarch(this.data.fetchs, true);
-      this.data.fetchs[0].checkAll = true;
+      this.data.fetchsCheckAll = true;
       this.setData({
         isCheckAll: this.data.isCheckAll,
         finds: this.data.finds,
-        fetchs: this.data.fetchs
+        fetchs: this.data.fetchs,
+        findsCheckAll: this.data.findsCheckAll,
+        fetchsCheckAll: this.data.fetchsCheckAll
       })
     }
     // 统计合计金额
@@ -465,9 +515,7 @@ Page({
   },
   // 判断是否全部全选
   judgeIsAllCheck () {
-    let finds = this.data.finds;
-    let fetchs = this.data.fetchs;
-    if (finds[0].checkAll && fetchs[0].checkAll){
+    if (this.data.findsCheckAll && this.data.fetchsCheckAll){
       this.data.isCheckAll = true
     }else{
       this.data.isCheckAll = false

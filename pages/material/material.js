@@ -163,7 +163,7 @@ Page({
   goConsigneeAddress(e) {
     app.globalData.isFromScope = true;
     wx.navigateTo({
-      url: '../consigneeAddress/consigneeAddress?fetchs=true',
+      url: '../consigneeAddress/consigneeAddress?fetchs=1',
     })
   },
   // 去支付
@@ -263,6 +263,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    app.globalData.isFromScope = true;
     // 获取物料类型
     this.getCheckTypes();
     // 获取默认地址

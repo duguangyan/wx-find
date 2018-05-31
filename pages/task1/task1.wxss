@@ -128,15 +128,29 @@ view{
   line-height: 200rpx;
 }
 .no-data{
-  width: 100rpx;
   margin: 0 auto;
+  text-align: center
 }
 .no-data image{
   width: 100rpx;
-  height: 120rpx;
+  height: 140rpx;
   margin-top: 200rpx;
 }
-.no-data text{
+.no-data-text{
   text-align: center;
-  margin-top: 20rpx;
+  margin-top: 30rpx;
+  font-size: 30rpx;
+  font-size: #333;
+}
+.no-data-btn{
+  width: 200rpx;
+  height: 60rpx;
+  line-height: 60rpx;
+  text-align: center;
+  color: #fff;
+  background-color: #c81a29;
+  border-radius:10rpx; 
+  font-size: 36rpx;
+  margin: 0 auto;
+  margin-top: 50rpx;
 }

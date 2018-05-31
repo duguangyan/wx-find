@@ -7,6 +7,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    isData:false, // 没有订单数据
     shopLoading:true,
     modalShow:true,
     orderNavNum:1, // nav一级切换
@@ -22,6 +23,12 @@ Page({
     fecthList:'', // 取料列表数据
     totalPages:0, // 总页数
     current_page:1 // 当前页 
+  },
+  // 去下单
+  doOrder(){
+    wx.switchTab({
+      url: '../index/index'
+    })
   },
   upper: function (e) {
     console.log('上拉')
@@ -129,21 +136,13 @@ Page({
   // 去支付
   toPay (e) {
     console.log('去支付');
-    
-    let id = e.target.dataset.id;
-    api.orderListToPay({
-      method:'POST'
-    },id).then((res)=>{
-      console.log(res);
-      let id = e.target.dataset.id;
-      let order_id = res.data.order_id;
-      let order_type = res.data.order_type;
+      let order_id = e.target.dataset.id;
+      let order_type = 4;
       let payInfo = {
         order_id,
         order_type,
         open_id: wx.getStorageSync('open_id')
       };
-      if(res.code == 200){
         api.wxPay({
           method: 'POST',
           data: payInfo
@@ -171,8 +170,6 @@ Page({
             wx.requestPayment(data);
           }
         })
-      }
-    })
   },
   // 催单
   urgeOrder (e) {
@@ -311,6 +308,10 @@ Page({
 
   // 获取订单列表
   getList(index,status,page){  
+    this.setData({
+      findList:[],
+      isData:true
+    })
     wx.showLoading({
       title: '加载中',
     }) 
@@ -321,9 +322,13 @@ Page({
         }else{
           this.data.findList = res.data;
         }
-        if (!this.data.findList || this.data.findList.length<=0){
+        if (this.data.findList.length<=0){
           this.setData({
             isData:true
+          })
+        }else{
+          this.setData({
+            isData: false
           })
         }
         this.data.totalPages = res.total;
@@ -389,15 +394,15 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-    // 初始化获取找料列表
-    this.getList(this.data.orderNavNum, this.data.orderChildNavNum);
+    
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-  
+    // 初始化获取找料列表
+    this.getList(this.data.orderNavNum, this.data.orderChildNavNum);
   },
 
   /**

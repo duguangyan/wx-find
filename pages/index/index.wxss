@@ -1,5 +1,7 @@
 /*  */
-
+page{
+  background-color: #fff;
+}
 .section-box {
     padding: 10rpx 50rpx 80rpx;
     display: flex;

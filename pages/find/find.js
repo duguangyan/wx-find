@@ -131,24 +131,6 @@ Page({
         addFinds: this.data.addFinds
       })
     },
-    // 判断是否在配送范围
-    isGoodsAddress(id,index){ 
-      api.isFromScope({}, id).then((res) => {
-        console.log(res);
-        if (res.code == 200) {
-          app.globalData.isFromScope = true;  // 在服务区
-          this.data.addFinds[index].address.isGoodsAddress = true;
-        } else {
-          app.globalData.isFromScope = false; // 不在服务区
-          this.data.addFinds[index].address.isGoodsAddress = false;
-        }
-      }).catch((err) => {
-        if (err.code == 400) {
-          app.globalData.isFromScope = false;
-          this.data.addFinds[index].address.isGoodsAddress = false;
-        }
-      })
-    },
     // 按样找料切换方式
     selcetSecondTab (e) { 
       
@@ -157,7 +139,7 @@ Page({
 
       // 判断是否在配送范围
       if (id == 1){
-        app.globalData.isFromScope = false;
+        app.globalData.isFromScope = true;
       }
       this.data.addFinds[index].selcetSecondTabNum = id;
       this.data.addFinds[index].get_type = id;
@@ -320,14 +302,17 @@ Page({
   
         } else if (this.data.addFinds[i].selcetTabNum == '2') {   // 按样找料判断
           // 按样找料地址是否存在
-          if (this.data.addFinds[i].address.id == '' || !this.data.addFinds[i].address.id || !this.data.addFinds[i].address.isGoodsAddress){
-            wx.showToast({
-              title: '第' + (i + 1) + '个任务，请添加地址',
-              icon: 'none',
-              duration: 1500
-            })
-            return false;
+          if (this.data.addFinds[i].selcetSecondTabNum == 1){
+            if (this.data.addFinds[i].address.id == '' || !this.data.addFinds[i].address.id) {
+              wx.showToast({
+                title: '第' + (i + 1) + '个任务，请添加地址',
+                icon: 'none',
+                duration: 1500
+              })
+              return false;
+            }
           }
+          
 
         } else if (this.data.addFinds[i].selcetTabNum == '3') { // 按描述找料判断
           // 只有描述 此方法头部已经判断
@@ -382,6 +367,7 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
+      app.globalData.isFromScope = true;
       // 获取公司地址
       this.getCompanyaddress();
       // 获取找料类型数据
@@ -536,27 +522,25 @@ Page({
         });
     },
     // 去地址选择页面
-    goConsigneeAddress (e) {
-      app.globalData.isFromScope = false;
+    goConsigneeAddress (e) { 
+      app.globalData.isFromScope = true;
       let index = e.currentTarget.dataset.index;
       app.globalData.addressIndex = index;
-      if (this.data.addFinds[index].selcetTabNum==2){
-        if (this.data.addFinds[index].selcetSecondTabNum == 1){
-          app.globalData.isFromScope = true;
-        }
-      }
       wx.navigateTo({
         url: '../consigneeAddress/consigneeAddress?addFinds='+ JSON.stringify(this.data.addFinds),
       })
     },
     // 返回上一层，继续找料
     goBack () {
-      clearInterval(interval);
+      clearInterval(this.data.interval);
       // wx.navigateBack({
       //   delta: 1
       // })
       this.setData({
         isPopup:false
+      })
+      wx.switchTab({
+        url: '../index/index'
       })
     },
     // 去支付

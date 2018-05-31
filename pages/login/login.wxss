@@ -1,7 +1,9 @@
 .container {
     
 }
-
+page{
+  background-color: #fff;
+}
 .login-box {
     padding: 90rpx 40rpx 0 40rpx;
 }

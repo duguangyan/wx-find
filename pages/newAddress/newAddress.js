@@ -7,6 +7,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    searchValue:'',
     addressInfo: {
       isSugShow:false,
       consignee: '',
@@ -345,7 +346,9 @@ Page({
       mapInputValue: this.data.mapInputValue,
       isSugShow: this.data.isSugShow
     })
-    
+    this.setData({
+      searchValue:''
+    })
     console.log(index);
   },
   /**

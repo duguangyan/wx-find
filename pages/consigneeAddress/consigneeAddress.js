@@ -55,8 +55,9 @@ Page({
         })
     },
     // 点击选中地址返回
-     goBlack (e) {  
+     goBlack (e) { 
        if (this.data.center){
+         
          return false;
        }
        // 获取当前点击地址数据
@@ -64,6 +65,7 @@ Page({
        console.log(item);
        console.log(' app.globalData.isFromScope')
        console.log(app.globalData.isFromScope);
+       
       // 判断是否在配送范围 true 不需要判断 false 需要判断
        if (app.globalData.isFromScope){ 
          api.isFromScope({}, item.id).then((res)=>{
@@ -76,7 +78,6 @@ Page({
               })
               return ;
             }else{
-              item.isGoodsAddress = true;
               this.navigateBack(item);
             }
          }).catch((err) => {
@@ -93,8 +94,6 @@ Page({
            }
          })
        }else{
-         app.globalData.isFromScope = true;
-         item.isGoodsAddress = true;
          this.navigateBack(item);
        }
        
@@ -103,6 +102,7 @@ Page({
      // 返回上一级
      navigateBack(item) {
        if (this.data.hasFormfetch) {
+         wx.setStorageSync('fetchsAddress', item);
          // 更新上一页的地址数据  来自找料任务页面
          let pages = getCurrentPages();
          let currPage = pages[pages.length - 1];   //当前页面
@@ -111,10 +111,12 @@ Page({
            defaultAddress: item
          })
        } else if (this.data.hasFormFind) {
+         wx.setStorageSync('findsAddress', item);
          // 更新上一页的地址数据  来自找料任务页面
          let pages = getCurrentPages();
          let currPage = pages[pages.length - 1];   //当前页面
          let prevPage = pages[pages.length - 2];  //上一个页面
+         
          this.data.addFinds[app.globalData.addressIndex].address = item;
          this.data.addFinds[app.globalData.addressIndex].get_address = item.id;
          prevPage.setData({
@@ -127,10 +129,12 @@ Page({
          let currPage = pages[pages.length - 1];   //当前页面
          let prevPage = pages[pages.length - 2];  //上一个页面
          if (this.data.taskPayIndex == 1) {
+           wx.setStorageSync('findsAddress', item);
            prevPage.setData({
              findsAddress: item
            })
          } else if (this.data.taskPayIndex == 2) {
+           wx.setStorageSync('fetchsAddress', item);
            prevPage.setData({
              fetchsAddress: item
            })
@@ -191,8 +195,12 @@ Page({
     /**
      * 生命周期函数--监听页面加载
      */
-    onLoad: function (options) {
-      this.data.center = options.center;
+    onLoad: function (options) { 
+      // 来自个人中心
+      if (options.center){
+        this.data.center = options.center;
+      }
+      // 来自取料
       if(options.fetchs){
         this.setData({
           hasFormfetch: true
@@ -200,6 +208,7 @@ Page({
         console.log('获取上一级fetch数据');
         console.log(this.data.hasFormfetch);
       }
+      // 来自找料
       if (options.addFinds){
         var addFinds = JSON.parse(options.addFinds);
         this.setData({
@@ -209,7 +218,8 @@ Page({
         console.log('获取上一级addFinds数据');
         console.log(this.data.addFinds);
       }
-      if (options.taskPayIndex){
+      // 来自支付中心
+      if (options.taskPayIndex){ 
         this.setData({
           taskPayIndex: options.taskPayIndex
         })
@@ -275,8 +285,10 @@ Page({
     // 获取收货地址列表数据
     getAddressListData() {
 
-        wx.showNavigationBarLoading();
-
+  //      wx.showNavigationBarLoading();
+        wx.showLoading({
+          title: '加载中',
+        })
         api.listAddress({
 
         }).then((res) => {
@@ -291,10 +303,13 @@ Page({
                 addressList,
                 isEmpty
             })
-
+          wx.hideLoading();
         }).catch((res) => {
-
-        }).finally(() => wx.hideNavigationBarLoading())
+          wx.hideLoading();
+        }).finally(() => {
+          wx.hideLoading();
+          // wx.hideNavigationBarLoading()
+        })
 
     }
 })

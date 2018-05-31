@@ -29,8 +29,14 @@
     </view>
 
     <!-- 地图筛选地址 -->
+    <view class="section section-map bb-1">
+      <text class='iconfont icon-suosou fs50'></text>
+      <input class='map-input lh90' style='height:90rpx;padding-left:20rpx' value='{{searchValue}}
+       placeholder-style='color:#000' placeholder="配送范围"  type="text" bindinput="mapKeyInput"/>
+     
+    </view>
     <view class="section bb-1">
-      <input class='map-input lh90 pdl-30' style='height:90rpx;' value='{{addressInfo.address}}' placeholder="请填写详细地址"  type="text" bindinput="mapKeyInput"/>
+      <input class='map-input lh90 pdl-30' style='height:90rpx;' disabled value='{{addressInfo.address}}' placeholder="具体地址"  type="text" />
     </view>
     <view class="sug_info" wx:if='{{isSugShow}}'>
       <view class='sug_info_text' wx:for="{{sugData}}" wx:key='this' wx:for-index="index">

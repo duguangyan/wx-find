@@ -1,4 +1,7 @@
 /* pages/taskPaySuccess/taskPaySuccess.wxss */
+page{
+  background-color: #fff;
+}
 .task-success image{
   display: inline-block;
   width: 100rpx;

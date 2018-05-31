@@ -27,28 +27,29 @@ Page({
 
     },
     goAddress(){
-      let token = app.globalData.token;
-      if (token){
-        wx.navigateTo({
-          url: '../consigneeAddress/consigneeAddress?center=1',
-        })
-      }else{
-        wx.showModal({
-          title: '您尚未登陆',
-          content: '是否前往登陆页面',
-          confirmText: '前往',
-          confirmColor: '#c81a29',
-          success: (res) => {
-            if (res.confirm) {
-              wx.navigateTo({
-                url: '../login/login',
-              })
-            } else if (res.cancel) {
-              console.log('用户点击取消')
-            }
-          }
-        })
-      }
+      // let token = app.globalData.token;
+      // if (token){
+        
+      // }else{
+      //   wx.showModal({
+      //     title: '您尚未登陆',
+      //     content: '是否前往登陆页面',
+      //     confirmText: '前往',
+      //     confirmColor: '#c81a29',
+      //     success: (res) => {
+      //       if (res.confirm) {
+      //         wx.navigateTo({
+      //           url: '../login/login',
+      //         })
+      //       } else if (res.cancel) {
+      //         console.log('用户点击取消')
+      //       }
+      //     }
+      //   })
+      // }
+      wx.navigateTo({
+        url: '../consigneeAddress/consigneeAddress?center=1',
+      })
       
     },
     // 修改个人资料
@@ -66,39 +67,52 @@ Page({
         let method = e.currentTarget.dataset.method;
         let token = app.globalData.token;
 
+
+        wx.setStorageSync('method', method);
+        wx.setStorageSync('status', status);
+        wx.switchTab({
+          url: '../order/order',
+          success: function (e) {
+            var page = getCurrentPages().pop();
+            if (page == undefined || page == null) return;
+            page.onLoad();
+          }
+        }) 
+
         console.log(token);
 
-        if (token) {
-            // wx.navigateTo({
-            //   url: `../myFindOrder/myFindOrder?status=${statusID}`,
-            // })
-          wx.setStorageSync('method', method);
-          wx.setStorageSync('status', status);
-          wx.switchTab({
-            url: '../order/order',
-            success: function (e) {
-              var page = getCurrentPages().pop();
-              if (page == undefined || page == null) return;
-              page.onLoad();
-            }
-          }) 
-        } else {
-            wx.showModal({
-                title: '您尚未登陆',
-                content: '是否前往登陆页面',
-                confirmText: '前往',
-                confirmColor: '#c81a29',
-                success: (res) => {
-                    if (res.confirm) {
-                        wx.navigateTo({
-                          url: '../login/login',
-                        })
-                    } else if (res.cancel) {
-                        console.log('用户点击取消')
-                    }
-                }
-            })
-        }
+        // if (token) {
+        //     // wx.navigateTo({
+        //     //   url: `../myFindOrder/myFindOrder?status=${statusID}`,
+        //     // })
+        //   wx.setStorageSync('method', method);
+        //   wx.setStorageSync('status', status);
+        //   wx.switchTab({
+        //     url: '../order/order',
+        //     success: function (e) {
+        //       var page = getCurrentPages().pop();
+        //       if (page == undefined || page == null) return;
+        //       page.onLoad();
+        //     }
+        //   }) 
+          
+        // } else {
+        //     wx.showModal({
+        //         title: '您尚未登陆',
+        //         content: '是否前往登陆页面',
+        //         confirmText: '前往',
+        //         confirmColor: '#c81a29',
+        //         success: (res) => {
+        //             if (res.confirm) {
+        //                 wx.navigateTo({
+        //                   url: '../login/login',
+        //                 })
+        //             } else if (res.cancel) {
+        //                 console.log('用户点击取消')
+        //             }
+        //         }
+        //     })
+        // }
     },
 
 

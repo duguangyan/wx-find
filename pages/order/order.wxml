@@ -20,7 +20,7 @@
           <text bindtap='checkChildNav' data-index='6' class="{{orderChildNavNum==6?'nav-child-active':''}}">待评价</text>
       </view> 
     </view>
-    <view class='no-order-data' wx:if='{{false}}'>
+    <view class='no-order-data' wx:if='{{isData}}'>
         <image src='../../public/images/icon/no_order.png'></image>
         <view class='text-666 text-center fs30 mgt-50'>你还没有相关订单</view>
         <view class='do-order' bindtap='doOrder'>去下单</view>
@@ -65,7 +65,7 @@
               </view>
             </view>
       </view>
-      <view wx:if="{{!shopLoading}}" class='loding pdb-30'>
+      <view wx:if="{{!shopLoading && !isData}}" class='loding pdb-30'>
         已经全部加载完毕
       </view>
       <!--加载组件  -->

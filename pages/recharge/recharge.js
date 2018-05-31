@@ -8,6 +8,12 @@ Page({
   data: {
   
   },
+  //  联系我们电话
+  contact() {
+    wx.makePhoneCall({
+      phoneNumber: '400-8088-156'
+    })
+  },
   // 去支付
   doPay (e) {
    

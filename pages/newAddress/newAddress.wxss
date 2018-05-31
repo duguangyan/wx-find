@@ -8,7 +8,9 @@ page {
     background: #F5F5F5;
     height: 24rpx;
 }
-
+.icon-suosou {
+  font-size: 50rpx;
+}
 .address-form {
     background: #fff;
 }
@@ -34,8 +36,18 @@ map-input {
     background-color: #fff;
     height: 90rpx;
     line-height: 90rpx;
+    position: relative;
+    z-index: 9999;
 }
-
+.icon-suosou{
+  position: absolute;
+  right: 30rpx;
+  top: 0rpx;
+  color: #666;
+}
+.section-map{
+  position: relative;
+}
 .sug_info {
     margin: 15px 10px;
 }

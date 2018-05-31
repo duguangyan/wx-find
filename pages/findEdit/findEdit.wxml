@@ -81,7 +81,7 @@
           <view class="border-bottom cell-padding address flex flex-start">
               <text class="iconfont icon-dizhi fs40 text-gray mgr-20" wx:if='{{item.selcetSecondTabNum==1}}'></text>
 
-              <view data-index='{{idx}}' bindtap='goConsigneeAddress' wx:if='{{item.selcetSecondTabNum==1}}' hidden='{{ !item.address.isGoodsAddress}}' class="flex-1 address-info fs30">
+              <view data-index='{{idx}}' bindtap='goConsigneeAddress' wx:if='{{item.address!=""&&item.selcetSecondTabNum==1}}' class="flex-1 address-info fs30">
                   <view class="flex">
                       <text>档口名称: {{item.address.stall}}</text>
                   </view>
@@ -108,7 +108,7 @@
                   </view>
 
               </view>
-              <view data-index='{{idx}}' bindtap='goConsigneeAddress'  hidden='{{item.address.isGoodsAddress}}' class="text-666 h100 lh100 flex-1">
+              <view data-index='{{idx}}' bindtap='goConsigneeAddress'  wx:if='{{item.address=="" && item.selcetSecondTabNum == 1 }}' class="text-666 h100 lh100 flex-1">
                   点击添加收货地址
               </view>
           </view>

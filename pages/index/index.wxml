@@ -48,8 +48,8 @@
         截止当前
     </view>
     <view class="free-service flex space-around text-666 fs30">
-        <view>免费服务<text class="text-theme">{{serviceData.num_task || ''}}</text> 次</view>
-        <view>免费服务<text class="text-theme">{{serviceData.num_people || ''}}</text>人</view>
+        <view>提供服务<text class="text-theme">{{serviceData.num_task || ''}}</text> 次</view>
+        <view>提供服务<text class="text-theme">{{serviceData.num_people || ''}}</text>人</view>
     </view>
     <view class='cf'>
       <view class="together-box">

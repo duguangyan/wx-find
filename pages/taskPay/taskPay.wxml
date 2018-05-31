@@ -29,13 +29,12 @@
               </view>
             </view> 
         </view>
-        <view class='task-find-sum lh90 fs30'>
+        <view class='task-find-sum lh90 fs30 bb-1'>
             <text>共{{finds.length}}个任务,小计：<text class='text-red'>￥{{filter.formatMoney(findsTotalPrice)}}</text></text>
         </view> 
-      </view>
-      
-       <!--收货地址  -->
-      <view class="fs30 bottom-border box-shadow" wx:if="{{finds.length>0}}">
+
+        <!--收货地址  -->
+      <view class="fs30 bottom-border" wx:if="{{finds.length>0}}">
           <view class="cell-padding fs30 mgt-30 lh90 bottom-border">
               送料地址（找料任务）
               <input class="hidden" value="{{findsAddress.id}}" name="address_id"></input>
@@ -61,6 +60,9 @@
               </view>
           </view>
       </view>
+      </view>
+      
+       
 
 
 
@@ -84,13 +86,11 @@
               </view>
             </view> 
         </view>
-        <view class='task-find-sum lh90 fs30'>
+        <view class='task-find-sum lh90 fs30 bb-1'>
             共{{fetchs.length}}个任务,小计：<text class='text-red'>￥{{filter.formatMoney(fetchsTotalPrice)}}</text>   
         </view> 
-      </view>
-
-      <!--收货地址  -->
-      <view class="fs30 bottom-border box-shadow" wx:if='{{fetchs.length>0}}'>
+        <!--收货地址  -->
+      <view class="fs30 bottom-border" wx:if='{{fetchs.length>0}}'>
           <view class="cell-padding fs30 mgt-30 lh90 bottom-border">
               送料地址（取料任务）
               <input class="hidden" value="{{fetchsAddress.id}}" name="address_id"></input>
@@ -116,6 +116,9 @@
               </view>
           </view>
       </view>
+      </view>
+
+      
   </view> 
 
   <view class='task-pay box-shadow pdl-30' wx:if='{{fetchs.length>0 ||finds.length>0}}'>

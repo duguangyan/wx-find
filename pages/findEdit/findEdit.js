@@ -131,45 +131,12 @@ Page({
       addFinds: this.data.addFinds
     })
   },
-  // 判断是否在配送范围
-  isGoodsAddress(id, index) {
-    api.isFromScope({}, id).then((res) => {
-      console.log(res);
-      if (res.code == 200) {
-        app.globalData.isFromScope = true;  // 在服务区
-        this.data.addFinds[index].address.isGoodsAddress = true;
-      } else {
-        app.globalData.isFromScope = false; // 不在服务区
-        this.data.addFinds[index].address.isGoodsAddress = false;
-      }
-    }).catch((err) => {
-      if (err.code == 400) {
-        app.globalData.isFromScope = false;
-        this.data.addFinds[index].address.isGoodsAddress = false;
-      }
-    })
-  },
   // 按样找料切换方式
   selcetSecondTab(e) {
 
     let index = e.currentTarget.dataset.index;
     let id = e.currentTarget.dataset.id;
-
-    // 判断是否在配送范围
-    if (id == 1) {
-      app.globalData.isFromScope = false;
-      this.isGoodsAddress(this.data.addFinds[index].address.id, index);
-
-      if (app.globalData.isFromScope) {
-        this.data.addFinds[index].address.isGoodsAddress = true;
-      } else {
-        this.data.addFinds[index].address.isGoodsAddress = false;
-      }
-    } else {
-      app.globalData.isFromScope = true;
-      this.data.addFinds[index].address.isGoodsAddress = true;
-    }
-
+    app.globalData.isFromScope = true;
     this.data.addFinds[index].selcetSecondTabNum = id;
     this.data.addFinds[index].get_type = id;
     console.log(id);
@@ -187,13 +154,10 @@ Page({
     
     this.data.addFinds[index].find_type = id;
     this.data.addFinds[index].address = this.data.defaultAddress;
- 
-    console.log(id);
-    // 设置不需要判断服务范围
-    if (id == 2) {
-      this.data.addFinds[index].address.isGoodsAddress = false;
+    if(id==2){
       this.data.addFinds[index].selcetSecondTabNum = 1;
     }
+    console.log(id);
     this.setData({
       addFinds: this.data.addFinds
     })
@@ -399,12 +363,13 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) { 
+    app.globalData.isFromScope = true;
     // 获取公司地址
     this.getCompanyaddress();
 
     let item = JSON.parse(options.item);
     let index = options.index
-    console.log(item);
+    
     let files = [{
       url: item.form_data.front_img,
         //pct: 'wait'
@@ -430,11 +395,12 @@ Page({
     if (item.form_data.back_img) {
       files[2].pct = '100%'
     }
-    this.data.addFinds[0] = item.form_data;
+    this.data.addFinds[0] = item.form_data; 
     this.data.addFinds[0].id = item.id;
     this.data.addFinds[0].files = files;
     this.data.addFinds[0].index = index;
     this.data.addFinds[0].selcetTabNum = item.form_data.find_type;
+    this.data.addFinds[0].selcetSecondTabNum = 1;
     if (this.data.addFinds[0].selcetTabNum == 3){
       this.data.addFinds[0].isSelect = true
     }
@@ -448,6 +414,7 @@ Page({
     })
     // 获取默认地址
     this.getSelectedAddress();
+    console.log('数据');
     console.log(this.data.addFinds);
   },
 
@@ -512,9 +479,9 @@ Page({
           addressId: ''
         })
       } else {
-        this.data.addFinds[app.globalData.addressIndex].address = res.data;
+        //this.data.addFinds[app.globalData.addressIndex].address = res.data;
         this.setData({
-          defaultAddress,
+          defaultAddress:'',
           addressId: defaultAddress.id,
           addFinds: this.data.addFinds
         })
@@ -618,16 +585,18 @@ Page({
       })
       return false
     }
-    if (this.data.addFinds[0].selcetTabNum == 2){
-      if (!this.data.addFinds[0].address.isGoodsAddress) {
+    if (this.data.addFinds[0].selcetSecondTabNum==1){
+
+      if (!this.data.addFinds[0].address || this.data.addFinds[0].address == "") {
         wx.showToast({
           title: '请填写地址',
           icon: 'none',
           duration: 2000
         })
-        return false
+        return false;
       }
     }
+   
     
 
     let data = {

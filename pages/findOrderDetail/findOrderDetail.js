@@ -203,8 +203,7 @@ Page({
         api.getOrderDetail({}, options.id).then((res)=>{
             console.log(res);
             if(res.code == 200 ){
-              let nav = options.nav,
-                itemObj = res.data;
+              let itemObj = res.data;
               if (itemObj.type == 1){
                 itemObj.type_name = '按图找料'
               } else if (itemObj.type == 2){
@@ -213,7 +212,6 @@ Page({
                 itemObj.type_name = '按描述找料'
               }
               this.setData({
-                nav,
                 itemObj
               })
             }
