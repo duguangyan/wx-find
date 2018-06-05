@@ -16,7 +16,7 @@ page{
 
 .hover-click {
      opacity: 0.8;
-     background-color: #F4F4F4 !important;  
+     background-color: #eee !important;  
 }
 
 .theme-color {
@@ -719,16 +719,16 @@ page{
 }
 /* 下边框 */
 .bb-20{
-  border-bottom: 20rpx solid #f4f4f4; 
+  border-bottom: 20rpx solid #eee; 
 }
 .bb-1{
-  border-bottom: 1rpx solid #f4f4f4;
+  border-bottom: 1rpx solid #eee;
 }
 .bb-2{
-  border-bottom: 2rpx solid #f4f4f4;
+  border-bottom: 2rpx solid #eee;
 }
 .bt-1{
-  border-top: 1rpx solid #f4f4f4;
+  border-top: 1rpx solid #eee;
 }
 .wt-30{
   display: inline-block;

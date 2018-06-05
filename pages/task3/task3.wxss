@@ -2,13 +2,13 @@
  font-size: 14px;
  display: flex;
  justify-content: space-between;
- border-bottom:1px solid #ccc;
  width: 100%;
- overflow: hidden
+ overflow: hidden;
+ margin-left: 10rpx;
 }
 .content {
  width: 100%;
- padding: 10px;
+ padding: 0 10rpx;
  line-height: 22px;
  margin-right:0;
  -webkit-transition: all 0.4s;
@@ -45,14 +45,17 @@
   height:100rpx;
   position:absolute;
   right:30rpx;
-  top:40%;
+  top:30%;
 }
 .image-bg image{
   width: 100%;
   height: 100%;
 }
 .task-content{
-  padding-left: 70rpx; 
+  margin-left: 15rpx;
+  border-bottom: 1rpx solid #eee; 
+  padding: 10rpx 0;
+  padding-left: 55rpx; 
 }
 .item-img{
   width: 100rpx;
@@ -66,6 +69,9 @@
   bottom: 0;
   z-index: 999;
   overflow: hidden;
+  height: 115rpx;
+  line-height: 115rpx;
+  background-color:#f8f8f8; 
 }
 .task-pay-btn{
   width: 200rpx;
@@ -74,7 +80,7 @@
   text-align: center;
   color: #fff;
   float: right;
-  
+  height: 115rpx;
 }
 .task-pay-btn-default{
   width: 200rpx;
@@ -83,4 +89,31 @@
   text-align: center;
   color: #fff;
   float: right;
+}
+.no-data{
+  margin: 0 auto;
+  text-align: center
+}
+.no-data image{
+  width: 100rpx;
+  height: 140rpx;
+  margin-top: 200rpx;
+}
+.no-data-text{
+  text-align: center;
+  margin-top: 30rpx;
+  font-size: 30rpx;
+  font-size: #333;
+}
+.no-data-btn{
+  width: 200rpx;
+  height: 60rpx;
+  line-height: 60rpx;
+  text-align: center;
+  color: #fff;
+  background-color: #c81a29;
+  border-radius:10rpx; 
+  font-size: 36rpx;
+  margin: 0 auto;
+  margin-top: 50rpx;
 }

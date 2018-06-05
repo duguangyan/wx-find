@@ -28,7 +28,7 @@
   float: left;
   border-radius:10rpx;
   margin-top: 10rpx;
-  padding-left: 20rpx;
+  text-align: center;
 }
 .material-describe{
 

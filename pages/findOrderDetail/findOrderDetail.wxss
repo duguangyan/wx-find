@@ -1,5 +1,5 @@
 page{
-  background-color: #fff;
+  background-color: #eee;
 }
 .order-icon{
   width: 42rpx;
@@ -20,6 +20,7 @@ page{
 .describe-title{
   position: absolute;
   top: 15rpx;
+  letter-spacing:20rpx;
 }
 .describe-content{
   left: 130rpx;
@@ -41,11 +42,15 @@ page{
   margin:30rpx 0; 
 }
 .find-order-detail-btn{
-  height: 130rpx;
+  width: 750rpx;
+  height: 120rpx;
+  position: fixed;
+  bottom: 0;
+  background-color: #fff;
 }
 .find-order-detail-btn text{
   display: block;
-  width: 130rpx;
+  width: 120rpx;
   height: 70rpx;
   line-height: 70rpx;
   text-align: center;
@@ -55,4 +60,13 @@ page{
   float: right;
   margin: 30rpx 30rpx;
   font-size: 30rpx;
+  padding: 0 5rpx;
+ 
+}
+.task-find-method-img{
+}
+.task-find-method-img image{
+  width: 100rpx;
+  height: 100rpx;
+  margin-right: 50rpx;
 }

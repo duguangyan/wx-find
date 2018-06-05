@@ -17,6 +17,30 @@ Page({
     isPopup: false, // 弹窗控制   
     payNum: 10, // 倒计时               
   },
+  // 获取单个任务价格
+  getTaskFee() { 
+    let fecthPrice = wx.getStorageSync('fecthPrice');
+    if (fecthPrice){
+        this.setData({
+          fecthPrice
+        })
+        return false;
+    }
+    api.getTaskFee({}, 2).then((res) => {
+      if (res.code == 200) {
+        this.data.fecthPrice = res.data.fee;
+        this.setData({
+          fecthPrice: this.data.fecthPrice,
+        })
+      } else {
+        wx.showToast({
+          title: '获取单价失败',
+          icon: 'none',
+          duration: 2000
+        })
+      }
+    })
+  },
   // 切换类型
   checkType(e) {
     this.data.isSelect = true;
@@ -54,16 +78,22 @@ Page({
   // 弹窗件数input失去焦点
   findNumBlur(e) {
     let v = e.detail.value;
-    if (v) {
+    let re = /^[1-9]+[0-9]*]*$/;
+    console.log(re.test(v));
+    if (!re.test(v)) {
       this.setData({
         findNum: 1
       })
     }
+    let totalFecthPrice = this.data.fecthPrice * this.data.findNum;
+    this.setData({
+      totalFecthPrice
+    })
   },
   // input 改变1-10
-  findNumChange(e) {
+  findNumChange(e) { 
     let n = e.detail.value;
-    if (n <= 1 && n != '') {
+    if (n < 1 && n != '') {
       this.setData({
         findNum: 1
       })
@@ -85,9 +115,12 @@ Page({
       })
       return false;
     }
+    this.data.totalFecthPrice = this.data.fecthPrice * e.detail.value;
     this.setData({
-      findNum: e.detail.value
+      findNum: e.detail.value,
+      totalFecthPrice: this.data.totalFecthPrice
     })
+
   },
   // 减法
   sub() {
@@ -101,10 +134,10 @@ Page({
     }
     this.data.fecthPrice = 10;
     this.data.findNum--;
-    let fecthPrice = this.data.fecthPrice * this.data.findNum;
+    let totalFecthPrice = this.data.fecthPrice * this.data.findNum;
     this.setData({
       findNum: this.data.findNum,
-      fecthPrice
+      totalFecthPrice
     })
   },
   // 加法
@@ -119,10 +152,10 @@ Page({
     }
     this.data.fecthPrice = 10;
     this.data.findNum++;
-    let fecthPrice = this.data.fecthPrice * this.data.findNum;
+    let totalFecthPrice = this.data.fecthPrice * this.data.findNum;
     this.setData({
       findNum: this.data.findNum,
-      fecthPrice
+      totalFecthPrice
     })
   },
   // 获取物料类型数据
@@ -161,7 +194,6 @@ Page({
   },
   // 去地址选择页面
   goConsigneeAddress(e) {
-    app.globalData.isFromScope = true;
     wx.navigateTo({
       url: '../consigneeAddress/consigneeAddress?fetchs=true',
     })
@@ -221,7 +253,7 @@ Page({
         desc: this.data.desc,
         cid: this.data.checkTypes_cid
       },
-      id: this.data.defaultAddress.id
+      id: this.data.id
     }
 
 
@@ -271,7 +303,7 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
+  onLoad: function (options) { 
     app.globalData.isFromScope = true;
     let item = JSON.parse(options.item);
     console.log(item);
@@ -279,7 +311,7 @@ Page({
     this.data.findNum = item.form_data.fetch_num;
     this.data.desc = item.form_data.desc;
     this.data.defaultAddress = item.address;
-    this.data.fecthPrice = item.form_data.fee;
+    this.data.totalFecthPrice = item.form_data.fee;
     this.data.get_address = item.form_data.get_address;
     this.data.id = item.id;
     this.setData({
@@ -287,7 +319,7 @@ Page({
       findNum:this.data.findNum,
       desc: this.data.desc,
       defaultAddress: this.data.defaultAddress,
-      fecthPrice:this.data.fecthPrice,
+      totalFecthPrice: this.data.totalFecthPrice,
       id: this.data.id
     })
     // 获取物料类型
@@ -298,6 +330,9 @@ Page({
     //this.getDefaultAddress();
     // 获取找料单价
     // this.getFindOrFetchPrice();
+
+    // 获取单价
+    this.getTaskFee()
   },
 
   /**

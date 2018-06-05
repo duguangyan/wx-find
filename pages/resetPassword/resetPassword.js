@@ -57,13 +57,16 @@ Page({
                 data: {
                     user_name: account
                 }
-            }).then((res) => {
+            }).then((res) => { 
+              console.log(res);
 
+              debugger
                 api.restSMS({
                     data: {
                         phone: account
                     }
                 }).then((res) => {
+                  debugger
                     // 短信发送成功，限制按钮
                     util.successTips('短信发送成功');
                     this.setData({
@@ -185,7 +188,7 @@ Page({
             method: 'POST',
             data: {
                 user_name: account,
-                user_psw: password,
+                password: password,
                 sms_id: smsID,
                 code: sms
             }

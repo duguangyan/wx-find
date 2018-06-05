@@ -7,6 +7,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    isUrgeOrder:false, // 催单弹窗
     isData:false, // 没有订单数据
     shopLoading:true,
     modalShow:true,
@@ -35,12 +36,10 @@ Page({
     console.log(typeof this.data.current_page);
     this.data.current_page = this.data.current_page+1;
     if (this.data.findList.length < this.data.totalPages) {
-      setTimeout(()=>{
-        this.getList(this.data.orderNavNum, this.data.orderChildNavNum, this.data.current_page);
-      },500)
-      
+      this.getList(this.data.orderNavNum, this.data.orderChildNavNum, this.data.current_page); 
     }
   },
+ 
   lower: function (e) {
     console.log('下拉')
     
@@ -102,7 +101,7 @@ Page({
     })
   },
   // 隐藏取消订单模态框
-  delConfirm () {
+  delConfirm () { 
     console.log(this.data.delMsg)
     let data = {
       remark: this.data.delMsg
@@ -123,7 +122,19 @@ Page({
           isDelModel: true,
           findList: this.data.findList
         })
+      }else{
+        wx.showToast({
+          title: res.msg,
+          icon: 'none',
+          duration: 2000
+        })
       }
+    }).catch((res)=>{
+      wx.showToast({
+        title: res.msg,
+        icon: 'none',
+        duration: 2000
+      })
     })
     
   },
@@ -135,57 +146,100 @@ Page({
   },
   // 去支付
   toPay (e) {
+    let _this = this;
     console.log('去支付');
       let order_id = e.target.dataset.id;
-      let order_type = 4;
-      let payInfo = {
-        order_id,
-        order_type,
-        open_id: wx.getStorageSync('open_id')
-      };
-        api.wxPay({
-          method: 'POST',
-          data: payInfo
-        }).then((res) => {
-          console.log(res);
-          if (res.code == 200) {
-            let data = res.data.sdk;
-            let pay_log = JSON.stringify(res.data.pay_log);
-            data.success = function (res) {
-              console.log('支付成功');
-              console.log(res);
-              wx.navigateTo({
-                url: '../taskPaySuccess/taskPaySuccess?pay_log=' + pay_log
-              })
-            }
-            data.fail = function (res) {
-              console.log('支付失败');
-              console.log(res);
-              wx.showToast({
-                title: '支付失败',
-                icon: 'none',
-                duration: 2000
-              })
-            }
-            wx.requestPayment(data);
-          }
-        })
+      api.repay({
+        method:'POST'
+      }, order_id).then((res)=>{
+         if (res.code==200 && res.data.pay_status ==1){
+           wx.showToast({
+             title: '支付成功',
+             icon: 'none',
+             duration: 2000,
+           })
+           setTimeout(()=>{
+             _this.getList(_this.data.orderNavNum, _this.data.orderChildNavNum);
+           },2000)
+           
+        }else{
+           let order_type = 4;
+           let payInfo = {
+             order_id,
+             order_type,
+             open_id: wx.getStorageSync('open_id')
+           };
+           api.wxPay({
+             method: 'POST',
+             data: payInfo
+           }).then((res) => {
+             console.log(res);
+             if (res.code == 200) {
+               let data = res.data.sdk;
+               let pay_log = JSON.stringify(res.data.pay_log);
+               data.success = function (res) {
+                 console.log('支付成功');
+                 console.log(res);
+                 wx.navigateTo({
+                   url: '../taskPaySuccess/taskPaySuccess?pay_log=' + pay_log
+                 })
+               }
+               data.fail = function (res) {
+                 console.log('支付失败');
+                 console.log(res);
+                 wx.showToast({
+                   title: '支付失败',
+                   icon: 'none',
+                   duration: 2000
+                 })
+               }
+               wx.requestPayment(data);
+             }
+           })
+        }
+      })
+
+
+      
   },
   // 催单
+  call(e){ 
+    let mobile = e.currentTarget.dataset.mobile;
+    wx.makePhoneCall({
+      phoneNumber: mobile +"", //号码
+      success: function () {
+        console.log("拨打电话成功！")
+      },
+      fail: function () {
+        console.log("拨打电话失败！")
+      }
+    }) 
+  },
+  closeUrgeOrderPopup(){
+    this.setData({
+      isUrgeOrder: false
+    })
+  },
   urgeOrder (e) {
     let id = e.target.dataset.id;
     let mobile = e.target.dataset.mobile
+    this.setData({
+      urgeOrderMobile: mobile
+    })
     console.log('催单');
     api.urgeOrder({
       method:'Post'
     }, id).then((res)=>{
       console.log(res);
       if(res.code==200){
-        wx.showModal({
-          title: "催单成功！",
-          content: "请联系找料员(" + mobile +")或在线客服（400-8088-156），咨询进度",
-          showCancel: false,
-          confirmText: "确定"
+        // wx.showModal({
+        //   title: "催单成功！",
+        //   content: "请联系找料员(<text>" + mobile +"</text>)或在线客服（400-8088-156），咨询进度",
+        //   showCancel: false,
+        //   confirmText: "确定"
+        // })
+        this.setData({
+          isUrgeOrder:true
         })
       }else{
         wx.showToast({
@@ -262,7 +316,8 @@ Page({
     })
   },
   // 取消评价模态框并获取数据
-  commentConfirm (e) {
+  commentConfirm (e) { 
+
     let data  = {
       star:this.data.starIndex_1+1,
       star_ship: this.data.starIndex_2 + 1,
@@ -271,7 +326,7 @@ Page({
     api.toCommentOrder({
       method:'POST',
       data
-    }, this.data.commentId).then((res)=>{
+    }, this.data.commentId).then((res)=>{ 
           console.log(res);
           if(res.code==200){
             wx.showToast({
@@ -279,6 +334,19 @@ Page({
               icon: 'none',
               duration: 2000
             })
+            this.data.findList.forEach((v,i)=>{
+              if (v.id == this.data.commentId){
+                this.data.findList.splice(i,1);
+              }
+            })
+            if (this.data.findList.length<=0){
+              this.data.isData = true;
+            }
+            this.setData({
+              findList: this.data.findList,
+              isData: this.data.isData
+            })
+
           }else{
             wx.showToast({
               title: '评价失败！',
@@ -286,6 +354,12 @@ Page({
               duration: 2000
             })
           }
+    }).catch((res)=>{
+      wx.showToast({
+        title: res.msg,
+        icon: 'none',
+        duration: 2000
+      })
     })
     this.setData({
       isCommentModel: true
@@ -308,10 +382,6 @@ Page({
 
   // 获取订单列表
   getList(index,status,page){  
-    this.setData({
-      findList:[],
-      isData:true
-    })
     wx.showLoading({
       title: '加载中',
     }) 
@@ -387,7 +457,7 @@ Page({
       // Do something when catch error
     }
     
-    
+   
   },
 
   /**
@@ -403,6 +473,8 @@ Page({
   onShow: function () {
     // 初始化获取找料列表
     this.getList(this.data.orderNavNum, this.data.orderChildNavNum);
+    //获得dialog组件
+    this.dialog = this.selectComponent("#dialog");
   },
 
   /**
@@ -431,6 +503,7 @@ Page({
    */
   onReachBottom: function () {
     console.log('触底');
+    this.upper();
   },
 
   /**
@@ -438,5 +511,14 @@ Page({
    */
   onShareAppMessage: function () {
   
+  },
+  //图片点击事件
+  imgYu:function(event) {
+         var src = event.currentTarget.dataset.src;//获取data-src
+         //图片预览
+        wx.previewImage({
+             current: src, // 当前显示图片的http链接
+             urls: [src] // 需要预览的图片http链接列表
+      })
   }
 })

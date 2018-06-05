@@ -60,12 +60,16 @@
 
 /*提交按钮  */
 .submit-form {
-    padding: 36rpx 20rpx 100rpx;
+  margin-top: 50rpx;
+  margin-bottom: 50rpx;
 }
 
 .submit-form button {
     color: #FFF;
     background: #c81a29;
+    margin-bottom: 30rpx;
+    position: relative;
+    z-index: 99999;
 }
 
  .submit-form button::after{
@@ -152,7 +156,7 @@
 }
 .index-popup-content{
   width: 700rpx;
-  height: 330rpx;
+  min-height: 330rpx;
   background-color: #fff;
   position: absolute;
   top: 20%;
@@ -164,13 +168,11 @@
   line-height: 150rpx;
   font-size: 36rpx;
   text-align: center;
- 
+  position: relative;
 }
 .index-popup-main{
   font-size: 30rpx;
-  height: 90rpx;
-  line-height: 90rpx;
-  padding: 0 80rpx;
+  padding: 20rpx 30rpx;
   border-bottom:1px solid #f4f4f4; 
 }
 .index-popup-main .index-popup-view-1{
@@ -252,4 +254,46 @@
 }
 .address-info{
   padding-bottom: 30rpx; 
+}
+.company-mobile{
+  position: relative;
+  left:-150rpx;
+}
+.xuzhi {
+  text-align: center;
+  margin: 0 auto;
+  margin-top: 30rpx;
+}
+.xuzhi image{
+  width: 35rpx;
+  height: 35rpx;
+  margin-right: 5rpx;
+  position: relative;
+  top: 8rpx;
+}
+.xuzhi text{
+
+}
+.notes-btn{
+  margin-top: 30rpx;
+  margin-bottom: 50rpx;
+}
+.notes-btn view{
+  margin-left: 218rpx;
+  background-color: #c81a29;
+  color: #fff;
+}
+.notes-btn-content{
+  height: auto;
+  top: 10%;
+}
+.index-popup-main view{
+  line-height: 50rpx;
+}
+.icon-del1{
+  position: absolute;
+  font-size: 60rpx;
+  right: 10rpx;
+  top: -30rpx;
+  color: #999;
 }

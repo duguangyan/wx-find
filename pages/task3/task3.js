@@ -138,13 +138,18 @@ Page({
           // 统计小计金额
           _this.doTotalPrice();
         } else {
-          initdata(_this)
+          init(_this)
         }
       }
     })
   },
   onShow: function () { 
     // 页面显示  
+    this.setData({
+      findsCheckAll: true, //找料全选按钮
+      fetchsCheckAll: true,
+      isCheckAll: true
+    })
     this.init();
   },
   init() {
@@ -163,7 +168,7 @@ Page({
         let fetchs = res.data.fetch;
         finds.forEach(function (v, i) {
             v.isTouchMove    = false;
-            finds[i].address = JSON.parse(finds[i].address);
+            finds[i].address = finds[i].address?JSON.parse(finds[i].address):null;
             finds[i].check   = true;
         })
         fetchs.forEach(function (v, i) {
@@ -178,8 +183,16 @@ Page({
 
         // 计算价格
         this.doSumPrice();
+        this.isHasData();
       }
       wx.hideLoading();
+    })
+  },
+  // 返回首页
+  goIndex() {
+    console.log('index');
+    wx.switchTab({
+      url: '../index/index'
     })
   },
   // 计算合计金额
@@ -250,6 +263,7 @@ Page({
       findsCheckAll: this.data.findsCheckAll,
       fetchsCheckAll: this.data.fetchsCheckAll
     })
+    this.verdictAllCheck();
     this.doSumPrice();
   },
   // traversal data
@@ -345,6 +359,9 @@ Page({
     }else{
       this.data.isCheckAll = false
     }
+    this.setData({
+      isCheckAll: this.data.isCheckAll
+    })
   },
   // 点击结算
   saveTask() {
@@ -381,6 +398,10 @@ Page({
       this.setData({
         isData: true,
       })
+    }else{
+      this.setData({
+        isData: false,
+      })
     }
   },
   // edit
@@ -398,7 +419,14 @@ Page({
            url: '../fecthEdit/fecthEdit?item=' + item + "&index=" + index
          })
        }
-   
-
+  },
+  //图片点击事件
+  imgYu:function (event) {
+    var src = event.currentTarget.dataset.src;//获取data-src
+    //图片预览
+    wx.previewImage({
+      current: src, // 当前显示图片的http链接
+      urls: [src] // 需要预览的图片http链接列表
+    })
   }
 })

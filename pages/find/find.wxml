@@ -14,7 +14,7 @@
             <view class="width-200 word-spacing">
                 <text class="text-theme">*</text> 描 述 ：</view>
 
-            <textarea class="flex-1 find-desc height-200"  wx:if="{{!isPopup}}" name="field_desc" data-index='{{idx}}' bindinput='getDescription' value="{{item.desc}}" placeholder='(注：请详细描述物料的名称、用途、材质、交货时间)'>
+            <textarea hidden='{{isNotes}}' class="flex-1 find-desc height-200"  wx:if="{{!isPopup}}" name="field_desc" data-index='{{idx}}' bindinput='getDescription' value="{{item.desc}}" placeholder='(注：请详细描述物料的名称、用途、材质、交货时间)'>
             </textarea>
         </view>
 
@@ -106,8 +106,8 @@ style="width:44rpx;height:44rpx;position:absolute;right:0;top:0rpx;background-co
 
             <view data-index='{{idx}}'  wx:if='{{ item.selcetSecondTabNum == 2 }}' class="flex-1 address-info fs30">
                   <view class="flex">
-                      <text>收货人<text class='mgl-30'>:</text> {{companyaddress.consignee}}</text>
-                      <text>{{companyaddress.mobile}}</text>
+                      <text class='ellipsis' style='width:300rpx;'>联系人<text class='mgl-30'>:</text> {{companyaddress.consignee}}</text>
+                      <text class='company-mobile fll'>{{companyaddress.mobile}}</text>
                   </view>
 
                   <view>
@@ -129,9 +129,14 @@ style="width:44rpx;height:44rpx;position:absolute;right:0;top:0rpx;background-co
       <image src='../../public/images/find/add-find.png'></image>
       <text>点击添加找料</text>
     </view>
-    <view class="cell-padding submit-form">
-        <button bindtap="findSubmit">加入小鹿任务</button>
+     <view class='xuzhi' bindtap='showNotes'>
+      <image src='../../public/images/icon/xuzhi.png'></image> <text>《小鹿找料须知》</text>
     </view>
+    <view class="cell-padding submit-form">
+        <button bindtap="findSubmit" class='btn-shadow'>加入小鹿任务</button>
+    </view>
+    <view style='height:30rpx;'></view>
+   
 
 
 </form>
@@ -146,3 +151,26 @@ style="width:44rpx;height:44rpx;position:absolute;right:0;top:0rpx;background-co
         </view>   
     </view>
 </view>
+
+
+<view class='index-popup notes-popup' wx:if="{{isNotes}}">
+    <view class='index-popup-bg' catchtap='closePopup'></view>
+    <view class='index-popup-content notes-btn-content'>
+        <view class='index-popup-title'>小鹿找料须知 <text class='iconfont icon-del1'  catchtap='hiddenNotes'></text></view>
+        <view class='index-popup-main bt-1'>
+          
+          <view>一.  服务区域：</view>
+          <view class='fs24'>目前开放的找料区域为 <text class='text-red'>狮岭、三元里、中大</text>，更多开放区域敬请期待。</view>
+          <view>二.  服务项目：</view>
+          <view class='fs24'>现阶段只找皮革（含真皮、二层皮、PU、PVC)皮具箱包产品纺织面料、皮具箱包产品辅料、托料、五金等。</view>
+          <view>三．其他：</view>
+          <view class='fs24'>1.本服务平台不提供侵权产品的找料。</view>
+          <view class='fs24'>2.本服务平台不提供服务项目以外的产品找料。</view>
+          <view class='fs24'>3.由于市场及行业内因素，我们不承诺100%能找到您所需的物料，但我们会以100%的热情去找料。</view>
+        </view>
+        <view class='index-popup-btn notes-btn'>
+            <view class='text-red btn-shadow' catchtap='hiddenNotes'>确定</view>
+        </view>   
+    </view>
+</view>
+

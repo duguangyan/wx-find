@@ -200,6 +200,12 @@ Page({
               wx.navigateBack({
                  delta: 2
               })
+            }else{
+              wx.showToast({
+                title: res.user_name[0],
+                icon: 'none',
+                duration: 2000
+              })
             }
             
 

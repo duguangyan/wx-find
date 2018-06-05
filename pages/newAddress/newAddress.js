@@ -17,8 +17,14 @@ Page({
     },
     // 是否默认
     is_default: 0,
-    multiIndex: [2, 0, 0]
+    multiIndex: [6, 0, 0]
 
+  },
+  // 清空mapInput
+  cleanInput(){
+    this.setData({
+      searchValue:""
+    })
   },
   editStall (e) {
     let stall = e.detail.value;
@@ -153,8 +159,8 @@ Page({
           is_default,
           search_address: addressInfo.search_address,
           stall: addressInfo.stall,
-          longitude: addressInfo.longitude || '',
-          latitude: addressInfo.latitude || '',
+          // longitude: addressInfo.longitude || '',
+          // latitude: addressInfo.latitude || '',
           remark: addressInfo.remark
         }
       }).then((res) => {
@@ -213,8 +219,10 @@ Page({
       id = options.id;
     console.log('test', options);
 
-    wx.showNavigationBarLoading();
-
+    //wx.showNavigationBarLoading();
+    wx.showLoading({
+      title: '数据加载中',
+    })
     // 设置标题
     if (type === 'edit') {
       wx.setNavigationBarTitle({
@@ -247,7 +255,8 @@ Page({
           city: this.data.multiIndex[1]
         })
         // 关闭加载
-        wx.hideNavigationBarLoading();
+        // wx.hideNavigationBarLoading();
+        wx.hideLoading();
 
       }
       return false;
@@ -280,10 +289,10 @@ Page({
           province: this.data.multiIndex[0],
           city: this.data.multiIndex[1]
         })
-
+      
       }
-
-    }).finally(() => wx.hideNavigationBarLoading());
+      wx.hideLoading();
+      }).finally(() => wx.hideLoading());// wx.hideNavigationBarLoading()
 
 
   },
@@ -362,7 +371,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    wx.hideLoading();
   },
 
   /**

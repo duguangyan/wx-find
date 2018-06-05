@@ -62,40 +62,37 @@ Page({
        }
        // 获取当前点击地址数据
        let item = e.currentTarget.dataset.item;
-       console.log(item);
-       console.log(' app.globalData.isFromScope')
-       console.log(app.globalData.isFromScope);
-       
+       this.navigateBack(item);
       // 判断是否在配送范围 true 不需要判断 false 需要判断
-       if (app.globalData.isFromScope){ 
-         api.isFromScope({}, item.id).then((res)=>{
-            console.log(res);
-            if(res.code != 200){
-              wx.showToast({
-                title: '你选中的地址不在配送范围',
-                icon: 'none',
-                duration: 1500
-              })
-              return ;
-            }else{
-              this.navigateBack(item);
-            }
-         }).catch((err) => {
-           console.log('400');
-           console.log(err);
-           if(err.code != 200){
-             wx.showToast({
-               title: '你选中的地址不在配送范围',
-               icon: 'none',
-               duration: 1500
-             })
+      //  if (app.globalData.isFromScope){ 
+      //    api.isFromScope({}, item.id).then((res)=>{
+      //       console.log(res);
+      //       if(res.code != 200){
+      //         wx.showToast({
+      //           title: '你选中的地址不在配送范围',
+      //           icon: 'none',
+      //           duration: 1500
+      //         })
+      //         return ;
+      //       }else{
+      //         this.navigateBack(item);
+      //       }
+      //    }).catch((err) => {
+      //      console.log('400');
+      //      console.log(err);
+      //      if(err.code != 200){
+      //        wx.showToast({
+      //          title: '你选中的地址不在配送范围',
+      //          icon: 'none',
+      //          duration: 1500
+      //        })
              
-             return ;
-           }
-         })
-       }else{
-         this.navigateBack(item);
-       }
+      //        return ;
+      //      }
+      //    })
+      //  }else{
+      //    this.navigateBack(item);
+      //  }
        
        
      },
@@ -108,6 +105,7 @@ Page({
          let currPage = pages[pages.length - 1];   //当前页面
          let prevPage = pages[pages.length - 2];  //上一个页面
          prevPage.setData({
+           get_address:item.id,
            defaultAddress: item
          })
        } else if (this.data.hasFormFind) {

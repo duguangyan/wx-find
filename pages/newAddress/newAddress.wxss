@@ -30,14 +30,23 @@ page {
 .border-top{
   border-top:1rpx solid #f4f4f4; 
 }
-map-input {
+.map-input {
     display: block;
-    margin: 10px 10px;
     background-color: #fff;
     height: 90rpx;
     line-height: 90rpx;
     position: relative;
     z-index: 9999;
+}
+.map-input-1{
+   height: 90rpx;
+    line-height: 90rpx;
+    position:absolute;
+    top: 0;
+    left: 200rpx;
+    z-index: 9999;
+    width:550rpx;
+    display:block;
 }
 .icon-suosou{
   position: absolute;

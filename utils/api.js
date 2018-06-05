@@ -233,6 +233,11 @@ const cancelOrder = (params) => {
 const payment = (params) => {
   return myRequest(params, `${apiUrl}/find/api/order`)
 }
+// 重新支付
+const repay = (params,id) => {
+  return myRequest(params, `${apiUrl}/find/api/order/repay`,id)
+}
+
 
 // 微信支付
 const wxPay = (params) => {
@@ -377,7 +382,21 @@ const getOrderDetail = (params, id) => myRequest(params, `${apiUrl}/find/api/ord
 // 获取公司地址
 const getCompanyaddress = (params) => myRequest(params, `${apiUrl}/api/company/address`);
 
+// 获取用户信息
+const getUserInfo = (params) => myRequest(params, `${apiUrl}/api/show`);
+
+// 获取单个任务价格
+const getTaskFee = (params, id) => myRequest(params, `${apiUrl}/find/api/taskfee`,id);
+// 获取openId
+const getOpenId = (params) => myRequest(params, `${apiUrl}/api/member/openId`);
+
+
+
 module.exports = {
+  getOpenId,
+  getTaskFee,
+  getUserInfo,
+  repay,
   getCompanyaddress,
   getOrderDetail,
   findEdit,

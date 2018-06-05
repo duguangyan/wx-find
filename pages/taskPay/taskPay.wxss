@@ -23,10 +23,11 @@
   width: 640rpx;
   position: relative;
   padding-left: 30rpx;
+  padding-bottom: 30rpx;
 }
 .task-find-item view{
   display: block;
-  width: 420rpx;
+
   height: 50rpx;
   line-height: 50rpx;
   overflow: hidden;
@@ -37,8 +38,8 @@
   width: 125rpx;
   height: 125rpx;
   position: absolute;
-  top: 6rpx;
-  right:0;
+  top: 50rpx;
+  right:20rpx;
 }
 .task-find-method{
   position: relative;
@@ -59,11 +60,10 @@
 }
 .task-find-method-getfind view{
   padding-left: 30rpx;
-  width: 420rpx;
   display: block;
-  overflow: hidden;
-  text-overflow:ellipsis;
-  white-space: nowrap;
+}
+.task-find-method-getfind{
+  padding-right: 30rpx;
 }
 .task-pay{
   width: 680rpx;
@@ -71,6 +71,7 @@
   bottom: 0;
   z-index: 999;
   overflow: hidden;
+  background-color: #f8f8f8;
 }
 .task-pay view{
   padding-left: 30rpx;

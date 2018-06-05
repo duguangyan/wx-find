@@ -12,13 +12,7 @@ Page({
 
   // 去地址选择页面
   goConsigneeAddress(e) { 
-    
     let index = e.currentTarget.dataset.index;
-    if(index == 1){
-      app.globalData.isFromScope = false;
-    }else{
-      app.globalData.isFromScope = true;
-    }
     wx.navigateTo({
       url: '../consigneeAddress/consigneeAddress?taskPayIndex=' +index,
     })
@@ -28,22 +22,53 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    
+    // 获取默认地址
+    this.getSelectedAddress();
   },
   // 收货地址
   getSelectedAddress() {
-    // findsAddress fetchsAddress
+    let _this = this;
+    if (wx.getStorageSync('defaultAddress')){
+      let defaultAddress = wx.getStorageSync('defaultAddress');
+      let findsAddress = defaultAddress;
+      let fetchsAddress = defaultAddress;
+      _this.setData({
+        findsAddress,
+        fetchsAddress
+      })
+      return false;
+    }
     // 获取默认地址
-    let findsAddress = wx.getStorageSync('findsAddress');
-    let fetchsAddress = wx.getStorageSync('fetchsAddress');
-    this.setData({
-      findsAddress,
-      fetchsAddress
-    })
+    api.defaultAddress({
+    }, 1).then((res) => {
+      if (res.code == 200) {
+        let defaultAddress = res.data;
+        wx.setStorageSync('defaultAddress', res.data)
+        // 可能位空数组
+        if (Array.isArray(defaultAddress)) {
+          _this.setData({
+            findsAddress:false,
+            fetchsAddress:false
+          })
+        } else {
+          // findsAddress fetchsAddress
+          // 获取默认地址
+          let findsAddress = defaultAddress;
+          let fetchsAddress = defaultAddress;
+          _this.setData({
+            findsAddress,
+            fetchsAddress
+          })
+        }
+      }
+    }).catch((res) => {
+
+    }) 
   },
 
   // 支付
-  doPay () { 
+  doPay() {
+    let _this = this;
     let payDates = {};
     payDates.task_ids = this.data.task_ids;
     
@@ -86,7 +111,7 @@ Page({
     api.payment({
       method:'POST',
       data: payDates
-    }).then((res)=>{
+    }).then((res)=>{ 
       if (res.code == 200) { 
         if (res.data.pay_status ==1){
           wx.switchTab({
@@ -116,7 +141,7 @@ Page({
                   url: '../taskPaySuccess/taskPaySuccess?pay_log=' + pay_log
                 })
               }
-              data.fail = function(res){
+              data.fail = function(res){ 
                 console.log('支付失败');
                 console.log(res);
                 wx.showToast({
@@ -124,19 +149,50 @@ Page({
                   icon: 'none',
                   duration: 2000
                 })
+                if (_this.data.finds.length > 0 && _this.data.fetchs.length > 0){
+                  wx.setStorageSync('method', 1);   // 1  2 
+                  wx.setStorageSync('status', 4);   // 4
+                  wx.switchTab({
+                    url: '../order/order'
+                  })
+                 
+                }
+                if (_this.data.finds.length > 0) {
+                  wx.setStorageSync('method', 1);   // 1  2 
+                  wx.setStorageSync('status', 4);   // 4
+                  wx.switchTab({
+                    url: '../order/order'
+                  })
+                 
+                }
+                if (_this.data.fetchs.length > 0) {
+                  wx.setStorageSync('method', 2);   // 1  2 
+                  wx.setStorageSync('status', 4);   // 4
+                  wx.switchTab({
+                    url: '../order/order'
+                  })
+                 
+                }
+
               }
               wx.requestPayment(data);
             }
         })
       }else{
         wx.showToast({
-          title: '支付失败',
+          title: res.msg || '支付失败',
           icon: 'none',
           duration: 2000
         })
       }
       console.log(res);
-    })
+      }).catch((e)=>{
+        wx.showToast({
+          title: e.msg,
+          icon: 'none',
+          duration: 2000
+        })
+      })
 
    
   },
@@ -152,6 +208,8 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    // 获取用户信息 余额
+    this.getUserInfo();
     // 获取Storage找料取料数据
     let taskPayList = wx.getStorageSync('taskPayList');
     let { finds, fetchs, task_ids } = taskPayList;
@@ -175,10 +233,29 @@ Page({
     console.log('获取Storage数据');
     console.log(this.data.finds);
     console.log(this.data.fetchs);
-    // 获取默认地址
-    this.getSelectedAddress();
+    
   },
-
+  // 获取用户信息
+  getUserInfo(){
+    api.memberInfo({}).then((res)=>{
+      console.log(res);
+      if(res.code==200){
+        this.data.balance_amount = res.data.asset.balance_amount;
+        this.setData({
+          balance_amount: this.data.balance_amount
+        })
+      }
+    })
+  },
+  //图片点击事件
+  imgYu: function (event) {
+    var src = event.currentTarget.dataset.src;//获取data-src
+    //图片预览
+    wx.previewImage({
+      current: src, // 当前显示图片的http链接
+      urls: [src] // 需要预览的图片http链接列表
+    })
+  },
   /**
    * 生命周期函数--监听页面隐藏
    */

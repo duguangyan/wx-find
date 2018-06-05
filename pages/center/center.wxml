@@ -60,7 +60,7 @@
 
 <view class="navigator-box section-order mgt-20" bindtap='goAddress'>
   <block class='navigator'>
-      <view class="navigator-text fs30 pdl-10">我的地址</view>
+      <view class="navigator-text fs30 pdl-30">我的地址</view>
       <view class="navigator-arrow"></view>
   </block>
 </view>

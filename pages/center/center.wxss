@@ -130,10 +130,10 @@ view {
 }
 
 .navigator-box {
-  height: 90rpx;
+  height: 115rpx;
+  line-height: 115rpx;
   position: relative;
   background-color: #FFFFFF;
-  line-height: 1.41176471;
   font-size: 34rpx;
   transition: .3s;
 }
@@ -159,14 +159,10 @@ view {
 }
 .navigator-text {
   flex: 1;
-  position: relative;
-  top: 28rpx;
-  left: 20rpx;
 }
 
 .navigator-arrow {
   padding-right: 60rpx;
-  position: relative;
 }
 .navigator-arrow:after {
   content: " ";

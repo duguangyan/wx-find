@@ -7,6 +7,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    isNotes:true, // 取料须知
     isSelect:false,
     checkTypes: '',
     checkType:'',
@@ -16,6 +17,38 @@ Page({
     fecthPrice:0, // 配送费用
     isPopup: false, // 弹窗控制   
     payNum:10, // 倒计时               
+  },
+  // 获取单个任务价格
+  getTaskFee(){
+    api.getTaskFee({},2).then((res)=>{
+      if(res.code==200){
+        this.data.fecthPrice = res.data.fee;
+        this.data.totalFecthPrice = res.data.fee;
+        wx.setStorageSync('fecthPrice', res.data.fee);
+        this.setData({
+          fecthPrice: this.data.fecthPrice,
+          totalFecthPrice: this.data.totalFecthPrice
+        })
+      }else{
+        wx.showToast({
+          title: '获取单价失败',
+          icon: 'none',
+          duration: 2000
+        })
+      }
+    })
+  },
+  // 显示照料须知
+  showNotes() {
+    this.setData({
+      isNotes: true
+    })
+  },
+  // 隐藏找料须知
+  hiddenNotes() {
+    this.setData({
+      isNotes: false
+    })
   },
   // 切换类型
   checkType(e) {
@@ -61,11 +94,15 @@ Page({
         findNum: 1
       })
     }
+    let totalFecthPrice = this.data.fecthPrice * this.data.findNum;
+    this.setData({
+      totalFecthPrice
+    })
   },
   // input 改变1-10
   findNumChange(e) {
     let n = e.detail.value;
-    if (n <= 1 && n != '') {
+    if (n <= 0 && n != '') {
       this.setData({
         findNum: 1
       })
@@ -76,7 +113,7 @@ Page({
       })
       return false;
     }
-    if (n >= 10) {
+    if (n > 10) {
       this.setData({
         findNum: 10
       })
@@ -87,9 +124,13 @@ Page({
       })
       return false;
     }
+
+    let totalFecthPrice = this.data.fecthPrice * this.data.findNum;
     this.setData({
-      findNum: e.detail.value
+      findNum: e.detail.value,
+      totalFecthPrice
     })
+
   },
   // 减法
   sub() {
@@ -101,12 +142,12 @@ Page({
       })
       return false;
     }
-    this.data.fecthPrice = 10;
+
     this.data.findNum--;
-    let fecthPrice = this.data.fecthPrice * this.data.findNum;
+    let totalFecthPrice = this.data.fecthPrice * this.data.findNum;
     this.setData({
       findNum: this.data.findNum,
-      fecthPrice
+      totalFecthPrice
     })
   },
   // 加法
@@ -119,12 +160,11 @@ Page({
       })
       return false;
     }
-    this.data.fecthPrice = 10;
     this.data.findNum++;
-    let fecthPrice = this.data.fecthPrice * this.data.findNum;
+    let totalFecthPrice = this.data.fecthPrice * this.data.findNum;
     this.setData({
       findNum: this.data.findNum,
-      fecthPrice
+      totalFecthPrice
     })
   },
   // 获取物料类型数据
@@ -187,8 +227,11 @@ Page({
   // 返回上一层，继续找料
   goBack() {
     clearInterval(this.data.interval);
-    wx.navigateBack({
-      delta: 1
+    // wx.navigateBack({
+    //   delta: 1
+    // })
+    this.setData({
+      isPopup: false
     })
   },
   // 获取描述
@@ -269,11 +312,13 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    // 获取单价
+    this.getTaskFee();
     app.globalData.isFromScope = true;
     // 获取物料类型
     this.getCheckTypes();
     // 获取默认地址
-    //this.getDefaultAddress();
+    this.getDefaultAddress();
     
   },
 

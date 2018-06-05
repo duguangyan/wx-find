@@ -8,6 +8,7 @@ Page({
      * 页面的初始数据
      */
     data: {
+        isNotes:true, // 找料须知弹窗
         isAddShow:'true',
         interval:'',
         payNum:10, // 支付倒计时
@@ -22,7 +23,19 @@ Page({
         isSelect: false, // 下拉显示按描述找料
         selcetSecondTabNum: '1', //  上门  寄送地址切换
         get_type:'1', //寄送地址切换
-        addFinds: [{ index: 0, checkType: '', selcetTabNum: 1, get_type:'1', selcetSecondTabNum: '1', isSelect: false, desc: '', files: [{}, {}, {}],address:{}}]
+        addFinds: [{ index: 0, checkType: '', selcetTabNum: 1, find_type:'1', selcetSecondTabNum: '1', isSelect: false, desc: '', files: [{}, {}, {}],address:{}}]
+    },
+    // 显示照料须知
+    showNotes(){
+      this.setData({
+        isNotes:true
+      })
+    },
+    // 隐藏找料须知
+    hiddenNotes(){
+      this.setData({
+        isNotes: false
+      })
     },
     // 获取描述
     getDescription(e) {
@@ -40,8 +53,12 @@ Page({
       api.getCheckTypes({}).then((res)=>{
         console.log(res);
         if(res.code == 200){
-          this.data.addFinds[0].checkType = res.data[0].name;
-          this.data.addFinds[0].cid = res.data[0].id;
+          this.data.addFinds.forEach((v,i)=>{
+            v.checkType = res.data[0].name;
+            v.cid = res.data[0].id
+          })
+          // this.data.addFinds[0].checkType = res.data[0].name;
+          // this.data.addFinds[0].cid = res.data[0].id;
           for(let i=0 ;i<res.data.length;i++){
             this.data.checkTypes.push(res.data[i].name);
             this.data.checkTypes_cid.push(res.data[i].id);
@@ -82,7 +99,7 @@ Page({
         wx.showToast({
           title: '最多10个找料任务',
           icon: 'none',
-          duration: 2000
+          duration: 1500
         })
         this.data.isAddShow = false;
         this.setData({
@@ -90,7 +107,10 @@ Page({
         })
         return false;
       }
-      let newAddFinds = this.data.addFinds.concat([{ get_type:'1', index: this.data.addFinds.length, cid: this.data.checkTypes_cid[0], checkType: this.data.checkTypes[0], selcetTabNum: '1', selcetSecondTabNum: '1', isSelect: false, desc: '', files: [{}, {}, {}], get_address: this.data.defaultAddress.id, address: this.data.defaultAddress}]) ;
+      
+      let defaultAddressId = this.data.defaultAddress?this.data.defaultAddress.id:'';
+      let defaultAddress   = this.data.defaultAddress ? this.data.defaultAddress : false;
+      let newAddFinds = this.data.addFinds.concat([{ find_type: '1', index: this.data.addFinds.length, cid: this.data.checkTypes_cid[0], checkType: this.data.checkTypes[0], selcetTabNum: '1', selcetSecondTabNum: '1', isSelect: false, desc: '', files: [{}, {}, {}], get_address: defaultAddressId, address: defaultAddress}]) ;
       this.setData({
         addFinds: newAddFinds
       });
@@ -108,6 +128,7 @@ Page({
         })
         return false;
       }
+    
       wx.showModal({
         title: '提示',
         content: '确认删除吗？',
@@ -115,6 +136,10 @@ Page({
         confirmColor: '#c81a29',
         success: (res) => {
           if (res.confirm) {
+            _this.data.isAddShow = true;
+            _this.setData({
+              isAddShow: _this.data.isAddShow
+            })
             console.log(index);
             _this.data.addFinds.splice(index, 1);
             let newAddFinds = _this.data.addFinds;
@@ -144,7 +169,7 @@ Page({
 
       // 判断是否在配送范围
       if (id == 1){
-        app.globalData.isFromScope = true;
+        // app.globalData.isFromScope = true;
       }
       this.data.addFinds[index].selcetSecondTabNum = id;
       this.data.addFinds[index].get_type = id;
@@ -153,7 +178,6 @@ Page({
       this.setData({
         addFinds: this.data.addFinds
       })
-      console.log(app.globalData.isFromScope)
     },
     // 选择找料方式
     selcetTab(e) {
@@ -161,7 +185,9 @@ Page({
         let id = e.currentTarget.dataset.id;
         this.data.addFinds[index].selcetTabNum = id;
         this.data.addFinds[index].find_type = id;
-    
+        if(id == 2){
+          this.data.addFinds[index].get_type = 1;
+        }
         this.setData({
           addFinds: this.data.addFinds
         })
@@ -375,9 +401,11 @@ Page({
     /**
      * 生命周期函数--监听页面加载
      */
-    onLoad: function (options) {
+    onLoad: function (options) {   
+
+
       
-      app.globalData.isFromScope = true;
+     // app.globalData.isFromScope = true;
       // 获取公司地址
       this.getCompanyaddress();
       // 继续请求
@@ -385,21 +413,43 @@ Page({
       // 获取找料类型数据
       this.getCheckTypes();
       // 获取默认地址
-      this.getSelectedAddress(() => {
-        console.log('--------');
-        console.log(options.findNum);
-        console.log(this.data.defaultAddress);
+      if (wx.getStorageSync('defaultAddress')){
         // 获取上一级页面传过来的数据
         this.setData({
-          findNum: options.findNum,
-          selcetTabNum: options.selcetTabNum
+          findNum: 1,
+          selcetTabNum: 1
         })
         // 根据上一级findNum创建找料单数
         let newAddFinds = [];
-        let findNum = options.findNum == '' ? 1 : options.findNum;
+        let findNum = 1;
         for (let i = 0; i < parseInt(findNum); i++) {
           newAddFinds.push(
-            { index: i, cid: this.data.addFinds[0].cid, checkType: this.data.addFinds[0].checkType, find_type: options.selcetTabNum, selcetTabNum: options.selcetTabNum, get_type: '1', selcetSecondTabNum: '1', isSelect: false, desc: '', files: [{}, {}, {}], get_address: this.data.defaultAddress.id, address: this.data.defaultAddress }
+            { index: i, cid: this.data.addFinds[0].cid, checkType: this.data.addFinds[0].checkType, find_type: options.selcetTabNum, selcetTabNum: options.selcetTabNum, get_type: '1', selcetSecondTabNum: '1', isSelect: false, desc: '', files: [{}, {}, {}], get_address: wx.getStorageSync('defaultAddress').id, address: wx.getStorageSync('defaultAddress') }
+          )
+          // 设置数据
+          this.setData({
+            addFinds: newAddFinds
+          });
+        }
+        // 设置数据
+        this.setData({
+          addFinds: newAddFinds
+        });
+        console.log(this.data.addFinds);
+        return false
+      }
+      this.getSelectedAddress(() => {
+        // 获取上一级页面传过来的数据
+        this.setData({
+          findNum: 1,
+          selcetTabNum: 1
+        })
+        // 根据上一级findNum创建找料单数
+        let newAddFinds = []; 
+        let findNum = 1;
+        for (let i = 0; i < parseInt(findNum); i++) {
+          newAddFinds.push(
+            { index: i, cid: this.data.addFinds[0].cid, checkType: this.data.addFinds[0].checkType, find_type: options.selcetTabNum, selcetTabNum: options.selcetTabNum, get_type: '1', selcetSecondTabNum: '1', isSelect: false, desc: '', files: [{}, {}, {}], get_address: this.data.defaultAddressId, address: this.data.defaultAddress }
           )
           // 设置数据
           this.setData({
@@ -412,24 +462,6 @@ Page({
         });
         console.log(this.data.addFinds);
       });
-
-      if (this.data.addFinds.length >= 10) {
-        wx.showToast({
-          title: '最多10个找料任务',
-          icon: 'none',
-          duration: 2000
-        })
-        this.data.isAddShow = false;
-        this.setData({
-          isAddShow: this.data.isAddShow
-        })
-
-      } else {
-        this.data.isAddShow = true;
-        this.setData({
-          isAddShow: this.data.isAddShow
-        })
-      }
       
     },
 
@@ -482,30 +514,34 @@ Page({
 
     },
     // 收货地址
-    getSelectedAddress(callBlack) {
-        // 获取默认地址
-        api.defaultAddress({
-        },1).then((res) => {
-            let defaultAddress = res.data;
-            // 可能位空数组
-            if (Array.isArray(defaultAddress)) {
-                this.setData({
-                    defaultAddress: false,
-                    addressId: ''
-                })
-            } else {
-                this.data.addFinds[app.globalData.addressIndex].address = false;
-                this.setData({
-                   // 设置为空
-                    defaultAddress:false,
-                    addressId: defaultAddress.id,
-                    addFinds: this.data.addFinds
-                }) 
-            }
-            callBlack();
-        }).catch((res) => {
+    getSelectedAddress(callBlack) { 
+      // 获取默认地址
+      api.defaultAddress({
+      }, 1).then((res) => {
+        if (res.code == 200) {
+          let defaultAddress = res.data;
+          wx.setStorageSync('defaultAddress', res.data)
+          // 可能位空数组
+          if (Array.isArray(defaultAddress)) {
+            this.setData({
+              defaultAddress: false,
+              addressId: ''
+            })
+          } else {
+            this.data.addFinds[app.globalData.addressIndex].address = res.data;
+            this.setData({
+              // 设置为空
+              defaultAddress: res.data,
+              addressId: res.data.id,
+              addFinds: this.data.addFinds
+            })
+          }
+          callBlack();
+        }
 
-        })
+      }).catch((res) => {
+
+      })
     },
 
     // 图片上传
@@ -557,7 +593,7 @@ Page({
     },
     // 去地址选择页面
     goConsigneeAddress (e) { 
-      app.globalData.isFromScope = true;
+      // app.globalData.isFromScope = true;
       let index = e.currentTarget.dataset.index;
       app.globalData.addressIndex = index;
       wx.navigateTo({
@@ -567,11 +603,16 @@ Page({
     // 返回上一层，继续找料
     goBack () {
       clearInterval(this.data.interval);
-      // wx.navigateBack({
-      //   delta: 1
-      // })
       this.setData({
-        isPopup:false
+        isPopup:false,
+        findNum: this.data.findNum
+      })
+      let pages = getCurrentPages();
+      let currPage = pages[pages.length - 1];   //当前页面
+      let prevPage = pages[pages.length - 2];  //上一个页面
+      prevPage.setData({
+        isPopup: true,
+        
       })
       wx.switchTab({
         url: '../index/index'

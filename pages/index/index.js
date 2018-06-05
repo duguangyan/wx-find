@@ -10,7 +10,7 @@ Page({
       isPopup:false,
     },
     // 提交
-    doSubmit () {
+    doSubmit () {  
       this.setData({
         isPopup: false
       })
@@ -36,7 +36,7 @@ Page({
     // input 改变1-10
     findNumChange (e) {
       let n = e.detail.value;
-      if(n<=1 && n!=''){
+      if(n<1 && n!=''){
         wx.showToast({
           title: '最少1个找料任务',
           icon: 'none',
@@ -114,12 +114,32 @@ Page({
     },
     // 去找料
     goFind() {
-      this.setData({
-        isPopup: true
+      let token = wx.getStorageSync('token'); 
+      if (!token){
+        // 跳转关联页面
+        wx.navigateTo({
+          url: '../login/login',
+        })
+        return false;
+      }
+      // this.setData({
+      //   isPopup: true
+      // })
+
+      wx.navigateTo({
+        url: '../find/find?findNum=' + 1 + '&selcetTabNum=' + 1,
       })
     },
     // 立刻取料  
     goMaterial() {
+      let token = wx.getStorageSync('token');
+      if (!token) {
+        // 跳转关联页面
+        wx.navigateTo({
+          url: '../login/login',
+        })
+        return false;
+      }
       // 跳转关联页面
       wx.navigateTo({
         url: '../material/material',
@@ -149,7 +169,9 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow: function () {
-
+      this.setData({
+        findNum:this.data.findNum
+      })
     },
     /**
      * 生命周期函数--监听页面隐藏
@@ -173,7 +195,7 @@ Page({
      * 页面上拉触底事件的处理函数
      */
     onReachBottom: function () {
-
+      //console.log(1);
     },
     /**
      * 用户点击右上角分享

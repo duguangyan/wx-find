@@ -20,7 +20,7 @@
         
         <view class='task-content pdr-20' bindtap='edit' data-index='{{index}}' data-item='{{item}}' data-nav='1'>
           <view>
-            <text>物料品类: {{item.cname}}</text> <text class='flr'>金额: ￥{{filter.formatMoney(item.form_data.fee)}}</text>
+            <text>物料品类: {{item.cname}}</text> <text class='flr pdr-30'>金额: ￥{{filter.formatMoney(item.form_data.fee)}}</text>
           </view>
           <view>
             <text style='width:450rpx' class='ellipsis'>物料描述: {{item.form_data.desc}}</text>
@@ -38,7 +38,7 @@
           <view wx:if='{{item.form_data.find_type == 2}}'>
             <view>档口名称: {{item.address.stall}}</view>
             <view>联系人: {{item.address.consignee}} {{item.address.mobile}}</view>
-            <view>取样地址: {{item.address.city_str}} {{item.address.address}}</view>
+            <view class='pdr-20'>取样地址: {{item.address.city_str}} {{item.address.address}}</view>
           </view>
           
         </view> 
@@ -59,7 +59,7 @@
   <view class=" bb-2 lh90">
       <text bindtap='parentCheck' data-nav='2' wx:if='{{fetchsCheckAll}}' class="iconfont icon-dui fs40 text-theme mgl-20"></text>
       <text bindtap='parentCheck' data-nav='2' wx:if='{{!fetchsCheckAll}}' class="iconfont icon-yuan fs40 mgl-20 text-eb"></text>
-      <text class='pdl-20'>找料任务</text>
+      <text class='pdl-20'>取料任务</text>
   </view>
   <view class="touch-item {{item.isTouchMove ? 'touch-move-active' : ''}}" data-nav='2' data-index="{{index}}"       bindtouchstart="touchstart" bindtouchmove="touchmove" wx:for="{{fetchs}}" wx:key="">
 
@@ -71,11 +71,11 @@
             wx:if='{{!item.check}}' class="iconfont icon-yuan fs40 pdl-10 text-eb"></text>
         </view>
         <view class='image-bg' >
-            <image src='../../public/images/task/task_find.png'></image>
+            <image src='../../public/images/task/task_get.png'></image>
         </view>
         <view class='task-content pdr-20' bindtap='edit' data-index='{{index}}' data-item='{{item}}' data-nav='2'>
           <view>
-            <text>物料品类: {{item.cname}}</text> <text class='flr'>金额: ￥{{filter.formatMoney(item.form_data.fee)}}</text>
+            <text>物料品类: {{item.cname}}</text> <text class='flr pdr-30'>金额: ￥{{filter.formatMoney(item.form_data.fee)}}</text>
           </view>
           <view>
             <text style='width:450rpx' class='ellipsis'>物料描述: {{item.form_data.desc}}</text>
@@ -83,7 +83,7 @@
           <view>
             <view>档口名称: {{item.address.stall}}</view>
             <view>联系人: {{item.address.consignee}} {{item.address.mobile}}</view>
-            <view>取样地址: {{item.address.city_str}} {{item.address.address}}</view>
+            <view class='pdr-20'>取样地址: {{item.address.city_str}} {{item.address.address}}</view>
           </view>
         </view> 
     </view>
@@ -95,7 +95,7 @@
     </view>
   </view> 
 </view>
-<view style='height:120rpx;'></view>
+<view style='height:135rpx;'></view>
 <view class='task-pay box-shadow lh90 fs30 mgb-30' wx:if='{{finds.length>0 || fetchs.length>0}}'>
     <view class='mgl-30'>
       <text catchtap='doCheckAll'  wx:if='{{isCheckAll}}' class="iconfont icon-dui fs40 pdr-20 text-theme"></text>
@@ -107,4 +107,11 @@
     </view>
 </view>
 
+<view class='no-data' wx:if='{{isData}}'>
+    <image src='../../public/images/icon/no_order.png'></image>
+    <view class='no-data-text'>你没有相关任务</view>
+    <view class='no-data-btn'  bindtap='goIndex'>
+        去添加任务
+    </view>
+</view> 
 

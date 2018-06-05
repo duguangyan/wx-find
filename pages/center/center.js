@@ -186,6 +186,7 @@ Page({
      */
     onShow: function () {
         // 更新用户信息
+        console.log('userInfo');
       // 用于注册返回更新用户状态
         api.memberInfo({
 

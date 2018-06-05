@@ -64,7 +64,7 @@
           </view>
           <view class='lh90 fs30 pdl-30'>
               <text>共{{findNum}}件</text>
-              <text class='flr pdr-30'>￥{{filter.formatMoney(fecthPrice)}}</text>
+              <text class='flr pdr-30'>￥{{filter.formatMoney(totalFecthPrice)}}</text>
           </view>
       </view>
       <view class='join-find lh90 fs30 mgb-30' bindtap='fethchSubmit'>确认</view>
