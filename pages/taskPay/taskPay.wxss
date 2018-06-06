@@ -97,3 +97,21 @@
 .bottom-border{
   border-bottom: 1rpx solid #f4f4f4; 
 }
+.task-pay{
+ 
+}
+.task-pay view{
+
+}
+.task-sum{
+ position:absolute;
+right:220rpx;
+top:20rpx;
+width:550rpx;
+text-align:right;
+
+}
+.task-paybtn{
+  position: relative;
+  top: -15rpx;
+}

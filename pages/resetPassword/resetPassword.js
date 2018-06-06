@@ -1,5 +1,6 @@
 const util = require('../../utils/util.js');
 const api = require('../../utils/api.js');
+const apiUrl = 'https://devv2.yidap.com';
 let app = getApp();
 Page({
 
@@ -39,88 +40,132 @@ Page({
 
         this.isBtnActive();
     },
+   
     // 获取手机验证码
     getSMS() {
 
-        let account = this.data.account || '';
+      let account = this.data.account || '';
 
-        const isMatch = util.vailPhone(account);
+      const isMatch = util.vailPhone(account);
 
-        if (isMatch) {
-            
-            this.setData({
-                smsStatus: true,
-            })
+      if (isMatch) {
 
-            api.memberExit({
-                method: 'GET',
-                data: {
-                    user_name: account
-                }
-            }).then((res) => { 
-              console.log(res);
+        this.setData({
+          smsStatus: true,
+        })
 
-              debugger
-                api.restSMS({
-                    data: {
-                        phone: account
-                    }
-                }).then((res) => {
-                  debugger
-                    // 短信发送成功，限制按钮
-                    util.successTips('短信发送成功');
-                    this.setData({
-                        smsID: res.data
-                    })
-                    // 倒计时60s
-                    let second = 60;
-                    const timer = setInterval(() => {
+        api.memberExit({
+         
+          data: {
+            user_name: account
+          }
+        }).then((res) => {
+          if(res.code!=200){
+            api.restSMS({
+              method: 'POST',
+              data: {
+                phone: account
+              }
+            }).then((res) => {
+              // 短信发送成功，限制按钮
+              util.successTips('短信发送成功');
+              this.setData({
+                smsID: res.data
+              })
+              // 倒计时60s
+              let second = 60;
+              const timer = setInterval(() => {
 
-                        second--;
+                second--;
 
-                        let smsText = `${second}s后重新发送`;
-                        this.setData({
-                            smsText
-                        })
-
-                        if (second == 1) {
-                            this.setData({
-                                smsStatus: false,
-                                smsText: false
-                            })
-                            clearInterval(timer)
-                        }
-
-                    }, 1000)
-
-                }).catch((res) => {
-
-                    util.errorTips('短信发送失败');
-                    this.setData({
-                        smsStatus: false,
-                    })
-
+                let smsText = `${second}s后重新发送`;
+                this.setData({
+                  smsText
                 })
 
+                if (second == 1) {
+                  this.setData({
+                    smsStatus: false,
+                    smsText: false
+                  })
+                  clearInterval(timer)
+                }
+
+              }, 1000)
 
             }).catch((res) => {
-                // 用户不存在res.msg
 
-                if (-1 === res.code) {
-                    util.errorTips('用户还没注册!');
-                    this.setData({
-                        smsStatus: false,
-                    })
+              util.errorTips('短信发送失败');
+              this.setData({
+                smsStatus: false,
+              })
 
+            })
+          }
+          
+
+
+        }).catch((res) => {
+          // 用户不存在res.msg
+          if(res.code==201){
+            api.restSMS({
+              method: 'POST',
+              data: {
+                phone: account
+              }
+            }).then((res) => {
+              // 短信发送成功，限制按钮
+              util.successTips('短信发送成功');
+              this.setData({
+                smsID: res.data
+              })
+              // 倒计时60s
+              let second = 60;
+              const timer = setInterval(() => {
+
+                second--;
+
+                let smsText = `${second}s后重新发送`;
+                this.setData({
+                  smsText
+                })
+
+                if (second == 1) {
+                  this.setData({
+                    smsStatus: false,
+                    smsText: '重新发送'
+                  })
+                  clearInterval(timer)
                 }
+
+              }, 1000)
+
+            }).catch((res) => {
+
+              util.errorTips('短信发送失败');
+              this.setData({
+                smsStatus: false,
+              })
+
+            })
+          }
+          if (-1 === res.code) {
+            util.errorTips('用户还没注册!');
+            this.setData({
+              smsStatus: false,
             })
 
+          }
+        })
 
-        } else {
-            util.errorTips('请确认手机号码');
-        }
+
+      } else {
+        util.errorTips('请确认手机号码');
+      }
 
     },
+
+
 
     // 验证码
     sms(e) {

@@ -79,20 +79,20 @@ Page({
                   if (second == 1) {
                     this.setData({
                       smsStatus: false,
-                      smsText: false
+                      smsText: '重新发送'
                     })
                     clearInterval(timer)
                   }
                 }, 1000)
               }else{
-                util.errorTips(res.message);
+                util.errorTips(res.msg);
                   this.setData({
                     smsStatus: false,
                   })
               }
             }).catch((res) => {
                
-              util.errorTips(res.message);
+              util.errorTips(res.msg);
               this.setData({
                 smsStatus: false,
               })

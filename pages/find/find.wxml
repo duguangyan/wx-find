@@ -90,7 +90,7 @@ style="width:44rpx;height:44rpx;position:absolute;right:0;top:0rpx;background-co
               <text class="iconfont icon-dizhi fs40 text-gray mgr-20" wx:if='{{item.selcetSecondTabNum==1}}'></text>
               <view data-index='{{idx}}' bindtap='goConsigneeAddress' wx:if='{{ item.selcetSecondTabNum == 1 }}' hidden='{{ !item.address}}' class="flex-1 address-info fs30">
                   <view class="flex">
-                      <text>档口名称: {{item.address.stall}}</text>
+                      <text>档口名称: {{item.address.stall || ''}}</text>
                   </view>
                   <view class="flex">
                       <text>联系人<text class='mgl-30'>:</text> {{item.address.consignee}}</text>
@@ -160,7 +160,7 @@ style="width:44rpx;height:44rpx;position:absolute;right:0;top:0rpx;background-co
         <view class='index-popup-main bt-1'>
           
           <view>一.  服务区域：</view>
-          <view class='fs24'>目前开放的找料区域为 <text class='text-red'>狮岭、三元里、中大</text>，更多开放区域敬请期待。</view>
+          <view class='fs24'>目前开放的找料区域为 <text class='text-red'>狮岭、三元里</text>，更多开放区域敬请期待。</view>
           <view>二.  服务项目：</view>
           <view class='fs24'>现阶段只找皮革（含真皮、二层皮、PU、PVC)皮具箱包产品纺织面料、皮具箱包产品辅料、托料、五金等。</view>
           <view>三．其他：</view>

@@ -79,6 +79,7 @@ Page({
     this.setData({
       delId:id
     })
+    
     wx.showModal({
       title:'确认取消此订单？',
       confirmText: '确定',
@@ -87,7 +88,7 @@ Page({
           console.log('取消订单');
           this.setData({
             isDelModel:false
-          })
+          }) 
         } else if (res.cancel) {
           console.log('用户点击取消')
         }
@@ -122,6 +123,10 @@ Page({
           isDelModel: true,
           findList: this.data.findList
         })
+        wx.showToast({
+          title: '删除成功',  //标题  
+          icon: 'success',  //图标，支持"success"、"loading"  
+        }) 
       }else{
         wx.showToast({
           title: res.msg,
@@ -131,7 +136,7 @@ Page({
       }
     }).catch((res)=>{
       wx.showToast({
-        title: res.msg,
+        title: res.msg || res.message,
         icon: 'none',
         duration: 2000
       })
@@ -221,11 +226,8 @@ Page({
     })
   },
   urgeOrder (e) {
-    let id = e.target.dataset.id;
-    let mobile = e.target.dataset.mobile
-    this.setData({
-      urgeOrderMobile: mobile
-    })
+    let id = e.currentTarget.dataset.id;
+    
     console.log('催单');
     api.urgeOrder({
       method:'Post'
@@ -239,6 +241,7 @@ Page({
         //   confirmText: "确定"
         // })
         this.setData({
+          urgeOrderMobile: res.data.phone,
           isUrgeOrder:true
         })
       }else{
@@ -347,6 +350,10 @@ Page({
               isData: this.data.isData
             })
 
+            this.setData({
+              isCommentModel: true
+            })
+
           }else{
             wx.showToast({
               title: '评价失败！',
@@ -356,14 +363,12 @@ Page({
           }
     }).catch((res)=>{
       wx.showToast({
-        title: res.msg,
+        title: res.msg || res.message,
         icon: 'none',
         duration: 2000
       })
     })
-    this.setData({
-      isCommentModel: true
-    })
+    
   },
   // 设置找料满意度
   satisfact (e) {
@@ -433,6 +438,13 @@ Page({
       }
       wx.hideLoading();
       console.log(res.data);
+    }).catch((res)=>{
+      wx.hideLoading();
+      wx.showToast({
+        title: '请求次数过于频繁',  //标题  
+        icon: 'none',  //图标，支持"success"、"loading"  
+      }) 
+      
     })
   },
   

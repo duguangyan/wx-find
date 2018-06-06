@@ -88,6 +88,16 @@ Page({
           this.setData({
             isDelModel: true
           })
+          wx.showToast({
+            title: '删除成功',  //标题  
+            icon: 'success',  //图标，支持"success"、"loading"  
+            success: function () {
+              wx.navigateBack({
+                delta: 1
+              })
+             }, //接口调用成功的回调函数  
+          }) 
+          
         }
       })
 
@@ -146,19 +156,41 @@ Page({
       })
     },
     // 催单
+    call(e) {
+      let mobile = e.currentTarget.dataset.mobile;
+      wx.makePhoneCall({
+        phoneNumber: mobile + "", //号码
+        success: function () {
+          console.log("拨打电话成功！")
+        },
+        fail: function () {
+          console.log("拨打电话失败！")
+        }
+      })
+    },
+    closeUrgeOrderPopup() {
+      this.setData({
+        isUrgeOrder: false
+      })
+    },
     urgeOrder(e) {
-      let id = e.target.dataset.id;
+      let id = e.currentTarget.dataset.id;
+
       console.log('催单');
       api.urgeOrder({
         method: 'Post'
       }, id).then((res) => {
         console.log(res);
         if (res.code == 200) {
-          wx.showModal({
-            title: "催单成功！",
-            content: "你页可以直接联系找料员、在线客服或致电（400-8088-156），咨询进度",
-            showCancel: false,
-            confirmText: "确定"
+          // wx.showModal({
+          //   title: "催单成功！",
+          //   content: "请联系找料员(<text>" + mobile +"</text>)或在线客服（400-8088-156），咨询进度",
+          //   showCancel: false,
+          //   confirmText: "确定"
+          // })
+          this.setData({
+            urgeOrderMobile: res.data.phone,
+            isUrgeOrder: true
           })
         } else {
           wx.showToast({
@@ -210,6 +242,15 @@ Page({
             console.log(res);
             if(res.code == 200 ){
               let itemObj = res.data;
+              if (itemObj.type){
+                wx.setNavigationBarTitle({
+                  title: '找料详情'
+                })
+              }else{
+                wx.setNavigationBarTitle({
+                  title: '取料详情'
+                })
+              }
               if (itemObj.type == 1){
                 itemObj.type_name = '按图找料'
               } else if (itemObj.type == 2){

@@ -91,7 +91,7 @@
         <view class='index-popup-title'>小鹿取料须知 <text class='iconfont icon-del1'  catchtap='hiddenNotes'></text></view>
         <view class='index-popup-main bt-1'>      
           <view>一.  服务区域：</view>
-          <view class='fs24'>目前开放的取料区域为 <text class='text-red'>狮岭、三元里、中大</text>，更多开放区域敬请期待。</view>
+          <view class='fs24'>目前开放的取料区域为 <text class='text-red'>狮岭、三元里</text>，更多开放区域敬请期待。</view>
           <view>二.  服务项目：</view>
           <view class='fs24'>现阶段所取物料仅限皮革（含真皮、二层皮、PU、PVC)皮具箱包产品纺织面料、皮具箱包产品辅料、托料、五金等。</view>
           <view>三．其他：</view>

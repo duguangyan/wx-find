@@ -186,27 +186,25 @@ Page({
      */
     onShow: function () {
         // 更新用户信息
-        console.log('userInfo');
-      // 用于注册返回更新用户状态
-        api.memberInfo({
-
-        }).then((res) => {
-          console.log('用户信息 = ', res);
-          app.globalData.memberInfo = res.data;
-          this.setData({
-            memberInfo: res.data
-          })
-        }).catch((res) => {
-
-        })
-      
-      
+        this.getUserInfo();
 
     },
 
     // 获取用户信息
     getUserInfo () {
+      console.log('userInfo');
+      // 用于注册返回更新用户状态
+      api.memberInfo({
 
+      }).then((res) => {
+        console.log('用户信息 = ', res);
+        app.globalData.memberInfo = res.data;
+        this.setData({
+          memberInfo: res.data
+        })
+      }).catch((res) => {
+
+      })
     },
 
     /**

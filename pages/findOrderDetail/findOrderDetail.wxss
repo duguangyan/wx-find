@@ -16,14 +16,15 @@ page{
 }
 .describe{
   position: relative;
+  top: -5rpx;
 }
 .describe-title{
   position: absolute;
-  top: 15rpx;
-  letter-spacing:20rpx;
+  top: 10rpx;
+  letter-spacing:30rpx;
 }
 .describe-content{
-  left: 130rpx;
+  left: 136rpx;
 }
 .find-order-detail-describe{
   position: absolute;
@@ -39,7 +40,7 @@ page{
    position: relative;
 }
 .find-order-detail-address{
-  margin:30rpx 0; 
+  margin:30rpx 0 0 0; 
 }
 .find-order-detail-btn{
   width: 750rpx;
@@ -50,7 +51,6 @@ page{
 }
 .find-order-detail-btn text{
   display: block;
-  width: 120rpx;
   height: 70rpx;
   line-height: 70rpx;
   text-align: center;
@@ -58,9 +58,9 @@ page{
   color: #c81a29;
   border-radius: 10rpx; 
   float: right;
-  margin: 30rpx 30rpx;
+  margin: 30rpx 30rpx 30rpx 0;
   font-size: 30rpx;
-  padding: 0 5rpx;
+  padding: 0 10rpx;
  
 }
 .task-find-method-img{
@@ -69,4 +69,144 @@ page{
   width: 100rpx;
   height: 100rpx;
   margin-right: 50rpx;
+}
+
+
+
+
+
+.index-popup{
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999999;
+}
+.index-popup-bg{
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  opacity: .7;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.index-popup-content{
+  width: 700rpx;
+  min-height: 330rpx;
+  background-color: #fff;
+  position: absolute;
+  top: 20%;
+  left: 25rpx;
+  border-radius: 10rpx; 
+}
+.index-popup-title{
+  height: 150rpx;
+  line-height: 150rpx;
+  font-size: 36rpx;
+  text-align: center;
+  position: relative;
+}
+.index-popup-main{
+  font-size: 30rpx;
+  padding: 20rpx 30rpx;
+  border-bottom:1px solid #f4f4f4; 
+}
+.index-popup-main .index-popup-view-1{
+  letter-spacing:9px;
+  line-height:90rpx;
+  height:90rpx;
+  float:left;
+}
+.index-popup-main view:last-child{
+  
+}
+.index-popup-main input{
+  display: inline-block;
+  height: 68rpx;
+  line-height: 68rpx;
+  width: 80rpx;
+  border:1rpx solid #f4f4f4;
+  border-radius:10rpx;
+  padding-left: 20rpx; 
+  margin: 0 20rpx; 
+  margin-top: 10rpx;
+}
+.index-popup-check {
+  padding: 0 80rpx;
+  height: 90rpx;
+  line-height: 90rpx;
+  border-bottom:1rpx solid #f4f4f4; 
+}
+.index-popup-check view{
+  display: inline-block;
+  margin-left: 30rpx;
+  font-size: 30rpx;
+}
+.index-popup-check view:first-child{
+  margin-left: 0;
+}
+.doSubmit{
+  width: 350rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  text-align: center;
+  margin: 0 auto;
+  background-color: #c81a29;
+  border-radius:20rpx;
+  font-size: 30rpx;
+  color: #fff; 
+  margin-top: 60rpx;
+}
+.index-popup-btn view{
+  display: inline-block;
+  width: 256rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  text-align: center;
+  font-size: 30rpx;
+  margin-left: 60rpx;
+  margin-top: 20rpx;
+  border: 1rpx solid #f23030;
+  border-radius:10rpx; 
+}
+.xuzhi {
+  text-align: center;
+  margin: 0 auto;
+  margin-bottom: 30rpx;
+  margin-top: 30rpx;
+}
+.xuzhi image{
+  width: 35rpx;
+  height: 35rpx;
+  margin-right: 5rpx;
+  position: relative;
+  top: 8rpx;
+}
+.xuzhi text{
+
+}
+.notes-btn{
+  margin-top: 30rpx;
+  margin-bottom: 50rpx;
+}
+.notes-btn view{
+  margin-left: 218rpx;
+  background-color: #c81a29;
+  color: #fff;
+}
+.notes-btn-content{
+  height: auto;
+  top: 25%;
+}
+.index-popup-main view{
+  line-height: 50rpx;
+}
+.icon-del1{
+  position: absolute;
+  font-size: 60rpx;
+  right: 10rpx;
+  top: -30rpx;
+  color: #999;
 }

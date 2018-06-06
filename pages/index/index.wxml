@@ -3,7 +3,7 @@
 {{filter.formatMoney('11111111')}}
 </view> -->
 <view>
-    <image src="https://static.yidap.com/miniapp/banner2.png" style='width:100%;height:100%;' mode='widthFix'></image>
+    <image src="https://static.yidap.com/miniapp/xiaolu-banner.png" style='width:100%;height:100%;' mode='widthFix'></image>
     <!--介绍 S  -->
     <view class="section-box">
         <view class="section-item">
@@ -56,7 +56,7 @@
     </view>
     <view class='cf'>
       <view class="together-box">
-          <button catchtap='goFind'>立即找料</button>
+          <button catchtap='goFind'>立即取送</button>
       </view>
       <view class="recharge-box">
           <button catchtap='goMaterial'>立刻取料</button>

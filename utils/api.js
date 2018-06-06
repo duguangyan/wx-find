@@ -140,7 +140,7 @@ const register = (params) => {
 
 // 重置密码
 const restSMS = (params) => {
-    return myRequest(params, `${apiUrl}/auth/member/psw/findsms`)
+  return myRequest(params, `${apiUrl}/api/sms/send`)
 }
 
 // 修改密码
