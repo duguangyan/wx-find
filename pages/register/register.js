@@ -63,27 +63,36 @@ Page({
                 }
             }).then((res) => {
               if(res.code === 200){
-                // 短信发送成功，限制按钮
-                util.successTips('短信发送成功');
-                this.setData({
-                  smsID: res.data
-                })
-                // 倒计时60s
-                let second = 60;
-                const timer = setInterval(() => {
-                  second--;
-                  let smsText = `${second}s后重新发送`;
-                  this.setData({
-                    smsText
-                  })
-                  if (second == 1) {
-                    this.setData({
-                      smsStatus: false,
-                      smsText: '重新发送'
-                    })
-                    clearInterval(timer)
+
+                api.regSMS({
+                  method: 'POST',
+                  data: {
+                    phone: account
                   }
-                }, 1000)
+                }).then((res)=>{
+                  // 短信发送成功，限制按钮
+                  util.successTips('短信发送成功');
+                  this.setData({
+                    smsID: res.data
+                  })
+                  // 倒计时60s
+                  let second = 60;
+                  const timer = setInterval(() => {
+                    second--;
+                    let smsText = `${second}s后重新发送`;
+                    this.setData({
+                      smsText
+                    })
+                    if (second == 1) {
+                      this.setData({
+                        smsStatus: false,
+                        smsText: '重新发送'
+                      })
+                      clearInterval(timer)
+                    }
+                  }, 1000)
+                })
+                
               }else{
                 util.errorTips(res.msg);
                   this.setData({
@@ -185,7 +194,6 @@ Page({
             data: {
                 user_name: account,
                 password: password,
-                sms_id: smsID,
                 code: sms,
                 from:3,
                 open_id: open_id

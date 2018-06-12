@@ -5,7 +5,7 @@
     <view class='box-shadow order-header'>
       <view class='order-nav fs30 lh90 border-bottom'>
           <text bindtap='checkNav' data-index='1' class="{{orderNavNum==1?'nav-active':'order-text'}}">找料订单</text>
-          <text bindtap='checkNav' data-index='2' class="{{orderNavNum==2?'nav-active':'order-text'}}">取料订单</text>
+          <text bindtap='checkNav' data-index='2' class="{{orderNavNum==2?'nav-active':'order-text'}}">取送订单</text>
       </view>
       <view class='order-nav order-child-nav fs30 lh90' wx:if="{{orderNavNum==1}}">
           <text bindtap='checkChildNav' data-index='0' class="{{orderChildNavNum==0?'nav-child-active':''}}">全部</text>
@@ -41,7 +41,7 @@
                         <text class='flr'>金额:￥{{filter.formatMoney(item.find_fee)}}</text>
                     </view>
                     <view>物料描述：{{item.desc}}</view>
-                    <view wx:if='{{orderNavNum==1}}'>找料方式：{{item.type_name}}</view>
+                    <view wx:if='{{orderNavNum==1}}'>找料方式：{{item.type_name}}<text wx:if='{{item.get_type==1}}'>-上门取样 </text><text wx:if='{{item.get_type==2}}'>-寄送样品 </text></view>
                     <image wx:if="{{orderNavNum==1}}" class='task-find-img' src='../../public/images/task/task_find.png'></image>
                     <image wx:if="{{orderNavNum==2}}" class='task-find-img' src='../../public/images/task/task_get.png'></image>
                   </view> 
@@ -52,17 +52,17 @@
                         <image wx:if='{{item.back_img}}' src='{{item.back_img}}'></image>
                     </view> 
                     <view class='task-find-method-getfind bt-1' wx:if='{{item.type==2 || orderNavNum == 2}}'>
-                        <view>档口名称: {{item.shipping_address.stall}} </view>
-                        <view>联 系 人 : {{item.shipping_address.consignee}}  / {{item.shipping_address.mobile}}</view>
-                        <view>取料地址: {{item.shipping_address.city_str}} {{item.shipping_address.address}}</view>
+                        <view>档口名称: {{item.shipping_address.stall||''}} </view>
+                        <view>联 系 人 : {{item.shipping_address.consignee||''}}  / {{item.shipping_address.mobile||''}}</view>
+                        <view>取料地址: {{item.shipping_address.city_str||''}} {{item.shipping_address.address||''}}</view>
                     </view> 
-                    <view class='order-footer-btn bt-1'
+                    <view class='order-footer-btn bt-1 cf'
 wx:if='{{item.button_status.on_cancel==1||item.button_status.on_pay==1||item.button_status.on_prompt==1||item.button_status.on_confirm==1||item.button_status.on_comment==1}}'>
-                      <text style='border: 1rpx solid #666;color: #666;' data-id='{{item.id}}' catchtap='delOrder'wx:if='{{item.button_status.on_cancel==1}}'>取消订单</text>
-                      <text data-id='{{item.id}}' catchtap='toPay' wx:if='{{item.button_status.on_pay==1}}' class='order-footer-btn-red'>去支付</text>
-                      <text data-id='{{item.id}}' catchtap='urgeOrder'  wx:if='{{item.button_status.on_prompt==1}}' class='order-footer-btn-red'>催单</text>
-                      <text data-id='{{item.id}}' catchtap='affirmOrder' wx:if='{{item.button_status.on_confirm==1}}' class='order-footer-btn-red' data-index="{{index}}">确认收货</text>
-                      <text data-id='{{item.id}}' catchtap='toComment'  wx:if='{{item.button_status.on_comment==1}}'>评价</text>
+                      <button style='border: 1rpx solid #666;color: #666;' data-id='{{item.id}}' catchtap='delOrder'wx:if='{{item.button_status.on_cancel==1}}'>取消订单</button>
+                      <button data-id='{{item.id}}'  disabled='{{item.isDisabled}}' data-index='{{index}}' catchtap='toPay' wx:if='{{item.button_status.on_pay==1}}' class='order-footer-btn-red'>去支付</button>
+                      <button data-id='{{item.id}}' catchtap='urgeOrder'  wx:if='{{item.button_status.on_prompt==1}}' class='order-footer-btn-red'>催单</button>
+                      <button data-id='{{item.id}}' catchtap='affirmOrder' wx:if='{{item.button_status.on_confirm==1}}' class='order-footer-btn-red' data-index="{{index}}">确认收货</button>
+                      <button data-id='{{item.id}}' catchtap='toComment'  wx:if='{{item.button_status.on_comment==1}}'>评价</button>
                   </view>
 
                   </view>  
@@ -118,7 +118,7 @@ bindcancel="commentCancel">
 <view class='index-popup notes-popup' wx:if="{{isUrgeOrder}}">
     <view class='index-popup-bg' catchtap='closeUrgeOrderPopup'></view>
     <view class='index-popup-content notes-btn-content'>
-        <view class='index-popup-title'>小鹿取料须知 </view>
+        <view class='index-popup-title'>催单成功 </view>
         <view class='index-popup-main bt-1'>      
          <view>
           你也可联系找料员(<text class='text-red' data-mobile='{{urgeOrderMobile}}' catchtap='call'>{{urgeOrderMobile || '暂无'}}</text>)或致电(

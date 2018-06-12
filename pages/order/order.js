@@ -8,7 +8,7 @@ Page({
    */
   data: {
     isUrgeOrder:false, // 催单弹窗
-    isData:false, // 没有订单数据
+    isData:true, // 没有订单数据
     shopLoading:true,
     modalShow:true,
     orderNavNum:1, // nav一级切换
@@ -23,7 +23,8 @@ Page({
     findList:'', // 找料列表数据
     fecthList:'', // 取料列表数据
     totalPages:0, // 总页数
-    current_page:1 // 当前页 
+    current_page:1, // 当前页 
+    isDisabled:false
   },
   // 去下单
   doOrder(){
@@ -151,21 +152,32 @@ Page({
   },
   // 去支付
   toPay (e) {
-    let _this = this;
-    console.log('去支付');
+      let _this = this;
+      console.log('去支付');
       let order_id = e.target.dataset.id;
+      let order_index = e.target.dataset.index;
+      this.data.findList[order_index].isDisabled = true;
+      this.setData({
+        findList: this.data.findList
+      })
       api.repay({
         method:'POST'
       }, order_id).then((res)=>{
          if (res.code==200 && res.data.pay_status ==1){
+           let pay_log = JSON.stringify(res.data.pay_log);
            wx.showToast({
              title: '支付成功',
              icon: 'none',
-             duration: 2000,
+             duration: 1500,
            })
            setTimeout(()=>{
-             _this.getList(_this.data.orderNavNum, _this.data.orderChildNavNum);
-           },2000)
+            // _this.getList(_this.data.orderNavNum, _this.data.orderChildNavNum);
+             wx.setStorageSync('method', _this.data.orderNavNum);
+             wx.setStorageSync('status', 0);
+             wx.navigateTo({
+               url: '../taskPaySuccess/taskPaySuccess?pay_log=' + pay_log
+             })
+           },1500)
            
         }else{
            let order_type = 4;
@@ -185,11 +197,17 @@ Page({
                data.success = function (res) {
                  console.log('支付成功');
                  console.log(res);
+                 wx.setStorageSync('method', _this.data.orderNavNum);
+                 wx.setStorageSync('status', 0);
                  wx.navigateTo({
                    url: '../taskPaySuccess/taskPaySuccess?pay_log=' + pay_log
                  })
                }
                data.fail = function (res) {
+                 _this.data.findList[order_index].isDisabled = true;
+                 _this.setData({
+                   findList: this.data.findList
+                 })
                  console.log('支付失败');
                  console.log(res);
                  wx.showToast({
@@ -197,6 +215,7 @@ Page({
                    icon: 'none',
                    duration: 2000
                  })
+                 
                }
                wx.requestPayment(data);
              }
@@ -226,6 +245,12 @@ Page({
     })
   },
   urgeOrder (e) {
+    if (this.data.isUrgeOrderRes){
+      this.setData({
+        isUrgeOrder: true,
+      })
+      return false;
+    }
     let id = e.currentTarget.dataset.id;
     
     console.log('催单');
@@ -242,7 +267,8 @@ Page({
         // })
         this.setData({
           urgeOrderMobile: res.data.phone,
-          isUrgeOrder:true
+          isUrgeOrder:true,
+          isUrgeOrderRes : true
         })
       }else{
         wx.showToast({
@@ -418,6 +444,10 @@ Page({
           }
           // 找料状态 1 待接单 2找料中 3 无法找到 4已找到料 
         }
+
+        this.data.findList.forEach((v, i) => {
+          v.isDisabled = false
+        })
         
         // 判断是否加载更多
         if (this.data.findList.length >= this.data.totalPages){
@@ -441,33 +471,19 @@ Page({
     }).catch((res)=>{
       wx.hideLoading();
       wx.showToast({
-        title: '请求次数过于频繁',  //标题  
+        title: res.msg,  //标题  
         icon: 'none',  //图标，支持"success"、"loading"  
       }) 
       
     })
   },
   
+
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    // 从个人中心过来
-    let method = wx.getStorageSync('method');
-    if (method){
-      let status = wx.getStorageSync('status');
-      this.setData({
-        method,
-        orderNavNum: method,
-        orderChildNavNum: status
-      })
-    }
-    try {
-      wx.removeStorageSync('method');
-      wx.removeStorageSync('status');
-    } catch (e) {
-      // Do something when catch error
-    }
+    
     
    
   },
@@ -483,6 +499,23 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+
+    let method = wx.getStorageSync('method');
+
+    if (method) {
+      let status = wx.getStorageSync('status');
+      this.setData({
+        method,
+        orderNavNum: method,
+        orderChildNavNum: status
+      })
+    }
+    try {
+      wx.removeStorageSync('method');
+      wx.removeStorageSync('status');
+    } catch (e) {
+      // Do something when catch error
+    }
     // 初始化获取找料列表
     this.getList(this.data.orderNavNum, this.data.orderChildNavNum);
     //获得dialog组件

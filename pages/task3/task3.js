@@ -10,10 +10,91 @@ Page({
     fetchsCheckAll:true,
     isCheckAll:true
   },
-  onLoad: function () {
+  onLoad: function (options) {
     
   },
-  //手指触摸动作开始 记录起点X坐标
+  // 判断取消选中并获取ID
+  cancelCheck(nav, id,check){
+    let getId = id || false;
+    let isCheck = check || false;
+    if (this.data.finds.length <= 0 ){
+      wx.removeStorageSync('cancelCheckFindsIds');
+    }
+    if (this.data.fetchs.length <= 0){
+      wx.removeStorageSync('cancelCheckFetchsIds');
+    }
+    let cancelCheckFindsIds  = wx.getStorageSync('cancelCheckFindsIds') || [];
+    let cancelCheckFetchsIds = wx.getStorageSync('cancelCheckFetchsIds') || [];
+    if(nav==1){ 
+      if (getId){ 
+       
+        if (isCheck){
+          cancelCheckFindsIds.forEach((v,i)=>{
+            if (v == getId){
+              cancelCheckFindsIds.splice(i,1);
+            }
+          })
+        }else{
+          cancelCheckFindsIds.push(getId);
+        }
+        
+        
+      }else{
+        if (!this.data.findsCheckAll){
+          cancelCheckFindsIds = [];
+          this.data.finds.forEach((v, i) => {
+            cancelCheckFindsIds.push(this.data.finds[i].id);
+          })
+        }else{
+          cancelCheckFindsIds = [];
+        }
+      }
+      wx.setStorageSync('cancelCheckFindsIds', cancelCheckFindsIds);
+
+    }else if(nav==2){ 
+
+      if (getId) {
+
+        if (isCheck) {
+          cancelCheckFetchsIds.forEach((v, i) => {
+            if (v == getId) {
+              cancelCheckFetchsIds.splice(i, 1);
+            }
+          })
+        } else {
+          cancelCheckFetchsIds.push(getId);
+        }
+
+
+      } else {
+        if (!this.data.fetchsCheckAll) {
+          cancelCheckFetchsIds = [];
+          this.data.finds.forEach((v, i) => {
+            cancelCheckFetchsIds.push(this.data.fetchs[i].id);
+          })
+        } else {
+          cancelCheckFetchsIds = [];
+        }
+      }
+      wx.setStorageSync('cancelCheckFetchsIds', cancelCheckFetchsIds);
+
+    }else if(nav==3){
+      cancelCheckFindsIds = [];
+      cancelCheckFetchsIds = [];
+      if (!this.data.isCheckAll){
+        this.data.finds.forEach((v, i) => {
+          cancelCheckFindsIds.push(this.data.finds[i].id);
+        })
+        this.data.fetchs.forEach((v, i) => {
+          cancelCheckFetchsIds.push(this.data.fetchs[i].id);
+        })
+      }
+      wx.setStorageSync('cancelCheckFindsIds', cancelCheckFindsIds);
+      wx.setStorageSync('cancelCheckFetchsIds', cancelCheckFetchsIds);
+
+    }
+  },
+  // 手指触摸动作开始 记录起点X坐标
   touchstart: function (e) { 
     let nav = e.currentTarget.dataset.nav;
     if(nav == 1){
@@ -153,6 +234,9 @@ Page({
     this.init();
   },
   init() {
+    let cancelCheckFindsIds = wx.getStorageSync('cancelCheckFindsIds') || [];
+    let cancelCheckFetchsIds = wx.getStorageSync('cancelCheckFetchsIds') || [];
+    
     this.setData({
       finds: [],
       fetchs: [],
@@ -165,20 +249,50 @@ Page({
       if (res.code == 200) {
         console.log(res);
         let finds = res.data.find;
+        let findsLength = res.data.find.length;
         let fetchs = res.data.fetch;
-        finds.forEach(function (v, i) {
+        let fetchsLength = res.data.fetch.length;
+        finds.forEach( (v, i) => {
             v.isTouchMove    = false;
             finds[i].address = finds[i].address?JSON.parse(finds[i].address):null;
             finds[i].check   = true;
+            cancelCheckFindsIds.forEach((v,j)=>{
+              if (finds[i].id == v){
+                finds[i].check          = false;
+                this.data.findsCheckAll = false;
+                this.data.isCheckAll    = false;
+              }
+            })  
+
+
         })
-        fetchs.forEach(function (v, i) {
+        fetchs.forEach( (v, i)=> {
           v.isTouchMove     = false;
           fetchs[i].address = JSON.parse(fetchs[i].address); 
-          fetchs[i].check    = true;
+          fetchs[i].check  = true;
+
+
+          cancelCheckFetchsIds.forEach((v, j) => {
+            if (fetchs[i].id == v) {
+              fetchs[i].check = false;
+              this.data.fetchsCheckAll = false;
+              this.data.isCheckAll = false;
+            }
+          }) 
+          
+          
+
         })
+
+        
         this.setData({
           finds,
-          fetchs
+          fetchs,
+          findsLength,
+          fetchsLength,
+          findsCheckAll: this.data.findsCheckAll,
+          fetchsCheckAll: this.data.fetchsCheckAll,
+          isCheckAll: this.data.isCheckAll
         })
 
         // 计算价格
@@ -197,22 +311,28 @@ Page({
   },
   // 计算合计金额
   doSumPrice() {
+    let findsLength  = 0;
+    let fetchsLength = 0;
     let finds = this.data.finds;
     let fetchs = this.data.fetchs;
     let findsSumPrice = 0;
     let fetchsSumPrice = 0;
     for (let i = 0; i < finds.length; i++) {
       if (finds[i].check) {
-        findsSumPrice += parseInt(finds[i].form_data.fee)
+        findsSumPrice += parseInt(finds[i].form_data.fee);
+        findsLength++;
       }
     }
     for (let i = 0; i < fetchs.length; i++) {
       if (fetchs[i].check) {
-        fetchsSumPrice += parseInt(fetchs[i].form_data.fee)
+        fetchsSumPrice += parseInt(fetchs[i].form_data.fee);
+        fetchsLength++;
       }
     }
     this.data.sumPrice = findsSumPrice + fetchsSumPrice;
     this.setData({
+      findsLength,
+      fetchsLength,
       findsSumPrice,
       fetchsSumPrice,
       sumPrice: this.data.sumPrice
@@ -264,7 +384,10 @@ Page({
       fetchsCheckAll: this.data.fetchsCheckAll
     })
     this.verdictAllCheck();
+    // 计算价格
     this.doSumPrice();
+    // 判断并记录取消check
+    this.cancelCheck(nav);
   },
   // traversal data
   dataForEach(obj,bool){ 
@@ -296,6 +419,8 @@ Page({
       fetchs: this.data.fetchs
     })
     this.doSumPrice();
+    // 判断并记录取消check
+    this.cancelCheck(3);
   },
   // children check 
   childCheck(e){
@@ -336,6 +461,13 @@ Page({
       isCheckAll: this.data.isCheckAll
     })
     this.doSumPrice();
+    // 判断并记录取消check
+    if(nav==1){
+      this.cancelCheck(nav, this.data.finds[index].id, this.data.finds[index].check);
+    }else{
+      this.cancelCheck(nav, this.data.fetchs[index].id, this.data.fetchs[index].check);
+    }
+   
 
   },
   // verdict  item was all check
@@ -388,8 +520,16 @@ Page({
       fetchs: newFetchs
     }
     wx.setStorageSync('taskPayList', taskPayList);
+    let payMethed = 1;
+    if (this.data.finds.length > 0){
+      payMethed = 1
+    } else if (this.data.fetchs.length > 0){
+      payMethed = 2
+    } else if (this.data.finds.length > 0 && this.data.fetchs.length > 0){
+      payMethed = 3
+    }
     wx.navigateTo({
-      url: '../taskPay/taskPay'
+      url: '../taskPay/taskPay?payMethed=' + payMethed
     })
   },
   // 判断是否还有数据

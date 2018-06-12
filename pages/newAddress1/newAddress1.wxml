@@ -13,7 +13,7 @@
         <input bindinput='editMobile' style="text-align:right;width:550rpx;" placeholder='请填写' placeholder-class="text-right" maxlength='11' value='{{addressInfo.mobile}}'></input>
     </view>
 
-    <view class="flex cell-padding border-bottom lh100">
+    <!-- <view class="flex cell-padding border-bottom lh100">
         <view>所在地区</view>
 
 
@@ -22,10 +22,17 @@
               {{multiArray[multiIndex[0]].region_name}} {{multiArray[multiIndex[0]].children[multiIndex[1]].region_name}} {{multiArray[multiIndex[0]].children[multiIndex[1]].children[multiIndex[2]].region_name}} 
             </view>
             
-        </picker>
+        </picker> -->
 
         <!-- <text class="iconfont icon-jiantou"></text> -->
+<!-- 
+    </view> -->
 
+    <view class="section">
+        <view class="icon">地址</view>
+        <view class="from_input fl" data-mold="city" bindtap="risePicker">
+            {{cityText}}
+        </view>
     </view>
 
     <!-- 地图筛选地址 -->
@@ -51,7 +58,7 @@
         </textarea>
 
     </view>
-    <view class="address-area">
+    <view class="address-area" wx:if='{{isCity}}'>
         <textarea bindinput='editDetailRemark' placeholder='备注' value='{{addressInfo.remark}}'>
 
         </textarea>
@@ -65,7 +72,33 @@
     </view>  
 
 
+    
 
+
+</view>
+
+
+<view hidden="{{isCity}}" class="selector">
+    <view class="inner_box">
+        <view class="header_box">
+            <view class="item l" data-act="cancel" data-mold="city" catchtap="ideChoice">取消</view>
+            <view class="item c">请选择</view>
+            <view class="item r" data-act="confirm" data-mold="city" catchtap="ideChoice">确定</view>
+        </view>
+
+        <picker-view class="picker_box" indicator-class="selected" value="{{cityValue}}" bindchange="cityChange">
+            <picker-view-column>
+                <view wx:for="{{provinces}}"wx:key='this'>{{item}}</view>
+            </picker-view-column>
+            <picker-view-column>
+                <view wx:for="{{citys}}" wx:key='this'>{{item}}</view>
+            </picker-view-column>
+            <picker-view-column>
+                <view wx:for="{{countys}}" wx:key='this'>{{item}}</view>
+            </picker-view-column>
+        </picker-view>
+    </view>
+    <view class="layer"></view>
 </view>
 
 <view bindtap='saveSubmit' hover-class="hover-style" class="bottom-fixed h100 text-center lh100 text-white fs30">

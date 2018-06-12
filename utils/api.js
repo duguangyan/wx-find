@@ -1,6 +1,7 @@
 const oldApiUrl = 'https://api.yidap.com';
-//const apiUrl = 'https://devapi.yidap.com';
+// const apiUrl = 'https://devapi.yidap.com';
 const apiUrl = 'https://devv2.yidap.com';
+// const apiUrl = 'https://apiv2.yidap.com';
 
 Promise.prototype.finally = function (callback) {
     let P = this.constructor;
@@ -48,10 +49,11 @@ const myRequest = function (params = {}, url , id, st, page) {
                     resolve(res);
                 } else {
                     if (401 === res.code) {
+                        wx.hideLoading();
                         console.log('401统一处理');
                         wx.showModal({
-                            title: '您尚未登陆',
-                            content: '是否前往登陆页面',
+                            title: '您尚未登录',
+                            content: '是否前往登录页面',
                             confirmText: '前往',
                             confirmColor: '#c81a29',
                             success: (res) => {
@@ -59,6 +61,7 @@ const myRequest = function (params = {}, url , id, st, page) {
                                     wx.navigateTo({
                                       url: '../login/login',
                                     })
+                                    return false;
                                 } else if (res.cancel) {
                                     console.log('用户点击取消')
                                 }
@@ -390,9 +393,12 @@ const getTaskFee = (params, id) => myRequest(params, `${apiUrl}/find/api/taskfee
 // 获取openId
 const getOpenId = (params) => myRequest(params, `${apiUrl}/api/member/openId`);
 
+//个人中心统计
+const centerStatistics = (params) => myRequest(params, `${apiUrl}/find/api/member/stastics`);
 
 
 module.exports = {
+  centerStatistics,
   getOpenId,
   getTaskFee,
   getUserInfo,

@@ -37,18 +37,18 @@
           <view class="address flex flex-start pdt-30 pdb-30 pdl-20 pdr-20" >
               <text class="iconfont icon-dizhi fs40 text-gray mgr-20"></text>
 
-              <view data-index='{{idx}}' bindtap='goConsigneeAddress'  wx:if='{{defaultAddress.id}}' class="flex-1 address-info fs30">
+              <view data-index='{{idx}}' data-id='{{defaultAddress.id}}' bindtap='goConsigneeAddress'  wx:if='{{defaultAddress.id}}' class="flex-1 address-info fs30">
                   <view class="flex">
-                      <text>档口名称: {{defaultAddress.stall}}</text>
+                      <text>地址名称: {{defaultAddress.stall || ''}}</text>
                   </view>
                   <view class="flex">
-                      <text>收货人<text class='mgl-30'>:</text> {{defaultAddress.consignee}}</text>
-                      <text>{{defaultAddress.mobile}}</text>
+                      <text>收货人<text class='mgl-30'>:</text> {{defaultAddress.consignee || ''}} / {{defaultAddress.mobile || ''}}</text>
+                
                   </view>
 
                   <view>
                       <text>收货地址：</text>
-                      <text>{{defaultAddress.city_str}} {{defaultAddress.address}}</text>
+                      <text style='position: relative;left: -15rpx;'>{{defaultAddress.city_str || ''}} {{defaultAddress.address || ''}}</text>
                   </view>
 
               </view>
@@ -67,11 +67,12 @@
               <text class='flr pdr-30 text-red'>￥{{filter.formatMoney(totalFecthPrice)}}</text>
           </view>
       </view>
-      <view class='xuzhi' bindtap='showNotes'>
-        <image src='../../public/images/icon/xuzhi.png'></image> <text class='fs30'>《小鹿找料须知》</text>
-      </view>
+      
       <view class='join-find lh90 fs30 mgb-30' bindtap='fethchSubmit'>加入小鹿任务</view>
-      <view style='height:30rpx;'></view>
+      <view class='xuzhi' bindtap='showNotes'>
+        <image src='../../public/images/icon/xuzhi.png'></image> <text class='fs30'>《小鹿取送须知》</text>
+      </view>
+      <view style='height:50rpx;'></view>
 </view>
 
 <view class='index-popup' wx:if="{{isPopup}}">
@@ -80,24 +81,28 @@
         <view class='index-popup-title'>加入小鹿任务成功！</view>
         <view class='index-popup-btn'>
             <view class='go-pay' catchtap='goPay'>去结算({{payNum}}s)</view>
-            <view catchtap='goBack'>继续取料</view>
+            <view catchtap='goBack'>继续取送</view>
         </view>   
     </view>
 </view>
 
 <view class='index-popup notes-popup' wx:if="{{isNotes}}">
-    <view class='index-popup-bg' catchtap='closePopup'></view>
+    <view class='index-popup-bg' catchtap='hiddenNotes'></view>
     <view class='index-popup-content notes-btn-content'>
-        <view class='index-popup-title'>小鹿取料须知 <text class='iconfont icon-del1'  catchtap='hiddenNotes'></text></view>
+        <view class='index-popup-title'>小鹿取送须知 <text class='iconfont icon-del1'  catchtap='hiddenNotes'></text></view>
         <view class='index-popup-main bt-1'>      
           <view>一.  服务区域：</view>
-          <view class='fs24'>目前开放的取料区域为 <text class='text-red'>狮岭、三元里</text>，更多开放区域敬请期待。</view>
+          <view class='fs24'>目前开放的取送物料区域为 <text class='text-red'>狮岭、三元里</text>，更多开放区域敬请期待。</view>
           <view>二.  服务项目：</view>
-          <view class='fs24'>现阶段所取物料仅限皮革（含真皮、二层皮、PU、PVC)皮具箱包产品纺织面料、皮具箱包产品辅料、托料、五金等。</view>
+          <view class='fs24'>1.所取送物料仅限皮革（含真皮、二层皮、PU、PVC)、皮具箱包产品纺织面料、皮具箱包产品辅料、托料、五金等。</view>
           <view>三．其他：</view>
-          <view class='fs24'>1.所取物料数量仅限样品（色卡）或小批量物料,（以电瓶车所载数量为限）,如超出单次取料承重范围，视为第二单。</view>
-          <view class='fs24'>2.本服务平台不提供侵权产品的取料。</view>
-          <view class='fs24'>3.由于市场及行业内因素，我们不承诺100%能找到您所需的物料，但我们会以100%的热情去找料。</view>
+          <view class='fs24'>1.所取送物料数量仅限样品（色卡）或小批量物料，<text style='font-weight: 600;'>（电瓶车所载标准：最大重量25KG/最大长度1.5米*0.5米）</text>，如超出单次取送物料承重范围，视为第二单。</view>
+          <view class='fs24'>2.本服务平台不提供侵权产品的取送料，不提供服务项目以外的取送物料。</view>
+        </view>
+        <view catchtap='checkIsResNotes' class='mgt-30' style='padding-left:200rpx;'>
+            <text wx:if='{{isResNotes}}' class="iconfont icon-dui icon-dui-1 fs40 pdl-10 text-theme"></text>
+            <text wx:if='{{!isResNotes}}' class="iconfont icon-yuan icon-yuan-1 fs40 pdl-10 text-eb"></text>
+            <text style='color:999;padding-left:20rpx;'>已阅读，下次不在显示</text> 
         </view>
         <view class='index-popup-btn notes-btn'>
             <view class='text-red btn-shadow' catchtap='hiddenNotes'>确定</view>

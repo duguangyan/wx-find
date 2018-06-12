@@ -13,6 +13,7 @@ Page({
       starArr: [0, 1, 2, 3, 4], // 评价星星
       starIndex_1: 0, // 星星评价选中
       starIndex_2: 0, // 星星评价选中
+      isDisabled:false
     },
 // 去评价
   toComment () {
@@ -110,22 +111,38 @@ Page({
     },
     // 去支付
     toPay(e) {
+      this.setData({
+        isDisabled: true
+      })
+      let _this = this;
       console.log('去支付');
-
-      let id = e.target.dataset.id;
-      api.orderListToPay({
+      let order_id = e.target.dataset.id;
+      api.repay({
         method: 'POST'
-      }, id).then((res) => {
-        console.log(res);
-        let id = e.target.dataset.id;
-        let order_id = res.data.order_id;
-        let order_type = res.data.order_type;
-        let payInfo = {
-          order_id,
-          order_type,
-          open_id: wx.getStorageSync('open_id')
-        };
-        if (res.code == 200) {
+      }, order_id).then((res) => {
+        if (res.code == 200 && res.data.pay_status == 1) {
+          let pay_log = JSON.stringify(res.data.pay_log);
+          wx.showToast({
+            title: '支付成功',
+            icon: 'none',
+            duration: 1500,
+          })
+          wx.setStorageSync('method', this.data.nav);
+          wx.setStorageSync('status', 0);
+          setTimeout(() => {
+            // _this.getList(_this.data.orderNavNum, _this.data.orderChildNavNum);
+            wx.redirectTo({
+              url: '../taskPaySuccess/taskPaySuccess?pay_log=' + pay_log
+            })
+          }, 1500)
+
+        } else {
+          let order_type = 4;
+          let payInfo = {
+            order_id,
+            order_type,
+            open_id: wx.getStorageSync('open_id')
+          };
           api.wxPay({
             method: 'POST',
             data: payInfo
@@ -133,14 +150,20 @@ Page({
             console.log(res);
             if (res.code == 200) {
               let data = res.data.sdk;
+              let pay_log = JSON.stringify(res.data.pay_log);
               data.success = function (res) {
+                wx.setStorageSync('method', this.data.nav);
+                wx.setStorageSync('status', 0);
                 console.log('支付成功');
                 console.log(res);
-                wx.navigateTo({
-                  url: '../taskPaySuccess/taskPaySuccess'
+                wx.redirectTo({
+                  url: '../taskPaySuccess/taskPaySuccess?pay_log=' + pay_log
                 })
               }
               data.fail = function (res) {
+                _this.setData({
+                  isDisabled: false
+                })
                 console.log('支付失败');
                 console.log(res);
                 wx.showToast({
@@ -148,6 +171,7 @@ Page({
                   icon: 'none',
                   duration: 2000
                 })
+
               }
               wx.requestPayment(data);
             }
@@ -237,6 +261,9 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
+      this.data.id = options.id;
+      this.data.nav = options.nav;
+
       if (options.id){
         api.getOrderDetail({}, options.id).then((res)=>{
             console.log(res);

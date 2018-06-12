@@ -16,7 +16,7 @@
                 <text class="text-yellow mgl-20 fs26">余额：￥ {{memberInfo.asset.balance_amount || 0}}</text>
             </view>
         </view>
-        <navigator style="padding:20rpx 0" open-type='navigate' url="../login/login" hidden='{{memberInfo}}' class="fs32 bold">您暂未登陆（点击登陆）</navigator>
+        <navigator style="padding:20rpx 0" open-type='navigate' url="../login/login" hidden='{{memberInfo}}' class="fs32 bold">您暂未登录（点击登录）</navigator>
     </view>
 
     <view wx:if="{{memberInfo}}" class="setting bg-red text-center mgr-20 radius-10">
@@ -35,25 +35,27 @@
         </view>
     </view>
     <view class="flex flex-start">
-        <view bindtap='toMyOrder' data-method='1' data-id="{{item.id}}" class="item" wx:for="{{orderTab}}" wx:key="{{i}}">
+        <view bindtap='toMyOrder' data-method='1' data-id="{{item.id}}" class="item" wx:for="{{orderTab1}}" wx:key="{{i}}">
             <image mode='aspectFit' src='../../public/images/center/{{item.imgId}}.png'></image>
             <text>{{item.name}}</text>
+            <text class='center-num' wx:if='{{item.num}}'>{{item.num || 0}}</text>
         </view>
     </view>
 </view>
 
 <view class="section-order mgt-20">
     <view class="my-order-line flex">
-        <view class="fs30">取料订单</view>
+        <view class="fs30">取送订单</view>
         <view bindtap='toMyOrder' data-method='2' data-id="0" hover-class='hover-click' class="text-999 lh80">
             <text>查看全部订单</text>
             <text class="iconfont icon-jiantou1 "></text>
         </view>
     </view>
     <view class="flex flex-start">
-        <view bindtap='toMyOrder' data-method='2' data-id="{{item.id}}" class="item" wx:for="{{orderTab}}" wx:key="{{i}}">
+        <view bindtap='toMyOrder' data-method='2' data-id="{{item.id}}" class="item" wx:for="{{orderTab2}}" wx:key="{{i}}">
             <image mode='aspectFit' src='../../public/images/center/{{item.imgId}}.png'></image>
             <text>{{item.name}}</text>
+            <text class='center-num text-red' wx:if='{{item.num}}'>{{item.num || 0}}</text>
         </view>
     </view>
 </view>

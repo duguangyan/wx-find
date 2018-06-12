@@ -1,0 +1,53 @@
+<view class="text-center no-address fs30" wx:if="{{isEmpty}}">
+
+    <view>
+        <text style="font-size: 220rpx; color: #DFDFDF;" class="iconfont icon-genggaishouhuodizhi text-gray"></text>
+    </view>
+
+    <view class="no-address-text text-gray">暂无收货地址</view>
+
+    <view class="text-999">您可以新增地址已方便收货</view>
+
+</view>
+
+<!--有地址  -->
+<view class="fs28" wx:if="{{!isEmpty}}">
+    <block wx:for="{{addressList}}" wx:key="*this">
+        <view class="address-item relative">
+            <view class="address-item-center border-bottom"  data-item='{{item}}' data-index="{{index}}" bindtap='goBlack'>
+                <view class='set-checked'>
+                    <text hidden='{{checkIndex != index}}' class="iconfont icon-dui fs40 pdr-20 text-theme"></text>
+                    <text hidden='{{checkIndex == index}}' class="iconfont icon-yuan fs40 pdr-20 text-eb"></text>
+                </view>
+
+                <view class='mgt-20'>
+                    <text class="">地址名称: {{item.stall||''}}</text>
+                </view>
+                <view>
+                    <text style='letter-spacing:10rpx;'>联系人</text>: {{item.consignee}} / {{item.mobile}}
+                </view>
+
+                <view class="">
+                    <text style='letter-spacing:28rpx;'>地址</text>: {{item.city_str||''}} {{item.address||''}}
+                </view>
+
+                <view class="">
+                    <text style='letter-spacing:28rpx;'>备注</text>: {{item.remark||''}}
+                </view>
+
+                <!-- <view class='dot-btn' data-item='{{item}}' bindtap='goBlack'>
+                  <view class="dot">
+                    <view class="dot2">
+                        <view class="dot3">切换地址</view>
+                    </view>
+                  </view>
+                </view> -->
+            </view>   
+        </view>
+    </block>
+</view>
+
+
+<navigator open-type='navigate' url="../consigneeAddress/consigneeAddress" class="bottom-fixed text-center text-white h100 lh100 fs32">
+   我的地址
+</navigator>

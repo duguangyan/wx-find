@@ -7,6 +7,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    isResNotes:false,
     isNotes:true, // 取料须知
     isSelect:false,
     checkTypes: '',
@@ -17,6 +18,17 @@ Page({
     fecthPrice:0, // 配送费用
     isPopup: false, // 弹窗控制   
     payNum:10, // 倒计时               
+  },
+  checkIsResNotes() {
+    this.setData({
+      isResNotes: !this.data.isResNotes
+    })
+    if (this.data.isResNotes) {
+      wx.setStorageSync('isFetchNotes', true);
+    }else{
+      wx.removeStorageSync('isFetchNotes');
+    }
+
   },
   // 获取单个任务价格
   getTaskFee(){
@@ -207,9 +219,9 @@ Page({
   },
   // 去地址选择页面
   goConsigneeAddress(e) {
-    app.globalData.isFromScope = true;
+    let id = e.currentTarget.dataset.id;
     wx.navigateTo({
-      url: '../consigneeAddress/consigneeAddress?fetchs=1',
+      url: '../consigneeAddressList/consigneeAddressList?fetchs=1&id='+id,
     })
   },
   // 去支付
@@ -230,8 +242,17 @@ Page({
     // wx.navigateBack({
     //   delta: 1
     // })
+    
+    this.data.checkTypes_cid = this.data.checkTypes[0].id;
+    this.data.desc = '';
+    this.data.findNum = 1;
+    this.data.checkType = this.data.checkTypes[0].name;
     this.setData({
-      isPopup: false
+      isPopup: false,
+      checkTypes_cid: this.data.checkTypes_cid,
+      desc: this.data.desc,
+      findNum: this.data.findNum,
+      checkType: this.data.checkType
     })
   },
   // 获取描述
@@ -333,7 +354,11 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-  
+    if (wx.getStorageSync('isFetchNotes')){
+      this.setData({
+        isNotes: false
+      })
+    }
   },
 
   /**

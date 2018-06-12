@@ -51,21 +51,21 @@
       <image style='height:70rpx;margin:0 auto;margin-bottom:20rpx;' src='../../public/images/index/index_1.png'></image>
     </view>
     <view class="free-service flex space-around text-666 fs30">
-        <view>提供服务<text class="text-theme">{{serviceData.num_task || ''}}</text> 次</view>
-        <view>提供服务<text class="text-theme">{{serviceData.num_people || ''}}</text>人</view>
+        <view>提供服务<text class="text-theme">{{serviceData.num_task||0}}</text> 次</view>
+        <view>提供服务<text class="text-theme">{{serviceData.num_people||0}}</text>人</view>
     </view>
     <view class='cf'>
       <view class="together-box">
-          <button catchtap='goFind'>立即取送</button>
+          <button catchtap='goFind'>立即找料</button>
       </view>
       <view class="recharge-box">
-          <button catchtap='goMaterial'>立刻取料</button>
+          <button catchtap='goMaterial'>立刻取送</button>
       </view>
     </view>
     
     <view bindtap='contact' class="text-theme contact">
         <text class="iconfont icon-dianhua"></text>
-        <text>小鹿客服：400-8088-156</text>
+        <text>小鹿客服：<text style='color:#1435ff;'>400-8088-156</text></text>
     </view>
 </view>
 <!-- <dialog id='dialog' 

@@ -10,7 +10,7 @@ Page({
      */
     data: {
 
-        orderTab: [{
+        orderTab1: [{
             id: 4,
             imgId:1,
             name: '待付款'
@@ -23,8 +23,40 @@ Page({
             imgId: 3,
             name: '待评价'
         }],
+        orderTab2: [{
+          id: 4,
+          imgId: 1,
+          name: '待付款'
+        }, {
+          id: 5,
+          imgId: 2,
+          name: '待收货'
+        }, {
+          id: 6,
+          imgId: 3,
+          name: '待评价'
+        }],
 
 
+    },
+
+    // 获取个人中心数据状态
+    centerStatistics (){
+      api.centerStatistics({}).then((res)=>{
+        console.log(res);
+        if(res.code==200){
+          this.data.orderTab1[0].num = res.data.find.unpay;
+          this.data.orderTab1[1].num = res.data.find.unfinish;
+          this.data.orderTab1[2].num = res.data.find.uncmt;
+          this.data.orderTab2[0].num = res.data.fetch.unpay;
+          this.data.orderTab2[1].num = res.data.fetch.unfinish;
+          this.data.orderTab2[2].num = res.data.fetch.uncmt;
+          this.setData({
+            orderTab1: this.data.orderTab1,
+            orderTab2: this.data.orderTab2
+          })
+        }
+      })
     },
     goAddress(){
       // let token = app.globalData.token;
@@ -60,8 +92,8 @@ Page({
         })
 
     },
-    // 找料订单跳转
-    toMyOrder(e) {
+    // 找料订单跳转 
+    toMyOrder(e) { 
         console.log(e.currentTarget.dataset.id);
         let status = e.currentTarget.dataset.id;
         let method = e.currentTarget.dataset.method;
@@ -187,7 +219,7 @@ Page({
     onShow: function () {
         // 更新用户信息
         this.getUserInfo();
-
+        
     },
 
     // 获取用户信息
@@ -198,10 +230,15 @@ Page({
 
       }).then((res) => {
         console.log('用户信息 = ', res);
-        app.globalData.memberInfo = res.data;
-        this.setData({
-          memberInfo: res.data
-        })
+        if(res.code==200){
+          app.globalData.memberInfo = res.data;
+          this.setData({
+            memberInfo: res.data
+          })
+          // 获取用户订单数量
+          this.centerStatistics();
+        }
+        
       }).catch((res) => {
 
       })

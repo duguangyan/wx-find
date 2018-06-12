@@ -132,27 +132,27 @@ Page({
     })
   },
   // 按样找料切换方式
-  selcetSecondTab(e) {
-
+  selcetSecondTab(e) { 
     let index = e.currentTarget.dataset.index;
     let id = e.currentTarget.dataset.id;
-    app.globalData.isFromScope = true;
     this.data.addFinds[index].selcetSecondTabNum = id;
     this.data.addFinds[index].get_type = id;
     console.log(id);
-
+    if (!this.data.addFinds[index].address.id){
+      this.data.addFinds[index].address = this.data.defaultAddress; 
+    }
     this.setData({
       addFinds: this.data.addFinds
     })
-    console.log(app.globalData.isFromScope)
   },
   // 选择找料方式
-  selcetTab(e) { 
+  selcetTab(e) {  
     let index = e.currentTarget.dataset.index;
     let id = e.currentTarget.dataset.id;
     this.data.addFinds[index].selcetTabNum = id;
     
     this.data.addFinds[index].find_type = id;
+    this.data.addFinds[index].get_type = 1;
     this.data.addFinds[index].address = this.data.defaultAddress;
     if(id==2){
       this.data.addFinds[index].selcetSecondTabNum = 1;
@@ -234,9 +234,9 @@ Page({
           console.log('上传进度', res.progress);
           files[i].pct = res.progress + '%';
 
-          // if (res.progress == 100){
-          //     files[i].pct = '上传成功'
-          // }
+           if (res.progress == 100){
+               files[i].pct = ' '
+           }
           this.setData({
             files
           })
@@ -363,7 +363,6 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) { 
-    app.globalData.isFromScope = true;
     // 获取公司地址
     this.getCompanyaddress();
 
@@ -385,19 +384,19 @@ Page({
 
 
     if (item.form_data.front_img){
-      files[0].pct = '100%'
+      files[0].pct = ' '
     }
 
     if (item.form_data.side_img) {
-      files[1].pct = '100%'
+      files[1].pct = ' '
     }
 
     if (item.form_data.back_img) {
-      files[2].pct = '100%'
+      files[2].pct = ' '
     }
     
     this.data.addFinds[0] = item.form_data;
-    this.data.addFinds[0].address = item.address; 
+    this.data.addFinds[0].address = item.form_data.address; 
     this.data.addFinds[0].id = item.id;
     this.data.addFinds[0].files = files;
     this.data.addFinds[0].index = index;
@@ -475,6 +474,11 @@ Page({
     api.defaultAddress({
     }, 1).then((res) => {
       let defaultAddress = res.data;
+      if (!this.data.addFinds[0].address){
+        this.data.addFinds[0].address = res.data;
+        this.data.addFinds[0].get_address = res.data.id;
+      }
+      
       // 可能位空数组
       if (Array.isArray(defaultAddress)) {
         this.setData({
@@ -484,7 +488,7 @@ Page({
       } else {
         //this.data.addFinds[app.globalData.addressIndex].address = res.data;
         this.setData({
-          defaultAddress:'',
+          defaultAddress:res.data,
           addressId: defaultAddress.id,
           addFinds: this.data.addFinds
         })
@@ -546,6 +550,7 @@ Page({
   goConsigneeAddress(e) {
     app.globalData.isFromScope = false;
     let index = e.currentTarget.dataset.index;
+    let id = e.currentTarget.dataset.id;
     app.globalData.addressIndex = index;
     if (this.data.addFinds[index].selcetTabNum == 2) {
       if (this.data.addFinds[index].selcetSecondTabNum == 1) {
@@ -553,7 +558,7 @@ Page({
       }
     }
     wx.navigateTo({
-      url: '../consigneeAddress/consigneeAddress?addFinds=' + JSON.stringify(this.data.addFinds),
+      url: '../consigneeAddressList/consigneeAddressList?addFinds=' + JSON.stringify(this.data.addFinds)+'&id='+id,
     })
   },
   // 返回上一层，继续找料
@@ -588,6 +593,20 @@ Page({
       })
       return false
     }
+
+    if (this.data.addFinds[0].selcetTabNum == 1){
+      if (!this.data.addFinds[0].front_img && !this.data.addFinds[0].side_img && this.data.addFinds[0].back_img){
+        wx.showToast({
+          title: '请添加图片',
+          icon: 'none',
+          duration: 2000
+        })
+        return false;
+      }
+      
+    }
+
+
     if (this.data.addFinds[0].selcetTabNum==2 && this.data.addFinds[0].selcetSecondTabNum==1){
 
       if (!this.data.addFinds[0].address || this.data.addFinds[0].address == "") {

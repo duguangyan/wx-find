@@ -74,7 +74,22 @@ view {
     height: 180rpx;
     text-align: center; 
 }
-
+.item{
+  position: relative;
+}
+.center-num{
+  position:absolute;
+  top:30rpx;
+  right:90rpx;
+  padding:0rpx;
+  border:3rpx solid #c81a29;
+  border-radius:50%;
+  min-width:20rpx;
+  min-height:14rpx;
+  font-size:14rpx;
+  background-color:#fff;
+  color:#c81a29;
+}
 .section-order .item {
     height: 160rpx;
 }

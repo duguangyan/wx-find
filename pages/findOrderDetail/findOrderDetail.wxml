@@ -25,8 +25,8 @@
         <view class='lh50 describe'><text class='describe-title'>描述:</text> <text class='ellipsis-line3 describe-content'>{{itemObj.desc}}</text> </view>
         <view class='lh50 describe'><text class='describe-title'>数量:</text> <text class='ellipsis-line3 describe-content'>{{itemObj.fetch_num}}</text> </view>
         <view class='lh50' wx:if='{{itemObj.type_name}}'>找料方式: {{itemObj.type_name}} 
-          <text wx:if='{{itemObj.get_type==1}}'> / 上门取样</text>
-          <text wx:if='{{itemObj.get_type==2}}'> / 寄送样品</text>
+          <text wx:if='{{itemObj.get_type==1}}'>-上门取样</text>
+          <text wx:if='{{itemObj.get_type==2}}'>-寄送样品</text>
         </view>
          <view class='task-find-method-img' wx:if='{{itemObj.type==1}}'>
           <image catchtap="imgYu" data-src='{{itemObj.front_img}}' 
@@ -43,17 +43,17 @@
       取样地址
     </view>
     <view class='find-order-detail-address bb-20 fs30 pdl-30'wx:if='{{itemObj.get_address}}'>
-      <view class='lh50'> 档口 : {{itemObj.get_address.stall}}  </view>
-      <view class='lh50'> 联 系 人 : {{itemObj.get_address.consignee}}  {{itemObj.get_address.mobile}} </view>
-      <view class='address lh50 pdb-30 pdr-30'>联系地址: {{itemObj.get_address.city_str}} {{itemObj.get_address.address}} </view>              </view>
+      <view class='lh50'> 档口 : {{itemObj.get_address.stall||''}}  </view>
+      <view class='lh50'> 联 系 人 : {{itemObj.get_address.consignee||''}}  {{itemObj.get_address.mobile||''}} </view>
+      <view class='address lh50 pdb-30 pdr-30'>联系地址: {{itemObj.get_address.city_str||''}} {{itemObj.get_address.address||''}} </view>              </view>
     
     
     <view class='lh90 bb-1 fs30 pdl-30' wx:if='{{itemObj.shipping_address}}'>
       送料地址
     </view>
     <view class='find-order-detail-address bb-20 fs30 pdl-30' wx:if='{{itemObj.shipping_address}}'>
-      <view class='lh50'> 档口 : {{itemObj.shipping_address.stall}}  </view>
-      <view class='lh50'> 联 系 人 : {{itemObj.shipping_address.consignee}}  {{itemObj.shipping_address.mobile}} </view>
+      <view class='lh50'> 档口 : {{itemObj.shipping_address.stall || ''}}  </view>
+      <view class='lh50'> 联 系 人 : {{itemObj.shipping_address.consignee || ''}}  {{itemObj.shipping_address.mobile ||''}} </view>
       <view class='address lh50 pdb-30 pdr-30'>联系地址: {{itemObj.shipping_address.city_str}} {{itemObj.shipping_address.address}}       </view>
   </view>
     <!-- <view class='find-order-detail-address bb-20 fs30 pdl-30'>
@@ -64,7 +64,7 @@
         <view class='lh50'>订单编号: {{itemObj.order_sn}}</view>
         <view class='lh50'>下单时间: {{itemObj.created_at}}</view>
         <view class='lh50'wx:if='{{itemObj.findman_name}}'> 找 料 员 : {{itemObj.findman_name}} <text wx:if='{{itemObj.findman_mobile}}'>/ {{itemObj.findman_mobile}}</text></view>
-        <view class='lh50'>
+        <view class='lh50'wx:if='{{itemObj.distribution_name}}'>
          配 送 员 : {{itemObj.distribution_name}} <text wx:if='{{itemObj.distribution_mobile}}'>/ {{itemObj.distribution_mobile}}</text></view>
         <view class='lh50' wx:if='{{itemObj.express_sn && itemObj.express_sn!=""}}'>物流单号: {{itemObj.express_sn}}</view>
         <view class='lh50' wx:if='{{itemObj.express_company && itemObj.express_company!=""}}'>物流公司: {{itemObj.express_company}}</view>
@@ -82,11 +82,11 @@
 
      <view class='find-order-detail-btn bt-1 cf' wx:if='{{itemObj.button_status.on_cancel==1 ||itemObj.button_status.on_pay==1||itemObj.button_status.on_prompt==1 ||itemObj.button_status.on_confirm==1 ||itemObj.button_status.on_comment==1}}'>
  
-                    <text data-id='{{itemObj.id}}' bindtap='toComment'  wx:if='{{itemObj.button_status.on_comment==1}}'>评价</text>
-                    <text style='border: 1rpx solid #666;color: #666;' data-id='{{itemObj.id}}' bindtap='delOrder'wx:if='{{itemObj.button_status.on_cancel==1}}'>取消订单</text>
-                    <text data-id='{{itemObj.id}}' bindtap='toPay' wx:if='{{itemObj.button_status.on_pay==1}}' class='order-footer-btn-red'>去支付</text>
-                    <text data-id='{{itemObj.id}}' bindtap='urgeOrder'  wx:if='{{itemObj.button_status.on_prompt==1}}' class='order-footer-btn-red'>催单</text>
-                    <text data-id='{{itemObj.id}}' bindtap='affirmOrder' wx:if='{{itemObj.button_status.on_confirm==1}}' class='order-footer-btn-red' data-index="{{index}}">确认收货</text>
+                    <button data-id='{{itemObj.id}}' bindtap='toComment'  wx:if='{{itemObj.button_status.on_comment==1}}'>评价</button>
+                    <button style='border: 1rpx solid #666;color: #666;' data-id='{{itemObj.id}}' bindtap='delOrder'wx:if='{{itemObj.button_status.on_cancel==1}}'>取消订单</button>
+                    <button data-id='{{itemObj.id}}' disabled='{{isDisabled}}' bindtap='toPay' wx:if='{{itemObj.button_status.on_pay==1}}' class='order-footer-btn-red'>去支付</button>
+                    <button data-id='{{itemObj.id}}' bindtap='urgeOrder'  wx:if='{{itemObj.button_status.on_prompt==1}}' class='order-footer-btn-red'>催单</button>
+                    <button data-id='{{itemObj.id}}' bindtap='affirmOrder' wx:if='{{itemObj.button_status.on_confirm==1}}' class='order-footer-btn-red' data-index="{{index}}">确认收货</button>
                 </view>
   </view>
   
@@ -134,7 +134,7 @@ bindcancel="commentCancel">
 <view class='index-popup notes-popup' wx:if="{{isUrgeOrder}}">
     <view class='index-popup-bg' catchtap='closeUrgeOrderPopup'></view>
     <view class='index-popup-content notes-btn-content'>
-        <view class='index-popup-title'>小鹿取料须知 </view>
+        <view class='index-popup-title'>催单成功 </view>
         <view class='index-popup-main bt-1'>      
          <view>
           你也可联系找料员(<text class='text-red' data-mobile='{{urgeOrderMobile}}' catchtap='call'>{{urgeOrderMobile || '暂无'}}</text>)或致电(

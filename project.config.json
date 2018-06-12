@@ -166,6 +166,18 @@
 					"name": "task3",
 					"pathName": "pages/task3/task3",
 					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "选择地址",
+					"pathName": "pages/consigneeAddressList/consigneeAddressList",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "新建地址1",
+					"pathName": "pages/newAddress1/newAddress1",
+					"query": ""
 				}
 			]
 		}

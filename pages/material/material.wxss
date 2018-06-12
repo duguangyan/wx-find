@@ -62,6 +62,7 @@
   background-color: #c81a29;
   margin: 0 20rpx;
   border-radius:10rpx;
+  margin-top: 50rpx;
   color: #fff; 
 }
 .field-desc{

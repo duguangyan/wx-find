@@ -1,0 +1,105 @@
+page {
+    background: #F5F5F5;
+    padding-bottom: 100rpx;
+}
+
+.no-address {
+  padding-top: 250rpx;
+    
+}
+
+.no-address-text  {
+    margin: 120rpx 0 30rpx;
+}
+
+.address-item {
+    background: #FFF;
+    padding: 0rpx 20rpx 0rpx 34rpx;
+    border-top: 1rpx #DDD solid;
+    border-bottom: 1rpx #DDD solid;
+    margin-bottom: 20rpx;
+}
+
+.address-item:first-of-type {
+    border-top: 0;
+}
+
+.address-item-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: flex-start;
+    padding-left: 60rpx;
+    padding-bottom: 30rpx;
+    position: relative;
+}
+
+.address-item-detail {
+    
+}
+
+/* 波浪 */
+.dot-btn{
+  height:100rpx;width:100rpx;border-radius:100%;position: relative;margin:0 auto;
+  position: absolute;
+  top: 100rpx;
+  right: 30rpx; 
+}
+.dot {
+  animation: sploosh 1.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+.dot2 {
+  animation: sploosh2 1.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+.dot3 {
+  animation: sploosh3 1.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+.dot,.dot2,.dot3{
+  height: 100rpx;
+  width: 100rpx;
+  font-size: 20rpx;
+  color: #fff;
+  line-height: 100rpx;
+  text-align: center;
+  border-radius: 100%;
+  position: absolute;
+  z-index: 10;
+  animation-iteration-count:infinite;
+  background: transparent;
+}
+@keyframes sploosh {
+  0% {
+    box-shadow: 0 0 0 0px rgba(255, 220, 1, 0.7);
+    background: rgba(255, 220, 1, 0.7);
+  }
+  100% {
+    box-shadow: 0 0 0 30rpx rgba(255, 220, 1, 0);
+    background: rgba(255, 220, 1, 0);
+  }
+}
+@keyframes sploosh2 {
+  0% {
+    box-shadow: 0 0 0 0rpx rgba(255, 220, 1, 0.7);
+    background: rgba(255, 220, 1, 0.7);
+  }
+  100% {
+    box-shadow: 0 0 0 20rpx rgba(255, 220, 1, 0);
+    background: rgba(255, 220, 1, 0.3);
+  }
+}
+@keyframes sploosh3 {
+  0% {
+    box-shadow: 0 0 0 0rpx rgba(255, 220, 1, 0.7);
+    background: rgba(255, 220, 1, 0.7);
+  }
+  100% {
+    box-shadow: 0 0 0 10rpx rgba(255, 220, 1, 0);
+    background: rgba(255, 220, 1, 1);
+  }
+}
+
+.set-checked{
+  position: absolute;
+  top: 40%;
+  left: 0;
+}

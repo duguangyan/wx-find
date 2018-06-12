@@ -8,13 +8,14 @@ Page({
    */
   data: {
     taskPayList: '', //  找料取料
+    isDisabled:false
   },
 
   // 去地址选择页面
   goConsigneeAddress(e) { 
     let index = e.currentTarget.dataset.index;
     wx.navigateTo({
-      url: '../consigneeAddress/consigneeAddress?taskPayIndex=' +index,
+      url: '../consigneeAddressList/consigneeAddressList?taskPayIndex=' +index,
     })
   },
 
@@ -22,22 +23,26 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    let payMethed = options.payMethed;
+
+    wx.setStorageSync('method', payMethed);
+    wx.setStorageSync('status', 0);
     // 获取默认地址
     this.getSelectedAddress();
   },
   // 收货地址
   getSelectedAddress() {
     let _this = this;
-    if (wx.getStorageSync('defaultAddress')){
-      let defaultAddress = wx.getStorageSync('defaultAddress');
-      let findsAddress = defaultAddress;
-      let fetchsAddress = defaultAddress;
-      _this.setData({
-        findsAddress,
-        fetchsAddress
-      })
-      return false;
-    }
+    // if (wx.getStorageSync('defaultAddress')){
+    //   let defaultAddress = wx.getStorageSync('defaultAddress');
+    //   let findsAddress = defaultAddress;
+    //   let fetchsAddress = defaultAddress;
+    //   _this.setData({
+    //     findsAddress,
+    //     fetchsAddress
+    //   })
+    //   return false;
+    // }
     // 获取默认地址
     api.defaultAddress({
     }, 1).then((res) => {
@@ -68,6 +73,9 @@ Page({
 
   // 支付
   doPay() {
+    this.setData({
+      isDisabled:true
+    })
     let _this = this;
     let payDates = {};
     payDates.task_ids = this.data.task_ids;
@@ -79,6 +87,9 @@ Page({
           icon: 'none',
           duration: 2000
         })
+        this.setData({
+          isDisabled: false
+        })
         return false;
       }
     }
@@ -88,6 +99,9 @@ Page({
           title: '请添加取料地址',
           icon: 'none',
           duration: 2000
+        })
+        this.setData({
+          isDisabled: false
         })
         return false;
       }
@@ -105,6 +119,9 @@ Page({
         icon: 'none',
         duration: 2000
       })
+      this.setData({
+        isDisabled: false
+      })
       return false;
     }
     
@@ -113,15 +130,20 @@ Page({
       data: payDates
     }).then((res)=>{ 
       if (res.code == 200) { 
-        if (res.data.pay_status ==1){
-          wx.switchTab({
-            url: '../order/order',
-            success: function (e) {
-              var page = getCurrentPages().pop();
-              if (page == undefined || page == null) return;
-              page.onLoad();
-            }
-          }) 
+        if (res.code==200&&res.data.pay_status ==1){
+          // wx.switchTab({
+          //   url: '../order/order',
+          //   success: function (e) {
+          //     var page = getCurrentPages().pop();
+          //     if (page == undefined || page == null) return;
+          //     page.onLoad();
+          //   }
+          // }) 
+          let pay_log = JSON.stringify(res.data.pay_log);
+   
+          wx.redirectTo({
+            url: '../taskPaySuccess/taskPaySuccess?pay_log=' + pay_log
+          })
           return false;
         }
         let payInfo = res.data;
@@ -137,7 +159,7 @@ Page({
               data.success = function (res){
                 console.log('支付成功');
                 console.log(res);
-                wx.navigateTo({
+                wx.redirectTo({
                   url: '../taskPaySuccess/taskPaySuccess?pay_log=' + pay_log
                 })
               }
@@ -208,6 +230,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    
     // 获取用户信息 余额
     this.getUserInfo();
     // 获取Storage找料取料数据

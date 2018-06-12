@@ -26,9 +26,9 @@
                    catchtap="imgYu" data-src='{{item.form_data.back_img}}' src='{{item.form_data.back_img}}'></image>
               </view> 
               <view class='task-find-method-getfind' wx:if='{{item.form_data.find_type==2}}'>
-                  <view wx:if='{{item.address.stall}}'>档  口  ：{{item.address.stall}} </view>
-                  <view wx:if='{{item.address.consignee}}'>联 系 人：{{item.address.consignee}} {{item.address.mobile}}</view>
-                  <view>取料地址：{{item.address.city_str}} {{item.address.address}}</view>
+                  <view wx:if='{{item.address.stall}}'>档  口  ：{{item.address.stall || ''}} </view>
+                  <view wx:if='{{item.address.consignee}}'>联 系 人：{{item.address.consignee || ''}} {{item.address.mobile || ''}}</view>
+                  <view>取送地址：{{item.address.city_str}} {{item.address.address || ''}}</view>
               </view> 
             </view> 
         </view>
@@ -47,15 +47,15 @@
 
               <view data-index='1' bindtap='goConsigneeAddress' hidden='{{!findsAddress}}'  class="flex-1 address-info fs30 pdt-30">
                   <view class="flex">
-                      <text>档口名称: {{findsAddress.stall}}</text>
+                      <text>地址名称: {{findsAddress.stall || ''}}</text>
                   </view>
                   <view class="flex">
-                      <text>联系人<text class='mgl-30'>:</text> {{findsAddress.consignee}}</text>
-                      <text>{{findsAddress.mobile}}</text>
+                      <text>联系人<text class='mgl-30'>:</text> {{findsAddress.consignee || ''}}</text>
+                      <text>{{findsAddress.mobile || ''}}</text>
                   </view>
                   <view class='pdb-30'>
                       <text>收货地址：</text>
-                      <text>{{findsAddress.city_str}} {{findsAddress.address}}</text>
+                      <text>{{findsAddress.city_str || ''}} {{findsAddress.address || ''}}</text>
                   </view>
               </view>
               <view data-index='1' bindtap='goConsigneeAddress'  hidden='{{findsAddress}}' class="text-666 h100 lh100 flex-1">
@@ -72,7 +72,7 @@
 
       <view class='task-get box-shadow' wx:if='{{fetchs.length>0}}'>
          <view class='task-find-title fs30'>
-            <text>取料任务</text>
+            <text>取送任务</text>
         </view>
         <view class='task-find-list fs30' wx:for='{{fetchs}}' wx:key='this'>
             <view class='task-find-item'>
@@ -82,9 +82,9 @@
             </view> 
             <view class='task-find-method'>
               <view class='task-find-method-getfind fs30'>
-                  <view>档口名称：{{fetchsAddress.stall}}</view>
-                  <view>联系人：{{fetchsAddress.consignee}} </view>
-                  <view>取料地址：{{fetchsAddress.city_str}} {{fetchsAddress.address}}</view>
+                  <view>地址名称：{{fetchsAddress.stall ||''}}</view>
+                  <view>联系人：{{fetchsAddress.consignee||''}} </view>
+                  <view>取料地址：{{fetchsAddress.city_str}} {{fetchsAddress.address||''}}</view>
               </view> 
             </view> 
         </view>
@@ -94,7 +94,7 @@
         <!--收货地址  -->
       <view class="fs30 bottom-border" wx:if='{{fetchs.length>0}}'>
           <view class="cell-padding fs30 mgt-30 lh90 bottom-border">
-              送料地址（取料任务）
+              送料地址（取送任务）
               <input class="hidden" value="{{fetchsAddress.id}}" name="address_id"></input>
           </view>
           <view class="cell-padding address flex flex-start">
@@ -102,15 +102,15 @@
 
               <view data-index='2' bindtap='goConsigneeAddress' hidden='{{!fetchsAddress}}'  class="flex-1 address-info fs30 pdt-30">
                   <view class="flex">
-                      <text>档口名称: {{fetchsAddress.stall}}</text>
+                      <text>地址名称: {{fetchsAddress.stall||''}}</text>
                   </view>
                   <view class="flex">
-                      <text>联系人<text class='mgl-30'>:</text> {{fetchsAddress.consignee}}</text>
-                      <text>{{fetchsAddress.mobile}}</text>
+                      <text>联系人<text class='mgl-30'>:</text> {{fetchsAddress.consignee||''}}</text>
+                      <text>{{fetchsAddress.mobile||''}}</text>
                   </view>
                   <view class='pdb-30'>
                       <text>收货地址：</text>
-                      <text>{{fetchsAddress.city_str}} {{fetchsAddress.address}}</text>
+                      <text>{{fetchsAddress.city_str||''}} {{fetchsAddress.address||''}}</text>
                   </view>
               </view>
               <view data-index='2' bindtap='goConsigneeAddress'  hidden='{{fetchsAddress}}' class="text-666 h100 lh100 flex-1">
@@ -130,6 +130,6 @@
       <view class='task-sum'>
         <text style='color:#999;'>（余额:￥{{filter.formatMoney(balance_amount)}}）</text>
       </view>
-      <text class='task-pay-btn text-underline' bindtap='doPay'>支付</text> 
+      <button class='task-pay-btn text-underline' disabled='{{isDisabled}}' bindtap='doPay'>支付</button> 
   </view>
 </view>

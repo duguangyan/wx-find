@@ -49,10 +49,11 @@ page{
   bottom: 0;
   background-color: #fff;
 }
-.find-order-detail-btn text{
+.find-order-detail-btn button {
   display: block;
   height: 70rpx;
   line-height: 70rpx;
+  width: 170rpx;
   text-align: center;
   border: 1rpx solid #c81a29;
   color: #c81a29;
@@ -61,7 +62,7 @@ page{
   margin: 30rpx 30rpx 30rpx 0;
   font-size: 30rpx;
   padding: 0 10rpx;
- 
+ background-color: #fff;
 }
 .task-find-method-img{
 }

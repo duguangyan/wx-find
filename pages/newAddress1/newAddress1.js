@@ -1,32 +1,162 @@
 const api = require('../../utils/api.js');
 const util = require('../../utils/util.js');
 const bmap = require('../../libs/bmap-wx.min.js');
+
+// var $citys = require('../../utils/citys.js');
+var $citys = require('../../public/data/address.js');
+var cityData = $citys.address;
+var app = getApp();
+
+var provinces = [];
+var citys = [];
+var countys = [];
+const date = new Date()
+const years = []
+const months = []
+const days = []
+const hours = []
+
+//城市
+for (let i = 0; i < cityData.length; i++) {
+  provinces.push(cityData[i].region_name);
+}
+
+for (let i = 0; i < cityData[0].children.length; i++) {
+  citys.push(cityData[0].children[i].region_name)
+}
+
+for (let i = 0; i < cityData[0].children[0].children.length; i++) {
+  countys.push(cityData[0].children[0].children[i].region_name)
+}
+
+//时间日期
+for (let i = 1920; i <= date.getFullYear(); i++) {
+  years.push(i)
+}
+
+
+var provinceName = cityData[0].region_name, cityName = cityData[0].children[0].region_name, countyName = cityData[0].children[0].children[0].region_name, address = cityData[0].region_name + ' ' + cityData[0].children[0].region_name + ' ' + cityData[0].children[0].children[0].region_name;
+
+
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    searchValue:'',
+    searchValue: '',
     addressInfo: {
-      isSugShow:false,
+      isSugShow: false,
       consignee: '',
       mobile: '',
       address: '',
-      mapInputValue:''
+      mapInputValue: '',
     },
     // 是否默认
     is_default: 0,
-    multiIndex: [6, 0, 0]
+    multiIndex: [6, 0, 0],
+    isCity: true,
+    cityText: '请选择出生地',
+    provinces: provinces,
+    citys: citys,
+    countys: countys,
+    cityValue: [0, 0, 0]
+  },
+
+  //调起选择器
+  risePicker: function (e) {
+    var that = this;
+    var $mold = e.currentTarget.dataset.mold;
+    if ($mold == 'dateTime') {
+      that.setData({
+        isDate: false
+      })
+    }
+    if ($mold == 'city') {
+      that.setData({
+        isCity: false
+      })
+    }
 
   },
-  // 清空mapInput
-  cleanInput(){
-    this.setData({
-      searchValue:""
+
+  //城市选择器
+  cityChange: function (e) { 
+    console.log(e);
+    var val = e.detail.value
+    var t = this.data.cityValue;
+    address = '';
+    if (val[0] != t[0]) {
+      citys = [];
+      countys = [];
+      for (let i = 0; i < cityData[val[0]].children.length; i++) {
+        citys.push(cityData[val[0]].children[i].region_name)
+      }
+      for (let i = 0; i < cityData[val[0]].children[0].children.length; i++) {
+        countys.push(cityData[val[0]].children[0].children[i].region_name)
+      }
+
+      this.setData({
+        citys: citys,
+        countys: countys,
+        cityValue: [val[0], 0, 0]
+      })
+      provinceName = cityData[val[0]].region_name;
+      cityName = cityData[val[0]].children[0].region_name;
+      countyName = cityData[val[0]].children[0].children[0].region_name;
+      address += cityData[val[0]].region_name + " " + cityData[val[0]].children[0].region_name + " " + cityData[val[0]].children[0].children[0].region_name;
+      return;
+    }
+    if (val[1] != t[1]) {
+      countys = [];
+      for (let i = 0; i < cityData[val[0]].children[val[1]].children.length; i++) {
+        countys.push(cityData[val[0]].children[val[1]].children[i].region_name)
+      }
+      this.setData({
+        countys: countys,
+        cityValue: [val[0], val[1], 0]
+      })
+      cityName = cityData[val[0]].children[val[1]].region_name;
+      countyName = cityData[val[0]].children[val[1]].children[0].region_name;
+      address += cityData[val[0]].region_name + " " + cityData[val[0]].children[val[1]].region_name + " " + cityData[val[0]].children[val[1]].children[0].region_name;
+      return;
+    }
+    if (val[2] != t[2]) {
+      this.setData({
+        county: this.data.countys[val[2]],
+        cityValue: val
+      })
+      countyName = cityData[val[0]].children[val[1]].children[val[2]].region_name;
+      address += cityData[val[0]].region_name + " " + cityData[val[0]].children[val[1]].region_name + " " + cityData[val[0]].children[val[1]].children[val[2]].region_name;
+      return;
+    }
+
+
+  },
+
+  //确定选择
+  ideChoice: function (e) {
+    var that = this;
+    var $act = e.currentTarget.dataset.act;
+    var $mold = e.currentTarget.dataset.mold;
+    //城市
+    if ($act == 'confirm' && $mold == 'city') {
+      that.setData({
+        cityText: provinceName + ' ' + cityName + ' ' + countyName,
+      })
+    }
+    that.setData({
+      isCity: true,
+      isDate: true
     })
   },
-  editStall (e) {
+  // 清空mapInput
+  cleanInput() {
+    this.setData({
+      searchValue: ""
+    })
+  },
+  editStall(e) {
     let stall = e.detail.value;
     this.data.addressInfo.stall = stall
   },
@@ -46,7 +176,7 @@ Page({
     this.data.addressInfo.address = address;
   },
   // 详细地址修改该
-  editDetailRemark (e) {
+  editDetailRemark(e) {
     let remark = e.detail.value;
     this.data.addressInfo.remark = remark;
   },
@@ -65,7 +195,7 @@ Page({
     console.log(old_region_name)
     console.log(this.data.mapRegion)
     // 清空地图数据
-    if (old_region_name != this.data.mapRegion){
+    if (old_region_name != this.data.mapRegion) {
       // this.data.addressInfo.address = '';
       // this.data.addressInfo.longitude = '';
       // this.data.addressInfo.latitude = '';
@@ -73,7 +203,7 @@ Page({
         addressInfo: this.data.addressInfo
       })
     }
-   
+
   },
   bindMultiPickerColumnChange: function (e) {
     console.log('bindMultiPickerColumnChange改变 ==', e, e.detail.value);
@@ -148,7 +278,7 @@ Page({
 
     if (type === 'new') {
       api.addAddress({
-        method:"POST",
+        method: "POST",
         data: {
           consignee: addressInfo.consignee,
           province,
@@ -177,7 +307,7 @@ Page({
 
       // 编辑提交
       api.editAddress({
-        method:'PUT',
+        method: 'PUT',
         data: {
           consignee: addressInfo.consignee,
           province,
@@ -214,7 +344,7 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) { 
+  onLoad: function (options) {
 
     let type = options.type,
       id = options.id;
@@ -234,74 +364,74 @@ Page({
     this.data.id = id;
     this.data.type = type;
 
-    
+
 
     // 缓存地址信息
-    let addressList = wx.getStorageSync('addressList');
+    // let addressList = wx.getStorageSync('addressList');
 
-    if (!!addressList) {
-      
-      this.setData({
-        multiArray: addressList
-      })
-      if (type === 'edit') {
-      
-        // 获取编辑用户地址信息
-        this.getInfo(id);
-      } else if (type === 'new') {
+    // if (!!addressList) {
 
-        // 设置默认地址选择
-        this.setData({
-          province: this.data.multiIndex[0],
-          city: this.data.multiIndex[1]
-        })
-        
-        
+    //   this.setData({
+    //     multiArray: addressList
+    //   })
+    //   if (type === 'edit') {
 
-      }
-      // wx.hideLoading();
-      // 关闭加载
-      wx.hideNavigationBarLoading();
-      return false;
-    }
+    //     // 获取编辑用户地址信息
+    //     this.getInfo(id);
+    //   } else if (type === 'new') {
+
+    //     // 设置默认地址选择
+    //     this.setData({
+    //       province: this.data.multiIndex[0],
+    //       city: this.data.multiIndex[1]
+    //     })
 
 
-    api.getAddress(
 
-    ).then((res) => {
-      console.log(res);
-
-      this.setData({
-        multiArray: res.data
-      })
-
-      wx.setStorage({
-        key: 'addressList',
-        data: res.data,
-      })
+    //   }
+    //   // wx.hideLoading();
+    //   // 关闭加载
+    //   wx.hideNavigationBarLoading();
+    //   return false;
+    // }
 
 
-      if (type === 'edit') {
+    // api.getAddress(
 
-        // 获取编辑用户地址信息
-        this.getInfo(id)
+    // ).then((res) => {
+    //   console.log(res);
 
-      } else if (type === 'new') {
-        // 设置默认地址选择
-        this.setData({
-          province: this.data.multiIndex[0],
-          city: this.data.multiIndex[1]
-        })
-      
-      }
-      wx.hideLoading();
-      }).finally(() => wx.hideNavigationBarLoading());
+    //   this.setData({
+    //     multiArray: res.data
+    //   })
+
+    //   wx.setStorage({
+    //     key: 'addressList',
+    //     data: res.data,
+    //   })
+
+
+    //   if (type === 'edit') {
+
+    //     // 获取编辑用户地址信息
+    //     this.getInfo(id)
+
+    //   } else if (type === 'new') {
+    //     // 设置默认地址选择
+    //     this.setData({
+    //       province: this.data.multiIndex[0],
+    //       city: this.data.multiIndex[1]
+    //     })
+
+    //   }
+    //   wx.hideLoading();
+    // }).finally(() => wx.hideNavigationBarLoading());
 
 
   },
   // 获取地图地址数据
   mapKeyInput: function (e) {
-    
+
     this.data.isSugShow = true;
     this.data.addressInfo.address = e.detail.value;
     this.data.addressInfo.longitude = '';
@@ -321,7 +451,7 @@ Page({
     let BMap = new bmap.BMapWX({
       ak: '3jSXyNSuxGsuVGHK0zGHr4K4doVSxg9c'
     });
-    let fail = function (data) { 
+    let fail = function (data) {
       console.log(data)
     };
     let success = function (data) {
@@ -359,7 +489,7 @@ Page({
       isSugShow: this.data.isSugShow
     })
     this.setData({
-      searchValue:''
+      searchValue: ''
     })
     console.log(index);
   },
@@ -407,7 +537,7 @@ Page({
 
   // 请求输出编辑信息
   getInfo(id) {
-    api.infoAddress({},id).then((res) => {
+    api.infoAddress({}, id).then((res) => {
 
       let addressInfo = res.data,
         { province, city, district, is_default } = addressInfo,

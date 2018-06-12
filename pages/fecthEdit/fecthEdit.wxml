@@ -39,16 +39,16 @@
 
               <view data-index='{{idx}}' bindtap='goConsigneeAddress' class="flex-1 address-info fs30">
                   <view class="flex">
-                      <text>档口名称: {{defaultAddress.stall}}</text>
+                      <text>地址名称: {{defaultAddress.stall || ''}}</text>
                   </view>
                   <view class="flex">
-                      <text>收货人<text class='mgl-30'>:</text> {{defaultAddress.consignee}}</text>
-                      <text>{{defaultAddress.mobile}}</text>
+                      <text>收货人<text class='mgl-30'>:</text> {{defaultAddress.consignee|| ''}}</text>
+                      <text>{{defaultAddress.mobile|| ''}}</text>
                   </view>
 
                   <view>
                       <text>收货地址：</text>
-                      <text>{{defaultAddress.city_str}} {{defaultAddress.address}}</text>
+                      <text>{{defaultAddress.city_str|| ''}} {{defaultAddress.address|| ''}}</text>
                   </view>
 
               </view>

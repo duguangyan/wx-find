@@ -38,6 +38,11 @@
 }
 .check-btn{
   position: absolute;
+  width: 100rpx;
+  height: 100%;
+}
+.icon-dui-1,.icon-yuan-1{
+  position: absolute;
   top: 30%;
 }
 .image-bg{
@@ -45,7 +50,7 @@
   height:100rpx;
   position:absolute;
   right:30rpx;
-  top:30%;
+  top:6%;
 }
 .image-bg image{
   width: 100%;
@@ -116,4 +121,21 @@
   font-size: 36rpx;
   margin: 0 auto;
   margin-top: 50rpx;
+}
+.task-content-le{
+  letter-spacing:10rpx;
+}
+.check-edit{
+  position:absolute;
+  right:0;
+  top:0;
+  color:#1435ff;
+  width:120rpx;
+  height:100%;
+  z-index: 9999;
+}
+.check-edit text{
+  position:absolute;
+  right:50rpx;
+  top:30%;
 }
