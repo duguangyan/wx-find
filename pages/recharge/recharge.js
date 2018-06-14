@@ -15,9 +15,10 @@ Page({
     })
   },
   // 去支付
-  doPay (e) {
-   
-    let id = e.target.dataset.id;
+  doPay (e) { 
+    
+    let id = e.currentTarget.dataset.id;
+    let value = e.currentTarget.dataset.value;
     let payInfo = {
       order_id: id,
       order_type:3,
@@ -35,10 +36,10 @@ Page({
           console.log('支付成功');
           console.log(res);
           wx.navigateTo({
-            url: '../rechargeSuccess/rechargeSuccess'
+            url: '../rechargeSuccess/rechargeSuccess?value=' + value
           })
         }
-        data.fail = function (res) {
+        data.fail = function (res) { 
           console.log('支付失败');
           console.log(res);
           wx.showToast({

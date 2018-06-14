@@ -2,7 +2,7 @@
 <view class="recharge  cf fs30">
   <view class='recharge-title lh90 pdl-30 bb-1 text-666'>选择充值金额</view>
   <view class='recharge-list cf'>
-    <view class='recharge-list-li btn-shadow' wx:for='{{rechargeList}}' wx:key='this' data-id='{{item.id}}' bindtap='doPay'>
+    <view class='recharge-list-li btn-shadow' wx:for='{{rechargeList}}' wx:key='this' data-id='{{item.id}}' data-value='{{item.values}}' bindtap='doPay'>
       <view  data-id='{{item.id}}'>
         <text data-id='{{item.id}}' class='recharge-list-text text-red mgt-30'>充{{item.values}}元</text>
         <text data-id='{{item.id}}' class='recharge-list-text text-red' style='padding-left:50rpx;'>送{{item.arrival_values - item.values }}元</text>

@@ -47,14 +47,14 @@
                   </view>
 
                   <view>
-                      <text>收货地址：</text>
+                      <text>取料地址：</text>
                       <text>{{defaultAddress.city_str|| ''}} {{defaultAddress.address|| ''}}</text>
                   </view>
 
               </view>
 
               <view data-index='{{idx}}' bindtap='goConsigneeAddress'  wx:if='{{!defaultAddress}}' class="text-666 h100 lh100 flex-1">
-                  点击添加收货地址
+                  点击添加取料地址
               </view>
           </view>
       </view>

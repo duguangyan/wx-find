@@ -38,7 +38,7 @@
   width: 125rpx;
   height: 125rpx;
   position: absolute;
-  top: 50rpx;
+  top: 0rpx;
   right:20rpx;
 }
 .task-find-method{

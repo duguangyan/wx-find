@@ -10,9 +10,9 @@
             <view class='task-find-item'>
                <view>物料品类：{{item.cname}}   <text class='flr'>金额:￥{{filter.formatMoney(item.form_data.fee)}}</text></view>
                <view>物料描述：{{item.form_data.desc}}</view>
-               <view wx:if='{{item.form_data.find_type==1}}'>提供找料方式：按图照料</view>
-               <view wx:if='{{item.form_data.find_type==2}}'>提供找料方式：按样照料</view>
-               <view wx:if='{{item.form_data.find_type==3}}'>提供找料方式：按描述照料</view>
+               <view wx:if='{{item.form_data.find_type==1}}'>找料方式：按图找料</view>
+               <view wx:if='{{item.form_data.find_type==2}}'>找料方式：按样找料</view>
+               <view wx:if='{{item.form_data.find_type==3}}'>找料方式：按描述找料</view>
                <image class='task-find-img'
                 src='../../public/images/task/task_find.png'></image>
             </view> 
@@ -26,9 +26,10 @@
                    catchtap="imgYu" data-src='{{item.form_data.back_img}}' src='{{item.form_data.back_img}}'></image>
               </view> 
               <view class='task-find-method-getfind' wx:if='{{item.form_data.find_type==2}}'>
-                  <view wx:if='{{item.address.stall}}'>档  口  ：{{item.address.stall || ''}} </view>
+                  <view wx:if='{{item.address.stall}}'>地址名称：{{item.address.stall || ''}} </view>
                   <view wx:if='{{item.address.consignee}}'>联 系 人：{{item.address.consignee || ''}} {{item.address.mobile || ''}}</view>
-                  <view>取送地址：{{item.address.city_str}} {{item.address.address || ''}}</view>
+                  <view wx:if='{{item.form_data.get_type!=2}}'>取样地址：{{item.address.city_str}} {{item.address.address || ''}}</view>
+                  <view wx:if='{{item.form_data.get_type==2}}'>寄样地址：{{item.address.city_str}} {{item.address.address || ''}}</view>
               </view> 
             </view> 
         </view>
@@ -39,7 +40,7 @@
         <!--收货地址  -->
       <view class="fs30 bottom-border" wx:if="{{finds.length>0}}">
           <view class="cell-padding fs30 mgt-30 lh90 bottom-border">
-              送料地址（找料任务）
+              送样地址（找料任务）
               <input class="hidden" value="{{findsAddress.id}}" name="address_id"></input>
           </view>
           <view class="cell-padding address flex flex-start">
@@ -109,12 +110,12 @@
                       <text>{{fetchsAddress.mobile||''}}</text>
                   </view>
                   <view class='pdb-30'>
-                      <text>收货地址：</text>
+                      <text>取料地址：</text>
                       <text>{{fetchsAddress.city_str||''}} {{fetchsAddress.address||''}}</text>
                   </view>
               </view>
               <view data-index='2' bindtap='goConsigneeAddress'  hidden='{{fetchsAddress}}' class="text-666 h100 lh100 flex-1">
-                  点击添加收货地址
+                  点击添加取料地址
               </view>
           </view>
       </view>

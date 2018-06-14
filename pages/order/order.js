@@ -51,9 +51,21 @@ Page({
   },
   // nav 一级切换
   checkNav (e) {
+    
     this.setData({
-      scrollTop: 0
+      scrollTop: 0,
+      findList:[]
     })
+    if (wx.pageScrollTo) {//判断这个方法是否可用
+      wx.pageScrollTo({
+        scrollTop: 0
+      })
+    } else {
+      wx.showModal({
+        title: '提示',
+        content: '当前微信版本过低，无法使用该功能，请升级到最新微信版本后重试。'
+      })
+    }
     let index = e.currentTarget.dataset.index;
     this.setData({
       orderNavNum: index,
@@ -65,8 +77,19 @@ Page({
   // nav 二级切换
   checkChildNav(e) {
     this.setData({
-      scrollTop: 0
+      scrollTop: 0,
+      findList:[]
     })
+    if (wx.pageScrollTo) {//判断这个方法是否可用
+      wx.pageScrollTo({
+        scrollTop: 0
+      })
+    } else {
+      wx.showModal({
+        title: '提示',
+        content: '当前微信版本过低，无法使用该功能，请升级到最新微信版本后重试。'
+      })
+    }
     let index = e.currentTarget.dataset.index;
     this.setData({
       orderChildNavNum: index,

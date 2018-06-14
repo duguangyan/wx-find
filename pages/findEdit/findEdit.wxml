@@ -3,7 +3,9 @@
     <view class='section-order mgb-20' wx:for="{{addFinds}}" wx:for-index="idx"  wx:key='addFindKey' wx:for-item="item">
         <view class="cell-padding lh90 flex border-bottom">
             <view  data-index='{{idx}}' bindtap='checkType'>
-              <text class="text-theme">*</text>物料类型 : <text>{{item.checkType}}</text>  <text class='mgl-20 iconfont icon-jiantou'></text>
+              <text class="text-theme">*</text>物料类型 : 
+              <text style='margin-left:140rpx;'>{{item.checkType}}</text> 
+              <text class='mgl-20 iconfont icon-jiantou'></text>
             </view>
         </view>
 
@@ -91,7 +93,7 @@
                       <text>收货人<text class='mgl-30'>:</text> {{item.address.consignee}} / {{item.address.mobile}}</text>
                   </view>
                   <view>
-                     收货地址:<text>{{item.address.city_str}} {{item.address.address}}</text>
+                     取样地址:<text>{{item.address.city_str}} {{item.address.address}}</text>
                   </view>
               </view>
               <view data-index='{{idx}}'  wx:if='{{ item.selcetSecondTabNum == 2 }}' class="flex-1 address-info fs30">
@@ -99,7 +101,7 @@
                       <text>收货人<text class='mgl-30'>:</text> {{companyaddress.consignee}} / {{companyaddress.mobile}}</text>
                   </view>
                   <view>
-                      收货地址:<text>{{companyaddress.address}}</text>
+                      寄样地址:<text>{{companyaddress.address}}</text>
                   </view>
               </view>
               <view data-index='{{idx}}' bindtap='goConsigneeAddress'  wx:if='{{item.address=="" && item.selcetSecondTabNum == 1 }}' class="text-666 h100 lh100 flex-1">

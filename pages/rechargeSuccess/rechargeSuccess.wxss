@@ -21,6 +21,9 @@ page{
   height: 20rpx;
   background-color: #f4f4f4;
 }
+.footer-btn{
+  margin-top: 30rpx;
+}
 .footer-btn view{
   display: inline-block; 
   height: 80rpx;

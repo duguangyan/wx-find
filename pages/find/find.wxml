@@ -98,7 +98,7 @@ style="width:44rpx;height:44rpx;position:absolute;right:0;top:0rpx;background-co
                   </view>
 
                   <view>
-                      <text>收货地址：</text>
+                      <text>取样地址：</text>
                       <text style='width:440rpx;float:right;position: relative;left: -24rpx;'>{{item.address.city_str}} {{item.address.address}}</text>
                   </view>
 

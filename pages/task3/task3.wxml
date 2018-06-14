@@ -41,7 +41,9 @@
           <view wx:if='{{item.form_data.find_type == 2}}'>
             <view style='color:#999'>地址名称: {{item.address.stall ||''}}</view>
             <view><text class='task-content-le'>联系人:</text>{{item.address.consignee||''}} {{item.address.mobile||''}}</view>
-            <view class='pdr-20'>取样地址: {{item.address.city_str||''}} {{item.address.address||''}}</view>
+            <view class='pdr-20' wx:if='{{item.form_data.get_type==1}}'>取样地址: {{item.address.city_str||''}} {{item.address.address||''}}</view>
+            <view class='pdr-20' wx:if='{{item.form_data.get_type==2}}'>寄样地址: {{item.address.city_str||''}} {{item.address.address||''}}</view>
+
           </view>
           
         </view> 
@@ -87,7 +89,7 @@
           <view>
             <view style='color:#999'>地址名称: {{item.address.stall || ''}}</view>
             <view><text class='task-content-le'>联系人:</text>{{item.address.consignee}} {{item.address.mobile|| ''}}</view>
-            <view class='pdr-20'>取样地址: {{item.address.city_str|| ''}} {{item.address.address|| ''}}</view>
+            <view class='pdr-20'>取料地址: {{item.address.city_str|| ''}} {{item.address.address|| ''}}</view>
           </view>
         </view> 
     </view>

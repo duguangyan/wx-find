@@ -10,16 +10,18 @@ Page({
   },
   goIndex() {
     wx.switchTab({
-      url: '../index/index'
+      url: '../center/center'
     })
   },
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
+  onLoad: function (options) {  
+    this.data.value = options.value;
     this.data.time = util.getNowFormatDate();
     this.setData({
-      time:this.data.time
+      time:this.data.time,
+      value: this.data.value
     })
   },
 

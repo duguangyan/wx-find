@@ -618,8 +618,16 @@ Page({
         return false;
       }
     }
-   
-    
+    if (this.data.addFinds[0].selcetTabNum == 1){
+      if (!this.data.addFinds[0].front_img && !this.data.addFinds[0].side_img && !this.data.addFinds[0].back_img) {
+        wx.showToast({
+          title: '至少上传一张图片',
+          icon: 'none',
+          duration: 2000
+        })
+        return false;
+      }
+    }
 
     let data = {
       form_data: this.data.addFinds[0],

@@ -40,21 +40,21 @@
 
    
     <view class='lh90 bb-1 fs30 pdl-30' wx:if='{{itemObj.get_address}}'>
-      取样地址
+      取料地址
     </view>
     <view class='find-order-detail-address bb-20 fs30 pdl-30'wx:if='{{itemObj.get_address}}'>
-      <view class='lh50'> 档口 : {{itemObj.get_address.stall||''}}  </view>
+      <view class='lh50'> 地址名称 : {{itemObj.get_address.stall||''}}  </view>
       <view class='lh50'> 联 系 人 : {{itemObj.get_address.consignee||''}}  {{itemObj.get_address.mobile||''}} </view>
-      <view class='address lh50 pdb-30 pdr-30'>联系地址: {{itemObj.get_address.city_str||''}} {{itemObj.get_address.address||''}} </view>              </view>
+      <view class='address lh50 pdb-30 pdr-30'>取料地址: {{itemObj.get_address.city_str||''}} {{itemObj.get_address.address||''}} </view>              </view>
     
     
     <view class='lh90 bb-1 fs30 pdl-30' wx:if='{{itemObj.shipping_address}}'>
       送料地址
     </view>
     <view class='find-order-detail-address bb-20 fs30 pdl-30' wx:if='{{itemObj.shipping_address}}'>
-      <view class='lh50'> 档口 : {{itemObj.shipping_address.stall || ''}}  </view>
+      <view class='lh50'> 地址名称 : {{itemObj.shipping_address.stall || ''}}  </view>
       <view class='lh50'> 联 系 人 : {{itemObj.shipping_address.consignee || ''}}  {{itemObj.shipping_address.mobile ||''}} </view>
-      <view class='address lh50 pdb-30 pdr-30'>联系地址: {{itemObj.shipping_address.city_str}} {{itemObj.shipping_address.address}}       </view>
+      <view class='address lh50 pdb-30 pdr-30'>送料地址: {{itemObj.shipping_address.city_str}} {{itemObj.shipping_address.address}}       </view>
   </view>
     <!-- <view class='find-order-detail-address bb-20 fs30 pdl-30'>
       <view class='lh50'> 联 系 人 : {{itemObj.findman_name}}</view>
@@ -63,6 +63,7 @@
     <view class='find-order-detail-number fs30 pdl-30 bb-20 pdb-30' style='margin-top:30rpx;'>
         <view class='lh50'>订单编号: {{itemObj.order_sn}}</view>
         <view class='lh50'>下单时间: {{itemObj.created_at}}</view>
+        <view class='lh50' wx:if='{{itemObj.admin}}'>下 单 人 : {{itemObj.admin.real_name}}</view>
         <view class='lh50'wx:if='{{itemObj.findman_name}}'> 找 料 员 : {{itemObj.findman_name}} <text wx:if='{{itemObj.findman_mobile}}'>/ {{itemObj.findman_mobile}}</text></view>
         <view class='lh50'wx:if='{{itemObj.distribution_name}}'>
          配 送 员 : {{itemObj.distribution_name}} <text wx:if='{{itemObj.distribution_mobile}}'>/ {{itemObj.distribution_mobile}}</text></view>
