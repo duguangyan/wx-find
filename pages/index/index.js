@@ -168,7 +168,7 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow: function () {
-
+      // 测试
       // 调用接口
       // qqmapsdk.getSuggestion({
       //   keyword: '财富',
