@@ -1,7 +1,7 @@
 const api = require('../../utils/api.js');
-// const QQMapWX = require('../../libs/qqmap-wx-jssdk.min.js');
+ const QQMapWX = require('../../libs/qqmap-wx-jssdk.min.js');
 let app = getApp();
-// var qqmapsdk;
+ var qqmapsdk;
 Page({
     /**
      * 页面的初始数据
@@ -153,9 +153,9 @@ Page({
      */
     onLoad: function (options) {
       // 实例化API核心类
-      // qqmapsdk = new QQMapWX({
-      //   key: 'TREBZ-NE3KW-VZ5RD-OFP22-IUGZO-MEF7A'
-      // });
+       qqmapsdk = new QQMapWX({
+         key: 'TREBZ-NE3KW-VZ5RD-OFP22-IUGZO-MEF7A'
+       });
     },
     /**
      * 生命周期函数--监听页面初次渲染完成
@@ -164,10 +164,94 @@ Page({
     
 
     },
+
+    getDistance: function (lat1, lng1, lat2, lng2) { 
+
+      lat1 = lat1 || 0;
+
+      lng1 = lng1 || 0;
+
+      lat2 = lat2 || 0;
+
+      lng2 = lng2 || 0;
+
+      var rad1 = lat1 * Math.PI / 180.0;
+
+      var rad2 = lat2 * Math.PI / 180.0;
+
+      var a = rad1 - rad2;
+
+      var b = lng1 * Math.PI / 180.0 - lng2 * Math.PI / 180.0;
+
+      var r = 6378137;
+
+      return (r * 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) + Math.cos(rad1) * Math.cos(rad2) * Math.pow(Math.sin(b / 2), 2)))).toFixed(0)
+
+    },
     /**
      * 生命周期函数--监听页面显示
      */
     onShow: function () {
+      
+      // 调用接口
+      qqmapsdk.getSuggestion({
+        keyword: '广州市云峰花园',
+        success: function (res) {
+          console.log(res);
+        },
+        fail: function (res) {
+          console.log(res);
+        },
+        complete: function (res) {
+          console.log(res);
+        }
+      });
+      // 调用接口
+      // qqmapsdk.geocoder({
+      //   address: '广州财富工业园',
+      //   success: function (res) {
+      //     console.log(res);
+      //   },
+      //   fail: function (res) {
+      //     console.log(res);
+      //   },
+      //   complete: function (res) {
+      //     console.log(res);
+      //   }
+      // });
+      // let xx = this.getDistance(22.814449, 108.323738, 23.351101, 113.250949);
+      // console.log(xx);
+      // console.log('xxx:-----------------');
+      qqmapsdk.calculateDistance({
+        to: [{
+          latitude: 23.35089,
+          longitude: 113.25097
+        }, {
+            latitude: 23.37865,
+            longitude: 113.2458
+        }],
+        success: function (res) {
+          console.log(res);
+        },
+        fail: function (res) {
+          console.log(res);
+        },
+        complete: function (res) {
+          console.log(res);
+        }
+      });
+      // 调用接口
+      // qqmapsdk.getCityList({
+      //   success: function (res) {
+      //     console.log(res);
+      //   },
+      //   fail: function (res) {
+      //     console.log(res);
+      //   },
+      //   complete: function (res) {
+      //     console.log(res);
+      //   }
+      // });
 
       // 调用接口
       // qqmapsdk.getSuggestion({

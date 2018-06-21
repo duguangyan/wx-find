@@ -57,6 +57,24 @@
         </textarea>
 
     </view>
+
+
+     <view class="flex cell-padding border-bottom lh100">
+        <view>所在地区</view>
+
+
+        <!-- <picker style="flex:1;" mode="multiSelector" bindchange="bindMultiPickerChange" bindcolumnchange="bindMultiPickerColumnChange" value="{{multiIndex}}" range-key="region_name" range="{{[multiArray,multiArray[province].children]}}">
+            <view class="picker" style="text-align:right;">
+              {{multiArray[multiIndex[0]].region_name}} {{multiArray[multiIndex[0]].children[multiIndex[1]].region_name}}
+            </view>
+            
+        </picker> -->
+
+        <!-- <text class="iconfont icon-jiantou"></text> -->
+
+    </view>
+
+
     <view class="spacing-view-24"></view>
 
       <view hidden='true' class="flex cell-padding border-bottom lh100">
