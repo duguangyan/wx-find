@@ -194,18 +194,18 @@ Page({
     onShow: function () {
       
       // 调用接口
-      qqmapsdk.getSuggestion({
-        keyword: '广州市云峰花园',
-        success: function (res) {
-          console.log(res);
-        },
-        fail: function (res) {
-          console.log(res);
-        },
-        complete: function (res) {
-          console.log(res);
-        }
-      });
+      // qqmapsdk.getSuggestion({
+      //   keyword: '广州市云峰花园',
+      //   success: function (res) {
+      //     console.log(res);
+      //   },
+      //   fail: function (res) {
+      //     console.log(res);
+      //   },
+      //   complete: function (res) {
+      //     console.log(res);
+      //   }
+      // });
       // 调用接口
       // qqmapsdk.geocoder({
       //   address: '广州财富工业园',
@@ -222,24 +222,24 @@ Page({
       // let xx = this.getDistance(22.814449, 108.323738, 23.351101, 113.250949);
       // console.log(xx);
       // console.log('xxx:-----------------');
-      qqmapsdk.calculateDistance({
-        to: [{
-          latitude: 23.35089,
-          longitude: 113.25097
-        }, {
-            latitude: 23.37865,
-            longitude: 113.2458
-        }],
-        success: function (res) {
-          console.log(res);
-        },
-        fail: function (res) {
-          console.log(res);
-        },
-        complete: function (res) {
-          console.log(res);
-        }
-      });
+      // qqmapsdk.calculateDistance({
+      //   to: [{
+      //     latitude: 23.35089,
+      //     longitude: 113.25097
+      //   }, {
+      //       latitude: 23.37865,
+      //       longitude: 113.2458
+      //   }],
+      //   success: function (res) {
+      //     console.log(res);
+      //   },
+      //   fail: function (res) {
+      //     console.log(res);
+      //   },
+      //   complete: function (res) {
+      //     console.log(res);
+      //   }
+      // });
       // 调用接口
       // qqmapsdk.getCityList({
       //   success: function (res) {
