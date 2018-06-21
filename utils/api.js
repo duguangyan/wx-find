@@ -1,4 +1,4 @@
-const oldApiUrl = 'https://api.yidap.com';
+
 // const apiUrl = 'https://devapi.yidap.com';
 //const apiUrl = 'https://devv2.yidap.com';
 const apiUrl = 'https://apiv2.yidap.com';
