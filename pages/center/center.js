@@ -39,7 +39,11 @@ Page({
 
 
     },
-
+    toLogin(){
+      wx.navigateTo({
+        url: '../login/login',
+      })
+    },
     // 获取个人中心数据状态
     centerStatistics (){
       api.centerStatistics({}).then((res)=>{
@@ -79,6 +83,29 @@ Page({
       //     }
       //   })
       // }
+      wx.setStorageSync('fromCenter', '0');
+      let token = wx.getStorageSync('token');
+      let isTrue = token ? false : true;
+      if (isTrue) {
+        wx.showModal({
+          title: '您尚未登录',
+          content: '是否前往登录页面',
+          confirmText: '前往',
+          confirmColor: '#c81a29',
+          success: (res) => {
+            if (res.confirm) {
+              wx.navigateTo({
+                url: '../login/login',
+              })
+              return false;
+            } else if (res.cancel) {
+              console.log('用户点击取消')
+            }
+          }
+        })
+
+        return false;
+      }
       wx.navigateTo({
         url: '../consigneeAddress/consigneeAddress?center=1',
       })
@@ -94,10 +121,33 @@ Page({
     },
     // 找料订单跳转 
     toMyOrder(e) { 
+        wx.setStorageSync('fromCenter', '0');
+        let token = wx.getStorageSync('token');
+        let isTrue = token?false:true;
+        if (isTrue){
+          wx.showModal({
+            title: '您尚未登录',
+            content: '是否前往登录页面',
+            confirmText: '前往',
+            confirmColor: '#c81a29',
+            success: (res) => {
+              if (res.confirm) {
+                wx.navigateTo({
+                  url: '../login/login',
+                })
+                return false;
+              } else if (res.cancel) {
+                console.log('用户点击取消')
+              }
+            }
+          })
+          
+          return false;
+        }
         console.log(e.currentTarget.dataset.id);
         let status = e.currentTarget.dataset.id;
         let method = e.currentTarget.dataset.method;
-        let token = app.globalData.token;
+       
 
 
         wx.setStorageSync('method', method);
@@ -217,9 +267,9 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow: function () {
+      wx.setStorageSync('fromCenter','1');
         // 更新用户信息
-        this.getUserInfo();
-        
+        this.getUserInfo(); 
     },
 
     // 获取用户信息

@@ -1,7 +1,7 @@
 const oldApiUrl = 'https://api.yidap.com';
 // const apiUrl = 'https://devapi.yidap.com';
-const apiUrl = 'https://devv2.yidap.com';
-// const apiUrl = 'https://apiv2.yidap.com';
+//const apiUrl = 'https://devv2.yidap.com';
+const apiUrl = 'https://apiv2.yidap.com';
 
 Promise.prototype.finally = function (callback) {
     let P = this.constructor;
@@ -48,25 +48,32 @@ const myRequest = function (params = {}, url , id, st, page) {
                 if (200 === res.code || 0 === res.code) {
                     resolve(res);
                 } else {
-                    if (401 === res.code) {
-                        wx.hideLoading();
-                        console.log('401统一处理');
+                    if (401 === res.code) {  
+                      wx.hideLoading();
+                      console.log('401统一处理');
+                      let fromCenter =  wx.getStorageSync('fromCenter');
+                      wx.setStorageSync('fromCenter', '0');
+                      if (fromCenter!=1){
                         wx.showModal({
-                            title: '您尚未登录',
-                            content: '是否前往登录页面',
-                            confirmText: '前往',
-                            confirmColor: '#c81a29',
-                            success: (res) => {
-                                if (res.confirm) {
-                                    wx.navigateTo({
-                                      url: '../login/login',
-                                    })
-                                    return false;
-                                } else if (res.cancel) {
-                                    console.log('用户点击取消')
-                                }
+                          title: '您尚未登录',
+                          content: '是否前往登录页面',
+                          confirmText: '前往',
+                          confirmColor: '#c81a29',
+                          success: (res) => {
+                            if (res.confirm) {
+                              wx.navigateTo({
+                                url: '../login/login',
+                              })
+                              return false;
+                            } else if (res.cancel) {
+                              console.log('用户点击取消')
                             }
+                          }
                         })
+                      }
+                        
+                       
+                        
 
                     }
                     reject(res);

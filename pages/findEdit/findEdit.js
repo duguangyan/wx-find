@@ -154,6 +154,7 @@ Page({
     this.data.addFinds[index].find_type = id;
     this.data.addFinds[index].get_type = 1;
     this.data.addFinds[index].address = this.data.defaultAddress;
+    this.data.addFinds[index].get_address = this.data.defaultAddress.id;
     if(id==2){
       this.data.addFinds[index].selcetSecondTabNum = 1;
     }

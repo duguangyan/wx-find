@@ -174,7 +174,7 @@ style="width:44rpx;height:44rpx;position:absolute;right:0;top:0rpx;background-co
         <view catchtap='checkIsResNotes' class='mgt-30' style='padding-left:200rpx;'>
             <text wx:if='{{isResNotes}}' class="iconfont icon-dui icon-dui-1 fs40 pdl-10 text-theme"></text>
             <text wx:if='{{!isResNotes}}' class="iconfont icon-yuan icon-yuan-1 fs40 pdl-10 text-eb"></text>
-            <text style='color:999;padding-left:20rpx;'>已阅读，下次不在显示</text> 
+            <text style='color:999;padding-left:20rpx;'>已阅读，下次不再显示</text> 
         </view>
         <view class='index-popup-btn notes-btn'>
             <view class='text-red btn-shadow' catchtap='hiddenNotes'>确定</view>

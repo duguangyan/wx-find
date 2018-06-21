@@ -16,7 +16,14 @@
                 <text class="text-yellow mgl-20 fs26">余额：￥ {{memberInfo.asset.balance_amount || 0}}</text>
             </view>
         </view>
-        <navigator style="padding:20rpx 0" open-type='navigate' url="../login/login" hidden='{{memberInfo}}' class="fs32 bold">您暂未登录（点击登录）</navigator>
+        <!-- <navigator wx:if='{{!loginTime}}' style="padding:20rpx 0" open-type='navigate' url="" hidden='{{memberInfo}}' class="fs32 bold">
+            您暂未登录（点击登录）
+        </navigator>
+        open-type='navigate' url="../login/login"
+         -->
+        <view style="padding:20rpx 0" bindtap='toLogin'  hidden='{{memberInfo}}' class="fs32 bold">
+            您暂未登录（点击登录）
+        </view>
     </view>
 
     <view wx:if="{{memberInfo}}" class="setting bg-red text-center mgr-20 radius-10">

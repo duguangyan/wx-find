@@ -96,13 +96,13 @@
           <view>二.  服务项目：</view>
           <view class='fs24'>1.所取送物料仅限皮革（含真皮、二层皮、PU、PVC)、皮具箱包产品纺织面料、皮具箱包产品辅料、托料、五金等。</view>
           <view>三．其他：</view>
-          <view class='fs24'>1.所取送物料数量仅限样品（色卡）或小批量物料，<text style='font-weight: 600;'>（电瓶车所载标准：最大重量25KG/最大长度1.5米*0.5米）</text>，如超出单次取送物料承重范围，视为第二单。</view>
-          <view class='fs24'>2.本服务平台不提供侵权产品的取送料，不提供服务项目以外的取送物料。</view>
+          <view class='fs24'>1.所取送物料数量仅限样品（色卡）或小批量物料，<text style='font-weight: 600;'>（电瓶车所载标准：单件最大重量25KG/最大长度1.5米*0.5米）</text>，如超出单件取送物料标准范围，视为第二件。</view>
+          <view class='fs24'>2.本服务平台不提供侵权产品的取送料，不提供服务项目以外的取送服务。</view>
         </view>
         <view catchtap='checkIsResNotes' class='mgt-30' style='padding-left:200rpx;'>
             <text wx:if='{{isResNotes}}' class="iconfont icon-dui icon-dui-1 fs40 pdl-10 text-theme"></text>
             <text wx:if='{{!isResNotes}}' class="iconfont icon-yuan icon-yuan-1 fs40 pdl-10 text-eb"></text>
-            <text style='color:999;padding-left:20rpx;'>已阅读，下次不在显示</text> 
+            <text style='color:999;padding-left:20rpx;'>已阅读，下次不再显示</text> 
         </view>
         <view class='index-popup-btn notes-btn'>
             <view class='text-red btn-shadow' catchtap='hiddenNotes'>确定</view>

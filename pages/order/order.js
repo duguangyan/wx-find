@@ -227,9 +227,9 @@ Page({
                  })
                }
                data.fail = function (res) {
-                 _this.data.findList[order_index].isDisabled = true;
+                 _this.data.findList[order_index].isDisabled = false;
                  _this.setData({
-                   findList: this.data.findList
+                   findList: _this.data.findList
                  })
                  console.log('支付失败');
                  console.log(res);
@@ -493,10 +493,10 @@ Page({
       console.log(res.data);
     }).catch((res)=>{
       wx.hideLoading();
-      wx.showToast({
-        title: res.msg,  //标题  
-        icon: 'none',  //图标，支持"success"、"loading"  
-      }) 
+      // wx.showToast({
+      //   title: res.msg,  //标题  
+      //   icon: 'none',  //图标，支持"success"、"loading"  
+      // }) 
       
     })
   },

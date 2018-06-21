@@ -237,9 +237,9 @@ Page({
       }, id).then((res) => {
         console.log(res);
         if (res.code == 200) {
-          _this.data.findList[index].button_status.on_confirm = 0;
+          _this.data.itemObj.button_status.on_confirm = 0;
           _this.setData({
-            findList: _this.data.findList
+            itemObj: _this.data.itemObj
           })
           wx.showToast({
             title: '收货成功！',
@@ -275,7 +275,7 @@ Page({
                 })
               }else{
                 wx.setNavigationBarTitle({
-                  title: '取料详情'
+                  title: '取送详情'
                 })
               }
               if (itemObj.type == 1){

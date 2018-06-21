@@ -1,5 +1,6 @@
 //app.js
 const api = require('./utils/api.js');
+var aldstat = require('./utils/ald-stat.js');
 App({
   onLaunch: function () {
     wx.login({

@@ -1,5 +1,7 @@
 const api = require('../../utils/api.js');
+// const QQMapWX = require('../../libs/qqmap-wx-jssdk.min.js');
 let app = getApp();
+// var qqmapsdk;
 Page({
     /**
      * 页面的初始数据
@@ -150,7 +152,10 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
-        
+      // 实例化API核心类
+      // qqmapsdk = new QQMapWX({
+      //   key: 'TREBZ-NE3KW-VZ5RD-OFP22-IUGZO-MEF7A'
+      // });
     },
     /**
      * 生命周期函数--监听页面初次渲染完成
@@ -163,6 +168,63 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow: function () {
+
+      // 调用接口
+      // qqmapsdk.getSuggestion({
+      //   keyword: '财富',
+      //   region:'深圳市',
+      //   success: function (res) {
+      //     console.log(res);
+      //   },
+      //   fail: function (res) {
+      //     console.log(res);
+      //   },
+      //   complete: function (res) {
+      //     console.log(res);
+      //   }
+      // });
+      
+      // wx.getLocation({
+      //   type: 'wgs84',
+      //   success: function (res) {
+      //     console.log('xxxxxxxxxxxx');
+      //     console.log(res);
+      //     var latitude = res.latitude
+      //     var longitude = res.longitude
+      //     var speed = res.speed
+      //     var accuracy = res.accuracy
+
+      //     // 调用接口
+      //     qqmapsdk.reverseGeocoder({
+      //       location: {
+      //         latitude: latitude,
+      //         longitude: longitude
+      //       },
+      //       success: function (res) {
+      //         console.log(res);
+      //       },
+      //       fail: function (res) {
+      //         console.log(res);
+      //       },
+      //       complete: function (res) {
+      //         console.log(res);
+      //       }
+      //     });
+
+      //   }
+      // })
+      // wx.getLocation({
+      //   type: 'gcj02', //返回可以用于wx.openLocation的经纬度
+      //   success: function (res) {
+      //     var latitude = res.latitude
+      //     var longitude = res.longitude
+      //     wx.openLocation({
+      //       latitude: latitude,
+      //       longitude: longitude,
+      //       scale: 28
+      //     })
+      //   }
+      // })
       this.setData({
         findNum:this.data.findNum
       })
