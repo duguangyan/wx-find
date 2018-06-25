@@ -1,6 +1,8 @@
 const api = require('../../utils/api.js');
 const util = require('../../utils/util.js');
 const bmap = require('../../libs/bmap-wx.min.js');
+const QQMapWX = require('../../libs/qqmap-wx-jssdk.min.js');
+ var qqmapsdk;
 Page({
 
   /**
@@ -13,11 +15,42 @@ Page({
       consignee: '',
       mobile: '',
       address: '',
-      mapInputValue:''
+      mapInputValue:'',
+      mapAddress:''
     },
     // 是否默认
     is_default: 0,
     multiIndex: [6, 0, 0]
+
+  },
+  // 获取用户当前地址
+  getUserMapAddress(){
+    var that = this
+    var that = this
+    // 实例化腾讯地图API核心类
+    qqmapsdk = new QQMapWX({
+      key: '开发密钥（key）' // 必填
+    });
+    //1、获取当前位置坐标
+    wx.getLocation({
+      type: 'wgs84',
+      success: function (res) {
+        //2、根据坐标获取当前位置名称，显示在顶部:腾讯地图逆地址解析
+        qqmapsdk.reverseGeocoder({
+          location: {
+            latitude: res.latitude,
+            longitude: res.longitude
+          },
+          success: function (addressRes) {
+            var address = addressRes.result.formatted_addresses.recommend;
+            
+          }
+        })
+      }
+    })
+  },
+  // 获取地图地址
+  getMapAddress(){
 
   },
   // 清空mapInput
@@ -215,6 +248,11 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) { 
+    qqmapsdk = new QQMapWX({
+      key: 'TREBZ-NE3KW-VZ5RD-OFP22-IUGZO-MEF7A'
+    });
+
+
 
     let type = options.type,
       id = options.id;

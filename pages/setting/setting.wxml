@@ -1,0 +1,45 @@
+<!--pages/setting/setting.wxml-->
+<view class='setting fs30 pd-30'>
+  <view class='btn-shadow lh90 pdl-30 bg-white radius-10' bindtap='gotoChangePassword'>
+    修改登录密码 
+    <text class='iconfont icon-jiantou flr pdr-30'></text>
+  </view>
+  <view class='btn-shadow lh90 pdl-30 bg-white radius-10 mgt-20' bindtap='gotoChangePayPassword'>
+    修改支付密码 
+    <text class='iconfont icon-jiantou flr pdr-30'></text>
+  </view>
+  <view class='btn-shadow lh90 pdl-30 bg-white radius-10 mgt-20'  bindtap='loginOut'>
+    退出登陆 
+    <text class='iconfont icon-jiantou flr pdr-30'></text>
+  </view>
+</view>
+
+<!-- 填写取消订单原因model -->
+<!-- <view class='oldPayPasswordModel' wx:if='{{isOldPayPasswordModel}}'>
+  <view>请输入旧支付密码</view>
+  <input type='number' value='{{vl1}}'></input>
+  <input type='number' value='{{vl2}}'></input>
+  <input type='number' value='{{vl3}}'></input>
+  <input type='number' value='{{vl4}}'></input>
+  <input type='number' value='{{vl5}}'></input>
+  <input type='number' value='{{vl6}}'></input>
+</view> -->
+ 
+
+ <form bindsubmit="formSubmit" wx:if='{{isOldPayPasswordModel}}'>  
+  
+  <view class='content'>  
+  
+    <block wx:for="{{Length}}" wx:key="item">  
+      <input class='iptbox' type='number' value="{{Value.length>=index+1?Value[index]:''}}" disabled password='{{ispassword}}' catchtap='Tap'></input>  
+    </block>  
+  
+  </view>  
+  
+  <input name="password"  type='number' password="{{true}}" class='ipt' maxlength="{{Length}}" focus="{{isFocus}}" bindinput="Focus"></input>  
+  
+  <view>  
+    <button class="btn-area" formType="submit">Submit</button>  
+  </view>  
+  
+</form> 

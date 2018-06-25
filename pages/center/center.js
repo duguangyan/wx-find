@@ -39,6 +39,13 @@ Page({
 
 
     },
+    // 去设置页面
+    gotoSettinngPage(){
+      wx.navigateTo({
+        url: '../setting/setting',
+      })
+    },
+    // 去登录页面
     toLogin(){
       wx.navigateTo({
         url: '../login/login',
@@ -268,8 +275,19 @@ Page({
      */
     onShow: function () {
       wx.setStorageSync('fromCenter','1');
-        // 更新用户信息
-        this.getUserInfo(); 
+      this.data.orderTab1[0].num = 0;
+      this.data.orderTab1[1].num = 0;
+      this.data.orderTab1[2].num = 0;
+      this.data.orderTab2[0].num = 0;
+      this.data.orderTab2[1].num = 0;
+      this.data.orderTab2[2].num = 0;
+      this.setData({
+        memberInfo: null,
+        orderTab1: this.data.orderTab1,
+        orderTab2: this.data.orderTab2
+      })
+      // 更新用户信息
+      this.getUserInfo(); 
     },
 
     // 获取用户信息

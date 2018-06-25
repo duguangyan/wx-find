@@ -15,8 +15,6 @@
 
     <view class="flex cell-padding border-bottom lh100">
         <view>所在地区</view>
-
-
         <picker style="flex:1;" mode="multiSelector" bindchange="bindMultiPickerChange" bindcolumnchange="bindMultiPickerColumnChange" value="{{multiIndex}}" range-key="region_name" range="{{[multiArray,multiArray[province].children, multiArray[province].children[city].children]}}">
             <view class="picker" style="text-align:right;">
               {{multiArray[multiIndex[0]].region_name}} {{multiArray[multiIndex[0]].children[multiIndex[1]].region_name}} {{multiArray[multiIndex[0]].children[multiIndex[1]].children[multiIndex[2]].region_name}} 
@@ -27,23 +25,14 @@
         <!-- <text class="iconfont icon-jiantou"></text> -->
 
     </view>
-
-    <!-- 地图筛选地址 -->
-    <!-- <view class="section section-map bb-1">
-      <text class='iconfont icon-suosou fs50'></text>
-      <text class='pdl-20'>配送范围</text>
-      <input class='map-input-1 lh90' value='{{searchValue}}
-       placeholder="请填写并选择配送范围"  type="text" bindblur="cleanInput" bindinput="mapKeyInput"/>
-     
-    </view> -->
-    <!-- <view class="section bb-1">
-      <input class='map-input lh90 pdl-30' style='height:90rpx;' disabled value='{{addressInfo.address}}' placeholder="具体地址"  type="text" />
-    </view> -->
-    <!-- <view class="sug_info" wx:if='{{isSugShow}}'>
-      <view class='sug_info_text' wx:for="{{sugData}}" wx:key='this' wx:for-index="index">
-            <text data-index='{{index}}' bindtap='mapCheck'>{{item.name}}</text> 
-      </view>
-    </view> -->
+    <view class="flex cell-padding border-bottom lh100"  bindinput='getMapAddress'>
+            <view>地图地址</view>
+            <input style="text-align:right;width:550rpx;" 
+            placeholder='请填写' 
+            placeholder-class="text-right" 
+            disabled value='{{addressInfo.mapAddress}}'>
+            </input>
+    </view>
  
     <view class="address-area bb-1">
         <textarea bindinput='editDetailAddress' placeholder='请填写详细地址' value='{{addressInfo.address}}'>

@@ -131,6 +131,7 @@ Page({
     }).then((res)=>{ 
       if (res.code == 200) { 
         if (res.code==200&&res.data.pay_status ==1){
+
           // wx.switchTab({
           //   url: '../order/order',
           //   success: function (e) {

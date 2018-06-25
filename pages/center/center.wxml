@@ -1,7 +1,7 @@
 
 <view class="section-avatar flex flex-start">
     <image class='header-bg' src='../../public/images/center/header_bg.png'></image>
-    <view class="avatar">
+    <view class="avatar" bindtap='gotoSettinngPage'>
         <image src="{{memberInfo.avatar_path || '../../public/images/center/default_avatar.png'}}"></image>
     </view>
 

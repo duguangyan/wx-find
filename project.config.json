@@ -33,7 +33,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 1,
+			"current": 15,
 			"list": [
 				{
 					"id": -1,
@@ -177,6 +177,24 @@
 					"id": -1,
 					"name": "新建地址1",
 					"pathName": "pages/newAddress1/newAddress1",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "设置",
+					"pathName": "pages/setting/setting",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "修改登录密码2.2.1",
+					"pathName": "pages/changePassword/changePassword",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "修改支付密码2.2.1",
+					"pathName": "pages/changePayPassword/changePayPassword",
 					"query": ""
 				}
 			]

@@ -28,7 +28,10 @@
     "pages/rechargeSuccess/rechargeSuccess",
     "pages/findEdit/findEdit",
     "pages/fecthEdit/fecthEdit",
-    "pages/task3/task3"
+    "pages/task3/task3",
+    "pages/setting/setting",
+    "pages/changePassword/changePassword",
+    "pages/changePayPassword/changePayPassword"
   ],
   "window": {
     "backgroundTextStyle": "light",
