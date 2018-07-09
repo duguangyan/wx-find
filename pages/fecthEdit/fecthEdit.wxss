@@ -6,6 +6,14 @@
 .material-number text{
   float: left;
 }
+.icon-dizhi{
+  font-size: 50rpx;
+}
+.address-icon{
+  position: absolute;
+  right: 30rpx;
+  top: 30%;
+}
 .sub{
   margin-left: 50rpx;
 }
@@ -186,4 +194,12 @@
 }
 .address-info{
   padding-bottom: 30rpx; 
+}
+.address{
+  position: relative;
+  padding-right: 70rpx;
+}
+.material-icon{
+  position: relative;
+  right:30rpx;
 }

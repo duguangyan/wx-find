@@ -1,20 +1,28 @@
-<form class="fs30" bindsubmit="formSubmit" report-submit>
+<scroll-view scroll-y='isCheckTypeModel' class="{{isCheckTypeModel?'modelHidden':''}}">
+<form class="fs30"  bindsubmit="formSubmit" report-submit>
 
-    <view class='section-order mgb-20' wx:for="{{addFinds}}" wx:for-index="idx"  wx:key='addFindKey' wx:for-item="item">
+    <view class="section-order mgb-20 {{isCheckTypeModel?'filter-b6':''}}"
+    wx:for="{{addFinds}}" wx:for-index="idx"  wx:key='addFindKey' wx:for-item="item">
         <view class="cell-padding lh90 flex border-bottom">
-            <view  data-index='{{idx}}' bindtap='checkType'>
-              <text class="text-theme">*</text>物料类型 : 
-              <text style='padding-left:150rpx'>{{item.checkType}}</text>  
-<text class='mgl-20 iconfont icon-jiantou'></text>
+
+            <view class='find-title'  data-index='{{idx}}' bindtap='checkType' wx:if='{{item.checkType.length>0}}'>
+              <text class="text-theme">*</text>物料类型: {{item.checkType}}
+              <text class='mgl-20 iconfont icon-jiantou'></text>
             </view>
+
+            <view class='find-title'  data-index='{{idx}}' bindtap='checkType' wx:if="{{item.checkType==''}}">
+              <text class="text-theme">*</text>物料类型: <text style='color:#999'>请选择物料品类</text>
+              <text class='mgl-20 iconfont icon-jiantou'></text>
+            </view>
+
             <view class='close_btn' data-index='{{idx}}' bindtap='closed'><image src='../../public/images/find/close_btn.png'></image></view>
         </view>
 
         <view class="pd-20 flex align-start">
             <view class="width-200 word-spacing">
-                <text class="text-theme">*</text> 描 述 ：</view>
+                <text class="text-theme">*</text>描述:</view>
 
-            <textarea hidden='{{isNotes}}' class="flex-1 find-desc height-200"  wx:if="{{!isPopup}}" name="field_desc" data-index='{{idx}}' bindinput='getDescription' value="{{item.desc}}" placeholder='(注：请详细描述物料的名称、用途、材质、交货时间)'>
+            <textarea hidden='{{isNotes || isCheckTypeModel}}' class="flex-1 find-desc height-200"  wx:if="{{!isPopup}}" name="field_desc" data-index='{{idx}}' bindinput='getDescription' value="{{item.desc}}" placeholder='(注：请详细描述物料的名称、用途、材质、交货时间)'>
             </textarea>
         </view>
 
@@ -88,38 +96,40 @@ style="width:44rpx;height:44rpx;position:absolute;right:0;top:0rpx;background-co
           </view>
           <view class="border-bottom cell-padding address flex flex-start">
               <text class="iconfont icon-dizhi fs40 text-gray mgr-20" wx:if='{{item.selcetSecondTabNum==1}}'></text>
-              <view data-index='{{idx}}' data-id='{{item.address.id}}' bindtap='goConsigneeAddress' wx:if='{{ item.selcetSecondTabNum == 1 }}' hidden='{{ !item.address}}' class="flex-1 address-info fs30">
-                  <view class="flex">
-                      <text>地址名称: {{item.address.stall || ''}}</text>
+              <text class='iconfont icon-jiantou address-icon' wx:if='{{item.selcetSecondTabNum==1}}'></text>
+              <view data-index='{{idx}}' data-id='{{item.address.id}}' bindtap='goConsigneeAddress'
+               wx:if='{{ item.selcetSecondTabNum == 1 }}' hidden='{{ !item.address}}' class="flex-1 address-info fs24">
+                  <view>                      
+                      <viwe>
+                        <text class='remark' wx:if='{{item.address.remark}}'>{{item.address.remark||''}}</text> 
+                        {{item.address.city_str||''}} {{item.address.address||''}} {{item.address.room ||''}}
+                         
+                      </viwe>
                   </view>
-                  <view class="flex">
-                      <text>联系人<text class='mgl-30'>:</text> {{item.address.consignee}} / {{item.address.mobile}}</text>
-                      
+                  <view  style='word-break:break-all;'>
+                      <text> {{item.address.consignee||''}} / {{item.address.mobile||''}}</text>
                   </view>
-
-                  <view>
-                      <text>取样地址：</text>
-                      <text style='width:440rpx;float:right;position: relative;left: -24rpx;'>{{item.address.city_str}} {{item.address.address}}</text>
+                  <view  style='word-break:break-all;'>
+                      <text class='text-999'>{{item.address.stall || ''}}</text>
                   </view>
-
               </view>
 
-            <view data-index='{{idx}}'  wx:if='{{ item.selcetSecondTabNum == 2 }}' class="flex-1 address-info fs30">
-                  
-
+            <view data-index='{{idx}}'  wx:if='{{ item.selcetSecondTabNum == 2 }}' class="flex-1 address-info fs24">
                   <view class="flex">
-                      <text>联系人<text class='mgl-30'>:</text>  {{companyaddress.consignee}} / {{companyaddress.mobile}}</text>
-                      
+                      <text>联系人<text class='mgl-30'>:</text>  
+                        {{companyaddress.consignee || ''}} / {{companyaddress.mobile || ''}}
+                      </text>   
                   </view>
-
                   <view>
                       <text>寄样地址：</text>
-                      <text style='width:500rpx;float:right;position: relative;left: -18rpx;'>{{companyaddress.address}}</text>
+                      <text style='width:500rpx;float:right;position: relative;left: -18rpx;'>
+                        {{companyaddress.address}}
+                      </text>
                   </view>
-
               </view>
 
-              <view data-index='{{idx}}' bindtap='goConsigneeAddress'  hidden='{{item.address || item.selcetSecondTabNum == 2 }}' class="text-666 h100 lh100 flex-1">
+              <view data-index='{{idx}}' bindtap='goConsigneeAddress' 
+               hidden='{{item.address || item.selcetSecondTabNum == 2 }}' class="text-666 h100 lh100 flex-1">
                   点击添加收货地址
               </view>
           </view>
@@ -143,7 +153,7 @@ style="width:44rpx;height:44rpx;position:absolute;right:0;top:0rpx;background-co
 
 
 </form>
-
+</scroll-view>
 <view class='index-popup' wx:if="{{isPopup}}">
     <view class='index-popup-bg' catchtap='closePopup'></view>
     <view class='index-popup-content'>
@@ -181,4 +191,8 @@ style="width:44rpx;height:44rpx;position:absolute;right:0;top:0rpx;background-co
         </view>   
     </view>
 </view>
+
+
+
+
 

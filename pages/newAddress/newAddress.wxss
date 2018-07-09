@@ -13,6 +13,8 @@ page {
 }
 .address-form {
     background: #fff;
+    margin: 0 30rpx;
+    border-radius:10rpx; 
 }
 
 .address-form>view:last-of-type {
@@ -67,4 +69,29 @@ page {
 .sug_info_text{
   display: block;
   height: 50rpx;line-height: 50rpx;
+}
+.address-input{
+  width: 478rpx;
+  background-color: #eee;
+  height: 90rpx;
+  padding-left: 10rpx;
+}
+.spacing{
+  letter-spacing: 5px;
+}
+.spacing1{
+  letter-spacing: 15px;
+}
+.address-list{
+  margin: 15rpx 0;
+}
+.display-none{
+  opacity: 0
+}
+.bottom-fixed{
+  position: relative;
+  margin: 0 30rpx;
+  width: 690rpx;
+  margin-top: 75rpx;
+  border-radius:10rpx; 
 }

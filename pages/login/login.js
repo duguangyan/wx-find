@@ -8,7 +8,8 @@ Page({
      * 页面的初始数据
      */
     data: {
-        account: ''
+        account: '',
+        chengePassWord:''
     },
     // 手机账号
     mobile(e) {
@@ -64,8 +65,22 @@ Page({
     },
 
     // 提交表单
-    submitLogin() {
-
+    submitLogin(e) {
+      console.log('fromId');
+      console.log(e.detail.formId);
+      if (e.detail.formId != 'the formId is a mock one'){
+        let data = {
+          "form_id": e.detail.formId,
+          "from": "3"
+        }
+        api.getFormId({
+          method:'POST',
+          data
+        }).then((res)=>{
+          console.log(res);
+          console.log('获取formId');
+        })
+      }
         let user_name = this.data.account,
             password = this.data.password;
 
@@ -98,7 +113,15 @@ Page({
               key: 'token_type',
               data: res.data.token_type,
             })
-            wx.navigateBack();
+            wx.setStorageSync('user_name', user_name);
+            if (this.data.chengePassWord){
+              wx.reLaunch({
+                url: '../center/center'
+              })
+            }else{
+              wx.navigateBack();
+            }
+            
             // wx.navigateTo({
             //     url: '../shoppingCart/shoppingCart',
             // })
@@ -119,6 +142,13 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
+      if (options.chengePassWord){
+        let chengePassWord = options.chengePassWord;
+        this.setData({
+          chengePassWord
+        })  
+      }
+      
         // vailPhone()
     },
 

@@ -1,6 +1,6 @@
 <view class='container'>
 
-    <form>
+    <form bindsubmit="submitLogin" report-submit='true' >
         <view class="login-box fs30">
 
             <view class="border-bottom input-box">
@@ -18,7 +18,9 @@
         </view>
 
         <view class="cell-padding">
-            <button bindtap='submitLogin' class="login-btn bg-theme {{ BtnActive ?  '' : 'disabled-style' }}">登录</button>
+            <button formType="submit" class="login-btn bg-theme {{ BtnActive ?  '' : 'disabled-style' }}">
+              登录
+            </button>
         </view>
 
     </form>

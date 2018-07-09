@@ -23,7 +23,6 @@
   width: 640rpx;
   position: relative;
   padding-left: 30rpx;
-  padding-bottom: 30rpx;
 }
 .task-find-item view{
   display: block;
@@ -106,6 +105,12 @@
 .task-pay view{
 
 }
+.icon-dizhi{
+  font-size: 50rpx;
+  position: absolute;
+  top: 30%;
+  left: -60rpx;
+}
 .task-sum{
  position:absolute;
 right:220rpx;
@@ -117,4 +122,24 @@ text-align:right;
 .task-paybtn{
   position: relative;
   top: -15rpx;
+}
+.address-icon{
+  position: absolute;
+  right: 100rpx;
+  top: 36%;
+  
+  
+}
+.address{
+  position: relative;
+  padding-right: 150rpx;
+  padding-bottom: 30rpx;
+  left: 80rpx;
+}
+.icon-chahao{
+  position:absolute;
+  right:10rpx;
+  top:0rpx;
+  font-size:50rpx;
+  color:#aaa;
 }

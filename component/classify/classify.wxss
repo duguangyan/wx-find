@@ -1,0 +1,123 @@
+/* component/classify/classify.wxss */
+.navActive{
+  background-color: #fff;
+  border-bottom: 1rpx solid #fff;
+}
+.classify-warp{
+  display: flex;
+  font-size: 30rpx;
+  border-radius:10rpx;
+  height: 100%;
+}
+.classify-sider{
+  width: 160rpx;
+  height: auto;
+  text-align: center;
+  background-color:  #eee;
+  overflow:scroll;
+}
+.classify-sider-list{
+  height: 99rpx;
+  line-height: 100rpx;
+  border-bottom: 1rpx solid #ddd;
+}
+.classify-content{
+  width: 590rpx;
+  background-color: #fff;
+  overflow:scroll;
+}
+.classify-content-title{
+  height: 100rpx;
+  line-height: 100rpx;
+  text-align: center;
+  position: relative;
+  background-color: #fff;
+}
+.classify-content-title-text{
+  display: block;
+  height: 60rpx;
+  line-height: 60rpx;
+  width: 185rpx;
+  background-color: #fff;
+  position: absolute;
+  z-index: 9999;
+  left: 220rpx;
+  font-size: 30rpx;
+  color: #fff;
+}
+.classify-content-title-text text{
+  display: block;
+  height: 60rpx;
+  line-height: 60rpx;
+  width: 90rpx;
+  background-color: #c8c8c8;
+  border-radius:20rpx;
+  position: absolute;
+  top: 20rpx;
+  left: 28rpx;
+  padding: 0 20rpx;
+}
+.item-big-size{
+  width: 120rpx !important;
+}
+.item-length-size{
+  width: 215rpx !important;
+  left: 200rpx !important;
+ 
+}
+.classify-content-title::after{
+  content:' ';
+  position: absolute;
+  top: 49rpx;
+  left: 20rpx;
+  height: 2rpx;
+  width: 550rpx;
+  background-color: #e6e6e6;
+  z-index: 999;
+}
+.classify-content-middle{
+  margin-left: 20rpx;
+  position: relative;
+  top: -40rpx;
+}
+.classify-content-middle text{
+  display: block;
+  float: left;
+  margin-left: 40rpx;
+  width: 130rpx;
+  height: 50rpx;
+  line-height: 50rpx;
+  border-radius:10rpx; 
+  text-align: center;
+  border: 1rpx solid #666;
+  color: #333;
+  margin-top: 40rpx;
+  overflow: hidden;
+}
+.height-auto{
+  height: auto;
+}
+.cf:after{display:block;clear:both;content:"";visibility:hidden;height:0}
+.cf{zoom:1}
+
+
+.classify-bg{
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  background: #000;
+  opacity: .7;
+  top: 0;
+  left: 0;
+}
+.classify-warp{
+  position: fixed;
+  bottom: -20rpx;
+  left: 0;
+  height: 1020rpx;
+  width: 750rpx;
+  z-index: 99999;
+  background-color: #fff;
+  border-radius:20rpx; 
+  overflow: hidden;
+}

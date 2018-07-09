@@ -11,15 +11,13 @@
 </view>
 
 <!--有地址  -->
-<view class="fs28" wx:if="{{!isEmpty}}">
+<!-- <view class="fs28" wx:if="{{!isEmpty}}">
 
     <block wx:for="{{addressList}}" wx:key="*this">
 
         <view class="address-item relative">
 
-            <!-- <view class="mgr-20" hidden="{{true}}">
-                <checkbox></checkbox>
-            </view> -->
+    
             <image hidden='{{!item.is_default}}' src="https://m.yidap.com/assets/imgs/order_address_icon_1.png" style="position:absolute;left:0;width:40rpx;height:40rpx;"></image>
 
             <view class="address-item-center border-bottom"  data-item='{{item}}' bindtap='goBlack'>
@@ -42,13 +40,7 @@
                     <text>备注:{{item.remark||''}}</text>
                 </view>
 
-                <!-- <view class='dot-btn' data-item='{{item}}' bindtap='goBlack'>
-                  <view class="dot">
-                    <view class="dot2">
-                        <view class="dot3">切换地址</view>
-                    </view>
-                  </view>
-                </view> -->
+        
 
 
             </view>
@@ -80,8 +72,91 @@
 
     </block>
 
-</view>
+</view> -->
+<view class='consignee-address'  wx:if="{{!isEmpty}}">
+   <view class='btn-shadow address-right' wx:if='{{hasAddressNum1>0}}'>
+      <view class='cf address-right-title'>
+          <text class='fll'>我的地址</text> 
+          <text class='flr text-theme' bindtap='editShow' data-index='1'>{{editTitle1}}</text>
+      </view>
+      <view class='address-right-list cf'>
+          
+          <view class="address-right-warp cf {{editTitle1=='完成'?'pd0':''}}"
+            wx:for='{{addressList}}' wx:key='this' wx:if='{{item.area_id>0}}'>
+              <view class='address-del fll' style='flex: 1'
+              bindtap='del' data-id="{{item.id}}" data-index="{{index}}" wx:if="{{editTitle1=='完成'}}">
+                <image src='../../public/images/icon/address-del.png'></image>
+              </view>
+              <view class="fll address-list-content {{editTitle1=='完成'?'':'width100'}}" style='flex: 8'
+               bindtap='goBlack' data-item='{{item}}' data-index='{{index}}'>
+                  <view style='margin-top:20rpx;word-break:break-all;'>
+                    <text class='remark' wx:if='{{item.remark}}'>{{item.remark||''}}</text>
+                    {{item.address||''}} {{item.room||''}}    
+                  </view>
+                  <view class='cf color-999'>
+                      <view style='word-break:break-all;'>
+                        {{item.consignee||''}} / {{item.mobile||''}}
+                      </view> 
+                      
+                  </view>
+                  <view class='cf color-999 border-bottom'>
+                    <view style='word-break:break-all;'> 
+                      {{item.stall||''}}
+                    </view>
+                  </view>
+              </view>
+              <view class='address-edit fll text-theme' style='flex: 1'
+              bindtap='edit' data-id="{{item.id}}" data-index="{{index}}"
+              wx:if="{{editTitle1=='完成'}}">
+                <view>更改</view>
+              </view>
+          </view>
+          
+      </view>
+   </view>
 
+
+   <view class='btn-shadow address-right' wx:if='{{hasAddressNum2>0}}'>
+      <view class='cf address-right-title'>
+          <text class='fll'>以下地址超出配送范围</text> 
+          <text class='flr text-theme' bindtap='editShow' data-index='2'>{{editTitle2}}</text>
+      </view>
+      <view class='address-right-list cf'>
+          
+          <view class="address-right-warp cf {{editTitle2=='完成'?'pd0':''}}" 
+          wx:for='{{addressList}}' wx:key='this' wx:if='{{item.area_id==0}}'>
+              <view class='address-del ' style='flex: 1' 
+              bindtap='del' data-id="{{item.id}}" data-index="{{index}}" wx:if="{{editTitle2=='完成'}}">
+                <image src='../../public/images/icon/address-del.png'></image>
+              </view>
+              <view class=" address-list-content color-999 {{editTitle2=='完成'?'':'width100'}}" style='flex: 8'
+              bindtap='goBlack' data-item='{{item}}' data-index='{{index}}'>
+                  <view style='margin-top:20rpx;'>
+                    <text class='remark' wx:if='{{item.remark}}'>{{item.remark||''}}</text>
+                    {{item.address||''}} {{item.room||''}}   
+                  </view>
+                  <view class='cf color-999'>
+                      <view style='word-break:break-all;'>
+                        {{item.consignee||''}} / {{item.mobile||''}}
+                      </view> 
+                  </view>
+                  <view class='cf color-999 border-bottom'>
+                    <view style='word-break:break-all;'> 
+                      {{item.stall||''}}
+                    </view>
+                  </view>
+              </view>
+              <view class='address-edit  text-theme' style='flex: 1'
+              bindtap='edit' data-id="{{item.id}}" data-index="{{index}}"
+              wx:if="{{editTitle2=='完成'}}">
+                <view>更改</view>
+              </view>
+          </view>
+          
+      </view>
+   </view>
+   
+</view>
 
 <navigator open-type='navigate' url="../newAddress/newAddress?type=new" class="bottom-fixed text-center text-white h100 lh100 fs32">
     + 新建收货地址

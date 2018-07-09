@@ -8,6 +8,9 @@ Page({
      * 页面的初始数据
      */
     data: {
+        checkTypeIndex:0,// 第几个
+        isCheckTypeModel:false, // 分类model
+        classifyList:'', // 分类列表
         isResNotes:false, // 是否还要显示
         isNotes:true, // 找料须知弹窗
         isAddShow:'true',
@@ -24,7 +27,7 @@ Page({
         isSelect: false, // 下拉显示按描述找料
         selcetSecondTabNum: '1', //  上门  寄送地址切换
         get_type:'1', //寄送地址切换
-        addFinds: [{ index: 0, checkType: '', selcetTabNum: 1, find_type:'1', selcetSecondTabNum: '1', isSelect: false, desc: '', files: [{}, {}, {}],address:{}}]
+        addFinds: [{ index: 0, checkType: '', selcetTabNum: 1, find_type: '1', selcetSecondTabNum: '1', isSelect: false, desc: '', cid:'', files: [{}, {}, {}],address:{}}]
     },
     //须知弹窗是否继续显示 
     checkIsResNotes(){
@@ -104,47 +107,66 @@ Page({
     },
     // 获取物料类型数据
     getCheckTypes(){
-      api.getCheckTypes({}).then((res)=>{
-        console.log(res);
-        if(res.code == 200){
-          this.data.addFinds.forEach((v,i)=>{
-            v.checkType = res.data[0].name;
-            v.cid = res.data[0].id
-          })
-          // this.data.addFinds[0].checkType = res.data[0].name;
-          // this.data.addFinds[0].cid = res.data[0].id;
-          for(let i=0 ;i<res.data.length;i++){
-            this.data.checkTypes.push(res.data[i].name);
-            this.data.checkTypes_cid.push(res.data[i].id);
-          }
-          this.setData({
-            checkTypes: this.data.checkTypes,
-            addFinds: this.data.addFinds
-          })
-        }
-      })
+      // api.getCheckTypes({}).then((res)=>{
+      //   console.log(res);
+      //   if(res.code == 200){
+      //     // this.data.addFinds.forEach((v,i)=>{
+      //     //   v.checkType = res.data[0].name;
+      //     //   v.cid = res.data[0].id
+      //     // })
+      //     // // this.data.addFinds[0].checkType = res.data[0].name;
+      //     // // this.data.addFinds[0].cid = res.data[0].id;
+      //     // for(let i=0 ;i<res.data.length;i++){
+      //     //   this.data.checkTypes.push(res.data[i].name);
+      //     //   this.data.checkTypes_cid.push(res.data[i].id);
+      //     // }
+      //     // this.setData({
+      //     //   checkTypes: this.data.checkTypes,
+      //     //   addFinds: this.data.addFinds
+      //     // })
+
+      //     // 2.2.1分类改版
+         
+      //     let classifyList = res.data;
+          
+      //     this.setData({
+      //       classifyList,
+      //       classifyListChild: classifyList[0].list
+      //     })
+      //     wx.setStorageSync('classifyList', classifyList);
+      //     console.log(res);
+      //   }
+      // })
     },
     /**
      * 切换物料类型
      */
     checkType(e) {
-      let index = e.currentTarget.dataset.index;
-      console.log(index);
-      let _this = this;
-      wx.showActionSheet({
-        itemList: this.data.checkTypes,
-        success: function (res) {
-          console.log(res);
-          _this.data.addFinds[index].checkType = _this.data.checkTypes[res.tapIndex];
-          _this.data.addFinds[index].cid = _this.data.checkTypes_cid[res.tapIndex];
-          _this.setData({
-            addFinds: _this.data.addFinds
-          })
-          console.log(_this.data.addFinds);
-        },
-        fail: function (res) {
-          console.log(res.errMsg)
-        }
+      this.setData({
+        checkTypeIndex: e.currentTarget.dataset.index
+      })
+    
+      // console.log(index);
+      // let _this = this;
+      // wx.showActionSheet({
+      //   itemList: this.data.checkTypes,
+      //   success: function (res) {
+      //     console.log(res);
+      //     _this.data.addFinds[index].checkType = _this.data.checkTypes[res.tapIndex];
+      //     _this.data.addFinds[index].cid = _this.data.checkTypes_cid[res.tapIndex];
+      //     _this.setData({
+      //       addFinds: _this.data.addFinds
+      //     })
+      //     console.log(_this.data.addFinds);
+      //   },
+      //   fail: function (res) {
+      //     console.log(res.errMsg)
+      //   }
+      // })
+
+      //2.2改版
+      wx.navigateTo({
+        url: '../classify/classify?from=1&index=' + this.data.checkTypeIndex
       })
     },
     // 点击添加找料
@@ -164,7 +186,7 @@ Page({
       
       let defaultAddressId = this.data.defaultAddress?this.data.defaultAddress.id:'';
       let defaultAddress   = this.data.defaultAddress ? this.data.defaultAddress : false;
-      let newAddFinds = this.data.addFinds.concat([{ find_type: '1', index: this.data.addFinds.length, cid: this.data.checkTypes_cid[0], checkType: this.data.checkTypes[0], selcetTabNum: '1', selcetSecondTabNum: '1', isSelect: false, desc: '', files: [{}, {}, {}], get_address: defaultAddress.id, address: defaultAddress}]) ;
+      let newAddFinds = this.data.addFinds.concat([{ find_type: '1', index: this.data.addFinds.length, cid: this.data.checkTypes_cid[0], checkType: '', selcetTabNum: '1', selcetSecondTabNum: '1', isSelect: false, desc: '', cid:'', files: [{}, {}, {}], get_address: defaultAddress.id, address: defaultAddress}]) ;
       this.setData({
         addFinds: newAddFinds
       });
@@ -358,6 +380,15 @@ Page({
       let _this = this;
       console.log(this.data.addFinds); 
       for (let i = 0; i < this.data.addFinds.length;i++){ 
+        // 物料类型必填 判断是否填写
+        if (this.data.addFinds[i].cid == '') {
+          wx.showToast({
+            title: '第' + (i + 1) + '个任务，请填写物料类型',
+            icon: 'none',
+            duration: 1500
+          })
+          return false
+        }
         // 描述必填 判断是否填写
         if (this.data.addFinds[i].desc == '') {
           wx.showToast({
@@ -660,7 +691,7 @@ Page({
       let id = e.currentTarget.dataset.id;
       app.globalData.addressIndex = index;
       wx.navigateTo({
-        url: '../consigneeAddressList/consigneeAddressList?addFinds='+ JSON.stringify(this.data.addFinds) +'&id='+id
+        url: '../consigneeAddress/consigneeAddress?addFinds='+ JSON.stringify(this.data.addFinds) +'&id='+id
       })
     },
     // 返回上一层，继续找料

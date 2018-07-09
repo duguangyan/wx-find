@@ -64,36 +64,41 @@ Page({
   },
   // 切换类型
   checkType(e) {
-    this.data.isSelect = true;
-    this.setData({
-      isSelect: this.data.isSelect
-    })
-    let index = e.currentTarget.dataset.index;
-    console.log(index);
-    let _this = this;
-    let itemList = [];
-    for (let i = 0; i < this.data.checkTypes.length;i++){
-      itemList.push(this.data.checkTypes[i].name);
-    }
+    // this.data.isSelect = true;
+    // this.setData({
+    //   isSelect: this.data.isSelect
+    // })
+    // let index = e.currentTarget.dataset.index;
+    // console.log(index);
+    // let _this = this;
+    // let itemList = [];
+    // for (let i = 0; i < this.data.checkTypes.length;i++){
+    //   itemList.push(this.data.checkTypes[i].name);
+    // }
     
-    wx.showActionSheet({
-      itemList: itemList,
-      success: function (res) {
-        console.log(res);
-        _this.data.isSelect = false;
-        _this.setData({
-          checkType: _this.data.checkTypes[res.tapIndex].name,
-          checkTypes_cid: _this.data.checkTypes[res.tapIndex].id,
-          isSelect: _this.data.isSelect
-        })
-      },
-      fail: function (res) {
-        console.log(res.errMsg)
-        _this.data.isSelect = false;
-        _this.setData({
-          isSelect: _this.data.isSelect
-        })
-      }
+    // wx.showActionSheet({
+    //   itemList: itemList,
+    //   success: function (res) {
+    //     console.log(res);
+    //     _this.data.isSelect = false;
+    //     _this.setData({
+    //       checkType: _this.data.checkTypes[res.tapIndex].name,
+    //       checkTypes_cid: _this.data.checkTypes[res.tapIndex].id,
+    //       isSelect: _this.data.isSelect
+    //     })
+    //   },
+    //   fail: function (res) {
+    //     console.log(res.errMsg)
+    //     _this.data.isSelect = false;
+    //     _this.setData({
+    //       isSelect: _this.data.isSelect
+    //     })
+    //   }
+    // })
+
+    //2.2.1
+    wx.navigateTo({
+      url: '../classify/classify?from=2'
     })
   },
   // 弹窗件数input失去焦点
@@ -221,7 +226,7 @@ Page({
   goConsigneeAddress(e) {
     let id = e.currentTarget.dataset.id;
     wx.navigateTo({
-      url: '../consigneeAddressList/consigneeAddressList?fetchs=1&id='+id,
+      url: '../consigneeAddress/consigneeAddress?fetchs=1&id='+id,
     })
   },
   // 去支付
@@ -243,10 +248,10 @@ Page({
     //   delta: 1
     // })
     
-    this.data.checkTypes_cid = this.data.checkTypes[0].id;
+    // this.data.checkTypes_cid = this.data.checkTypes[0].id;
     this.data.desc = '';
     this.data.findNum = 1;
-    this.data.checkType = this.data.checkTypes[0].name;
+    // this.data.checkType = this.data.checkTypes[0].name;
     this.setData({
       isPopup: false,
       checkTypes_cid: this.data.checkTypes_cid,
@@ -266,6 +271,14 @@ Page({
   // 取料任务提交
   fethchSubmit () {
     let _this = this;
+    if (!this.data.checkTypes_cid) {
+      wx.showToast({
+        title: '请填写物料品类',
+        icon: 'none',
+        duration: 1500
+      })
+      return false
+    }
     if (!this.data.desc){
       wx.showToast({
         title: '请填写描述',
@@ -314,6 +327,8 @@ Page({
             _this.goPay();
           }
         }, 1000)
+      }else{
+        util.successTips(res.msg);
       }
     })
   },
@@ -337,7 +352,7 @@ Page({
     this.getTaskFee();
     app.globalData.isFromScope = true;
     // 获取物料类型
-    this.getCheckTypes();
+    //this.getCheckTypes();
     // 获取默认地址
     this.getDefaultAddress();
     

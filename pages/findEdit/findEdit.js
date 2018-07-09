@@ -39,7 +39,7 @@ Page({
     api.getCheckTypes({}).then((res) => {
       console.log(res);
       if (res.code == 200) {
-        this.data.addFinds[0].checkType = res.data[0].name;
+        this.data.addFinds[0].cname = res.data[0].name;
         this.data.addFinds[0].cid = res.data[0].id;
         for (let i = 0; i < res.data.length; i++) {
           this.data.checkTypes.push(res.data[i].name);
@@ -56,23 +56,26 @@ Page({
    * 切换物料类型
    */
   checkType(e) {
-    let index = e.currentTarget.dataset.index;
-    console.log(index);
-    let _this = this;
-    wx.showActionSheet({
-      itemList: this.data.checkTypes,
-      success: function (res) {
-        console.log(res);
-        _this.data.addFinds[index].checkType = _this.data.checkTypes[res.tapIndex];
-        _this.data.addFinds[index].cid = _this.data.checkTypes_cid[res.tapIndex];
-        _this.setData({
-          addFinds: _this.data.addFinds
-        })
-        console.log(_this.data.addFinds);
-      },
-      fail: function (res) {
-        console.log(res.errMsg)
-      }
+    // let index = e.currentTarget.dataset.index;
+    // console.log(index);
+    // let _this = this;
+    // wx.showActionSheet({
+    //   itemList: this.data.checkTypes,
+    //   success: function (res) {
+    //     console.log(res);
+    //     _this.data.addFinds[index].checkType = _this.data.checkTypes[res.tapIndex];
+    //     _this.data.addFinds[index].cid = _this.data.checkTypes_cid[res.tapIndex];
+    //     _this.setData({
+    //       addFinds: _this.data.addFinds
+    //     })
+    //     console.log(_this.data.addFinds);
+    //   },
+    //   fail: function (res) {
+    //     console.log(res.errMsg)
+    //   }
+    // })
+    wx.navigateTo({
+      url: '../classify/classify?from=1&index=0'
     })
   },
   // 点击添加找料
@@ -398,6 +401,7 @@ Page({
     
     this.data.addFinds[0] = item.form_data;
     this.data.addFinds[0].address = item.form_data.address; 
+    this.data.addFinds[0].checkType = item.cname;
     this.data.addFinds[0].id = item.id;
     this.data.addFinds[0].files = files;
     this.data.addFinds[0].index = index;
@@ -410,7 +414,7 @@ Page({
     this.data.addFinds[0].selcetSecondTabNum = item.form_data.get_type;
 
     // 获取找料类型数据
-    this.getCheckTypes();
+    //this.getCheckTypes();
     
     this.setData({
       addFinds: this.data.addFinds,
@@ -559,7 +563,7 @@ Page({
       }
     }
     wx.navigateTo({
-      url: '../consigneeAddressList/consigneeAddressList?addFinds=' + JSON.stringify(this.data.addFinds)+'&id='+id,
+      url: '../consigneeAddress/consigneeAddress?addFinds=' + JSON.stringify(this.data.addFinds)+'&id='+id,
     })
   },
   // 返回上一层，继续找料

@@ -17,7 +17,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-  
+    this.data.code = options.code;
   },
 
   /**
@@ -72,9 +72,15 @@ Page({
     var that = this;
     console.log(e.detail.value);
     var inputValue = e.detail.value;
+    
     that.setData({
       Value: inputValue,
     })
+    if (inputValue.length==6){
+      wx.navigateTo({
+        url: '../reChengePayPassWord/reChengePayPassWord?inputValue=' + inputValue + '&code=' + this.data.code,
+      })
+    }
   },
   Tap() {
     var that = this;

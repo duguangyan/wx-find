@@ -43,36 +43,39 @@ Page({
   },
   // 切换类型
   checkType(e) {
-    this.data.isSelect = true;
-    this.setData({
-      isSelect: this.data.isSelect
-    })
-    let index = e.currentTarget.dataset.index;
-    console.log(index);
-    let _this = this;
-    let itemList = [];
-    for (let i = 0; i < this.data.checkTypes.length; i++) {
-      itemList.push(this.data.checkTypes[i].name);
-    }
+    // this.data.isSelect = true;
+    // this.setData({
+    //   isSelect: this.data.isSelect
+    // })
+    // let index = e.currentTarget.dataset.index;
+    // console.log(index);
+    // let _this = this;
+    // let itemList = [];
+    // for (let i = 0; i < this.data.checkTypes.length; i++) {
+    //   itemList.push(this.data.checkTypes[i].name);
+    // }
 
-    wx.showActionSheet({
-      itemList: itemList,
-      success: function (res) {
-        console.log(res);
-        _this.data.isSelect = false;
-        _this.setData({
-          checkType: _this.data.checkTypes[res.tapIndex].name,
-          checkTypes_cid: _this.data.checkTypes[res.tapIndex].id,
-          isSelect: _this.data.isSelect
-        })
-      },
-      fail: function (res) {
-        console.log(res.errMsg)
-        _this.data.isSelect = false;
-        _this.setData({
-          isSelect: _this.data.isSelect
-        })
-      }
+    // wx.showActionSheet({
+    //   itemList: itemList,
+    //   success: function (res) {
+    //     console.log(res);
+    //     _this.data.isSelect = false;
+    //     _this.setData({
+    //       checkType: _this.data.checkTypes[res.tapIndex].name,
+    //       checkTypes_cid: _this.data.checkTypes[res.tapIndex].id,
+    //       isSelect: _this.data.isSelect
+    //     })
+    //   },
+    //   fail: function (res) {
+    //     console.log(res.errMsg)
+    //     _this.data.isSelect = false;
+    //     _this.setData({
+    //       isSelect: _this.data.isSelect
+    //     })
+    //   }
+    // })
+    wx.navigateTo({
+      url: '../classify/classify?from=2'
     })
   },
   // 弹窗件数input失去焦点
@@ -251,7 +254,7 @@ Page({
         fetch_num: this.data.findNum,
         get_address: this.data.get_address,
         desc: this.data.desc,
-        cid: this.data.checkTypes_cid
+        cid: this.data.checkTypes_cid != '' ? this.data.checkTypes_cid: this.data.cid
       },
       id: this.data.id
     }
@@ -303,11 +306,12 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) { 
+  onLoad: function (options) {  
     app.globalData.isFromScope = true;
     let item = JSON.parse(options.item);
     console.log(item);
     this.data.checkType = item.cname;
+    this.data.cid = item.cid;
     this.data.findNum = item.form_data.fetch_num;
     this.data.desc = item.form_data.desc;
     this.data.defaultAddress = item.address;
@@ -323,7 +327,7 @@ Page({
       id: this.data.id
     })
     // 获取物料类型
-    this.getCheckTypes();
+    //this.getCheckTypes();
     // 获取公司地址
     this.getCompanyaddress();
     // 获取默认地址

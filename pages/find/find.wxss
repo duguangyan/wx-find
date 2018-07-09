@@ -7,7 +7,7 @@
     text-align-last: justify;
 }
 .width-200 {
-  width: 200rpx;
+  width: 162rpx;
 }
 .height-200 {
     height: 200rpx;
@@ -19,7 +19,8 @@
 }
 .find-desc{
   position: relative;
-  top: -10rpx;
+  top: -8rpx;
+  left: -20rpx;
 }
 /*上传图片  */
 
@@ -54,7 +55,7 @@
 /*收货地址  */
 .address {
     min-height: 180rpx;
-    padding-right: 40rpx;
+    padding-right: 70rpx;
 }
 
 
@@ -85,7 +86,7 @@
 }
 
 .word-spacing{
-  word-spacing: 12rpx;
+  letter-spacing: 20rpx;
 }
 .fl{
   float: left;
@@ -296,4 +297,20 @@
   right: 10rpx;
   top: -30rpx;
   color: #999;
+}
+.find-title{
+  width: 600rpx;
+}
+.modelHidden{
+  position: fixed;
+}
+
+/* 2.2 */
+.icon-dizhi{
+  font-size: 50rpx;
+}
+.address-icon{
+  position: absolute;
+  right: 30rpx;
+  top: 30%;
 }

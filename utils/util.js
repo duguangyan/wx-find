@@ -168,6 +168,16 @@ const successTips = (msg = '成功') => {
   })
 
 }
+const passWordSuccessTips = (msg = '成功') => {
+
+  wx.showToast({
+    title: msg,
+    image: '../../public/images/icon/center_right.png',
+    icon: 'none',
+    duration: 1500
+  })
+
+}
 
 // 错误弹窗
 const errorTips = (msg = '发生了错误') => {
@@ -213,7 +223,21 @@ function getNowFormatDate() {
   return currentdate;
 }
 
+function extend(des, src, override) {
+  if (src instanceof Array) {
+    for (var i = 0, len = src.length; i < len; i++)
+      extend(des, src[i], override);
+  }
+  for (var i in src) {
+    if (override || !(i in des)) {
+      des[i] = src[i];
+    }
+  }
+  return des;
+}
+
 module.exports = {
+  extend,
   getNowFormatDate:getNowFormatDate,
   getCurrentTime: getCurrentTime,
   objLength: objLength,
@@ -229,5 +253,6 @@ module.exports = {
 
   dealCartNum,
   errorTips,
-  successTips
+  successTips,
+  passWordSuccessTips
 }

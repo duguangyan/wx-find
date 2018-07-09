@@ -51,16 +51,33 @@
                         <image wx:if='{{item.side_img}}' src='{{item.side_img}}'></image>
                         <image wx:if='{{item.back_img}}' src='{{item.back_img}}'></image>
                     </view> 
-                    <view class='task-find-method-getfind bt-1' wx:if='{{item.type==2 || orderNavNum == 2}}'>
-                        <view>地址名称: {{item.shipping_address.stall||''}} </view>
-                        <view>联 系 人 : {{item.shipping_address.consignee||''}}  / {{item.shipping_address.mobile||''}}</view>
-                        <view wx:if='{{item.get_type==1}}'>取样地址: {{item.shipping_address.city_str||''}} {{item.shipping_address.address||''}}</view>
-                        <view wx:if='{{item.get_type==2}}'>寄样地址: {{item.shipping_address.city_str||''}} {{item.shipping_address.address||''}}</view>
+                    <view class='task-find-method-getfind fs24' wx:if='{{item.type==2 || orderNavNum == 2}}'>
+                        <!-- <view>地址名称: {{item.shipping_address.stall||''}} </view>
+                        <view>联 系 人 : 
+                        {{item.shipping_address.consignee||''}}  / {{item.shipping_address.mobile||''}}
+                        </view> -->
+                        <view class='fs30' wx:if='{{item.get_type==1}}'>取样地址: </view>
+                        <view class='fs30' wx:if='{{item.get_type==2}}'>寄样地址: </view>
+
+                        <view style='display:inline-block' >
+                             <text class='remark' wx:if='{{item.shipping_address.remark}}'>
+                              {{item.shipping_address.remark||''}}
+                             </text>
+{{item.shipping_address.city_str||''}} {{item.shipping_address.address||''}} {{item.shipping_address.room||''}}
+                             
+                        </view>
+
+                        <view style='word-break:break-all;'>
+                            {{item.shipping_address.consignee||''}}  / {{item.shipping_address.mobile||''}}
+                        </view>
+                        <view class='text-999' style='word-break:break-all;'>
+                            {{item.shipping_address.stall||''}}
+                        </view>
                     </view> 
                     <view class='order-footer-btn bt-1 cf'
 wx:if='{{item.button_status.on_cancel==1||item.button_status.on_pay==1||item.button_status.on_prompt==1||item.button_status.on_confirm==1||item.button_status.on_comment==1}}'>
                       <button style='border: 1rpx solid #666;color: #666;' data-id='{{item.id}}' catchtap='delOrder'wx:if='{{item.button_status.on_cancel==1}}'>取消订单</button>
-                      <button data-id='{{item.id}}'  disabled='{{item.isDisabled}}' data-index='{{index}}' catchtap='toPay' wx:if='{{item.button_status.on_pay==1}}' class='order-footer-btn-red'>去支付</button>
+                      <button data-id='{{item.id}}'  disabled='{{item.isDisabled}}' data-index='{{index}}' catchtap='doPay' wx:if='{{item.button_status.on_pay==1}}' class='order-footer-btn-red'>去支付</button>
                       <button data-id='{{item.id}}' catchtap='urgeOrder'  wx:if='{{item.button_status.on_prompt==1}}' class='order-footer-btn-red'>催单</button>
                       <button data-id='{{item.id}}' catchtap='affirmOrder' wx:if='{{item.button_status.on_confirm==1}}' class='order-footer-btn-red' data-index="{{index}}">确认收货</button>
                       <button data-id='{{item.id}}' catchtap='toComment'  wx:if='{{item.button_status.on_comment==1}}'>评价</button>
@@ -131,3 +148,28 @@ bindcancel="commentCancel">
         </view>   
     </view>
 </view>
+
+
+
+
+<view class='mask-bg' wx:if='{{isOldPayPasswordModel}}' catchtap='closeModel'></view>
+ <form class='mask-warp' bindsubmit="formSubmit" wx:if='{{isOldPayPasswordModel}}'>  
+  <view class='mask-title'>请输入支付密码</view>
+  <view class='content cf'>  
+    <block wx:for="{{Length}}" wx:key="item">  
+      <input class='iptbox ' type='number' 
+      value="{{Value.length>=index+1?Value[index]:''}}" 
+      disabled password='{{ispassword}}'
+      catchtap='Tap'></input>  
+    </block>  
+  
+  </view>  
+  
+  <input name="password"  type='number' password="{{true}}" value='{{focusValue}}'
+   class='ipt' maxlength="{{Length}}" focus="{{isFocus}}" bindinput="Focus"></input>  
+  <view class='text-theme fs30 flr pdr-30 mgb-40' catchtap='forgetPayPassWord'>忘记密码</view>
+  <!-- <view>  
+    <button class="btn-area" formType="submit">Submit</button>  
+  </view>   -->
+  
+</form> 

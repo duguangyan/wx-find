@@ -5,11 +5,20 @@
         <view class='lh90 fs30 pdl-20 border-bottom'>
           物料信息
         </view>
-        <view class='lh90 fs30 pdl-20 bb-1'  bindtap='checkType'>
-            <text class="text-theme">*</text> <text>物料品类:</text> <text style='padding-left:160rpx;'> {{checkType}}</text> 
-            <view wx:if='{{!isSelect}}'  class='iconfont icon-jiantou material-icon flr pdr-30'></view>
-            <view wx:if='{{isSelect}}'  class='iconfont icon-xiangxia material-icon flr pdr-30'></view>
+        <view wx:if="{{checkType==''}}" class='lh90 fs30 pdl-20 bb-1'  bindtap='checkType'>
+            <text class="text-theme">*</text> <text>物料品类:</text> 
+            <text class='text-999' style='padding-left:50rpx;'>请选择物料品类</text> 
+            <view class='iconfont icon-jiantou material-icon flr pdr-30'></view>
         </view>
+
+        <view  wx:if="{{checkType!=''}}" class='lh90 fs30 pdl-20 bb-1'  bindtap='checkType'>
+            <text class="text-theme">*</text> <text>物料品类:</text> 
+            <text style='padding-left:50rpx;'> {{checkType}}</text> 
+            <view class='iconfont icon-jiantou material-icon flr pdr-30'></view>
+        </view>
+
+
+
         <view class='material-number lh90 fs30 pdl-20 cf border-bottom'>
             <text class="text-theme">*</text> <text>物料数量:</text>
             <text class='sub' bindtap='sub'>-</text>
@@ -35,22 +44,24 @@
               <input class="hidden" value="{{addressId}}" name="address_id"></input>
           </view>
           <view class="address flex flex-start pdt-30 pdb-30 pdl-20 pdr-20" >
-              <text class="iconfont icon-dizhi fs40 text-gray mgr-20"></text>
-
-              <view data-index='{{idx}}' data-id='{{defaultAddress.id}}' bindtap='goConsigneeAddress'  wx:if='{{defaultAddress.id}}' class="flex-1 address-info fs30">
-                  <view class="flex">
-                      <text>地址名称: {{defaultAddress.stall || ''}}</text>
-                  </view>
-                  <view class="flex">
-                      <text>收货人<text class='mgl-30'>:</text> {{defaultAddress.consignee || ''}} / {{defaultAddress.mobile || ''}}</text>
-                
-                  </view>
-
+              <text class="iconfont icon-dizhi text-gray mgr-20"></text>
+              <view class='iconfont icon-jiantou address-icon flr pdr-30'></view>
+              <view data-index='{{idx}}' data-id='{{defaultAddress.id}}' 
+              bindtap='goConsigneeAddress'  wx:if='{{defaultAddress.id}}' class="flex-1 address-info fs24">
                   <view>
-                      <text>取料地址：</text>
-                      <text style='position: relative;left: -15rpx;'>{{defaultAddress.city_str || ''}} {{defaultAddress.address || ''}}</text>
+                      <view>
+                        <text class='remark' wx:if='{{defaultAddress.remark}}'>{{defaultAddress.remark ||''}}</text>
+                        {{defaultAddress.city_str || ''}} {{defaultAddress.address || ''}} {{defaultAddress.room ||''}}
+                        
+                      </view>
                   </view>
-
+                  <view  style='word-break:break-all;'>
+                      <text>{{defaultAddress.consignee || ''}} / {{defaultAddress.mobile || ''}}</text>
+                  </view>
+                  <view  style='word-break:break-all;'>
+                    <text class='text-999'>{{defaultAddress.stall ||''}}</text>
+                  </view>
+                   
               </view>
 
               <view data-index='{{idx}}' bindtap='goConsigneeAddress'  wx:if='{{!defaultAddress}}' class="text-666 h100 lh100 flex-1">

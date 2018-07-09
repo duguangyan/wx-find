@@ -13,7 +13,14 @@ Page({
       starArr: [0, 1, 2, 3, 4], // 评价星星
       starIndex_1: 0, // 星星评价选中
       starIndex_2: 0, // 星星评价选中
-      isDisabled:false
+      isDisabled:false,
+
+      payDates: {},
+      isOldPayPasswordModel: false, // 旧支付密码弹窗
+      Length: 6,        //输入框个数  
+      isFocus: true,    //聚焦  
+      Value: "",        //输入的内容  
+      ispassword: true, //是否密文显示 true为密文， false为明文。
     },
 // 去评价
   toComment () {
@@ -110,74 +117,112 @@ Page({
       })
     },
     // 去支付
-    toPay(e) {
-      this.setData({
-        isDisabled: true
-      })
+    doPay(e) { 
       let _this = this;
       console.log('去支付');
-      let order_id = e.target.dataset.id;
+      this.data.order_id = e.currentTarget.dataset.id;
+      let data;
+      if (this.data.pay_pwd) {
+        data = {
+          pay_pwd: this.data.pay_pwd
+        }
+      } else {
+        data = '';
+      }
       api.repay({
-        method: 'POST'
-      }, order_id).then((res) => {
+        method: 'POST',
+        data
+      }, this.data.order_id).then((res) => {
         if (res.code == 200 && res.data.pay_status == 1) {
+          this.setData({
+            isOldPayPasswordModel: false
+          })
           let pay_log = JSON.stringify(res.data.pay_log);
           wx.showToast({
             title: '支付成功',
             icon: 'none',
             duration: 1500,
           })
-          wx.setStorageSync('method', this.data.nav);
-          wx.setStorageSync('status', 0);
           setTimeout(() => {
             // _this.getList(_this.data.orderNavNum, _this.data.orderChildNavNum);
-            wx.redirectTo({
+            wx.setStorageSync('method', _this.data.orderNavNum);
+            wx.setStorageSync('status', 0);
+            wx.navigateTo({
               url: '../taskPaySuccess/taskPaySuccess?pay_log=' + pay_log
             })
           }, 1500)
+          return false;
+        } else if (res.code == 200 && res.data.pay_status == 2) { // 缺少设置支付密码
 
-        } else {
-          let order_type = 4;
-          let payInfo = {
-            order_id,
-            order_type,
-            open_id: wx.getStorageSync('open_id')
-          };
-          api.wxPay({
-            method: 'POST',
-            data: payInfo
-          }).then((res) => {
-            console.log(res);
-            if (res.code == 200) {
-              let data = res.data.sdk;
-              let pay_log = JSON.stringify(res.data.pay_log);
-              data.success = function (res) {
-                wx.setStorageSync('method', this.data.nav);
-                wx.setStorageSync('status', 0);
-                console.log('支付成功');
-                console.log(res);
-                wx.redirectTo({
-                  url: '../taskPaySuccess/taskPaySuccess?pay_log=' + pay_log
-                })
-              }
-              data.fail = function (res) {
-                _this.setData({
-                  isDisabled: false
-                })
-                console.log('支付失败');
-                console.log(res);
-                wx.showToast({
-                  title: '支付失败',
-                  icon: 'none',
-                  duration: 2000
-                })
-
-              }
-              wx.requestPayment(data);
-            }
+          wx.navigateTo({
+            url: '../changePayPassword/changePayPassword',
           })
+          this.setData({
+            isDisabled: false
+          })
+
+          return false;
+        } else if (res.code == 200 && res.data.pay_status == 3) { // 未输入支付密码
+          this.setData({
+            isOldPayPasswordModel: true
+          })
+          return false;
+        } else if (res.code == 200 && res.data.pay_status == 4) { // 支付密码错误
+          wx.showToast({
+            title: '支付密码错误',
+            icon: 'none',
+            duration: 2000
+          })
+          this.setData({
+            focusValue:'',
+            Value:''
+          })
+          return false;
         }
+
+        let order_type = 4;
+        let payInfo = {
+          order_id: _this.data.order_id,
+          order_type,
+          open_id: wx.getStorageSync('open_id')
+        };
+        api.wxPay({
+          method: 'POST',
+          data: payInfo
+        }).then((res) => {
+          console.log(res);
+          if (res.code == 200) {
+            let data = res.data.sdk;
+            let pay_log = JSON.stringify(res.data.pay_log);
+            data.success = function (res) {
+              console.log('支付成功');
+              console.log(res);
+              wx.setStorageSync('method', _this.data.orderNavNum);
+              wx.setStorageSync('status', 0);
+              wx.navigateTo({
+                url: '../taskPaySuccess/taskPaySuccess?pay_log=' + pay_log
+              })
+            }
+            data.fail = function (res) {
+              
+             
+              console.log('支付失败');
+              console.log(res);
+              wx.showToast({
+                title: '支付失败',
+                icon: 'none',
+                duration: 2000
+              })
+
+            }
+            wx.requestPayment(data);
+          }
+        })
+
       })
+
+      this.data.pay_pwd = '';
+
     },
     // 催单
     call(e) {
@@ -260,13 +305,14 @@ Page({
     /**
      * 生命周期函数--监听页面加载
      */
-    onLoad: function (options) {
+    onLoad: function (options) { 
       this.data.id = options.id;
       this.data.nav = options.nav;
 
       if (options.id){
         api.getOrderDetail({}, options.id).then((res)=>{
             console.log(res);
+      
             if(res.code == 200 ){
               let itemObj = res.data;
               if (itemObj.type){
@@ -290,6 +336,8 @@ Page({
               })
             }
            
+        }).catch((res)=>{
+          console.log(res.msg); 
         })
       }
 
@@ -354,6 +402,62 @@ Page({
     onReachBottom: function () {
 
     },
-    
+    Focus(e) {
+      let that = this;
+      console.log(e.detail.value);
+      let inputValue = e.detail.value;
+      that.setData({
+        Value: inputValue,
+      })
+      if (inputValue.length == 6) {
+        this.data.payDates.pay_pwd = inputValue;
+        let e = {
+          currentTarget: {
+            dataset: { id: that.data.order_id }
+          }
+        }
+        this.data.pay_pwd = inputValue;
+        that.doPay(e);
+      }
+    },
+    Tap() {
+      var that = this;
+      that.setData({
+        isFocus: true,
+      })
+    },
+    formSubmit(e) {
+      console.log(e.detail.value.password);
+      this.setData({
+        isOldPayPasswordModel: false
+      })
+      wx.navigateTo({
+        url: '../changePayPassword/changePayPassword',
+      })
+    },
+    // 关闭弹窗
+    closeModel() {
+      if (this.data.payDates) {
+        this.data.payDates.pay_pwd = null
+      }
+      this.setData({
+        isOldPayPasswordModel: false,
+        Value: '',
+        isDisabled: false
+      })
+    },
+    forgetPayPassWord() {
+      if (this.data.payDates) {
+        this.data.payDates.pay_pwd = null
+      }
+      this.setData({
+        isOldPayPasswordModel: false,
+        Value: '',
+        isDisabled: false
+      })
+      wx.navigateTo({
+        url: '../changePassword/changePassword?forgetPayPassWord=2',
+      })
+    },
 
 })

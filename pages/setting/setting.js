@@ -1,4 +1,6 @@
 // pages/setting/setting.js
+const api = require('../../utils/api.js');
+const util = require('../../utils/util.js');
 Page({
 
   /**
@@ -30,7 +32,9 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-  
+      this.setData({
+        Value:''
+      })
   },
 
   /**
@@ -80,6 +84,18 @@ Page({
     })
   },
   /**
+   * 修改支付密码
+   */
+  forgetPayPassWord(){
+    this.setData({
+      isOldPayPasswordModel: false,
+      Value: ''
+    })
+    wx.navigateTo({
+      url: '../changePassword/changePassword?forgetPayPassWord=2',
+    })
+  },
+  /**
    * 退出登录
    */
   loginOut(){
@@ -87,15 +103,46 @@ Page({
       isOldPayPasswordModel: false
     })
     wx.showModal({
-      title: '请确认是否登录',
+      title: '请确认是否退出登录',
       content: '',
       success: function (res) {
         if (res.confirm) {
           console.log('用户点击确定');
-          wx.removeStorageSync('token');
-          wx.navigateTo({
-            url: '../login/login',
-          })
+          
+
+
+          // 清理缓存
+          try {
+            wx.clearStorageSync()
+          } catch (e) {
+            // Do something when catch error
+          }
+          wx.login({
+            success: function (res) {
+              //console.log(res);
+              if (res.code) {
+                //发起网络请求
+                let data = {
+                  code: res.code,
+                  from: 3
+                }
+                api.getOpenId({
+                  data
+                }).then((res) => {
+                  wx.setStorageSync('open_id', res.data.openid);
+                  setTimeout(() => {
+                    wx.navigateTo({
+                      url: '../login/login?chengePassWord=1',
+                    })
+                  }, 1000)
+                })
+              }
+            }
+          });
+
+
+
+
         } else if (res.cancel) {
           console.log('用户点击取消')
         }
@@ -106,20 +153,64 @@ Page({
    * 修改支付密码
    */
   gotoChangePayPassword(){
-    this.setData({
-      isOldPayPasswordModel:true
+
+    api.doPayPassWord({}).then((res)=>{
+      if(res.code==200){
+        if (res.data.hasPayPwd){
+          this.setData({
+            isOldPayPasswordModel: true
+          })
+        }else{
+          wx.navigateTo({
+            url: '../changePayPassword/changePayPassword',
+          })
+          
+        }
+      }
     })
-    // wx.navigateTo({
-    //   url: '../changePayPassword/changePayPassword',
-    // })
+    
+    
   },
-  Focus(e) {
+  Focus(e) { 
     var that = this;
     console.log(e.detail.value);
     var inputValue = e.detail.value;
     that.setData({
       Value: inputValue,
     })
+    if (inputValue.length==6){
+      let data = {
+        pay_pwd: inputValue
+      }
+      api.doPayPassWord({
+        method: 'POST',
+        data
+      }).then((res)=>{
+        if(res.code==200){
+          this.setData({
+            isOldPayPasswordModel: false,
+            Value: ''
+          })
+          wx.navigateTo({
+            url: '../changePayPassword/changePayPassword',
+          })
+        }else{
+          util.errorTips(res.msg);
+          this.setData({
+            focusValue:'',
+            Value:''
+          })
+        }
+      }).catch((res)=>{
+        util.errorTips(res.msg);
+        this.setData({
+          focusValue: '',
+          Value: ''
+        })
+      })
+     
+     
+    }
   },
   Tap() {
     var that = this;
@@ -127,7 +218,7 @@ Page({
       isFocus: true,
     })
   },
-  formSubmit(e) {
+  formSubmit(e) { 
     console.log(e.detail.value.password);
     this.setData({
       isOldPayPasswordModel:false
@@ -136,4 +227,11 @@ Page({
       url: '../changePayPassword/changePayPassword',
     })
   }, 
+  // 关闭弹窗
+  closeModel(){
+    this.setData({
+      isOldPayPasswordModel: false,
+      Value: ''
+    })
+  }
 })

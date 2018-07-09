@@ -1,0 +1,30 @@
+<!--component/classify/classify.wxml-->
+<view class='classify'>
+
+  <view class='classify-bg' catchtap='_closed'></view>
+  <view class="classify-warp">
+     <view class='classify-sider'>
+      <view class="classify-sider-list {{index == navIndex ? 'navActive':''}}" 
+      wx:for='{{classifyList}}' 
+      wx:key='this' data-index='{{index}}'
+      data-id='{{item.id}}' data-name='{{item.name}}'
+      catchtap='_navClick'>{{item.name}}</view>
+    </view>
+    <view class='classify-content'>
+      <view wx:for='{{classifyListChild}}' wx:for-item="parentItem"  wx:key='this'>
+          <view class='classify-content-title'>
+             <text class="classify-content-title-text {{parentItem.name.length>3 ? 'item-length-size':''}}" >
+                <text class="{{parentItem.name.length>3 ? 'item-big-size':''}}">{{parentItem.name}}</text>
+             </text> 
+          </view>
+          <view class='classify-content-middle cf'>
+            <text wx:for='{{parentItem.list}}' wx:key='this'  
+            wx:for-item="childItem" data-parent='{{parentItem.id}}' data-id='{{childItem.id}}' 
+            data-parentname='{{parentItem.name}}' data-idname='{{childItem.name}}' 
+            catchtap='_childClick'>{{childItem.name}}</text>
+          </view>
+      </view>
+    </view> 
+  </view>
+    
+</view>

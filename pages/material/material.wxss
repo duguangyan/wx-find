@@ -197,9 +197,7 @@
   background-color: #f23030;
   color:#fff;
 }
-.address-info{
-  padding-bottom: 30rpx; 
-}
+
 
 .index-popup{
   width: 100%;
@@ -335,4 +333,18 @@
   right: 10rpx;
   top: -30rpx;
   color: #999;
+}
+/* 2.2改版 */
+
+.icon-dizhi{
+  font-size:50rpx; 
+}
+.address-icon{
+  position:absolute;
+  top:40%;
+  right:0;
+}
+.address {
+  position: relative;
+  padding-right: 70rpx;
 }

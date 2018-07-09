@@ -1,0 +1,78 @@
+/* pages/addressSearch/addressSearch.wxss */
+.address-search{
+  font-size: 30rpx;
+  margin: 30rpx;
+  min-height: 1140rpx;
+  border-radius:10rpx;
+  background-color: #fff;
+  margin-bottom:0; 
+}
+.caret {
+  width: 0;
+  height: 0;
+  border: 15rpx solid transparent;
+  border-top-color: #c81a29;
+  float: left;
+  position: relative;
+  top: 38rpx;
+  left: -30rpx;
+  z-index: 9;
+}
+picker{
+  
+  float: left;
+  position: relative;
+  z-index: 9999;
+}
+.picker{
+  text-align: center !important;
+  position: relative;
+  z-index: 9999;
+  padding: 0 60rpx 0 30rpx;
+}
+.address-input{
+  background-color: #eee;
+  height: 90rpx;
+  padding-left: 60rpx;
+  position: relative;
+  border-radius:10rpx; 
+  left: -30rpx;
+  padding-right: 30rpx;
+  overflow: hidden;
+}
+.icon-search{
+  float:left;
+  position:relative;
+  left:20rpx;
+  z-index:999;
+
+}
+
+.citys-choose{
+  overflow: hidden;
+  position: relative;
+  height: 90rpx;
+  padding-top:30rpx;
+}
+.title-tips{
+  font-size: 24rpx;
+  margin: 30rpx 0;
+}
+.no-title-tips{
+  font-size: 24rpx;
+  margin-top: 30rpx;
+  border-bottom: 1rpx solid #eee;
+  padding-bottom:30rpx; 
+}
+.list view{
+  color: #666;
+  border-bottom: 1rpx solid #eee;
+  margin: 0 30rpx;
+  line-height: 90rpx;
+}
+.no-list view{
+  color: #666;
+  font-size: 24rpx;
+  margin: 0 30rpx;
+  line-height: 90rpx;
+}

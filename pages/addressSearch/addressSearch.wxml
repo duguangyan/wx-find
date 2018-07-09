@@ -1,0 +1,28 @@
+<!--pages/addressSearch/addressSearch.wxml-->
+<view class='address-search btn-shadow'>
+ <view class="lh90 citys-choose cf">
+        <picker mode="multiSelector" bindchange="bindMultiPickerChange" bindcolumnchange="bindMultiPickerColumnChange" value="{{multiIndex}}" range-key="region_name" range="{{[multiArray,multiArray[province].children]}}">
+            <view class="picker" style="text-align:right;">
+              {{multiArray[multiIndex[0]].children[multiIndex[1]].region_name || '加载...'}} 
+            </view>
+            
+        </picker>
+
+        <text class="caret"></text>
+        <view>
+          <text class="iconfont icon-search"></text>
+          <input class='address-input' bindinput='getAddressSearchValue' placeholder="{{addressTitle}}"
+          value="{{addressValue}}"></input>
+        </view>
+        
+    </view> 
+    <view wx:if='{{serachAdressList.length>0}}' class='pdl-30 title-tips'>{{titleTips}}</view>
+    <view wx:if='{{serachAdressList.length>0}}' class='list' wx:for='{{serachAdressList}}' wx:key='this'>
+      <view bindtap='getAddressSearchItem' data-item='{{item}}'>{{item.title}}</view>
+    </view>
+
+    <view wx:if='{{serachAdressList.length<=0}}' class='pdl-30 no-title-tips'>未搜索到相应地址</view>
+    <view wx:if='{{serachAdressList.length<=0}}' class='no-list'>
+      <view>建议输入市场名称、写字楼等地标性建筑名称</view>
+    </view>
+</view>

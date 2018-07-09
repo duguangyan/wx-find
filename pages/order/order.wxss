@@ -89,6 +89,8 @@
   padding-left: 30rpx;
   position: absolute;
   top: 10rpx;
+  border-bottom: 1rpx solid #eee;
+  padding-bottom: 10rpx;
 }
 .task-find-item view{
   display: block;
@@ -123,15 +125,17 @@
   bottom: 25rpx;
   right: 30rpx;
 }
-.task-find-method-getfind view{
-  padding-left: 30rpx;
-  display: block;
-}
 .task-find-method-getfind{
-  padding: 10rpx 0;
+  padding: 10rpx 30rpx;
+
+}
+.remark{
+  height:30rpx;
+  line-height:10rpx;
+  display:inline-block;
 }
 .order-footer-btn{
-  border-top:1rpx solid #f4f4f4; 
+ 
   text-align: right;
   padding-top: 25rpx;
 }

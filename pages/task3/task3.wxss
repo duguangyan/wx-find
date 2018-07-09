@@ -43,7 +43,7 @@
 }
 .icon-dui-1,.icon-yuan-1{
   position: absolute;
-  top: 30%;
+  top: 25%;
 }
 .image-bg{
   width:100rpx;
@@ -86,6 +86,7 @@
   color: #fff;
   float: right;
   height: 115rpx;
+  line-height: 115rpx;
 }
 .task-pay-btn-default{
   width: 200rpx;
@@ -94,6 +95,7 @@
   text-align: center;
   color: #fff;
   float: right;
+  font-size: 36rpx;
 }
 .no-data{
   margin: 0 auto;
@@ -137,5 +139,5 @@
 .check-edit text{
   position:absolute;
   right:50rpx;
-  top:30%;
+  top:25%;
 }

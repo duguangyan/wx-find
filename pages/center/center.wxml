@@ -1,17 +1,22 @@
 
 <view class="section-avatar flex flex-start">
+    <image  hidden='{{!memberInfo}}'  class='center-setting'
+    src='../../public/images/icon/center-setting-icon.png' bindtap='gotoSettinngPage'>
+    </image>
     <image class='header-bg' src='../../public/images/center/header_bg.png'></image>
-    <view class="avatar" bindtap='gotoSettinngPage'>
-        <image src="{{memberInfo.avatar_path || '../../public/images/center/default_avatar.png'}}"></image>
+    <view class="avatar">
+        <image class=' btn-shadow' 
+        src="{{memberInfo.avatar_path || '../../public/images/center/default_avatar.png'}}">
+        </image>
     </view>
 
-    <view class="member-info text-left bold">
-        <view wx:if="{{memberInfo}}">
+    <view class="member-info text-left bold {{memberInfo? 'top_30' : ''}}">
+        <view class='center-top-txt' wx:if="{{memberInfo}}">
             <view class="fs26 bold ">
                 <text class="fs30 bold-600">{{memberInfo.user_name}}</text>
                 <text hidden="{{true}}" bindtap='modifyInfo' class="iconfont icon-shouhuodizhiyebianji bold-600 fs34 pd-20"></text>
             </view>
-            <view class="mgt-20">
+            <view class="mgt-10">
                 <image class='center-money' src='../../public/images/center/money.png'></image>
                 <text class="text-yellow mgl-20 fs26">余额：￥ {{memberInfo.asset.balance_amount || 0}}</text>
             </view>
@@ -21,7 +26,10 @@
         </navigator>
         open-type='navigate' url="../login/login"
          -->
-        <view style="padding:20rpx 0" bindtap='toLogin'  hidden='{{memberInfo}}' class="fs32 bold">
+        <view style="padding:20rpx 0"  
+        bindtap='toLogin'  
+        hidden='{{memberInfo}}' 
+        class="fs32 bold">
             您暂未登录（点击登录）
         </view>
     </view>

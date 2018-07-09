@@ -42,19 +42,48 @@
     <view class='lh90 bb-1 fs30 pdl-30' wx:if='{{itemObj.get_address}}'>
       取样地址
     </view>
-    <view class='find-order-detail-address bb-20 fs30 pdl-30'wx:if='{{itemObj.get_address}}'>
-      <view class='lh50'> 地址名称 : {{itemObj.get_address.stall||''}}  </view>
+    <view class='find-order-detail-address bb-20 fs24 pdl-30'wx:if='{{itemObj.get_address}}'>
+      <!-- <view class='lh50'> 地址名称 : {{itemObj.get_address.stall||''}}  </view>
       <view class='lh50'> 联 系 人 : {{itemObj.get_address.consignee||''}}  {{itemObj.get_address.mobile||''}} </view>
-      <view class='address lh50 pdb-30 pdr-30'>取样地址: {{itemObj.get_address.city_str||''}} {{itemObj.get_address.address||''}} </view>              </view>
+      <view class='address lh50 pdb-30 pdr-30'>取样地址: {{itemObj.get_address.city_str||''}} {{itemObj.get_address.address||''}} </view>              -->
+
+      <view class='lh50'>
+        <text class='remark' wx:if='{{itemObj.get_address.remark}}'>{{itemObj.get_address.remark || ''}}</text>
+        {{itemObj.get_address.city_str||''}}  {{itemObj.get_address.address||''}} {{itemObj.get_address.room||''}}
+        
+      </view>
+      <view class='lh50' style='word-break:break-all;'>
+        {{itemObj.get_address.consignee||''}} / {{itemObj.get_address.mobile||''}}
+      </view>
+      <view class='lh50 text-999' style='word-break:break-all;'>
+         {{itemObj.get_address.stall||''}}
+      </view>
+    </view>
     
     
     <view class='lh90 bb-1 fs30 pdl-30' wx:if='{{itemObj.shipping_address}}'>
       送样地址
     </view>
     <view class='find-order-detail-address bb-20 fs30 pdl-30' wx:if='{{itemObj.shipping_address}}'>
-      <view class='lh50'> 地址名称 : {{itemObj.shipping_address.stall || ''}}  </view>
-      <view class='lh50'> 联 系 人 : {{itemObj.shipping_address.consignee || ''}}  {{itemObj.shipping_address.mobile ||''}} </view>
-      <view class='address lh50 pdb-30 pdr-30'>送样地址: {{itemObj.shipping_address.city_str}} {{itemObj.shipping_address.address}}       </view>
+      <!-- <view class='lh50'> 地址名称 : {{itemObj.shipping_address.stall || ''}}  </view>
+      <view class='lh50'> 
+      联 系 人 : {{itemObj.shipping_address.consignee || ''}}  {{itemObj.shipping_address.mobile ||''}} 
+      </view>
+      <view class='address lh50 pdb-30 pdr-30'>
+      送样地址: {{itemObj.shipping_address.city_str}} {{itemObj.shipping_address.address}}       
+      </view> -->
+
+      <view class='lh50'>
+      <text class='remark' wx:if='{{itemObj.shipping_address.remark }}'>{{itemObj.shipping_address.remark ||''}}</text>
+{{itemObj.shipping_address.city_str||''}}  {{itemObj.shipping_address.address||''}} {{itemObj.shipping_address.room||''}}
+        
+      </view>
+      <view class='lh50' style='word-break:break-all;'>
+        {{itemObj.shipping_address.consignee||''}} / {{itemObj.shipping_address.mobile||''}}
+      </view>
+      <view class='lh50 text-999' style='word-break:break-all;'>
+         {{itemObj.shipping_address.stall||''}}
+      </view>
   </view>
     <!-- <view class='find-order-detail-address bb-20 fs30 pdl-30'>
       <view class='lh50'> 联 系 人 : {{itemObj.findman_name}}</view>
@@ -85,7 +114,7 @@
  
                     <button data-id='{{itemObj.id}}' bindtap='toComment'  wx:if='{{itemObj.button_status.on_comment==1}}'>评价</button>
                     <button style='border: 1rpx solid #666;color: #666;' data-id='{{itemObj.id}}' bindtap='delOrder'wx:if='{{itemObj.button_status.on_cancel==1}}'>取消订单</button>
-                    <button data-id='{{itemObj.id}}' disabled='{{isDisabled}}' bindtap='toPay' wx:if='{{itemObj.button_status.on_pay==1}}' class='order-footer-btn-red'>去支付</button>
+                    <button data-id='{{itemObj.id}}' disabled='{{isDisabled}}' bindtap='doPay' wx:if='{{itemObj.button_status.on_pay==1}}' class='order-footer-btn-red'>去支付</button>
                     <button data-id='{{itemObj.id}}' bindtap='urgeOrder'  wx:if='{{itemObj.button_status.on_prompt==1}}' class='order-footer-btn-red'>催单</button>
                     <button data-id='{{itemObj.id}}' bindtap='affirmOrder' wx:if='{{itemObj.button_status.on_confirm==1}}' 
                     class='order-footer-btn-red' 
@@ -149,3 +178,26 @@ bindcancel="commentCancel">
         </view>   
     </view>
 </view>
+
+  <!-- 支付密码 -->
+<view class='mask-bg' wx:if='{{isOldPayPasswordModel}}' catchtap='closeModel'></view>
+ <form class='mask-warp' bindsubmit="formSubmit" wx:if='{{isOldPayPasswordModel}}'>  
+  <view class='mask-title'>请输入支付密码</view>
+  <view class='content cf'>  
+    <block wx:for="{{Length}}" wx:key="item">  
+      <input class='iptbox ' type='number' 
+      value="{{Value.length>=index+1?Value[index]:''}}" 
+      disabled password='{{ispassword}}'
+      catchtap='Tap'></input>  
+    </block>  
+  
+  </view>  
+  
+  <input name="password"  type='number' password="{{true}}" value='{{focusValue}}'
+  class='ipt' maxlength="{{Length}}" focus="{{isFocus}}" bindinput="Focus"></input>  
+  <view class='text-theme fs30 flr pdr-30 mgb-40' catchtap='forgetPayPassWord'>忘记密码</view>
+  <!-- <view>  
+    <button class="btn-area" formType="submit">Submit</button>  
+  </view>   -->
+  
+</form> 

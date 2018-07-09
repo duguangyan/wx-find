@@ -282,7 +282,7 @@ Page({
       this.data.orderTab2[1].num = 0;
       this.data.orderTab2[2].num = 0;
       this.setData({
-        memberInfo: null,
+        memberInfo: false,
         orderTab1: this.data.orderTab1,
         orderTab2: this.data.orderTab2
       })

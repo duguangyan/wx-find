@@ -156,6 +156,8 @@ Page({
       // qqmapsdk = new QQMapWX({
       //   key: 'TREBZ-NE3KW-VZ5RD-OFP22-IUGZO-MEF7A'
       // });
+      // 获取fromId
+      // this.submitInfo();
     },
     /**
      * 生命周期函数--监听页面初次渲染完成
@@ -265,5 +267,10 @@ Page({
      */
     onShareAppMessage: function () {
 
+    },
+    // 获取fromId
+    submitInfo: function (e) {
+      console.log('fromId:');
+      console.log(e.detail.formId);
     }
 })

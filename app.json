@@ -31,7 +31,12 @@
     "pages/task3/task3",
     "pages/setting/setting",
     "pages/changePassword/changePassword",
-    "pages/changePayPassword/changePayPassword"
+    "pages/changePayPassword/changePayPassword",
+    "pages/reChengePayPassWord/reChengePayPassWord",
+    "pages/classify/classify",
+    "pages/addressSearch/addressSearch",
+    "pages/changePassword1/changePassword1",
+    "pages/changePassword2/changePassword2"
   ],
   "window": {
     "backgroundTextStyle": "light",
