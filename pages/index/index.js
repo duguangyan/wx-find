@@ -182,18 +182,7 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
-      // 实例化API核心类
-<<<<<<< HEAD
-       qqmapsdk = new QQMapWX({
-         key: 'TREBZ-NE3KW-VZ5RD-OFP22-IUGZO-MEF7A'
-       });
-=======
-      // qqmapsdk = new QQMapWX({
-      //   key: 'TREBZ-NE3KW-VZ5RD-OFP22-IUGZO-MEF7A'
-      // });
-      // 获取fromId
-      // this.submitInfo();
->>>>>>> weixin2.2
+     
     },
     /**
      * 生命周期函数--监听页面初次渲染完成
@@ -231,127 +220,6 @@ Page({
      */
     onShow: function () {
       
-<<<<<<< HEAD
-      // 调用接口
-      // qqmapsdk.getSuggestion({
-      //   keyword: '广州市云峰花园',
-      //   success: function (res) {
-      //     console.log(res);
-      //   },
-      //   fail: function (res) {
-      //     console.log(res);
-      //   },
-      //   complete: function (res) {
-      //     console.log(res);
-      //   }
-      // });
-      // 调用接口
-      // qqmapsdk.geocoder({
-      //   address: '广州财富工业园',
-      //   success: function (res) {
-      //     console.log(res);
-      //   },
-      //   fail: function (res) {
-      //     console.log(res);
-      //   },
-      //   complete: function (res) {
-      //     console.log(res);
-      //   }
-      // });
-      // let xx = this.getDistance(22.814449, 108.323738, 23.351101, 113.250949);
-      // console.log(xx);
-      // console.log('xxx:-----------------');
-      // qqmapsdk.calculateDistance({
-      //   to: [{
-      //     latitude: 23.35089,
-      //     longitude: 113.25097
-      //   }, {
-      //       latitude: 23.37865,
-      //       longitude: 113.2458
-      //   }],
-      //   success: function (res) {
-      //     console.log(res);
-      //   },
-      //   fail: function (res) {
-      //     console.log(res);
-      //   },
-      //   complete: function (res) {
-      //     console.log(res);
-      //   }
-      // });
-      // 调用接口
-      // qqmapsdk.getCityList({
-      //   success: function (res) {
-      //     console.log(res);
-      //   },
-      //   fail: function (res) {
-      //     console.log(res);
-      //   },
-      //   complete: function (res) {
-      //     console.log(res);
-      //   }
-      // });
-
-=======
-      
-      // 测试
->>>>>>> weixin2.2
-      // 调用接口
-      // qqmapsdk.getSuggestion({
-      //   keyword: '财富',
-      //   region:'深圳市',
-      //   success: function (res) {
-      //     console.log(res);
-      //   },
-      //   fail: function (res) {
-      //     console.log(res);
-      //   },
-      //   complete: function (res) {
-      //     console.log(res);
-      //   }
-      // });
-      
-      // wx.getLocation({
-      //   type: 'wgs84',
-      //   success: function (res) {
-      //     console.log('xxxxxxxxxxxx');
-      //     console.log(res);
-      //     var latitude = res.latitude
-      //     var longitude = res.longitude
-      //     var speed = res.speed
-      //     var accuracy = res.accuracy
-
-      //     // 调用接口
-      //     qqmapsdk.reverseGeocoder({
-      //       location: {
-      //         latitude: latitude,
-      //         longitude: longitude
-      //       },
-      //       success: function (res) {
-      //         console.log(res);
-      //       },
-      //       fail: function (res) {
-      //         console.log(res);
-      //       },
-      //       complete: function (res) {
-      //         console.log(res);
-      //       }
-      //     });
-
-      //   }
-      // })
-      // wx.getLocation({
-      //   type: 'gcj02', //返回可以用于wx.openLocation的经纬度
-      //   success: function (res) {
-      //     var latitude = res.latitude
-      //     var longitude = res.longitude
-      //     wx.openLocation({
-      //       latitude: latitude,
-      //       longitude: longitude,
-      //       scale: 28
-      //     })
-      //   }
-      // })
       this.setData({
         findNum:this.data.findNum
       })
