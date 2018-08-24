@@ -39,10 +39,46 @@
             <image class='item-img' wx:if='{{item.form_data.back_img}}' src='{{item.form_data.back_img}}'></image>
           </view>
           <view wx:if='{{item.form_data.find_type == 2}}'>
-            <view style='color:#999'>地址名称: {{item.address.stall ||''}}</view>
-            <view><text class='task-content-le'>联系人:</text>{{item.address.consignee||''}} {{item.address.mobile||''}}</view>
-            <view class='pdr-20' wx:if='{{item.form_data.get_type==1}}'>取样地址: {{item.address.city_str||''}} {{item.address.address||''}}</view>
-            <view class='pdr-20' wx:if='{{item.form_data.get_type==2}}'>寄样地址: {{item.address.city_str||''}} {{item.address.address||''}}</view>
+            <!-- <view style='color:#999'>地址名称: {{item.address.stall ||''}}</view>
+            <view>
+              <text class='task-content-le'>联系人:</text>{{item.address.consignee||''}} {{item.address.mobile||''}}
+            </view> -->
+            <view class='pdr-20' wx:if='{{item.form_data.get_type==1}}'>
+                取样地址: 
+            </view>
+            <view class='pdr-20' wx:if='{{item.form_data.get_type==2}}'>
+                寄样地址: 
+            </view>
+            <view wx:if='{{item.form_data.get_type==1}}'>
+              <view class='fs24 pdr-20' style='word-break:break-all;'>
+                  <text class='remark'wx:if='{{item.address.remark}}'>{{item.address.remark||''}}</text> 
+                  {{item.address.city_str||''}} {{item.address.address||''}} {{item.address.room||''}}
+                  
+              </view>
+              <view class='fs24 pdr-20 text-999' style='word-break:break-all;'>
+                  {{item.address.consignee||''}} / {{item.address.mobile||''}}
+              </view>
+              <view class='text-999 fs24 pdr-20' style='word-break:break-all;'>
+                  {{item.address.stall ||''}}
+              </view>
+            </view>
+            
+
+            <view wx:if='{{item.form_data.get_type==2}}'>
+              
+                <view class='fs24 pdr-20' style='word-break:break-all;' >
+                    <text class='remark'wx:if='{{item.address[0].tag}}'>{{item.address[0].tag||''}}</text> 
+                    {{item.address[0].address||''}}
+                </view>
+                <view class='fs24 pdr-20 text-999' style='word-break:break-all;'>
+                    {{item.address[0].consignee||''}} / {{item.address[0].mobile||''}}
+                </view>
+                <view class='fs24 text-999'>
+                  {{item.address[0].desc}}
+                </view>
+                <view>...</view>
+            </view>
+           
 
           </view>
           
@@ -87,9 +123,29 @@
             <text style='width:450rpx' class='ellipsis'>物料描述: {{item.form_data.desc}}</text>
           </view>
           <view>
-            <view style='color:#999'>地址名称: {{item.address.stall || ''}}</view>
-            <view><text class='task-content-le'>联系人:</text>{{item.address.consignee}} {{item.address.mobile|| ''}}</view>
-            <view class='pdr-20'>取料地址: {{item.address.city_str|| ''}} {{item.address.address|| ''}}</view>
+            <!-- <view style='color:#999'>地址名称: {{item.address.stall || ''}}</view>
+            <view><text class='task-content-le'>联系人:</text>
+              {{item.address.consignee}} {{item.address.mobile|| ''}}
+            </view> -->
+            <view class='pdr-20'>取料地址:</view>
+            <view class='pdr-20' wx:if='{{item.form_data.get_type==1}}'>
+                取样地址: 
+            </view>
+            <view class='pdr-20' wx:if='{{item.form_data.get_type==2}}'>
+                寄样地址: 
+            </view>
+
+            <view class='fs24 pdr-20' style='word-break:break-all;'>
+                <text class='remark'wx:if='{{item.address.remark}}'>{{item.address.remark||''}}</text> 
+                {{item.address.city_str||''}} {{item.address.address||''}} {{item.address.room||''}}
+                
+            </view>
+            <view class='fs24 pdr-20' style='word-break:break-all;'>
+                {{item.address.consignee||''}} / {{item.address.mobile||''}}
+            </view>
+            <view class='text-999 fs24 pdr-20' style='word-break:break-all;'>
+                {{item.address.stall ||''}}
+            </view>
           </view>
         </view> 
     </view>
@@ -102,14 +158,20 @@
   </view> 
 </view>
 <view style='height:135rpx;'></view>
+
 <view class='task-pay box-shadow lh90 fs30 mgb-30' wx:if='{{finds.length>0 || fetchs.length>0}}'>
     <view class='mgl-30'>
       <text catchtap='doCheckAll'  wx:if='{{isCheckAll}}' class="iconfont icon-dui fs40 pdr-20 text-theme"></text>
       <text catchtap='doCheckAll'  wx:if='{{!isCheckAll}}' class="iconfont icon-yuan fs40 pdr-20 text-eb"></text>
         <text class='text-underline mgr-50' catchtap='doCheckAll'>全选</text>
         <text class='mgr-50'>合计：<text class='text-red'>￥{{filter.formatMoney(sumPrice)}}</text></text>
-        <text wx:if="{{sumPrice!=0}}" class='task-pay-btn text-underline' bindtap='saveTask'>结算</text> 
-        <text wx:if="{{sumPrice==0}}" class='task-pay-btn-default'>结算</text> 
+        <form  wx:if="{{sumPrice!=0}}" bindsubmit="saveTask" class='task-pay-btn' report-submit='true' >
+          <button form-type="submit" class='task-pay-btn'>
+            <text class='text-underline' bindtap='saveTask'>结算</text> 
+          </button>
+        </form>
+        <text wx:if="{{sumPrice==0}}" class='task-pay-btn-default'>结算</text>
+         
     </view>
 </view>
 

@@ -8,7 +8,8 @@ Page({
      * 页面的初始数据
      */
     data: {
-        account: ''
+        account: '',
+        chengePassWord:''
     },
     // 手机账号
     mobile(e) {
@@ -62,10 +63,9 @@ Page({
         })
 
     },
-
     // 提交表单
-    submitLogin() {
-
+    submitLogin(e) {
+      
         let user_name = this.data.account,
             password = this.data.password;
 
@@ -90,15 +90,33 @@ Page({
             app.globalData.token = res.data.access_token;
             app.globalData.userInfo = res.data.user;
             console.log(app.globalData.token);
-            wx.setStorage({
-                key: 'token',
-                data: res.data.access_token,
-            })
-            wx.setStorage({
-              key: 'token_type',
-              data: res.data.token_type,
-            })
-            wx.navigateBack();
+            wx.setStorageSync('token', res.data.access_token);
+            wx.setStorageSync('token_type', res.data.token_type);
+            wx.setStorageSync('user_name', user_name);
+
+            console.log('fromId');
+            console.log(e.detail.formId);
+            if (e.detail.formId != 'the formId is a mock one') {
+              let data = {
+                "form_id": e.detail.formId,
+                "from": "3"
+              }
+              api.getFormId({
+                method: 'POST',
+                data
+              }).then((res) => {
+                console.log(res);
+                console.log('获取formId');
+              })
+            }
+            if (this.data.chengePassWord){
+              wx.reLaunch({
+                url: '../center/center'
+              })
+            }else{
+              wx.navigateBack();
+            }
+            
             // wx.navigateTo({
             //     url: '../shoppingCart/shoppingCart',
             // })
@@ -119,6 +137,13 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
+      if (options.chengePassWord){
+        let chengePassWord = options.chengePassWord;
+        this.setData({
+          chengePassWord
+        })  
+      }
+      
         // vailPhone()
     },
 

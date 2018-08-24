@@ -66,39 +66,6 @@ Page({
        let item = e.currentTarget.dataset.item;
        wx.setStorageSync('addressCheckedId', item.id);
        this.navigateBack(item);
-       // wx.setStorageSync('defaultAddress',item);
-      // 判断是否在配送范围 true 不需要判断 false 需要判断
-      //  if (app.globalData.isFromScope){ 
-      //    api.isFromScope({}, item.id).then((res)=>{
-      //       console.log(res);
-      //       if(res.code != 200){
-      //         wx.showToast({
-      //           title: '你选中的地址不在配送范围',
-      //           icon: 'none',
-      //           duration: 1500
-      //         })
-      //         return ;
-      //       }else{
-      //         this.navigateBack(item);
-      //       }
-      //    }).catch((err) => {
-      //      console.log('400');
-      //      console.log(err);
-      //      if(err.code != 200){
-      //        wx.showToast({
-      //          title: '你选中的地址不在配送范围',
-      //          icon: 'none',
-      //          duration: 1500
-      //        })
-             
-      //        return ;
-      //      }
-      //    })
-      //  }else{
-      //    this.navigateBack(item);
-      //  }
-       
-       
      },
      // 返回上一级
      navigateBack(item) {

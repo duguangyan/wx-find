@@ -2,10 +2,10 @@
 
     <view class='section-order mgb-20' wx:for="{{addFinds}}" wx:for-index="idx"  wx:key='addFindKey' wx:for-item="item">
         <view class="cell-padding lh90 flex border-bottom">
-            <view  data-index='{{idx}}' bindtap='checkType'>
+            <view style='width:100%'  data-index='{{idx}}' bindtap='checkType'>
               <text class="text-theme">*</text>物料类型 : 
-              <text style='margin-left:140rpx;'>{{item.checkType}}</text> 
-              <text class='mgl-20 iconfont icon-jiantou'></text>
+              <text>{{item.checkType}}</text> 
+              <text class='mgl-20 iconfont icon-jiantou jiantou1'></text>
             </view>
         </view>
 
@@ -27,13 +27,15 @@
                         <text hidden='{{item.selcetTabNum == 1}}' class="iconfont icon-yuan fs40 text-eb"></text>
                         <text class="mgl-20"></text> 图片找料
                     </view>
-                    <view bindtap='selcetTab' data-index='{{idx}}' data-id="2" class="flex">
+                    <view bindtap='selcetTab' data-index='{{idx}}' data-id="2" class="flex selcetTab2">
                         <text hidden='{{item.selcetTabNum != 2}}' class="iconfont icon-dui fs40 text-theme"></text>
                         <text hidden='{{item.selcetTabNum == 2}}' class="iconfont icon-yuan fs40 text-eb"></text>
                         <text class="mgl-20">按样找料</text>
                     </view>
-                    <view wx:if='{{!item.isSelect}}' data-index='{{idx}}' bindtap='showSelect' class='iconfont icon-jiantou'></view>
-                    <view wx:if='{{item.isSelect}}' data-index='{{idx}}' bindtap='showSelect' class='iconfont icon-xiangxia'></view>
+                    <view wx:if='{{!item.isSelect}}' data-index='{{idx}}' bindtap='showSelect' 
+                    class='iconfont icon-jiantou jiantou'></view>
+                    <view wx:if='{{item.isSelect}}' data-index='{{idx}}' bindtap='showSelect' 
+                    class='iconfont icon-xiangxia jiantou'></view>
                 </view>
 
                 <view wx:if='{{item.isSelect}}' class="flex space-around lh110 border-bottom">
@@ -81,27 +83,37 @@
               <input class="hidden" value="{{addressId}}" name="address_id"></input>
           </view>
           <view class="border-bottom cell-padding address flex flex-start">
-              <text class="iconfont icon-dizhi fs40 text-gray mgr-20" wx:if='{{item.selcetSecondTabNum==1}}'></text>
-
+              <text class="iconfont icon-dizhi text-gray mgr-20" wx:if='{{item.selcetSecondTabNum==1}}'></text>
+              <text class='iconfont icon-jiantou address-icon' wx:if='{{item.selcetSecondTabNum==1}}'></text>
               <view data-index='{{idx}}' 
               data-id='{{item.address.id}}' bindtap='goConsigneeAddress' 
-              wx:if='{{item.address!=""&&item.selcetSecondTabNum==1}}' class="flex-1 address-info fs30">
-                  <view class="flex">
-                      <text>地址名称: {{item.address.stall || ''}}</text>
-                  </view>
-                  <view class="flex">
-                      <text>收货人<text class='mgl-30'>:</text> {{item.address.consignee}} / {{item.address.mobile}}</text>
-                  </view>
+              wx:if='{{item.address!=""&&item.selcetSecondTabNum==1}}' class="flex-1 address-info fs24">
                   <view>
-                     取样地址:<text>{{item.address.city_str}} {{item.address.address}}</text>
+                     <text class='remark'wx:if='{{item.address.remark}}'>{{item.address.remark||''}}</text> 
+                     {{item.address.city_str||''}} {{item.address.address||''}} {{item.address.room||''}}
+                      
+                  </view>
+                  <view style='word-break:break-all;'>
+                      <text>{{item.address.consignee||''}} / {{item.address.mobile||''}}</text>
+                  </view>
+                  <view style='word-break:break-all;'>
+                      <text class='text-999'>{{item.address.stall||''}}</text>
                   </view>
               </view>
               <view data-index='{{idx}}'  wx:if='{{ item.selcetSecondTabNum == 2 }}' class="flex-1 address-info fs30">
-                  <view>
-                      <text>收货人<text class='mgl-30'>:</text> {{companyaddress.consignee}} / {{companyaddress.mobile}}</text>
-                  </view>
-                  <view>
-                      寄样地址:<text>{{companyaddress.address}}</text>
+                 <view wx:for='{{companyaddress}}' wx:key='this' class='bb1 mg10 fs24'>
+                    <view>
+                        <text class='remark' wx:if='{{item.tag}}'>{{item.tag||''}}</text>
+                        <text> {{item.address}}</text>
+                    </view>
+                    <view  class='text-999'>
+                        <view>
+                          {{item.consignee || ''}} / {{item.mobile || ''}}
+                        </view>   
+                    </view>
+                    <view  class='text-999'>
+                      {{item.desc}}
+                    </view>
                   </view>
               </view>
               <view data-index='{{idx}}' bindtap='goConsigneeAddress'  wx:if='{{item.address=="" && item.selcetSecondTabNum == 1 }}' class="text-666 h100 lh100 flex-1">

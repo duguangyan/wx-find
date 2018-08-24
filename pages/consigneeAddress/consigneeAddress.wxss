@@ -97,3 +97,80 @@ page {
     background: rgba(255, 220, 1, 1);
   }
 }
+
+
+/* 2.2 */
+.consignee-address{
+  font-size: 30rpx;
+  margin-bottom: 15rpx;
+}
+.address-right{
+  margin: 30rpx;
+  margin-top: 15rpx;
+  background-color: #fff;
+  border-radius:10rpx;
+  padding: 0 30rpx; 
+}
+.address-right-title{
+  height: 110rpx;
+  line-height: 110rpx;
+}
+.text-theme{
+  text-decoration: underline;
+}
+
+.address-right-list {
+  font-size: 24rpx; 
+  position: relative;
+  top:-30rpx;
+}
+.address-right-warp{
+  padding: 0 20rpx;
+  border-bottom:1rpx solid #eee;
+  position: relative;
+  display: flex;
+  
+}
+.color-999{
+  color: #999;
+  line-height: 50rpx;
+}
+.border-bottom{
+  
+  display: flex;
+}
+.address-del{
+  /* width: 10%;
+  position: relative;
+  margin-top:6%; 
+  left: -20rpx;
+  font-size: 30rpx;
+  height:100%; */
+  
+}
+.address-del image{
+  width: 42rpx;
+  height:  42rpx;
+  position: absolute;
+  top: 35%;
+}
+.address-edit view{
+  position: absolute;
+  top: 35%;
+}
+.address-edit{
+  font-size: 30rpx;
+  position: relative;
+  left: 5rpx;
+}
+.address-list-content{
+  width: 78%;
+ 
+}
+.width100{
+  width: 100%;
+  
+}
+.pd0{
+  padding: 0;
+}

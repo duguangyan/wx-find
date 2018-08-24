@@ -1,3 +1,6 @@
 {
-  "navigationBarTitleText": "立刻取送"
+  "navigationBarTitleText": "立刻取送",
+  "usingComponents": {
+    "upload": "../../component/upload/index"
+  }
 }

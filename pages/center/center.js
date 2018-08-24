@@ -39,6 +39,13 @@ Page({
 
 
     },
+    // 去设置页面
+    gotoSettinngPage(){
+      wx.navigateTo({
+        url: '../setting/setting',
+      })
+    },
+    // 去登录页面
     toLogin(){
       wx.navigateTo({
         url: '../login/login',
@@ -260,7 +267,7 @@ Page({
      * 生命周期函数--监听页面初次渲染完成
      */
     onReady: function () {
-
+      this.dialog = this.selectComponent("#dialog");
     },
 
     /**
@@ -268,8 +275,19 @@ Page({
      */
     onShow: function () {
       wx.setStorageSync('fromCenter','1');
-        // 更新用户信息
-        this.getUserInfo(); 
+      this.data.orderTab1[0].num = 0;
+      this.data.orderTab1[1].num = 0;
+      this.data.orderTab1[2].num = 0;
+      this.data.orderTab2[0].num = 0;
+      this.data.orderTab2[1].num = 0;
+      this.data.orderTab2[2].num = 0;
+      this.setData({
+        memberInfo: false,
+        orderTab1: this.data.orderTab1,
+        orderTab2: this.data.orderTab2
+      })
+      // 更新用户信息
+      this.getUserInfo(); 
     },
 
     // 获取用户信息
@@ -329,5 +347,56 @@ Page({
      */
     onShareAppMessage: function () {
 
+    },
+    // 显示修改弹窗
+  showSoltDialog(){
+    this.dialog.showDialog();
+  },
+  //取消事件
+  _cancelEvent() {
+    console.log('你点击了取消');
+    this.dialog.hideDialog();
+  },
+  //确认事件
+  _confirmEvent() {
+    console.log('你点击了确定');
+    let data = {
+      nick_name: this.data.memberInfo.nick_name
     }
+    api.changeNickName({
+      method:'POST',
+      data
+    }).then((res)=>{
+        if(res.code==200){
+          this.setData({ 
+            memberInfo: this.data.memberInfo
+          })
+          wx.showToast({
+            title: '修改成功',
+            icon: 'success',
+            duration: 1500
+          })
+          setTimeout(()=>{
+            this.dialog.hideDialog();
+          },1500)
+          
+        }else{
+          wx.showToast({
+            title: '网络慢，请稍后再试',
+            duration: 1500
+          })
+        }
+    }).catch((res)=>{
+      wx.showToast({
+        title: '网络慢，请稍后再试',
+        duration: 1500
+      })
+    })
+  },
+  // 修改昵称
+  changeNickName(e){
+    //this.NickName = event.detail.value;
+    this.data.memberInfo.nick_name = e.detail.value;
+    
+  }
 })

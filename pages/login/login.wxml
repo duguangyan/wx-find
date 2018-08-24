@@ -1,11 +1,12 @@
 <view class='container'>
 
-    <form>
+    <form bindsubmit="submitLogin" report-submit='true' >
         <view class="login-box fs30">
 
             <view class="border-bottom input-box">
                 <text class="bold mgr-34">账号</text>
-                <input bindinput='mobile' maxlength='11' type="number" placeholder='用户名/手机号' placeholder-class='fs30 text-999' value="{{initialNum}}"></input>
+                <input bindinput='mobile' maxlength='11' type="number" placeholder='用户名/手机号' 
+                placeholder-class='fs30 text-999' value="{{initialNum}}"></input>
                 <text bindtap='delAccountNum' hidden="{{!isDel}}" class="iconfont icon-chahao fs40 text-999"></text>
             </view>
 
@@ -18,7 +19,9 @@
         </view>
 
         <view class="cell-padding">
-            <button bindtap='submitLogin' class="login-btn bg-theme {{ BtnActive ?  '' : 'disabled-style' }}">登录</button>
+            <button formType="submit" class="login-btn bg-theme {{ BtnActive ?  '' : 'disabled-style' }}">
+              登录
+            </button>
         </view>
 
     </form>

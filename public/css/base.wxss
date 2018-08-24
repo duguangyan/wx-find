@@ -8,7 +8,12 @@ page{
 .bg-white {
     background-color: #fff;
 }
-
+.bb1{
+  border-bottom:1rpx solid #eee; 
+}
+.mg10{
+  margin: 10rpx 0;
+}
 .hover-style {
     opacity: 0.8;
     /* background-color: #eee !important; */
@@ -730,6 +735,9 @@ page{
 .bt-1{
   border-top: 1rpx solid #eee;
 }
+.bt-2{
+  border-top: 2rpx solid #eee;
+}
 .wt-30{
   display: inline-block;
   width: 35rpx;
@@ -755,3 +763,72 @@ word-spacing-30{
 }
 .cf:after{display:block;clear:both;content:"";visibility:hidden;height:0}
 .cf{zoom:1}
+
+
+.filter-b6 {
+    filter: blur(6rpx);
+}
+/* 2.2 */
+.remark{
+  border: 1rpx solid #ef8130;
+  color: #ef8130;
+  border-radius:5rpx; 
+  margin-right: 10rpx;
+  padding: 0 5rpx;
+  display: inline !important;
+}
+
+/* 修改支付密码弹窗start */
+.content{  
+  justify-content: space-around;  
+  align-items: center;  
+  margin: 30rpx 0;  
+  margin-left:40rpx; 
+  margin-bottom:0rpx; 
+}  
+.iptbox{  
+  width: 100rpx;  
+  height: 90rpx;  
+  border:1rpx solid #ddd;    
+  justify-content: center;  
+  align-items: center;  
+  text-align: center;  
+  float: left;
+  font-size:100rpx;
+}  
+.ipt{  
+  width: 0;  
+  height: 0;  
+
+}  
+.btn-area{  
+  width: 80%;  
+  background-color: orange;  
+  color:white;  
+}  
+.mask-bg{
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  background-color: #474749;
+  opacity: .7;
+  top: 0;
+  left: 0;
+  z-index: 999;
+}
+.mask-warp{
+  position: fixed;
+  top: 25%;
+  z-index: 999;
+  background-color: #fff;
+  width: 690rpx;
+  margin-left: 30rpx;
+  border-radius:10rpx; 
+}
+.mask-title{
+  text-align: center;
+  display: block;
+  font-size: 30rpx;
+  margin-top:30rpx; 
+}
+/* 修改支付密码弹窗end */

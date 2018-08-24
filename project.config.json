@@ -178,6 +178,42 @@
 					"name": "新建地址1",
 					"pathName": "pages/newAddress1/newAddress1",
 					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "设置",
+					"pathName": "pages/setting/setting",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "修改登录密码2.2.1",
+					"pathName": "pages/changePassword/changePassword",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "修改支付密码2.2.1",
+					"pathName": "pages/changePayPassword/changePayPassword",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "设置支付密码",
+					"pathName": "pages/changePayPassword/changePayPassword",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "分类信息2.2.1",
+					"pathName": "pages/classify/classify",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "地址搜索2.2.1",
+					"pathName": "pages/addressSearch/addressSearch",
+					"query": ""
 				}
 			]
 		}

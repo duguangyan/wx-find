@@ -24,7 +24,7 @@
                 <text class="text-666">3分钟响应、3小时反馈、8小时内找到 </text>
             </view>
         </view>
-        <view class="section-item">
+        <!-- <view class="section-item">
             <image src="../../public/images/index/find_3.png"></image>
             <view class="section-item-title fs35 bold-800">
                 <text class='fs36'>好</text>
@@ -41,7 +41,7 @@
             <view>
                 <text class="text-666">平台大批量采购,省时省心更省钱</text>
             </view>
-        </view>
+        </view> -->
     </view>
     <!--介绍 E  -->
     <!-- <view class="now-btn">
@@ -55,11 +55,19 @@
         <view>提供服务<text class="text-theme">{{serviceData.num_people||0}}</text>人</view>
     </view>
     <view class='cf'>
+     
       <view class="together-box">
-          <button catchtap='goFind'>立即找料</button>
+          <form bindsubmit="goFind" report-submit='true' >
+            <button formType="submit">立即找料</button>
+          </form>
+          
       </view>
       <view class="recharge-box">
-          <button catchtap='goMaterial'>立刻取送</button>
+
+          <form bindsubmit="goMaterial" report-submit='true' >
+             <button formType="submit">立刻取送</button>
+          </form>
+         
       </view>
     </view>
     
@@ -108,3 +116,6 @@
         </view> 
     </view>
 </view>
+
+
+

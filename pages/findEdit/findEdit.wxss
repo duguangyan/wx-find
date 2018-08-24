@@ -1,7 +1,9 @@
 .title-bg {
     background: #f0eff5;
 }
-
+.icon-dizhi{
+  font-size: 50rpx;
+}
 .width-166 {
     width: 166rpx;
     text-align-last: justify;
@@ -54,7 +56,7 @@
 /*收货地址  */
 .address {
     min-height: 180rpx;
-    padding-right: 40rpx;
+    padding-right: 70rpx;
 }
 
 
@@ -93,8 +95,12 @@
   margin-top: 30rpx;
 }
 .selcetTab1{
+  /* position: relative;
+  left: 38rpx; */
+}
+.selcetTab2{
   position: relative;
-  left: 38rpx;
+  left: -108rpx;
 }
 .selcetTab2{
   position: relative;
@@ -106,7 +112,7 @@
 }
 .selcetSecendTab2{
    position: relative;
-  left: -108rpx;
+  left: -50rpx;
 }
 .word-spacing-18{
   white-space: 18rpx;
@@ -254,4 +260,18 @@
   background-color: #c81a29;
   color: #fff;
   text-align: center;
+}
+.address-icon{
+  position: absolute;
+  right: 30rpx;
+  top: 30%;
+}
+.jiantou1{
+  position: absolute;
+  right: 30rpx;
+  top: 0rpx;
+}
+.jiantou{
+  position: absolute;
+  right: 50rpx;
 }

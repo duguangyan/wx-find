@@ -115,7 +115,8 @@ Page({
       })
     },
     // 去找料
-    goFind() {
+    goFind(e) {
+      
       let token = wx.getStorageSync('token'); 
       if (!token){
         // 跳转关联页面
@@ -127,13 +128,27 @@ Page({
       // this.setData({
       //   isPopup: true
       // })
-
+      console.log('fromId');
+      console.log(e.detail.formId);
+      if (e.detail.formId != 'the formId is a mock one') {
+        let data = {
+          "form_id": e.detail.formId,
+          "from": "3"
+        }
+        api.getFormId({
+          method: 'POST',
+          data
+        }).then((res) => {
+          console.log(res);
+          console.log('获取formId');
+        })
+      }
       wx.navigateTo({
         url: '../find/find?findNum=' + 1 + '&selcetTabNum=' + 1,
       })
     },
     // 立刻取料  
-    goMaterial() {
+    goMaterial(e) {
       let token = wx.getStorageSync('token');
       if (!token) {
         // 跳转关联页面
@@ -141,6 +156,21 @@ Page({
           url: '../login/login',
         })
         return false;
+      }
+      console.log('fromId');
+      console.log(e.detail.formId);
+      if (e.detail.formId != 'the formId is a mock one') {
+        let data = {
+          "form_id": e.detail.formId,
+          "from": "3"
+        }
+        api.getFormId({
+          method: 'POST',
+          data
+        }).then((res) => {
+          console.log(res);
+          console.log('获取formId');
+        })
       }
       // 跳转关联页面
       wx.navigateTo({
@@ -153,9 +183,17 @@ Page({
      */
     onLoad: function (options) {
       // 实例化API核心类
+<<<<<<< HEAD
        qqmapsdk = new QQMapWX({
          key: 'TREBZ-NE3KW-VZ5RD-OFP22-IUGZO-MEF7A'
        });
+=======
+      // qqmapsdk = new QQMapWX({
+      //   key: 'TREBZ-NE3KW-VZ5RD-OFP22-IUGZO-MEF7A'
+      // });
+      // 获取fromId
+      // this.submitInfo();
+>>>>>>> weixin2.2
     },
     /**
      * 生命周期函数--监听页面初次渲染完成
@@ -193,6 +231,7 @@ Page({
      */
     onShow: function () {
       
+<<<<<<< HEAD
       // 调用接口
       // qqmapsdk.getSuggestion({
       //   keyword: '广州市云峰花园',
@@ -253,6 +292,10 @@ Page({
       //   }
       // });
 
+=======
+      
+      // 测试
+>>>>>>> weixin2.2
       // 调用接口
       // qqmapsdk.getSuggestion({
       //   keyword: '财富',
@@ -349,5 +392,10 @@ Page({
      */
     onShareAppMessage: function () {
 
+    },
+    // 获取fromId
+    submitInfo: function (e) {
+      console.log('fromId:');
+      console.log(e.detail.formId);
     }
 })

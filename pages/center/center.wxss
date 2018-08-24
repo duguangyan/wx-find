@@ -5,7 +5,17 @@ page {
 view {
     background: #fff;
 }
-
+.text-center{
+  text-align: center;
+  margin-bottom: 30rpx;
+}
+.center-setting{
+  position: absolute;
+  right: 30rpx;
+  top: 30rpx;
+  width: 43rpx;
+  height: 41rpx;
+}
 .section-avatar {
     height: 310rpx;
     margin: 0 20rpx;
@@ -23,15 +33,18 @@ view {
 .avatar {
     padding: 0 30rpx;
     position: relative;
-    top: -30rpx;
+    /* top: -30rpx; */
 }
 .member-info{
     position: relative;
-    top: -30rpx;
+    /* top: -30rpx; */
+}
+.top_30{
+  top: -30rpx;
 }
 .setting{
   position: relative;
-    top: -30rpx;
+    /* top: -30rpx; */
 }
 .avatar image {
     width: 120rpx;
@@ -40,7 +53,10 @@ view {
     border-radius:50%; 
     /* box-shadow: 16rpx 16rpx 16rpx #f2f2f2; *//* background: #ccc; */
 }
-
+.center-top-txt{
+  position: relative;
+  top: 30rpx;
+}
 .section-avatar .member-info {
     flex: 1;
     height: 120rpx;
@@ -61,7 +77,7 @@ view {
   display: inline-block;
   width: 100rpx;
   padding: 20rpx 26rpx;
-   
+  margin-right: 45rpx;
 }
 
 /*图文按钮  */

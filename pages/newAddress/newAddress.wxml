@@ -1,22 +1,21 @@
-<view class="fs30 address-form">
-    <view class="flex cell-padding border-bottom lh100">
-        <view>地址名称</view>
-        <input bindinput='editStall' style="text-align:right;width:550rpx;" placeholder='请填写' placeholder-class="text-right" value='{{addressInfo.stall}}'></input>
-    </view>
-    <view class="flex cell-padding border-bottom lh100">
-        <view>收货人</view>
-        <input bindinput='editConsignee' style="text-align:right;width:550rpx;" placeholder='请填写' placeholder-class="text-right" value='{{addressInfo.consignee}}'></input>
-    </view>
-
-    <view class="flex cell-padding border-bottom lh100">
-        <view>联系方式</view>
-        <input bindinput='editMobile' style="text-align:right;width:550rpx;" placeholder='请填写' placeholder-class="text-right" maxlength='11' value='{{addressInfo.mobile}}'></input>
+<view class="fs30 address-form pd-30 btn-shadow">
+    
+    <view class="flex lh90 address-list">
+        <view><text class='text-theme'>*</text><text class='spacing'>联系人</text></view>:
+        <input class='address-input' bindinput='editConsignee'
+         placeholder='联系人姓名' value='{{addressInfo.consignee}}'>
+         </input>
     </view>
 
-    <view class="flex cell-padding border-bottom lh100">
+    <view class="flex lh90 address-list">
+        <view><text class='text-theme'>*</text>手机号码:</view>
+        <input class='address-input' bindinput='editMobile' placeholder='联系人手机号码' 
+        maxlength='11' value='{{addressInfo.mobile}}'>
+        </input>
+    </view>
+
+     <!-- <view class="flex cell-padding border-bottom lh100">
         <view>所在地区</view>
-
-
         <picker style="flex:1;" mode="multiSelector" bindchange="bindMultiPickerChange" bindcolumnchange="bindMultiPickerColumnChange" value="{{multiIndex}}" range-key="region_name" range="{{[multiArray,multiArray[province].children, multiArray[province].children[city].children]}}">
             <view class="picker" style="text-align:right;">
               {{multiArray[multiIndex[0]].region_name}} {{multiArray[multiIndex[0]].children[multiIndex[1]].region_name}} {{multiArray[multiIndex[0]].children[multiIndex[1]].children[multiIndex[2]].region_name}} 
@@ -24,39 +23,41 @@
             
         </picker>
 
-        <!-- <text class="iconfont icon-jiantou"></text> -->
+        <text class="iconfont icon-jiantou"></text>
 
+    </view>  -->
+    <view class="flex lh90 address-list"  bindtap='getMapAddress'>
+            <view><text class='text-theme'>*</text><text class='spacing1'>地址</text></view>:
+            <input  class='address-input ellipsis'placeholder='请填写地址' 
+            disabled value="{{addressInfo.mapAddress.title ||''}}">
+            </input>
     </view>
 
-    <!-- 地图筛选地址 -->
-    <!-- <view class="section section-map bb-1">
-      <text class='iconfont icon-suosou fs50'></text>
-      <text class='pdl-20'>配送范围</text>
-      <input class='map-input-1 lh90' value='{{searchValue}}
-       placeholder="请填写并选择配送范围"  type="text" bindblur="cleanInput" bindinput="mapKeyInput"/>
-     
-    </view> -->
-    <!-- <view class="section bb-1">
-      <input class='map-input lh90 pdl-30' style='height:90rpx;' disabled value='{{addressInfo.address}}' placeholder="具体地址"  type="text" />
-    </view> -->
-    <!-- <view class="sug_info" wx:if='{{isSugShow}}'>
-      <view class='sug_info_text' wx:for="{{sugData}}" wx:key='this' wx:for-index="index">
-            <text data-index='{{index}}' bindtap='mapCheck'>{{item.name}}</text> 
-      </view>
-    </view> -->
- 
-    <view class="address-area bb-1">
-        <textarea bindinput='editDetailAddress' placeholder='请填写详细地址' value='{{addressInfo.address}}'>
-
-        </textarea>
-
+    <view class="flex lh90 address-list">
+        <view><text class='text-theme display-none'>*</text>详细门牌:</view>
+        <input class='address-input' bindinput='editDetailAddress' 
+        placeholder='例如: 1栋16楼116室XXX公司'  value='{{addressInfo.room}}'>
+        </input>
     </view>
-    <view class="address-area">
-        <textarea bindinput='editDetailRemark' placeholder='备注' value='{{addressInfo.remark}}'>
-
-        </textarea>
-
+<!-- <view class="flex cell-padding border-bottom lh100">
+        <view>地址名称</view>
+        <input bindinput='editStall' style="text-align:right;width:550rpx;" placeholder='请填写' placeholder-class="text-right" value='{{addressInfo.stall}}'></input>
+    </view> -->
+    <view class="flex lh90 address-list"  >
+            <view><text class='text-theme display-none'>*</text><text class='spacing1'>名称</text></view>:
+            <input  class='address-input'placeholder='公司名称、档口名称、公司名称等' bindinput='editStall'
+             value='{{addressInfo.stall}}'>
+            </input>
     </view>
+
+    <view class="flex lh90 address-list" >
+            <view><text class='text-theme display-none'>*</text><text class='spacing1'>标签</text></view>:
+            <input  class='address-input' placeholder='不超过两个字,例如:找料、送料' 
+            maxlength='2' bindinput='editRemark'
+             value='{{addressInfo.remark}}'>
+            </input>
+    </view>
+<<<<<<< HEAD
 
 
      <view class="flex cell-padding border-bottom lh100">
@@ -76,16 +77,28 @@
 
 
     <view class="spacing-view-24"></view>
+=======
+>>>>>>> weixin2.2
 
+    <!-- <view class="address-area bb-1">
+        <textarea bindinput='editDetailAddress' placeholder='请填写详细地址' value='{{addressInfo.address}}'>
+        </textarea>
+    </view> -->
+    <!-- <view class="address-area">
+        <textarea bindinput='editDetailRemark' placeholder='备注' value='{{addressInfo.remark}}'>
+        </textarea>
+    </view> -->
+    <!-- <view class="spacing-view-24"></view>
       <view hidden='true' class="flex cell-padding border-bottom lh100">
         <view>设为默认地址</view>
         <switch checked="{{is_default === 1}}" bindchange="setDefault" color="#C81A29"></switch>
-    </view>  
+    </view>   -->
 
 
 
 </view>
 
-<view bindtap='saveSubmit' hover-class="hover-style" class="bottom-fixed h100 text-center lh100 text-white fs30">
-    保存并使用
+<view bindtap='saveSubmit' hover-class="hover-style" 
+      class="bottom-fixed btn-shadow h100 text-center lh100 text-white fs30">
+    完成
 </view>

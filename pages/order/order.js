@@ -7,6 +7,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    isStarShow:false, // 初始化评价评语
     isUrgeOrder:false, // 催单弹窗
     isData:true, // 没有订单数据
     shopLoading:true,
@@ -18,13 +19,20 @@ Page({
     isCommentModel:true, // 评价模态框 
     commentMsg:'', // 评价内容
     starArr: [0, 1, 2, 3, 4], // 评价星星
-    starIndex_1:0, // 星星评价选中
-    starIndex_2:0, // 星星评价选中
+    starIndex_1:4, // 星星评价选中
+    starIndex_2:4, // 星星评价选中
     findList:'', // 找料列表数据
     fecthList:'', // 取料列表数据
     totalPages:0, // 总页数
     current_page:1, // 当前页 
-    isDisabled:false
+    isDisabled:false,
+
+    payDates:{},
+    isOldPayPasswordModel: false, // 旧支付密码弹窗
+    Length: 6,        //输入框个数  
+    isFocus: true,    //聚焦  
+    Value: "",        //输入的内容  
+    ispassword: true, //是否密文显示 true为密文， false为明文。
   },
   // 去下单
   doOrder(){
@@ -148,7 +156,7 @@ Page({
           findList: this.data.findList
         })
         wx.showToast({
-          title: '删除成功',  //标题  
+          title: '取消成功',  //标题  
           icon: 'success',  //图标，支持"success"、"loading"  
         }) 
       }else{
@@ -174,19 +182,31 @@ Page({
     })
   },
   // 去支付
-  toPay (e) {
+  doPay (e) { 
       let _this = this;
       console.log('去支付');
-      let order_id = e.target.dataset.id;
-      let order_index = e.target.dataset.index;
-      this.data.findList[order_index].isDisabled = true;
+      this.data.order_id = e.currentTarget.dataset.id;
+      this.data.order_index = e.currentTarget.dataset.index;
+      this.data.findList[this.data.order_index].isDisabled = true;
       this.setData({
         findList: this.data.findList
       })
+      let data;
+      if (this.data.pay_pwd){ 
+         data = {
+          pay_pwd: this.data.pay_pwd
+        }
+      }else{ 
+         data = '';
+      }
       api.repay({
-        method:'POST'
-      }, order_id).then((res)=>{
+        method:'POST',
+        data
+      }, this.data.order_id).then((res)=>{ 
          if (res.code==200 && res.data.pay_status ==1){
+           this.setData({
+             isOldPayPasswordModel:false
+           })
            let pay_log = JSON.stringify(res.data.pay_log);
            wx.showToast({
              title: '支付成功',
@@ -197,15 +217,58 @@ Page({
             // _this.getList(_this.data.orderNavNum, _this.data.orderChildNavNum);
              wx.setStorageSync('method', _this.data.orderNavNum);
              wx.setStorageSync('status', 0);
+             this.setData({
+               Value: '',
+               focusValue: ''
+             })
              wx.navigateTo({
                url: '../taskPaySuccess/taskPaySuccess?pay_log=' + pay_log
              })
-           },1500)
-           
-        }else{
+           },1000)
+           return false;
+        } else if (res.code == 200 && res.data.pay_status == 2) { // 缺少设置支付密码
+           wx.showModal({
+             title: '请先去设置支付密码',
+             showCancel: false,
+             content: '',
+             confirmText: '好的',
+             success: function (res) {
+               if (res.confirm) {
+                 wx.setStorageSync('hasPayPwd',true);
+                 wx.navigateTo({
+                   url: '../changePayPassword/changePayPassword',
+                 })
+               }
+             }
+           })
+          this.setData({
+            isDisabled: false
+          })
+
+          return false;
+        } else if (res.code == 200 && res.data.pay_status == 3) { // 未输入支付密码
+          this.setData({
+            isOldPayPasswordModel: true
+          })
+          return false;
+        } else if (res.code == 200 && res.data.pay_status == 4) { // 支付密码错误
+          wx.showToast({
+            title: '支付密码错误',
+            icon: 'none',
+            duration: 2000
+          })
+          this.setData({
+            Value:'',
+            focusValue:'',
+            sOldPayPasswordModel: true
+          })
+          
+          return false;
+        }
+
            let order_type = 4;
            let payInfo = {
-             order_id,
+             order_id: _this.data.order_id,
              order_type,
              open_id: wx.getStorageSync('open_id')
            };
@@ -243,10 +306,10 @@ Page({
                wx.requestPayment(data);
              }
            })
-        }
+        
       })
 
-
+    this.data.pay_pwd = '';
       
   },
   // 催单
@@ -346,6 +409,43 @@ Page({
       url: '../fetchOrderDetail/fetchOrderDetail'
     })
   },
+  // 删除订单
+  toDel(e){
+    let data = {
+      order_id: e.target.dataset.id
+    }
+    api.orderDel({
+      method:'POST',
+      data
+    }).then((res)=>{
+        if(res.code=200){
+          for (let i = 0; i < this.data.findList.length; i++) {
+            if (this.data.findList[i].id == e.target.dataset.id) {
+              this.data.findList.splice(i,1);
+            }
+          }
+          this.setData({
+            findList: this.data.findList
+          })
+
+          wx.showToast({
+            title: '删除成功',
+            icon: 'success',
+            duration: 1500
+          })
+        }else{
+          wx.showToast({
+            title: '网络慢,请稍后再试',
+            duration: 1500
+          })
+        }
+    }).catch((res)=>{
+      wx.showToast({
+        title: '网络慢,请稍后再试',
+        duration: 1500
+      })
+    })
+  }, 
   // 去评价
   toComment (e) {
     let commentId = e.target.dataset.id;
@@ -400,7 +500,10 @@ Page({
             })
 
             this.setData({
-              isCommentModel: true
+              isCommentModel: true,
+              isStarShow:false,
+              starIndex_1: 4, // 星星评价选中
+              starIndex_2: 4, // 星星评价选中
             })
 
           }else{
@@ -424,6 +527,15 @@ Page({
     this.setData({
       starIndex_1: e.target.dataset.idx
     })
+    if (this.data.starIndex_1 < 3 || this.data.starIndex_2 < 3){
+      this.setData({
+        isStarShow:true
+      })
+    }else{
+      this.setData({
+        isStarShow: false
+      })
+    }
     console.log(this.data.starIndex_1);
   },
   // 配送及时性
@@ -431,6 +543,15 @@ Page({
     this.setData({
       starIndex_2: e.target.dataset.idx
     })
+    if (this.data.starIndex_1 < 3 || this.data.starIndex_2 < 3) {
+      this.setData({
+        isStarShow: true
+      })
+    } else {
+      this.setData({
+        isStarShow: false
+      })
+    }
     console.log(this.data.starIndex_2);
   },
 
@@ -507,7 +628,13 @@ Page({
    */
   onLoad: function (options) {
     
-    
+    if (options.orderId){
+      console.log('options.orderId');
+      console.log(options.orderId);
+      wx.navigateTo({
+        url: '../findOrderDetail/findOrderDetail?id=' + options.orderId + '&nav=' + options.nav
+      })
+    }
    
   },
 
@@ -588,5 +715,63 @@ Page({
              current: src, // 当前显示图片的http链接
              urls: [src] // 需要预览的图片http链接列表
       })
-  }
+  },
+  Focus(e) { 
+    let that = this;
+    console.log(e.detail.value);
+    let inputValue = e.detail.value;
+    that.setData({
+      Value: inputValue,
+    })
+    if (inputValue.length == 6) {
+      this.data.payDates.pay_pwd = inputValue;
+      let e = {
+        currentTarget:{
+          dataset: { id: that.data.order_id, index: that.data.order_index }
+        }
+      }
+      this.data.pay_pwd = inputValue;
+      that.doPay(e);
+    }
+  },
+  Tap() {
+    var that = this;
+    that.setData({
+      isFocus: true,
+    })
+  },
+  formSubmit(e) {
+    console.log(e.detail.value.password);
+    this.setData({
+      isOldPayPasswordModel: false
+    })
+    wx.navigateTo({
+      url: '../changePayPassword/changePayPassword',
+    })
+  },
+  // 关闭弹窗
+  closeModel() {
+    if (this.data.payDates) {
+      this.data.payDates.pay_pwd = null
+    }
+    this.data.findList[this.data.order_index].isDisabled = false;
+    this.setData({
+      isOldPayPasswordModel: false,
+      Value: '',
+      findList: this.data.findList
+    })
+  },
+  forgetPayPassWord() {
+    if (this.data.payDates) {
+      this.data.payDates.pay_pwd = null
+    }
+    this.setData({
+      isOldPayPasswordModel: false,
+      Value: '',
+      isDisabled: false
+    })
+    wx.navigateTo({
+      url: '../changePassword/changePassword?forgetPayPassWord=1',
+    })
+  },
 })

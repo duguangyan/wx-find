@@ -237,11 +237,11 @@ Page({
     let cancelCheckFindsIds = wx.getStorageSync('cancelCheckFindsIds') || [];
     let cancelCheckFetchsIds = wx.getStorageSync('cancelCheckFetchsIds') || [];
     
-    this.setData({
-      finds: [],
-      fetchs: [],
-      isData: true
-    })
+    // this.setData({
+    //   finds: [],
+    //   fetchs: [],
+    //   isData: true
+    // })
     wx.showLoading({
       title: '加载中',
     })
@@ -299,6 +299,8 @@ Page({
         this.doSumPrice();
         this.isHasData();
       }
+      wx.hideLoading();
+    }).catch((res)=>{
       wx.hideLoading();
     })
   },
@@ -496,7 +498,21 @@ Page({
     })
   },
   // 点击结算
-  saveTask() {
+  saveTask(e) {
+    console.log(e.detail.formId );
+    if (e.detail.formId != 'the formId is a mock one') {
+      let data = {
+        "form_id": e.detail.formId,
+        "from": "3"
+      }
+      api.getFormId({
+        method: 'POST',
+        data
+      }).then((res) => {
+        console.log(res);
+        console.log('获取formId');
+      })
+    }
     let newFinds = [];
     let newFetchs = [];
     let task_ids = [];

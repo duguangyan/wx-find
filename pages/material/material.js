@@ -1,5 +1,6 @@
 // pages/material/material.js
 const api = require('../../utils/api.js');
+const util = require('../../utils/util.js');
 let app = getApp();
 Page({
 
@@ -64,36 +65,41 @@ Page({
   },
   // 切换类型
   checkType(e) {
-    this.data.isSelect = true;
-    this.setData({
-      isSelect: this.data.isSelect
-    })
-    let index = e.currentTarget.dataset.index;
-    console.log(index);
-    let _this = this;
-    let itemList = [];
-    for (let i = 0; i < this.data.checkTypes.length;i++){
-      itemList.push(this.data.checkTypes[i].name);
-    }
+    // this.data.isSelect = true;
+    // this.setData({
+    //   isSelect: this.data.isSelect
+    // })
+    // let index = e.currentTarget.dataset.index;
+    // console.log(index);
+    // let _this = this;
+    // let itemList = [];
+    // for (let i = 0; i < this.data.checkTypes.length;i++){
+    //   itemList.push(this.data.checkTypes[i].name);
+    // }
     
-    wx.showActionSheet({
-      itemList: itemList,
-      success: function (res) {
-        console.log(res);
-        _this.data.isSelect = false;
-        _this.setData({
-          checkType: _this.data.checkTypes[res.tapIndex].name,
-          checkTypes_cid: _this.data.checkTypes[res.tapIndex].id,
-          isSelect: _this.data.isSelect
-        })
-      },
-      fail: function (res) {
-        console.log(res.errMsg)
-        _this.data.isSelect = false;
-        _this.setData({
-          isSelect: _this.data.isSelect
-        })
-      }
+    // wx.showActionSheet({
+    //   itemList: itemList,
+    //   success: function (res) {
+    //     console.log(res);
+    //     _this.data.isSelect = false;
+    //     _this.setData({
+    //       checkType: _this.data.checkTypes[res.tapIndex].name,
+    //       checkTypes_cid: _this.data.checkTypes[res.tapIndex].id,
+    //       isSelect: _this.data.isSelect
+    //     })
+    //   },
+    //   fail: function (res) {
+    //     console.log(res.errMsg)
+    //     _this.data.isSelect = false;
+    //     _this.setData({
+    //       isSelect: _this.data.isSelect
+    //     })
+    //   }
+    // })
+
+    //2.2.1
+    wx.navigateTo({
+      url: '../classify/classify?from=2'
     })
   },
   // 弹窗件数input失去焦点
@@ -221,7 +227,7 @@ Page({
   goConsigneeAddress(e) {
     let id = e.currentTarget.dataset.id;
     wx.navigateTo({
-      url: '../consigneeAddressList/consigneeAddressList?fetchs=1&id='+id,
+      url: '../consigneeAddress/consigneeAddress?fetchs=1&id='+id,
     })
   },
   // 去支付
@@ -243,10 +249,10 @@ Page({
     //   delta: 1
     // })
     
-    this.data.checkTypes_cid = this.data.checkTypes[0].id;
+    // this.data.checkTypes_cid = this.data.checkTypes[0].id;
     this.data.desc = '';
     this.data.findNum = 1;
-    this.data.checkType = this.data.checkTypes[0].name;
+    // this.data.checkType = this.data.checkTypes[0].name;
     this.setData({
       isPopup: false,
       checkTypes_cid: this.data.checkTypes_cid,
@@ -264,8 +270,51 @@ Page({
 
   },
   // 取料任务提交
-  fethchSubmit () {
+  fethchSubmit(e) {
+    
+    console.log('fromId');
+    console.log(e.detail.formId);
+    if (e.detail.formId != 'the formId is a mock one') {
+      let data = {
+        "form_id": e.detail.formId,
+        "from": "3"
+      }
+      api.getFormId({
+        method: 'POST',
+        data
+      }).then((res) => {
+        console.log(res);
+        console.log('获取formId');
+      })
+    }
+
+    // 获取上传图片
+    let uploadC = this.selectComponent('#upload');
+    let uploadImgs = [];
+    // 判定是否在已是完成状态
+    let isUploading = uploadC.data.files.every((ele, i) => {
+      return (ele.pct && (ele.pct === 'finish' || ele.pct === 'fail'))
+    })
+    if (!isUploading) {
+      util.errorTips('图片正在上传')
+      return false
+    }
+    // 添加数据
+    uploadC.data.files.forEach((ele, i) => { 
+      if (ele.full_url) {
+        uploadImgs.push(ele.full_url)
+      }
+    })
+    console.log(uploadImgs);
     let _this = this;
+    if (!this.data.checkTypes_cid) {
+      wx.showToast({
+        title: '请填写物料品类',
+        icon: 'none',
+        duration: 1500
+      })
+      return false
+    }
     if (!this.data.desc){
       wx.showToast({
         title: '请填写描述',
@@ -289,13 +338,14 @@ Page({
         cid:this.data.checkTypes_cid,
         desc: this.data.desc,
         fetch_num: this.data.findNum,
-        get_address: this.data.defaultAddress.id
+        get_address: this.data.defaultAddress.id,
+        desc_img: uploadImgs
       }]
     }
     api.joinTask({
       method:'POST',
       data
-    }).then((res)=>{ 
+    }).then((res)=>{  
       console.log(res);
       if (res.code == 200) {
         this.setData({
@@ -314,7 +364,11 @@ Page({
             _this.goPay();
           }
         }, 1000)
+      }else{
+        util.successTips(res.msg);
       }
+    }).catch((res)=>{
+      util.successTips(res.msg);
     })
   },
   // 获取找料单价
@@ -333,11 +387,19 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    // 动态获取须知
+    api.needKnow({}).then((res) => {
+      console.log(res);
+      this.setData({
+        deliveryNeedKnow: res.data.delivery.value
+      })
+    })
+
     // 获取单价
     this.getTaskFee();
     app.globalData.isFromScope = true;
     // 获取物料类型
-    this.getCheckTypes();
+    //this.getCheckTypes();
     // 获取默认地址
     this.getDefaultAddress();
     

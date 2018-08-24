@@ -1,7 +1,7 @@
 const oldApiUrl = 'https://api.yidap.com';
 // const apiUrl = 'https://devapi.yidap.com';
-//const apiUrl = 'https://devv2.yidap.com';
-const apiUrl = 'https://apiv2.yidap.com';
+// const apiUrl = 'https://devv2.yidap.com';
+ const apiUrl = 'https://apiv2.yidap.com';
 
 Promise.prototype.finally = function (callback) {
     let P = this.constructor;
@@ -71,10 +71,6 @@ const myRequest = function (params = {}, url , id, st, page) {
                           }
                         })
                       }
-                        
-                       
-                        
-
                     }
                     reject(res);
                 }
@@ -187,36 +183,36 @@ const cartNumber = (params) => {
 
 // 订单收货地址列表
 const listAddress = (params) => {
-  return myRequest(params, `${apiUrl}/api/member/address`)
+  return myRequest(params, `${apiUrl}/find/api/member/address`)
 }
 // 订单收货地址详情
 const infoAddress = (params,id) => {
-  return myRequest(params, `${apiUrl}/api/member/address`,id)
+  return myRequest(params, `${apiUrl}/find/api/member/address`,id)
 }
 
 // 订单新增收货地址
 const addAddress = (params) => {
-  return myRequest(params, `${apiUrl}/api/member/address`)
+  return myRequest(params, `${apiUrl}/find/api/member/address`)
 }
 
 // 订单编辑收货地址
 const editAddress = (params,id) => {
-    return myRequest(params, `${apiUrl}/api/member/address`,id)
+    return myRequest(params, `${apiUrl}/find/api/member/address`,id)
 }
 
 // 获取订单默认收货地址资料
 const defaultAddress = (params) => {
-  return myRequest(params, `${apiUrl}/api/member/address_default`)
+  return myRequest(params, `${apiUrl}/find/api/member/address_default`)
 }
 
 // 设置默认收货地址
 const setDefaultAddress = (params,id) => {
-  return myRequest(params, `${apiUrl}/api/member/address/edit-default`,id)
+  return myRequest(params, `${apiUrl}/find/api/member/address/edit-default`,id)
 }
 
 // 删除收货地址
 const deleteAddress = (params,id) => {
-  return myRequest(params, `${apiUrl}/api/member/address`,id)
+  return myRequest(params, `${apiUrl}/find/api/member/address`,id)
 }
 
 // 结算 添加订单
@@ -381,7 +377,7 @@ const affirmOrder = (params, id) => myRequest(params, `${apiUrl}/find/api/order/
 const toCommentOrder = (params, id) => myRequest(params, `${apiUrl}/find/api/order/comment`, id);
 
 // 判断配送是否范围
-const isFromScope = (params, id) => myRequest(params, `${apiUrl}/api/member/address_check`, id);
+const isFromScope = (params, id) => myRequest(params, `${apiUrl}/find/api/member/address_check`, id);
 
 // 修改任务
 const findEdit = (params, id) => myRequest(params, `${apiUrl}/find/api/task`, id);
@@ -390,7 +386,7 @@ const findEdit = (params, id) => myRequest(params, `${apiUrl}/find/api/task`, id
 const getOrderDetail = (params, id) => myRequest(params, `${apiUrl}/find/api/order`, id);
 
 // 获取公司地址
-const getCompanyaddress = (params) => myRequest(params, `${apiUrl}/api/company/address`);
+const getCompanyaddress = (params) => myRequest(params, `${apiUrl}/find/api/company/address`);
 
 // 获取用户信息
 const getUserInfo = (params) => myRequest(params, `${apiUrl}/api/show`);
@@ -403,8 +399,58 @@ const getOpenId = (params) => myRequest(params, `${apiUrl}/api/member/openId`);
 //个人中心统计
 const centerStatistics = (params) => myRequest(params, `${apiUrl}/find/api/member/stastics`);
 
+// get是否设置支付密码 put保存支付密码 post验证支付密码 
+const doPayPassWord = (params) => myRequest(params, `${apiUrl}/find/api/member/paypwd`);
+// 忘记支付密码
+const resetpaypwd = (params) => myRequest(params, `${apiUrl}/find/api/member/resetpaypwd`);
+
+
+// 忘记支付密码
+const restPayPwd = (params) => myRequest(params, `${apiUrl}/find/api/member/resetpaypwd`);
+
+// 总订单支付
+const repayorder = (params) => myRequest(params, `${apiUrl}/find/api/repayorder`);
+
+// 检查验证码
+const smschk = (params) => myRequest(params, `${apiUrl}/find/api/member/smschk`);
+
+// 获取fromId 
+const getFormId = (params) => myRequest(params, `${apiUrl}/api/member/form_id`);
+
+// 订单支付方式
+const checkPayType = (params) => myRequest(params, `${apiUrl}/find/api/order/checkPayType`);
+
+// 支付验证密码
+const verifyPassword = (params) => myRequest(params, `${apiUrl}/find/api/member/paypwd`);
+
+// 设置支付密码
+const setPayPwd = (params) => myRequest(params, `${apiUrl}/find/api/member/setPayPwd`);
+
+// 修改昵称
+const changeNickName = (params) => myRequest(params, `${apiUrl}/api/member/nick_name`);
+
+// 订单删除
+const orderDel = (params) => myRequest(params, `${apiUrl}/find/api/order/delete`);
+
+// 须知
+const needKnow = (params) => myRequest(params, `${apiUrl}/find/api/need_know`);
+
+
+
 
 module.exports = {
+  needKnow,
+  orderDel,
+  changeNickName,
+  setPayPwd,
+  verifyPassword,
+  checkPayType,
+  getFormId,
+  smschk,
+  repayorder,
+  restPayPwd,
+  doPayPassWord,
+  resetpaypwd,
   centerStatistics,
   getOpenId,
   getTaskFee,

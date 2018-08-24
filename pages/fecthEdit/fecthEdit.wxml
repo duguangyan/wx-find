@@ -5,10 +5,10 @@
         <view class='lh90 fs30 pdl-30 border-bottom'>
           物料信息
         </view>
-        <view class='lh90 fs30 pdl-30 bb-1'  bindtap='checkType'>
+        <view class='lh90 fs30 pdl-30 bb-1 cf'  bindtap='checkType'>
             <text class="text-theme">*</text> <text>物料品类:</text> <text class='pdl-10'> {{checkType}}</text> 
-            <view wx:if='{{!isSelect}}'  class='iconfont icon-jiantou material-icon flr pdr-30'></view>
-            <view wx:if='{{isSelect}}'  class='iconfont icon-xiangxia material-icon flr pdr-30'></view>
+            <text  class='iconfont icon-jiantou material-icon flr pdr-50'></text>
+           
         </view>
         <view class='material-number lh90 fs30 pdl-30 cf border-bottom'>
             <text class="text-theme">*</text> <text>物料数量:</text>
@@ -35,25 +35,25 @@
               <input class="hidden" value="{{addressId}}" name="address_id"></input>
           </view>
           <view class="address flex flex-start pdt-30 pdb-30 pdl-20 pdr-20" >
-              <text class="iconfont icon-dizhi fs40 text-gray mgr-20"></text>
-
-              <view data-index='{{idx}}' bindtap='goConsigneeAddress' class="flex-1 address-info fs30">
-                  <view class="flex">
-                      <text>地址名称: {{defaultAddress.stall || ''}}</text>
-                  </view>
-                  <view class="flex">
-                      <text>收货人<text class='mgl-30'>:</text> {{defaultAddress.consignee|| ''}}</text>
-                      <text>{{defaultAddress.mobile|| ''}}</text>
-                  </view>
-
+              <text class="iconfont icon-dizhi text-gray mgr-20"></text>
+              <text class='iconfont icon-jiantou address-icon'></text>
+              <view data-index='{{idx}}' bindtap='goConsigneeAddress' class="flex-1 address-info fs24">
+                  
                   <view>
-                      <text>取料地址：</text>
-                      <text>{{defaultAddress.city_str|| ''}} {{defaultAddress.address|| ''}}</text>
+                      <text class='remark' wx:if='{{defaultAddress.remark}}'>{{defaultAddress.remark||''}}</text> 
+                      {{defaultAddress.city_str|| ''}} {{defaultAddress.address|| ''}}
+                      
                   </view>
-
+                  <view style='word-break:break-all;'>
+                      <text> {{defaultAddress.consignee|| ''}} / {{defaultAddress.mobile|| ''}}</text>
+                  </view>
+                  <view style='word-break:break-all;'>
+                      <text class='text-999'>{{defaultAddress.stall || ''}}</text>
+                  </view>
               </view>
 
-              <view data-index='{{idx}}' bindtap='goConsigneeAddress'  wx:if='{{!defaultAddress}}' class="text-666 h100 lh100 flex-1">
+              <view data-index='{{idx}}' bindtap='goConsigneeAddress'  
+              wx:if='{{!defaultAddress}}' class="text-666 h100 lh100 flex-1">
                   点击添加取料地址
               </view>
           </view>

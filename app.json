@@ -28,7 +28,15 @@
     "pages/rechargeSuccess/rechargeSuccess",
     "pages/findEdit/findEdit",
     "pages/fecthEdit/fecthEdit",
-    "pages/task3/task3"
+    "pages/task3/task3",
+    "pages/setting/setting",
+    "pages/changePassword/changePassword",
+    "pages/changePayPassword/changePayPassword",
+    "pages/reChengePayPassWord/reChengePayPassWord",
+    "pages/classify/classify",
+    "pages/addressSearch/addressSearch",
+    "pages/changePassword1/changePassword1",
+    "pages/changePassword2/changePassword2"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -66,6 +74,7 @@
         "iconPath": "public/images/icon/1.4.png",
         "selectedIconPath": "public/images/icon/2.4.png"
       }
+      
     ]
   },
   "networkTimeout": {

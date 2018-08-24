@@ -30,10 +30,15 @@ function objLength(input) {
 }
 
 //验证是否是手机号码
+
+
+
 function vailPhone(number) {
+
   let flag = false;
-  let myreg = /^(((13[0-9]{1})|(14[0-9]{1})|(17[0]{1})|(15[0-3]{1})|(15[5-9]{1})|(18[0-9]{1}))+\d{8})$/;
-  if (number.length != 11) {
+  // let myreg = /^(((13[0-9]{1})|(14[0-9]{1})|(17[0]{1})|(15[0-3]{1})|(15[5-9]{1})|(18[0-9]{1}))+\d{8})$/;
+  let myreg = /^1[34578]\d{9}$/;
+  if (number.length != 11) { 
     flag = flag;
   } else if (!myreg.test(number)) {
     flag = flag;
@@ -168,6 +173,16 @@ const successTips = (msg = '成功') => {
   })
 
 }
+const passWordSuccessTips = (msg = '成功') => {
+
+  wx.showToast({
+    title: msg,
+    image: '../../public/images/icon/center_right.png',
+    icon: 'none',
+    duration: 1500
+  })
+
+}
 
 // 错误弹窗
 const errorTips = (msg = '发生了错误') => {
@@ -213,7 +228,21 @@ function getNowFormatDate() {
   return currentdate;
 }
 
+function extend(des, src, override) {
+  if (src instanceof Array) {
+    for (var i = 0, len = src.length; i < len; i++)
+      extend(des, src[i], override);
+  }
+  for (var i in src) {
+    if (override || !(i in des)) {
+      des[i] = src[i];
+    }
+  }
+  return des;
+}
+
 module.exports = {
+  extend,
   getNowFormatDate:getNowFormatDate,
   getCurrentTime: getCurrentTime,
   objLength: objLength,
@@ -229,5 +258,6 @@ module.exports = {
 
   dealCartNum,
   errorTips,
-  successTips
+  successTips,
+  passWordSuccessTips
 }

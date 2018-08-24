@@ -1,0 +1,27 @@
+/* pages/setting/setting.wxss */
+.oldPayPasswordModel input{
+  border: 1rpx solid #999;
+  float: left;
+  width: 50rpx;
+}
+.lh115{
+  height: 115rpx;
+  line-height: 115rpx;
+}
+.setting-icon-1{
+  width: 35rpx;
+  height: 42rpx;
+  margin-right: 30rpx;
+  position: relative;
+  top: 10rpx;
+}
+.setting-icon-2{
+  width: 43rpx;
+  height: 34rpx;
+  margin-right: 30rpx;
+}
+.login-out{
+  margin-top: 75rpx;
+  text-align: center;
+  color: #fff;
+}
