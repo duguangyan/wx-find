@@ -49,19 +49,36 @@
             <view class='pdr-20' wx:if='{{item.form_data.get_type==2}}'>
                 寄样地址: 
             </view>
+            <view wx:if='{{item.form_data.get_type==1}}'>
+              <view class='fs24 pdr-20' style='word-break:break-all;'>
+                  <text class='remark'wx:if='{{item.address.remark}}'>{{item.address.remark||''}}</text> 
+                  {{item.address.city_str||''}} {{item.address.address||''}} {{item.address.room||''}}
+                  
+              </view>
+              <view class='fs24 pdr-20 text-999' style='word-break:break-all;'>
+                  {{item.address.consignee||''}} / {{item.address.mobile||''}}
+              </view>
+              <view class='text-999 fs24 pdr-20' style='word-break:break-all;'>
+                  {{item.address.stall ||''}}
+              </view>
+            </view>
+            
 
-            <view class='fs24 pdr-20' style='word-break:break-all;'>
-                <text class='remark'wx:if='{{item.address.remark}}'>{{item.address.remark||''}}</text> 
-                {{item.address.city_str||''}} {{item.address.address||''}} {{item.address.room||''}}
-                
+            <view wx:if='{{item.form_data.get_type==2}}'>
+              
+                <view class='fs24 pdr-20' style='word-break:break-all;' >
+                    <text class='remark'wx:if='{{item.address[0].tag}}'>{{item.address[0].tag||''}}</text> 
+                    {{item.address[0].address||''}}
+                </view>
+                <view class='fs24 pdr-20 text-999' style='word-break:break-all;'>
+                    {{item.address[0].consignee||''}} / {{item.address[0].mobile||''}}
+                </view>
+                <view class='fs24 text-999'>
+                  {{item.address[0].desc}}
+                </view>
+                <view>...</view>
             </view>
-            <view class='fs24 pdr-20' style='word-break:break-all;'>
-                {{item.address.consignee||''}} / {{item.address.mobile||''}}
-            </view>
-            <view class='text-999 fs24 pdr-20' style='word-break:break-all;'>
-                {{item.address.stall ||''}}
-            </view>
-
+           
 
           </view>
           

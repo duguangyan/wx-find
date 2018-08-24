@@ -115,7 +115,8 @@ Page({
       })
     },
     // 去找料
-    goFind() {
+    goFind(e) {
+      
       let token = wx.getStorageSync('token'); 
       if (!token){
         // 跳转关联页面
@@ -127,13 +128,27 @@ Page({
       // this.setData({
       //   isPopup: true
       // })
-
+      console.log('fromId');
+      console.log(e.detail.formId);
+      if (e.detail.formId != 'the formId is a mock one') {
+        let data = {
+          "form_id": e.detail.formId,
+          "from": "3"
+        }
+        api.getFormId({
+          method: 'POST',
+          data
+        }).then((res) => {
+          console.log(res);
+          console.log('获取formId');
+        })
+      }
       wx.navigateTo({
         url: '../find/find?findNum=' + 1 + '&selcetTabNum=' + 1,
       })
     },
     // 立刻取料  
-    goMaterial() {
+    goMaterial(e) {
       let token = wx.getStorageSync('token');
       if (!token) {
         // 跳转关联页面
@@ -141,6 +156,21 @@ Page({
           url: '../login/login',
         })
         return false;
+      }
+      console.log('fromId');
+      console.log(e.detail.formId);
+      if (e.detail.formId != 'the formId is a mock one') {
+        let data = {
+          "form_id": e.detail.formId,
+          "from": "3"
+        }
+        api.getFormId({
+          method: 'POST',
+          data
+        }).then((res) => {
+          console.log(res);
+          console.log('获取formId');
+        })
       }
       // 跳转关联页面
       wx.navigateTo({
@@ -170,6 +200,8 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow: function () {
+      
+      
       // 测试
       // 调用接口
       // qqmapsdk.getSuggestion({

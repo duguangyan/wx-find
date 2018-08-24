@@ -118,13 +118,7 @@ page {
 .text-theme{
   text-decoration: underline;
 }
-.remark{
-  border: 1rpx solid #ef8130;
-  color: #ef8130;
-  border-radius:5rpx; 
-  margin-left: 10rpx;
-  padding: 0 5rpx;
-}
+
 .address-right-list {
   font-size: 24rpx; 
   position: relative;

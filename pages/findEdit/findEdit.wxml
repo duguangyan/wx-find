@@ -101,12 +101,19 @@
                   </view>
               </view>
               <view data-index='{{idx}}'  wx:if='{{ item.selcetSecondTabNum == 2 }}' class="flex-1 address-info fs30">
-                  <view>
-                      <text>收货人<text class='mgl-30'>:</text> 
-                      {{companyaddress.consignee||''}} / {{companyaddress.mobile||''}}</text>
-                  </view>
-                  <view>
-                      寄样地址:<text>{{companyaddress.address}}</text>
+                 <view wx:for='{{companyaddress}}' wx:key='this' class='bb1 mg10 fs24'>
+                    <view>
+                        <text class='remark' wx:if='{{item.tag}}'>{{item.tag||''}}</text>
+                        <text> {{item.address}}</text>
+                    </view>
+                    <view  class='text-999'>
+                        <view>
+                          {{item.consignee || ''}} / {{item.mobile || ''}}
+                        </view>   
+                    </view>
+                    <view  class='text-999'>
+                      {{item.desc}}
+                    </view>
                   </view>
               </view>
               <view data-index='{{idx}}' bindtap='goConsigneeAddress'  wx:if='{{item.address=="" && item.selcetSecondTabNum == 1 }}' class="text-666 h100 lh100 flex-1">

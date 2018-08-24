@@ -100,11 +100,8 @@ style="width:44rpx;height:44rpx;position:absolute;right:0;top:0rpx;background-co
               <view data-index='{{idx}}' data-id='{{item.address.id}}' bindtap='goConsigneeAddress'
                wx:if='{{ item.selcetSecondTabNum == 1 }}' hidden='{{ !item.address}}' class="flex-1 address-info fs24">
                   <view>                      
-                      <viwe>
                         <text class='remark' wx:if='{{item.address.remark}}'>{{item.address.remark||''}}</text> 
                         {{item.address.city_str||''}} {{item.address.address||''}} {{item.address.room ||''}}
-                         
-                      </viwe>
                   </view>
                   <view  style='word-break:break-all;'>
                       <text> {{item.address.consignee||''}} / {{item.address.mobile||''}}</text>
@@ -115,17 +112,25 @@ style="width:44rpx;height:44rpx;position:absolute;right:0;top:0rpx;background-co
               </view>
 
             <view data-index='{{idx}}'  wx:if='{{ item.selcetSecondTabNum == 2 }}' class="flex-1 address-info fs24">
-                  <view class="flex">
-                      <text>联系人<text class='mgl-30'>:</text>  
-                        {{companyaddress.consignee || ''}} / {{companyaddress.mobile || ''}}
-                      </text>   
+                  <view wx:for='{{companyaddress}}' wx:key='this' class='bb1 mg10'>
+                    
+                    <view>
+                        <text class='remark' wx:if='{{item.tag}}'>{{item.tag||''}}</text> 
+                        <text>{{item.address}}</text>
+                    </view>
+                    <view class='text-999'>
+                        <view>
+                          {{item.consignee || ''}} / {{item.mobile || ''}}
+                        </view>   
+                    </view>
+                    <view class='text-999'>
+                        {{item.desc}}
+                    </view>
                   </view>
-                  <view>
-                      <text>寄样地址：</text>
-                      <text style='width:500rpx;float:right;position: relative;left: -18rpx;'>
-                        {{companyaddress.address}}
-                      </text>
+                  <view class='text-red'> 
+                    <text class='iconfont icon-gantan1'></text>寄样不支持到付,请客户自行承担寄样费用
                   </view>
+                  
               </view>
 
               <view data-index='{{idx}}' bindtap='goConsigneeAddress' 
@@ -143,7 +148,11 @@ style="width:44rpx;height:44rpx;position:absolute;right:0;top:0rpx;background-co
     </view>
     
     <view class="cell-padding submit-form">
-        <button bindtap="findSubmit" class='btn-shadow'>加入小鹿任务</button>
+
+      <form bindsubmit="findSubmit" report-submit='true' >
+        <button  formType="submit" class='btn-shadow'>加入小鹿任务</button>
+      </form>
+        
     </view>
     <view class='xuzhi' bindtap='showNotes'>
       <image src='../../public/images/icon/xuzhi.png'></image> <text>《小鹿找料须知》</text>
@@ -170,18 +179,28 @@ style="width:44rpx;height:44rpx;position:absolute;right:0;top:0rpx;background-co
     <view class='index-popup-bg' catchtap='hiddenNotes'></view>
     <view class='index-popup-content notes-btn-content'>
         <view class='index-popup-title'>小鹿找料须知 <text class='iconfont icon-del1'  catchtap='hiddenNotes'></text></view>
-        <view class='index-popup-main bt-1'>
-          
+        <rich-text nodes="{{findNeedKnow}}"></rich-text>
+        <!-- <view class='index-popup-main bt-1'>
           <view>一.  服务区域：</view>
-          <view class='fs24'>目前开放的找料区域为 <text class='text-red'>狮岭、三元里</text>，更多开放区域敬请期待。</view>
+          <view class='fs24'>目前开放找料区域: <text class='text-red'>狮岭、白云</text>，更多开放区域敬请期待。</view>
           <view>二.  服务项目：</view>
-          <view class='fs24'>1.现阶段只找皮革、（含真皮、二层皮、PU、PVC),皮具箱包产品纺织面料、皮具箱包产品辅料、托料、五金等。</view>
-          <view>三．其他：</view>
+          <view class='fs24'>1.现阶段只找皮革（含真皮、二层皮、PU、PVC)、皮具箱包产品纺织面料、皮具箱包产品辅料、五金等。</view>
+          <view>三．找料寄样说明</view>
+          <view class='fs24'>目前开放的找料寄样地址为 <text class='text-red'>狮岭和白云。</text></view>
+          <view class='fs24'>1.找料寄样地址选择</view>
+          <view class='fs24 pdl20'>寄样为PU、PVC、辅料、五金等，请寄狮岭。</view>
+          <view class='fs24 pdl20'>寄样为真皮、二层皮、纺织面料等，请寄白云。</view>
+          <view class='fs24'>2.无法判断寄样地址，可联系小鹿客服：
+          <text catchtap='contact' class='text-red'>400-8088-156</text>。
+          </view>
+          <view class='fs24'>3.找料寄样不支持到付，请客户自行承担寄样运费。</view>
+          <view class='fs24'></view>
+          <view>四．其他：</view>
           <view class='fs24'>1.本服务平台不提供侵权产品的找料。</view>
           <view class='fs24'>2.本服务平台不提供服务项目以外的产品找料。</view>
           <view class='fs24'>3.由于市场及行业内因素，我们不承诺100%能找到您所需的物料，但我们会以100%的热情去找料。</view>
-        </view>
-        <view catchtap='checkIsResNotes' class='mgt-30' style='padding-left:200rpx;'>
+        </view> -->
+        <view catchtap='checkIsResNotes' class='mgt-10' style='padding-left:200rpx;'>
             <text wx:if='{{isResNotes}}' class="iconfont icon-dui icon-dui-1 fs40 pdl-10 text-theme"></text>
             <text wx:if='{{!isResNotes}}' class="iconfont icon-yuan icon-yuan-1 fs40 pdl-10 text-eb"></text>
             <text style='color:999;padding-left:20rpx;'>已阅读，下次不再显示</text> 

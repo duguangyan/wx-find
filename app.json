@@ -74,6 +74,7 @@
         "iconPath": "public/images/icon/1.4.png",
         "selectedIconPath": "public/images/icon/2.4.png"
       }
+      
     ]
   },
   "networkTimeout": {

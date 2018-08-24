@@ -30,10 +30,15 @@ function objLength(input) {
 }
 
 //验证是否是手机号码
+
+
+
 function vailPhone(number) {
+
   let flag = false;
-  let myreg = /^(((13[0-9]{1})|(14[0-9]{1})|(17[0]{1})|(15[0-3]{1})|(15[5-9]{1})|(18[0-9]{1}))+\d{8})$/;
-  if (number.length != 11) {
+  // let myreg = /^(((13[0-9]{1})|(14[0-9]{1})|(17[0]{1})|(15[0-3]{1})|(15[5-9]{1})|(18[0-9]{1}))+\d{8})$/;
+  let myreg = /^1[34578]\d{9}$/;
+  if (number.length != 11) { 
     flag = flag;
   } else if (!myreg.test(number)) {
     flag = flag;

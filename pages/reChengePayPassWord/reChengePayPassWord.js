@@ -81,10 +81,10 @@ Page({
     that.setData({
       Value: inputValue,
     })
-    if (inputValue.length == 6) { 
-      if (this.data.reInputValue == inputValue){
-        
-        if (this.data.code!=''){
+    if (inputValue.length == 6) {  
+      if (this.data.reInputValue == inputValue){  
+        let hasPayPwd = wx.getStorageSync('hasPayPwd');
+        if (!hasPayPwd){
 
           let data = {
             pay_pwd: inputValue,
@@ -104,7 +104,7 @@ Page({
                     })
                   }else{
                     wx.navigateBack({
-                      delta: 5
+                      delta: 4
                     })
                   }
                   
@@ -128,8 +128,8 @@ Page({
           let data = {
             pay_pwd: inputValue
           }
-          api.doPayPassWord({
-            method: 'PUT',
+          api.setPayPwd({
+            method: 'POST',
             data
           }).then((res) => {
             if (res.code == 200) {

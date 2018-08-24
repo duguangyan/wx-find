@@ -1,5 +1,6 @@
 // pages/material/material.js
 const api = require('../../utils/api.js');
+const util = require('../../utils/util.js');
 let app = getApp();
 Page({
 
@@ -269,7 +270,42 @@ Page({
 
   },
   // 取料任务提交
-  fethchSubmit () {
+  fethchSubmit(e) {
+    
+    console.log('fromId');
+    console.log(e.detail.formId);
+    if (e.detail.formId != 'the formId is a mock one') {
+      let data = {
+        "form_id": e.detail.formId,
+        "from": "3"
+      }
+      api.getFormId({
+        method: 'POST',
+        data
+      }).then((res) => {
+        console.log(res);
+        console.log('获取formId');
+      })
+    }
+
+    // 获取上传图片
+    let uploadC = this.selectComponent('#upload');
+    let uploadImgs = [];
+    // 判定是否在已是完成状态
+    let isUploading = uploadC.data.files.every((ele, i) => {
+      return (ele.pct && (ele.pct === 'finish' || ele.pct === 'fail'))
+    })
+    if (!isUploading) {
+      util.errorTips('图片正在上传')
+      return false
+    }
+    // 添加数据
+    uploadC.data.files.forEach((ele, i) => { 
+      if (ele.full_url) {
+        uploadImgs.push(ele.full_url)
+      }
+    })
+    console.log(uploadImgs);
     let _this = this;
     if (!this.data.checkTypes_cid) {
       wx.showToast({
@@ -302,13 +338,14 @@ Page({
         cid:this.data.checkTypes_cid,
         desc: this.data.desc,
         fetch_num: this.data.findNum,
-        get_address: this.data.defaultAddress.id
+        get_address: this.data.defaultAddress.id,
+        desc_img: uploadImgs
       }]
     }
     api.joinTask({
       method:'POST',
       data
-    }).then((res)=>{ 
+    }).then((res)=>{  
       console.log(res);
       if (res.code == 200) {
         this.setData({
@@ -330,6 +367,8 @@ Page({
       }else{
         util.successTips(res.msg);
       }
+    }).catch((res)=>{
+      util.successTips(res.msg);
     })
   },
   // 获取找料单价
@@ -348,6 +387,14 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    // 动态获取须知
+    api.needKnow({}).then((res) => {
+      console.log(res);
+      this.setData({
+        deliveryNeedKnow: res.data.delivery.value
+      })
+    })
+
     // 获取单价
     this.getTaskFee();
     app.globalData.isFromScope = true;

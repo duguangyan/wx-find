@@ -321,8 +321,9 @@
   color: #fff;
 }
 .notes-btn-content{
-  height: auto;
-  top: 10%;
+  height:88%;
+  top:6%;
+  overflow-y:auto;
 }
 .index-popup-main view{
   line-height: 50rpx;
@@ -347,4 +348,13 @@
 .address {
   position: relative;
   padding-right: 70rpx;
+}
+.flex{
+  display: flex;
+}
+.pd20{
+  padding-top: 20rpx;
+}
+.form-add-img{
+  border-bottom:1rpx solid #eee; 
 }

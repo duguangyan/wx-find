@@ -92,6 +92,9 @@
   border-bottom: 1rpx solid #eee;
   padding-bottom: 10rpx;
 }
+.pdb-50{
+  padding-bottom: 50rpx;
+}
 .task-find-item view{
   display: block;
   width: 420rpx;
@@ -133,6 +136,8 @@
   height:30rpx;
   line-height:10rpx;
   display:inline-block;
+  padding-left: 10rpx;
+  padding-right: 0rpx !important;
 }
 .order-footer-btn{
  

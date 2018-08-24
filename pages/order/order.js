@@ -7,6 +7,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    isStarShow:false, // 初始化评价评语
     isUrgeOrder:false, // 催单弹窗
     isData:true, // 没有订单数据
     shopLoading:true,
@@ -18,8 +19,8 @@ Page({
     isCommentModel:true, // 评价模态框 
     commentMsg:'', // 评价内容
     starArr: [0, 1, 2, 3, 4], // 评价星星
-    starIndex_1:0, // 星星评价选中
-    starIndex_2:0, // 星星评价选中
+    starIndex_1:4, // 星星评价选中
+    starIndex_2:4, // 星星评价选中
     findList:'', // 找料列表数据
     fecthList:'', // 取料列表数据
     totalPages:0, // 总页数
@@ -226,10 +227,20 @@ Page({
            },1000)
            return false;
         } else if (res.code == 200 && res.data.pay_status == 2) { // 缺少设置支付密码
-
-          wx.navigateTo({
-            url: '../changePayPassword/changePayPassword',
-          })
+           wx.showModal({
+             title: '请先去设置支付密码',
+             showCancel: false,
+             content: '',
+             confirmText: '好的',
+             success: function (res) {
+               if (res.confirm) {
+                 wx.setStorageSync('hasPayPwd',true);
+                 wx.navigateTo({
+                   url: '../changePayPassword/changePayPassword',
+                 })
+               }
+             }
+           })
           this.setData({
             isDisabled: false
           })
@@ -398,6 +409,43 @@ Page({
       url: '../fetchOrderDetail/fetchOrderDetail'
     })
   },
+  // 删除订单
+  toDel(e){
+    let data = {
+      order_id: e.target.dataset.id
+    }
+    api.orderDel({
+      method:'POST',
+      data
+    }).then((res)=>{
+        if(res.code=200){
+          for (let i = 0; i < this.data.findList.length; i++) {
+            if (this.data.findList[i].id == e.target.dataset.id) {
+              this.data.findList.splice(i,1);
+            }
+          }
+          this.setData({
+            findList: this.data.findList
+          })
+
+          wx.showToast({
+            title: '删除成功',
+            icon: 'success',
+            duration: 1500
+          })
+        }else{
+          wx.showToast({
+            title: '网络慢,请稍后再试',
+            duration: 1500
+          })
+        }
+    }).catch((res)=>{
+      wx.showToast({
+        title: '网络慢,请稍后再试',
+        duration: 1500
+      })
+    })
+  }, 
   // 去评价
   toComment (e) {
     let commentId = e.target.dataset.id;
@@ -452,7 +500,10 @@ Page({
             })
 
             this.setData({
-              isCommentModel: true
+              isCommentModel: true,
+              isStarShow:false,
+              starIndex_1: 4, // 星星评价选中
+              starIndex_2: 4, // 星星评价选中
             })
 
           }else{
@@ -476,6 +527,15 @@ Page({
     this.setData({
       starIndex_1: e.target.dataset.idx
     })
+    if (this.data.starIndex_1 < 3 || this.data.starIndex_2 < 3){
+      this.setData({
+        isStarShow:true
+      })
+    }else{
+      this.setData({
+        isStarShow: false
+      })
+    }
     console.log(this.data.starIndex_1);
   },
   // 配送及时性
@@ -483,6 +543,15 @@ Page({
     this.setData({
       starIndex_2: e.target.dataset.idx
     })
+    if (this.data.starIndex_1 < 3 || this.data.starIndex_2 < 3) {
+      this.setData({
+        isStarShow: true
+      })
+    } else {
+      this.setData({
+        isStarShow: false
+      })
+    }
     console.log(this.data.starIndex_2);
   },
 
@@ -559,7 +628,13 @@ Page({
    */
   onLoad: function (options) {
     
-    
+    if (options.orderId){
+      console.log('options.orderId');
+      console.log(options.orderId);
+      wx.navigateTo({
+        url: '../findOrderDetail/findOrderDetail?id=' + options.orderId + '&nav=' + options.nav
+      })
+    }
    
   },
 

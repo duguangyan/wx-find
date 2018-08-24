@@ -71,7 +71,7 @@ page {
   height: 50rpx;line-height: 50rpx;
 }
 .address-input{
-  width: 478rpx;
+  width: 470rpx;
   background-color: #eee;
   height: 90rpx;
   padding-left: 10rpx;

@@ -91,6 +91,7 @@ Page({
       isOldPayPasswordModel: false,
       Value: ''
     })
+    wx.setStorageSync('hasPayPwd',false);
     wx.navigateTo({
       url: '../changePassword/changePassword?forgetPayPassWord=2',
     })
@@ -156,6 +157,7 @@ Page({
 
     api.doPayPassWord({}).then((res)=>{
       if(res.code==200){
+        wx.setStorageSync('hasPayPwd', !res.data.hasPayPwd);
         if (res.data.hasPayPwd){
           this.setData({
             isOldPayPasswordModel: true
@@ -191,6 +193,7 @@ Page({
             isOldPayPasswordModel: false,
             Value: ''
           })
+          wx.setStorageSync('hasPayPwd', true);
           wx.navigateTo({
             url: '../changePayPassword/changePayPassword',
           })

@@ -1,7 +1,7 @@
 const oldApiUrl = 'https://api.yidap.com';
 // const apiUrl = 'https://devapi.yidap.com';
-const apiUrl = 'https://devv2.yidap.com';
-//const apiUrl = 'https://apiv2.yidap.com';
+// const apiUrl = 'https://devv2.yidap.com';
+ const apiUrl = 'https://apiv2.yidap.com';
 
 Promise.prototype.finally = function (callback) {
     let P = this.constructor;
@@ -71,10 +71,6 @@ const myRequest = function (params = {}, url , id, st, page) {
                           }
                         })
                       }
-                        
-                       
-                        
-
                     }
                     reject(res);
                 }
@@ -390,7 +386,7 @@ const findEdit = (params, id) => myRequest(params, `${apiUrl}/find/api/task`, id
 const getOrderDetail = (params, id) => myRequest(params, `${apiUrl}/find/api/order`, id);
 
 // 获取公司地址
-const getCompanyaddress = (params) => myRequest(params, `${apiUrl}/api/company/address`);
+const getCompanyaddress = (params) => myRequest(params, `${apiUrl}/find/api/company/address`);
 
 // 获取用户信息
 const getUserInfo = (params) => myRequest(params, `${apiUrl}/api/show`);
@@ -427,8 +423,26 @@ const checkPayType = (params) => myRequest(params, `${apiUrl}/find/api/order/che
 // 支付验证密码
 const verifyPassword = (params) => myRequest(params, `${apiUrl}/find/api/member/paypwd`);
 
+// 设置支付密码
+const setPayPwd = (params) => myRequest(params, `${apiUrl}/find/api/member/setPayPwd`);
+
+// 修改昵称
+const changeNickName = (params) => myRequest(params, `${apiUrl}/api/member/nick_name`);
+
+// 订单删除
+const orderDel = (params) => myRequest(params, `${apiUrl}/find/api/order/delete`);
+
+// 须知
+const needKnow = (params) => myRequest(params, `${apiUrl}/find/api/need_know`);
+
+
+
 
 module.exports = {
+  needKnow,
+  orderDel,
+  changeNickName,
+  setPayPwd,
   verifyPassword,
   checkPayType,
   getFormId,

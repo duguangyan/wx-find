@@ -11,6 +11,7 @@
 }
 .height-200 {
     height: 200rpx;
+    
 }
 
 .align-start {
@@ -33,7 +34,9 @@
     width: 200rpx;
     background: #f2f2f2;
 }
-
+.pdl20{
+  padding-left:20rpx; 
+}
 /*图片北京  */
 .upload-view view:nth-of-type(1) image {
     background: #f2f2f2 url(https://static.yidap.com/miniapp/upload/upload1.png) no-repeat;
@@ -86,7 +89,7 @@
 }
 
 .word-spacing{
-  letter-spacing: 20rpx;
+  letter-spacing: 18rpx;
 }
 .fl{
   float: left;
@@ -165,8 +168,8 @@
   border-radius: 10rpx; 
 }
 .index-popup-title{
-  height: 150rpx;
-  line-height: 150rpx;
+  height: 100rpx;
+  line-height: 100rpx;
   font-size: 36rpx;
   text-align: center;
   position: relative;
@@ -276,8 +279,11 @@
 
 }
 .notes-btn{
-  margin-top: 30rpx;
-  margin-bottom: 50rpx;
+  
+  margin-bottom: 10rpx;
+}
+.mgt-10{
+  margin-top:10rpx; 
 }
 .notes-btn view{
   margin-left: 218rpx;
@@ -285,18 +291,26 @@
   color: #fff;
 }
 .notes-btn-content{
-  height: auto;
-  top: 10%;
+  height:96%;
+  top:2%;
+  overflow-y:auto;
 }
+
 .index-popup-main view{
   line-height: 50rpx;
 }
+.icon-gantan1{
+  color: #c81a29;
+  position: relative;
+  top: 2rpx;
+  margin-right: 5rpx;
+}
 .icon-del1{
-  position: absolute;
-  font-size: 60rpx;
-  right: 10rpx;
-  top: -30rpx;
-  color: #999;
+  position:absolute;
+  font-size:50rpx;
+  right:10rpx;
+  top:-15rpx;
+  color:#999;
 }
 .find-title{
   width: 600rpx;

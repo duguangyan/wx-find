@@ -110,6 +110,7 @@
   position: absolute;
   top: 30%;
   left: -60rpx;
+  z-index: 999999;
 }
 .task-sum{
  position:absolute;
@@ -142,4 +143,12 @@ text-align:right;
   top:0rpx;
   font-size:50rpx;
   color:#aaa;
+}
+.remark {
+  display: inline;
+  text-align: center;
+  padding: 0 0 0 10rpx !important;
+}
+.task-warp{
+  overflow: hidden;
 }

@@ -27,6 +27,11 @@
             <text class='pdl-30'>件</text>
         </view>
 
+        <view class="flex flex-start form-add-img fs30 pdl-20 cf'">
+                <view class="tl pd20"> <text style='opacity:0'>*</text>上传图片：</view>
+                <upload id="upload" />
+        </view>
+
           <view class="pd-30 align-start fs30 cf field-warp">
             <view class="word-spacing field-txt">
                 <text class="text-theme">*</text>描 述 ：</view>
@@ -78,8 +83,10 @@
               <text class='flr pdr-30 text-red'>￥{{filter.formatMoney(totalFecthPrice)}}</text>
           </view>
       </view>
-      
-      <view class='join-find lh90 fs30 mgb-30' bindtap='fethchSubmit'>加入小鹿任务</view>
+       <form bindsubmit="fethchSubmit" report-submit='true'>
+          <button  formType="submit" class='join-find lh90 fs30 mgb-30'>加入小鹿任务</button>
+       </form>
+      <!-- <view class='join-find lh90 fs30 mgb-30' bindtap='fethchSubmit'>加入小鹿任务</view> -->
       <view class='xuzhi' bindtap='showNotes'>
         <image src='../../public/images/icon/xuzhi.png'></image> <text class='fs30'>《小鹿取送须知》</text>
       </view>
@@ -101,7 +108,8 @@
     <view class='index-popup-bg' catchtap='hiddenNotes'></view>
     <view class='index-popup-content notes-btn-content'>
         <view class='index-popup-title'>小鹿取送须知 <text class='iconfont icon-del1'  catchtap='hiddenNotes'></text></view>
-        <view class='index-popup-main bt-1'>      
+        <rich-text nodes="{{deliveryNeedKnow}}"></rich-text>
+        <!-- <view class='index-popup-main bt-1'>      
           <view>一.  服务区域：</view>
           <view class='fs24'>目前开放的取送物料区域为 <text class='text-red'>狮岭、三元里</text>，更多开放区域敬请期待。</view>
           <view>二.  服务项目：</view>
@@ -109,7 +117,7 @@
           <view>三．其他：</view>
           <view class='fs24'>1.所取送物料数量仅限样品（色卡）或小批量物料，<text style='font-weight: 600;'>（电瓶车所载标准：单件最大重量25KG/最大长度1.5米*0.5米）</text>，如超出单件取送物料标准范围，视为第二件。</view>
           <view class='fs24'>2.本服务平台不提供侵权产品的取送料，不提供服务项目以外的取送服务。</view>
-        </view>
+        </view> -->
         
         <view catchtap='checkIsResNotes' class='mgt-30' style='padding-left:200rpx;'>
             <text wx:if='{{isResNotes}}' class="iconfont icon-dui icon-dui-1 fs40 pdl-10 text-theme"></text>

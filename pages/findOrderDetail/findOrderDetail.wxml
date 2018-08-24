@@ -40,24 +40,38 @@
 
    
     <view class='lh90 bb-1 fs30 pdl-30' wx:if='{{itemObj.get_address}}'>
-      取样地址
+      寄样地址
     </view>
-    <view class='find-order-detail-address bb-20 fs24 pdl-30'wx:if='{{itemObj.get_address}}'>
-      <!-- <view class='lh50'> 地址名称 : {{itemObj.get_address.stall||''}}  </view>
-      <view class='lh50'> 联 系 人 : {{itemObj.get_address.consignee||''}}  {{itemObj.get_address.mobile||''}} </view>
-      <view class='address lh50 pdb-30 pdr-30'>取样地址: {{itemObj.get_address.city_str||''}} {{itemObj.get_address.address||''}} </view>              -->
+    <view class='find-order-detail-address bb-20 fs30 pdl-30'wx:if='{{itemObj.get_address}}'>
+     
+      <view wx:if='{{itemObj.get_address.city_str}}'>
+          <view class='lh50'>
+            <text class='remark' wx:if='{{itemObj.get_address.remark}}'>{{itemObj.get_address.remark || ''}}</text>
+            {{itemObj.get_address.city_str||''}}  {{itemObj.get_address.address||''}} {{itemObj.get_address.room||''}}
+            
+          </view>
+          <view class='lh50 text-999' style='word-break:break-all;'>
+            {{itemObj.get_address.consignee||''}} / {{itemObj.get_address.mobile||''}}
+          </view>
+          <view class='lh50 text-999' style='word-break:break-all;'>
+            {{itemObj.get_address.stall||''}}
+          </view>
+      </view>
 
-      <view class='lh50'>
-        <text class='remark' wx:if='{{itemObj.get_address.remark}}'>{{itemObj.get_address.remark || ''}}</text>
-        {{itemObj.get_address.city_str||''}}  {{itemObj.get_address.address||''}} {{itemObj.get_address.room||''}}
-        
+
+      <view wx:if='{{itemObj.get_address.length>1}}' class='bb1 mg10' wx:for='{{itemObj.get_address}}' wx:key='this'>
+          <view class='lh50'>
+            <text class='remark' wx:if='{{item.tag}}'>{{item.tag || ''}}</text>
+            {{item.address||''}}
+          </view>
+          <view class='lh50 text-999' style='word-break:break-all;'>
+            {{item.consignee||''}} / {{item.mobile||''}}
+          </view>
+          <view class='lh50 text-999' style='word-break:break-all;'>
+            {{item.desc||''}} 
+          </view>
       </view>
-      <view class='lh50' style='word-break:break-all;'>
-        {{itemObj.get_address.consignee||''}} / {{itemObj.get_address.mobile||''}}
-      </view>
-      <view class='lh50 text-999' style='word-break:break-all;'>
-         {{itemObj.get_address.stall||''}}
-      </view>
+      
     </view>
     
     
@@ -149,15 +163,14 @@ bindconfirm="commentConfirm"
 bindcancel="commentCancel">
 <view class='star-warp pdt-30 pdb-30'>
     <view>
-      找料满意度： <text catchtap='satisfact' data-idx='{{index}}' wx:key="{{this}}" wx:for="{{starArr}}" wx:for-item="item" wx:for-index="index" class="star iconfont icon-star {{ starIndex_1 >= index ? 'text-yellow':''}}"></text>
+      找料满意度： <text catchtap='satisfact' style='margin-left:20rpx' data-idx='{{index}}' wx:key="{{this}}" wx:for="{{starArr}}" wx:for-item="item" wx:for-index="index" class="star iconfont icon-star {{ starIndex_1 >= index ? 'text-yellow':''}}"></text>
     </view>
     <view>
       配送及时性： 
-      <text catchtap='timely' data-idx='{{index}}' wx:for="{{starArr}}" wx:key="{{this}}" wx:for-item="item" wx:for-index="index" class="star iconfont icon-star {{ starIndex_2 >= index ? 'text-yellow':''}}"></text>
+      <text catchtap='timely' style='margin-left:20rpx' data-idx='{{index}}' wx:for="{{starArr}}" wx:key="{{this}}" wx:for-item="item" wx:for-index="index" class="star iconfont icon-star {{ starIndex_2 >= index ? 'text-yellow':''}}"></text>
     </view>
 </view>
-
-<input class='bt-1 lh50 pdt-30' type='text' placeholder='请填写取消订单的原因' bindinput='commentModelInput'></input>
+<input class='bt-1 lh50 pdt-30' wx:if='{{isStarShow}}' type='text' placeholder='请输入评语' bindinput='commentModelInput'></input>
 </modal>
 
 

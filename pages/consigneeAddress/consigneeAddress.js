@@ -196,6 +196,10 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow: function () {
+      this.setData({
+        editTitle1: '编辑',
+        editTitle2:'编辑'
+      })
         // 获取列表数据
         if (!firstIn) {
             this.getAddressListData();

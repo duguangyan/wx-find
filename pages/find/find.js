@@ -29,6 +29,13 @@ Page({
         get_type:'1', //寄送地址切换
         addFinds: [{ index: 0, checkType: '', selcetTabNum: 1, find_type: '1', selcetSecondTabNum: '1', isSelect: false, desc: '', cid:'', files: [{}, {}, {}],address:{}}]
     },
+
+    //  联系我们电话
+    contact() {
+      wx.makePhoneCall({
+        phoneNumber: '400-8088-156'
+      })
+    },
     //须知弹窗是否继续显示 
     checkIsResNotes(){
       this.setData({
@@ -376,7 +383,22 @@ Page({
 
     // 提交表单
 
-    findSubmit() {
+    findSubmit(e) {
+      console.log('fromId');
+      console.log(e.detail.formId);
+      if (e.detail.formId != 'the formId is a mock one') {
+        let data = {
+          "form_id": e.detail.formId,
+          "from": "3"
+        }
+        api.getFormId({
+          method: 'POST',
+          data
+        }).then((res) => {
+          console.log(res);
+          console.log('获取formId');
+        })
+      }
       let _this = this;
       console.log(this.data.addFinds); 
       for (let i = 0; i < this.data.addFinds.length;i++){ 
@@ -481,12 +503,19 @@ Page({
         }
       })
     },
-    
-    
+  
     /**
      * 生命周期函数--监听页面加载
      */
-    onLoad: function (options) {   
+    onLoad: function (options) {  
+      // 动态获取须知
+      api.needKnow({}).then((res) => {
+        console.log(res);
+        this.setData({
+          findNeedKnow: res.data.find.value
+        })
+      })
+
       this.getSelectedAddress();
 
       
@@ -603,6 +632,11 @@ Page({
     onShareAppMessage: function () {
 
     },
+
+
+  xxx() {
+    console.log('xxxxxxxxxxxxxxxxxxxx');
+  },
     // 收货地址
     getSelectedAddress() { 
       // 获取默认地址

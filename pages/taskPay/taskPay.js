@@ -80,9 +80,6 @@ Page({
 
   // 支付
   doPay() { 
-
-    
-
     this.setData({
       isDisabled:true
     })
@@ -142,17 +139,28 @@ Page({
       
       if(res.code==200){
         if (res.data.pay_type == 3){
+          let is_set_pay_pass = res.data.is_set_pay_pass;
           if (res.data.is_set_pay_pass){
             _this.setData({
               isOldPayPasswordModel: true
             })
           }else{
-            // wx.navigateTo({
-            //   url: '../changePayPassword/changePayPassword',
-            // })
-            wx.navigateTo({
-              url: '../changePassword/changePassword?forgetPayPassWord=1',
+            wx.showModal({
+              title: '请先去设置支付密码',
+              showCancel: false,
+              content: '',
+              confirmText: '好的',
+              success: function (res) {
+                if (res.confirm) {
+                  wx.setStorageSync('hasPayPwd', !is_set_pay_pass);
+                  wx.navigateTo({
+                    url: '../changePayPassword/changePayPassword',
+                  })
+                }
+              }
             })
+            
+            
             this.setData({
               isDisabled: false
             })
@@ -577,6 +585,7 @@ Page({
       Value: '',
       isDisabled:false
     })
+    wx.setStorageSync('hasPayPwd',false);
     wx.navigateTo({
       url: '../changePassword/changePassword?forgetPayPassWord=1',
     })

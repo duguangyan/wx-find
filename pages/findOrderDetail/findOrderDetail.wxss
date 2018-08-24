@@ -42,6 +42,7 @@ page{
 .find-order-detail-address{
   margin:30rpx 0 0 0; 
   padding-right:30rpx; 
+  padding-bottom: 30rpx;
 }
 .find-order-detail-btn{
   width: 750rpx;
@@ -49,6 +50,7 @@ page{
   position: fixed;
   bottom: 0;
   background-color: #fff;
+  z-index: 99999;
 }
 .find-order-detail-btn button {
   display: block;

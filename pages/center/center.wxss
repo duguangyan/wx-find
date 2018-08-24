@@ -5,6 +5,10 @@ page {
 view {
     background: #fff;
 }
+.text-center{
+  text-align: center;
+  margin-bottom: 30rpx;
+}
 .center-setting{
   position: absolute;
   right: 30rpx;

@@ -36,17 +36,35 @@
                   <view wx:if='{{item.form_data.get_type==2}}'>
                     寄样地址：
                   </view>
-                  <view class='fs24'>
-                    <text class='remark' wx:if='{{item.address.remark}}'>{{item.address.remark||''}}</text> 
-                    {{item.address.city_str ||''}} {{item.address.address||''}} {{item.address.room||''}} 
-                    
+                  <view wx:if='{{item.form_data.get_type==1}}'>
+                      <view class='fs24'>
+                        <view class='remark' wx:if="{{item.address.remark && item.address.remark!=''}}">
+                          {{item.address.remark||''}}
+                        </view> 
+                        {{item.address.city_str ||''}} {{item.address.address||''}} {{item.address.room||''}} 
+                      </view>
+                      <view class='fs24' style='word-break:break-all;'>
+                        {{item.address.consignee || ''}} / {{item.address.mobile || ''}}
+                      </view>
+                      <view class='fs24 text-999' style='word-break:break-all;'>
+                        {{item.address.stall || ''}}
+                      </view>
                   </view>
-                  <view class='fs24' style='word-break:break-all;'>
-                    {{item.address.consignee || ''}} / {{item.address.mobile || ''}}
-                  </view>
-                  <view class='fs24 text-999' style='word-break:break-all;'>
-                    {{item.address.stall || ''}}
-                  </view>
+                  
+                  
+                <view wx:if='{{item.form_data.get_type==2}}'>
+        
+                    <view class='fs24 pdr-20' style='word-break:break-all;' >
+                        <text class='remark'wx:if='{{item.address[0].tag}}'>{{item.address[0].tag||''}}</text> 
+                        {{item.address[0].address||''}}
+                    </view>
+                    <view class='fs24 pdr-20' style='word-break:break-all;'>
+                        {{item.address[0].consignee||''}} / {{item.address[0].mobile||''}}
+                    </view>
+                    <view>...</view>
+                </view>
+
+                  
               </view> 
             </view> 
         </view>
@@ -76,7 +94,9 @@
                       <text>{{findsAddress.city_str || ''}} {{findsAddress.address || ''}}</text>
                   </view> -->
                   <view class='fs24'>
-                    <text class='remark' wx:if='{{findsAddress.remark}}'>{{findsAddress.remark||''}}</text>
+                    <view class='remark' wx:if='{{findsAddress.remark&&findsAddress.remark!=""}}'>
+                    {{findsAddress.remark||''}}
+                    </view>
                     {{findsAddress.city_str ||''}} {{findsAddress.address||''}} {{findsAddress.room||''}} 
                      
                   </view>
@@ -116,7 +136,9 @@
                   <view>取料地址：{{fetchsAddress.city_str}} {{fetchsAddress.address||''}}</view> -->
                   <view>地址名称：</view>
                   <view class='fs24'>
-                    <text class='remark' wx:if='{{item.address.remark}}'>{{item.address.remark||''}}</text> 
+                    <view class='remark' wx:if='{{item.address.remark&&item.address.remark!=""}}'>
+                       {{item.address.remark||''}}
+                    </view> 
                     {{item.address.city_str ||''}} {{item.address.address||''}} {{item.address.room||''}} 
                     
                   </view>
@@ -154,7 +176,9 @@
                       <text>{{fetchsAddress.city_str||''}} {{fetchsAddress.address||''}}</text>
                   </view> -->
                   <view class='fs24'>
-                    <text class='remark'>{{fetchsAddress.remark||''}}</text> 
+                    <view class='remark' wx:if='{{fetchsAddress.remark&&fetchsAddress.remark!=""}}'>
+                    {{fetchsAddress.remark||''}}
+                    </view> 
                     {{fetchsAddress.city_str ||''}} {{fetchsAddress.address||''}} {{fetchsAddress.room||''}} 
                     
                   </view>
