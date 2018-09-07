@@ -18,12 +18,13 @@
             </view> 
             <view class='task-find-method'>
               <view class='task-find-method-img' wx:if='{{item.form_data.find_type==1}}'>
-                  <image wx:if='{{item.form_data.front_img}}' 
+               <image catchtap="imgYu" wx:for='{{item.form_data.front_img}}' wx:key='this' src='{{item}}'></image>
+                  <!-- <image wx:if='{{item.form_data.front_img}}' 
                    catchtap="imgYu" data-src='{{item.form_data.front_img}}' src='{{item.form_data.front_img}}'></image>
                   <image wx:if='{{item.form_data.side_img}}' 
                    catchtap="imgYu" data-src='{{item.form_data.side_img}}' src='{{item.form_data.side_img}}'></image>
                   <image wx:if='{{item.form_data.back_img}}' 
-                   catchtap="imgYu" data-src='{{item.form_data.back_img}}' src='{{item.form_data.back_img}}'></image>
+                   catchtap="imgYu" data-src='{{item.form_data.back_img}}' src='{{item.form_data.back_img}}'></image> -->
               </view> 
               <view class='task-find-method-getfind' wx:if='{{item.form_data.find_type==2}}'>
                   <!-- <view wx:if='{{item.address.stall}}'>地址名称：{{item.address.stall || ''}} </view>

@@ -422,21 +422,52 @@ Page({
         }
         // 图片找料判断
         if (this.data.addFinds[i].selcetTabNum == '1'){
-          let filesNum = 0;
-          // 是否至少上传一张图片
-          for (let j = 0; j < this.data.addFinds[i].files.length;j++){ 
-            if (!this.data.addFinds[i].files[j].url){
-              filesNum++;
-            }
-            if (filesNum>=3){
-              wx.showToast({
-                title: '第' + (i + 1) + '个任务，至少上传一张图片',
-                icon: 'none',
-                duration: 1500
-              })
-              return false;
-            }
+
+          
+          // 获取上传图片
+          let uploadC = this.selectComponent('#upload'+i);
+          let uploadImgs = [];
+          // 判定是否在已是完成状态
+          let isUploading = uploadC.data.files.every((ele, i) => {
+            return (ele.pct && (ele.pct === 'finish' || ele.pct === 'fail'))
+          })
+          if (!isUploading) {
+            util.errorTips('图片正在上传')
+            return false
           }
+          // 添加数据
+          uploadC.data.files.forEach((ele, i) => {
+            if (ele.full_url) {
+              uploadImgs.push(ele.full_url)
+            }
+          })
+          console.log(uploadImgs);
+          
+          if (uploadImgs == 0) {
+            wx.showToast({
+              title: '第' + (i + 1) + '个任务，至少上传一张图片',
+              icon: 'none',
+              duration: 1500
+            })
+            return false;
+          }else{
+            this.data.addFinds[i].front_img = uploadImgs;
+          }
+          
+          // 是否至少上传一张图片
+          // for (let j = 0; j < this.data.addFinds[i].files.length;j++){ 
+          //   if (!this.data.addFinds[i].files[j].url){
+          //     filesNum++;
+          //   }
+          //   if (filesNum>=3){
+          //     wx.showToast({
+          //       title: '第' + (i + 1) + '个任务，至少上传一张图片',
+          //       icon: 'none',
+          //       duration: 1500
+          //     })
+          //     return false;
+          //   }
+          // }
   
         } else if (this.data.addFinds[i].selcetTabNum == '2') {   // 按样找料判断
           // 按样找料地址是否存在
@@ -538,7 +569,7 @@ Page({
         let findNum = 1;
         for (let i = 0; i < parseInt(findNum); i++) {
           newAddFinds.push(
-            { index: i, cid: this.data.addFinds[0].cid, checkType: this.data.addFinds[0].checkType, find_type: options.selcetTabNum, selcetTabNum: options.selcetTabNum, get_type: '1', selcetSecondTabNum: '1', isSelect: false, desc: '', files: [{}, {}, {}], get_address: wx.getStorageSync('defaultAddress').id, address: wx.getStorageSync('defaultAddress') }
+            { index: i, cid: this.data.addFinds[0].cid, checkType: this.data.addFinds[0].checkType, find_type: options.selcetTabNum || 1, selcetTabNum: options.selcetTabNum || 1, get_type: '1', selcetSecondTabNum: '1', isSelect: false, desc: '', files: [{}, {}, {}], get_address: wx.getStorageSync('defaultAddress').id, address: wx.getStorageSync('defaultAddress') }
           )
           // 设置数据
           this.setData({
@@ -563,7 +594,7 @@ Page({
         let findNum = 1;
         for (let i = 0; i < parseInt(findNum); i++) {
           newAddFinds.push(
-            { index: i, cid: this.data.addFinds[0].cid, checkType: this.data.addFinds[0].checkType, find_type: options.selcetTabNum, selcetTabNum: options.selcetTabNum, get_type: '1', selcetSecondTabNum: '1', isSelect: false, desc: '', files: [{}, {}, {}], get_address: this.data.defaultAddressId, address: this.data.defaultAddress }
+            { index: i, cid: this.data.addFinds[0].cid, checkType: this.data.addFinds[0].checkType, find_type: options.selcetTabNum, selcetTabNum: options.selcetTabNum || 0, get_type: '1', selcetSecondTabNum: '1', isSelect: false, desc: '', files: [{}, {}, {}], get_address: this.data.defaultAddressId, address: this.data.defaultAddress }
           )
           // 设置数据
           this.setData({

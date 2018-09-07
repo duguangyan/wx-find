@@ -274,6 +274,9 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow: function () {
+      // 版本号
+      let v = wx.getStorageSync('v');
+      
       wx.setStorageSync('fromCenter','1');
       this.data.orderTab1[0].num = 0;
       this.data.orderTab1[1].num = 0;
@@ -282,6 +285,7 @@ Page({
       this.data.orderTab2[1].num = 0;
       this.data.orderTab2[2].num = 0;
       this.setData({
+        v,
         memberInfo: false,
         orderTab1: this.data.orderTab1,
         orderTab2: this.data.orderTab2

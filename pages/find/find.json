@@ -1,3 +1,6 @@
 {
-    "navigationBarTitleText": "小鹿快找"
+    "navigationBarTitleText": "小鹿快找",
+    "usingComponents": {
+      "upload": "../../component/upload/index"
+    }
 }

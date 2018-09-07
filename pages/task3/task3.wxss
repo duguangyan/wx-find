@@ -67,6 +67,7 @@
   height: 100rpx;
   margin-right: 30rpx;
   border-radius:10rpx; 
+  margin-top: 20rpx;
 }
 .task-pay{
   width: 710rpx;

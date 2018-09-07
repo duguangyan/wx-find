@@ -369,26 +369,43 @@ Page({
   },
   // 确认收货
   affirmOrder (e) {
+
     let id = e.target.dataset.id;
     let index = e.target.dataset.index;
     let _this = this;
-    api.affirmOrder({
-      method:'POST'
-    },id).then((res)=>{
-      console.log(res);
-      if(res.code==200){
-        _this.data.findList[index].button_status.on_confirm = 0;
-        _this.setData({
-          findList: _this.data.findList
-        })
-        wx.showToast({
-          title: '收货成功！',
-          icon: 'none',
-          duration: 2000
-        })
+    
+
+
+    wx.showModal({
+      title: '提示',
+      content: '确认收货吗?',
+      success: function (res) {
+        if (res.confirm) {
+          console.log('用户点击确定');
+
+          api.affirmOrder({
+            method: 'POST'
+          }, id).then((res) => {
+            console.log(res);
+            if (res.code == 200) {
+              _this.data.findList[index].button_status.on_confirm = 0;
+              _this.setData({
+                findList: _this.data.findList
+              })
+              wx.showToast({
+                title: '收货成功！',
+                icon: 'none',
+                duration: 2000
+              })
+            }
+          })
+          console.log('确认收货');
+
+        } else if (res.cancel) {
+          console.log('用户点击取消')
+        }
       }
     })
-    console.log('确认收货');
   },
   // 去找料详情
   goFindDetail (e) {
@@ -414,37 +431,53 @@ Page({
     let data = {
       order_id: e.target.dataset.id
     }
-    api.orderDel({
-      method:'POST',
-      data
-    }).then((res)=>{
-        if(res.code=200){
-          for (let i = 0; i < this.data.findList.length; i++) {
-            if (this.data.findList[i].id == e.target.dataset.id) {
-              this.data.findList.splice(i,1);
+    let _this = this;
+    wx.showModal({
+      title: '提示',
+      content: '确认删除吗？',
+      success: function (res) {
+        if (res.confirm) {
+          console.log('用户点击确定')
+
+          api.orderDel({
+            method: 'POST',
+            data
+          }).then((res) => {
+            if (res.code = 200) {
+              for (let i = 0; i < _this.data.findList.length; i++) {
+                if (_this.data.findList[i].id == e.target.dataset.id) {
+                  _this.data.findList.splice(i, 1);
+                }
+              }
+              _this.setData({
+                findList: _this.data.findList
+              })
+
+              wx.showToast({
+                title: '删除成功',
+                icon: 'success',
+                duration: 1500
+              })
+            } else {
+              wx.showToast({
+                title: '网络慢,请稍后再试',
+                duration: 1500
+              })
             }
-          }
-          this.setData({
-            findList: this.data.findList
+          }).catch((res) => {
+            wx.showToast({
+              title: '网络慢,请稍后再试',
+              duration: 1500
+            })
           })
 
-          wx.showToast({
-            title: '删除成功',
-            icon: 'success',
-            duration: 1500
-          })
-        }else{
-          wx.showToast({
-            title: '网络慢,请稍后再试',
-            duration: 1500
-          })
+        } else if (res.cancel) {
+          console.log('用户点击取消')
         }
-    }).catch((res)=>{
-      wx.showToast({
-        title: '网络慢,请稍后再试',
-        duration: 1500
-      })
+      }
     })
+
+    
   }, 
   // 去评价
   toComment (e) {
@@ -587,6 +620,13 @@ Page({
             this.data.findList[i].type_name = '按描述找料';
           }
           // 找料状态 1 待接单 2找料中 3 无法找到 4已找到料 
+          // 图片处理
+          if (typeof this.data.findList[i].front_img == 'string'){
+            let newFrontImg = [];
+            newFrontImg.push(this.data.findList[i].front_img);
+            this.data.findList[i].front_img = newFrontImg;
+          }
+           
         }
 
         this.data.findList.forEach((v, i) => {
@@ -611,7 +651,8 @@ Page({
         })
       }
       wx.hideLoading();
-      console.log(res.data);
+      console.log(this.data.findList);
+      console.log('--------------------');
     }).catch((res)=>{
       wx.hideLoading();
       // wx.showToast({

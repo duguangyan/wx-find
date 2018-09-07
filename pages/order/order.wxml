@@ -50,16 +50,25 @@
                   </view> 
                   <view class='task-find-method pdb-20'>
                     <view class='task-find-method-img' wx:if='{{item.type==1}}'>
-                        <image wx:if='{{item.front_img}}' src='{{item.front_img}}'></image>
-                        <image wx:if='{{item.side_img}}' src='{{item.side_img}}'></image>
-                        <image wx:if='{{item.back_img}}' src='{{item.back_img}}'></image>
+                        <image wx:for='{{item.front_img}}' 
+                        wx:key='this' src='{{item}}'></image>
+  
+                        <!-- <image wx:if='{{item.side_img}}' src='{{item.side_img}}'></image>
+                        <image wx:if='{{item.back_img}}' src='{{item.back_img}}'></image> -->
                     </view> 
-                    <view class='task-find-method-getfind fs24' wx:if='{{item.type==2 || orderNavNum == 2}}'>
+                    <view class='task-find-method-img' wx:if='{{item.type==0}}'>
+                        <image wx:for='{{item.desc_img}}' wx:key='this' src='{{item}}'></image>
+                        
+                        <!-- <image wx:if='{{item.side_img}}' src='{{item.side_img}}'></image>
+                        <image wx:if='{{item.back_img}}' src='{{item.back_img}}'></image> -->
+                    </view>
+
+                    <view class='task-find-method-getfind fs24' wx:if='{{item.type==1 || item.type==2 || orderNavNum == 2}}'>
                         <!-- <view>地址名称: {{item.shipping_address.stall||''}} </view>
                         <view>联 系 人 : 
                         {{item.shipping_address.consignee||''}}  / {{item.shipping_address.mobile||''}}
                         </view> -->
-                        <view class='fs30' wx:if='{{item.get_type==1}}'>取样地址: </view>
+                        <view class='fs30' wx:if='{{item.get_type==1 || item.get_type==0}}'>取样地址: </view>
                         <view class='fs30' wx:if='{{item.get_type==2}}'>送样地址: </view>
 
                         <view style='display:inline-block' >

@@ -34,9 +34,10 @@
             <view wx:if='{{item.form_data.find_type == 3}}'>找料方式: 按描述找料</view>
           </view>
           <view wx:if='{{item.form_data.find_type == 1}}'>
-            <image class='item-img' wx:if='{{item.form_data.front_img}}' src='{{item.form_data.front_img}}'></image>
+            <image class='item-img' wx:for='{{item.form_data.front_img}}' wx:key='this' src='{{item}}'></image>
+            <!-- <image class='item-img' wx:if='{{item.form_data.front_img}}' src='{{item.form_data.front_img}}'></image>
             <image class='item-img' wx:if='{{item.form_data.side_img}}' src='{{item.form_data.side_img}}'></image>
-            <image class='item-img' wx:if='{{item.form_data.back_img}}' src='{{item.form_data.back_img}}'></image>
+            <image class='item-img' wx:if='{{item.form_data.back_img}}' src='{{item.form_data.back_img}}'></image> -->
           </view>
           <view wx:if='{{item.form_data.find_type == 2}}'>
             <!-- <view style='color:#999'>地址名称: {{item.address.stall ||''}}</view>

@@ -1,8 +1,12 @@
-const oldApiUrl = 'https://api.yidap.com';
-// const apiUrl = 'https://devapi.yidap.com';
-// const apiUrl = 'https://devv2.yidap.com';
- const apiUrl = 'https://apiv2.yidap.com';
+// const apiUrl = 'https://devv2.yidap.com';   // 测试
+const apiUrl = 'https://apiv2.yidap.com';     // 正式
+const versionNumber = 'v2.4.6';  //版本号
 
+if (apiUrl == 'https://apiv2.yidap.com'){
+  wx.setStorageSync('v', versionNumber+' 正式');
+}else{
+  wx.setStorageSync('v', versionNumber+' 测试');
+}
 Promise.prototype.finally = function (callback) {
     let P = this.constructor;
     return this.then(
@@ -279,7 +283,7 @@ const getGoodsDetail = (params) => {
 }
 
 // 收货地址地区
-const getAddress = (params) => myRequest(params, `${oldApiUrl}/lib/region/listTree`);
+const getAddress = (params) => myRequest(params, `${apiUrl}/api/region/listTree`);
 
 
 // 首页品牌展示

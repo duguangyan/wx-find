@@ -21,6 +21,13 @@ Page({
       Value: "",        //输入的内容  
       ispassword: true, //是否密文显示 true为密文， false为明文。
     },
+  previewImage: function (e) {
+    var current = e.target.dataset.src;
+    wx.previewImage({
+      current: current, // 当前显示图片的http链接
+      urls: this.data.itemObj.desc_img || this.data.itemObj.front_img// 需要预览的图片http链接列表
+    })
+  },
 // 去评价
   toComment () {
     console.log('去评价');
@@ -419,10 +426,10 @@ Page({
     getData(){
       if (this.data.id) {
         api.getOrderDetail({}, this.data.id).then((res) => {
-          console.log(res);
-
           if (res.code == 200) {
             let itemObj = res.data;
+            console.log("-------------------");
+            console.log(itemObj.desc_img);
             if (itemObj.type) {
               wx.setNavigationBarTitle({
                 title: '找料详情'
@@ -439,10 +446,18 @@ Page({
             } else if (itemObj.type == 3) {
               itemObj.type_name = '按描述找料'
             }
+            if (typeof itemObj.front_img == 'string') {
+              let newFrontImg = [];
+              newFrontImg.push(itemObj.front_img);
+              itemObj.front_img = newFrontImg;
+            }
+
             this.setData({
               itemObj
             })
 
+          }else{
+            util.errorTips(res.msg);
           }
 
         }).catch((res) => {

@@ -116,7 +116,7 @@
   padding-top:175rpx; 
 }
 .task-find-method-img{
-  padding-left: 30rpx;
+  padding: 10rpx 30rpx;
 }
 .task-find-method-img image{
   width: 100rpx;

@@ -22,6 +22,25 @@
 
     <view class='find-order-detail-type bb-20 fs30'>
         <view class='lh50'>物料类型: {{itemObj.cname}}</view>
+
+        <!-- <view class='lh50' >物料类型: 
+            <image  wx:for="{{temObj.desc_img}}" wx:key='this' src="{{item}}"></image>
+        </view> -->
+
+        <!-- <view class='lh50'>
+            <view>图片:</view>
+            <image src="{{temObj.desc_img[0]}}"></image>
+         </view> -->
+        <view style='display:flex;width:100%;' class='cf' wx:if="{{itemObj.desc_img && itemObj.desc_img.length>0}}">
+            <view style='flex:1;width:100rpx;' class='describe'><text class='describe-title'>图片:</text></view>
+            <view style='flex:3;float:left; margin-left:10rpx'>
+               <image wx:for="{{itemObj.desc_img}}" wx:key='this' wx:for-item='item' wx:for-index='index' 
+               style='width:100rpx;height:100rpx;float:left;margin:10rpx 20rpx 10rpx 0;' src="{{item}}" 
+               data-src="{{item}}" bindtap="previewImage"></image>
+            </view>
+            
+        </view>
+        
         <view class='lh50 describe'><text class='describe-title'>描述:</text> <text class='ellipsis-line3 describe-content'>{{itemObj.desc}}</text> </view>
         <view class='lh50 describe'><text class='describe-title'>数量:</text> <text class='ellipsis-line3 describe-content'>{{itemObj.fetch_num}}</text> </view>
         <view class='lh50' wx:if='{{itemObj.type_name}}'>找料方式: {{itemObj.type_name}} 
@@ -29,12 +48,14 @@
           <text wx:if='{{itemObj.get_type==2}}'>-寄送样品</text>
         </view>
          <view class='task-find-method-img' wx:if='{{itemObj.type==1}}'>
-          <image catchtap="imgYu" data-src='{{itemObj.front_img}}' 
-                  wx:if='{{itemObj.front_img}}' src='{{itemObj.front_img}}'></image>
-          <image catchtap="imgYu" data-src='{{itemObj.side_img}}'
+          <image wx:for='{{itemObj.front_img}}' wx:key='this' src='{{item}}'
+          data-src="{{item}}" bindtap="previewImage"></image>
+          <!-- <image catchtap="imgYu" data-src='{{itemObj.front_img}}' 
+                  wx:if='{{itemObj.front_img}}' src='{{itemObj.front_img}}'></image> -->
+          <!-- <image catchtap="imgYu" data-src='{{itemObj.side_img}}'
                   wx:if='{{itemObj.side_img}}' src='{{itemObj.side_img}}'></image>
           <image catchtap="imgYu" data-src='{{itemObj.back_img}}'
-                  wx:if='{{itemObj.back_img}}' src='{{itemObj.back_img}}'></image>
+                  wx:if='{{itemObj.back_img}}' src='{{itemObj.back_img}}'></image> -->
         </view>
     </view>
 

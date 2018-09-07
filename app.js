@@ -1,8 +1,21 @@
 //app.js
 const api = require('./utils/api.js');
+const util = require('./utils/util.js');
 var aldstat = require('./utils/ald-stat.js');
+
 App({
   onLaunch: function () {
+    // if (wx.getSystemInfoSync().environment){
+
+    //   //console.log(wx.getSystemInfoSync().environment);
+    //   //util.successTips('成功');
+    //   // 微信企业号
+      
+    // }else{
+    //   //console.log(wx.getSystemInfoSync().environment);
+    //   //util.successTips('失败');
+    //   // 微信
+    // }
     wx.login({
       success: function (res) {
         //console.log(res);

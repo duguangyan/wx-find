@@ -84,10 +84,17 @@
       <view class="navigator-arrow"></view>
   </block>
 </view>
-
+<view class="navigator-box section-order mgt-20">
+    <button class="navigator-text fs30 pdl-30" 
+    style="background-color:#fff;border:none;height:115rpx;line-height:115rpx;text-align:left;" 
+    open-type="contact">客服</button>
+    <view class="navigator-arrow"></view>
+</view>
 <view class="navigator-box section-order mgt-20">
   <block class='navigator'>
-      <view class="navigator-text fs24 text-666 pdl-30 text-center">Copyright @2018 一大批 版权所有 版本 V2.4.1</view>
+      <view class="navigator-text fs24 text-666 pdl-30 text-center">
+      Copyright @2018 一大批 版权所有 版本 {{v}}
+      </view>
   </block>
 </view>
 <view style='height:50rpx;background:#f2f2f2;'></view>
