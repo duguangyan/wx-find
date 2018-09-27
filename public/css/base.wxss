@@ -63,6 +63,9 @@ page{
 .text-yellow{
   color: #ff7c06;
 }
+.text-orange{
+  color: #FFCC0F;
+}
 /* 红色 */
 .text-red{
   color: #c81a29;
@@ -348,11 +351,14 @@ page{
 }
 
 .pd-20 {
-    padding: 20rpx;
+    padding: 0 20rpx;
 }
 
 .pd-30 {
     padding: 30rpx;
+}
+.pd-40 {
+    padding:0 40rpx;
 }
 .pdl-20 {
     padding-left: 20rpx;
@@ -387,6 +393,9 @@ page{
 }
 .pdb-20{
   padding-bottom:20rpx; 
+}
+.pdb-10{
+  padding-bottom:10rpx; 
 }
 .pdb-30{
   padding-bottom:30rpx; 
@@ -556,7 +565,15 @@ page{
 .flex-1 {
     flex: 1;
 }
-
+.flex-2 {
+    flex: 2;
+}
+.flex-3 {
+    flex: 3;
+}
+.flex-4 {
+    flex: 4;
+}
 .flex-col {
     flex-direction: column;
 }

@@ -1,0 +1,41 @@
+<view class='growth-task-warp'>
+    <view class='growth-task-top'>
+      <view class='cf growth-task-top1'>
+          <view class='fll fs32'>我的等级 <text class='text-orange'>VIP{{grade.level}}</text></view>
+          <view class='flr fs24' bindtap='checkGrade'>查看等级权限</view>
+      </view>
+      <view class='growth-task-top2'>
+          <view class='growth-task-all'></view>
+          <view class='growth-task-value' style="width:{{(grade.growth/grade.last_growth) * 100+'%'}}"></view>
+      </view>
+      <view class=' cf'>
+        <text class='flr fs24 text-fff'>{{grade.growth}}/{{grade.last_growth}}</text>
+      </view>
+    </view>
+    <view style='height:190rpx'></view>
+    <view class='growth-task-content'>
+        <view class='flex' wx:for="{{lists}}" wx:for-item="item" wx:key="this">
+          <view class='flex-1'><image src="{{item.img}}"></image></view>
+          <view class='flex-3'>
+            <view class='fs32'>{{item.name}}</view>
+            <view class='fs24 text-666'>(+{{item.value}}成长值)</view>
+          </view>
+          <view class="flex-1 btn {{item.id == 5 ?'cur':''}}" data-id='{{item.id}}' bindtap='goGrowth'>
+             {{item.id == 5?'已完成':'去完成'}}
+          </view>
+        </view>
+    </view>
+</view>
+
+
+<modal 
+title="等级权限" 
+hidden="{{ isCommentModel }}" 
+confirm-text="确定"  
+no-cancel
+bindconfirm="commentConfirm">
+  <view class='star-warp'>
+  <text style='font-size:24rpx;'>{{rule}}</text>
+    <!-- <rich-text nodes="{{rule}}"></rich-text> -->
+  </view>
+</modal>

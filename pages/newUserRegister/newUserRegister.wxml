@@ -1,0 +1,22 @@
+<view>
+  <view class='top-img'>
+    <image src='https://static.yidap.com/miniapp/newUserImg.png'></image>
+    <view class='rule' bindtap='showRuleModel'>规则</view>
+  </view>
+  <button class='new-userBTN' open-type="share">邀请新用户</button>
+  <view class='pd-40 mgt-30'>
+    <text>{{desc}}</text>
+  </view>
+
+  <modal 
+    title="规则" 
+    hidden="{{ isRuleModel }}" 
+    confirm-text="确定"  
+    no-cancel
+    bindconfirm="showRuleModel">
+    <view class='star-warp'>
+    <text style='font-size:24rpx;'>{{rule}}</text>
+      <!-- <rich-text nodes="{{rule}}"></rich-text> -->
+    </view>
+  </modal>
+</view>

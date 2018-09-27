@@ -144,19 +144,19 @@ Component({
                       })
 
 
-                      uploadTask.onProgressUpdate((res) => {
-                          console.log('上传进度', res.progress);
-                          files[i].pct = res.progress + '%';
+                      // uploadTask.onProgressUpdate((res) => { debugger
+                      //     console.log('上传进度', res.progress);
+                      //     files[i].pct = res.progress + '%';
 
-                          if (res.progress == 100) {
-                              files[i].pct = 'finish';
-                          }
-
-                          that.setData({
-                              files
-                          })
-
-                      })
+                      //     if (res.progress == 100) {
+                      //         files[i].pct = 'finish';
+                      //     }
+        
+                      //     that.setData({
+                      //       files
+                      //     })
+                      //     console.log(files);
+                      // })
 
                   }
 
@@ -175,13 +175,13 @@ Component({
               return (ele.pct === 'finish' || ele.pct === 'fail')
           })
 
-          if (!isFiniish) {
-              wx.showToast({
-                  title: '正在上传',
-                  icon: 'none'
-              })
-              return false
-          }
+          // if (!isFiniish) {
+          //     wx.showToast({
+          //         title: '正在上传',
+          //         icon: 'none'
+          //     })
+          //     return false
+          // }
 
           files.splice(i, 1);
 

@@ -152,3 +152,14 @@ text-align:right;
 .task-warp{
   overflow: hidden;
 }
+.coupon{
+  text-align: right;
+  color: #ef8130;
+}
+.coupon text:first-child{
+  margin-right: 20rpx;
+}
+.coupon text:last-child{
+  position: relative;
+  top: 5rpx;
+}

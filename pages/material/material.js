@@ -292,13 +292,13 @@ Page({
     let uploadC = this.selectComponent('#upload');
     let uploadImgs = [];
     // 判定是否在已是完成状态
-    let isUploading = uploadC.data.files.every((ele, i) => {
-      return (ele.pct && (ele.pct === 'finish' || ele.pct === 'fail'))
-    })
-    if (!isUploading) {
-      util.errorTips('图片正在上传')
-      return false
-    }
+    // let isUploading = uploadC.data.files.every((ele, i) => {
+    //   return (ele.pct && (ele.pct === 'finish' || ele.pct === 'fail'))
+    // })
+    // if (!isUploading) {
+    //   util.errorTips('图片正在上传')
+    //   return false
+    // }
     // 添加数据
     uploadC.data.files.forEach((ele, i) => { 
       if (ele.full_url) {

@@ -671,7 +671,7 @@ Page({
     
     if (options.orderId){
       console.log('options.orderId');
-      console.log(options.orderId);
+      //console.log(options.orderId);
       wx.navigateTo({
         url: '../findOrderDetail/findOrderDetail?id=' + options.orderId + '&nav=' + options.nav
       })

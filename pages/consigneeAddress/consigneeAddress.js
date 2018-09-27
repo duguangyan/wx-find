@@ -141,6 +141,21 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {  
+      /**
+       * 来自H5页面
+       */
+      if (options.h5){
+        this.data.h5 = options.h5;
+      }
+      /**
+       * 来自个人信息编辑
+       */
+      if (options.from == 'personInformation'){
+        this.data.from = 'personInformation';
+        this.setData({
+          isFullAddress: true
+        })
+      }
       // 来自个人中心
       if (options.center){
         this.data.center = options.center;
@@ -287,6 +302,7 @@ Page({
       }
       // 获取当前点击地址数据
       let item = e.currentTarget.dataset.item;
+      
 
       if (this.data.isFullAddress) { 
         
@@ -297,11 +313,29 @@ Page({
         }
       }
 
+      // 来自H5页面
+      if (this.data.h5) {
+        wx.navigateTo({
+          url: '../integralmall/integralmall?addressId=' + item.id,
+        })
+        return false;
+      }
+
       wx.setStorageSync('addressCheckedId', item.id);
       this.navigateBack(item);
     },
     // 返回上一级
     navigateBack(item) {
+      if (this.data.from == 'personInformation'){
+        // 更新上一页的地址数据  来自找料任务页面
+        let pages = getCurrentPages(); 
+        let currPage = pages[pages.length - 1];   //当前页面
+        let prevPage = pages[pages.length - 2];  //上一个页面
+        prevPage.setData({
+          address: item.address,
+        })
+      }
+
       if (this.data.hasFormfetch) {
         wx.setStorageSync('fetchsAddress', item);
         // 更新上一页的地址数据  来自找料任务页面

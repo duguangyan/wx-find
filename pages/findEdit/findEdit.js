@@ -274,7 +274,7 @@ Page({
 
   // 提交表单
 
-  findSubmit() {
+  findSubmit() { 
     let _this = this;
     console.log(this.data.addFinds);
     for (let i = 0; i < this.data.addFinds.length; i++) {
@@ -371,39 +371,53 @@ Page({
     this.getCompanyaddress();
 
     let item = JSON.parse(options.item);
-    let index = options.index
+    let index = options.index;
     
-    let files = [{
-      url: item.form_data.front_img,
-        //pct: 'wait'
-      },{
-        url: item.form_data.side_img,
-        //pct: 'wait'
-      }, {
-        url: item.form_data.back_img,
-        //pct: 'wait'
-      }
+    
+    // let files = [{
+    //   url: item.form_data.front_img,
+    //     //pct: 'wait'
+    //   },{
+    //     url: item.form_data.side_img,
+    //     //pct: 'wait'
+    //   }, {
+    //     url: item.form_data.back_img,
+    //     //pct: 'wait'
+    //   }
 
-    ];
+    // ];
 
 
-    if (item.form_data.front_img){
-      files[0].pct = ' '
-    }
+    // if (item.form_data.front_img){
+    //   files[0].pct = ' '
+    // }
 
-    if (item.form_data.side_img) {
-      files[1].pct = ' '
-    }
+    // if (item.form_data.side_img) {
+    //   files[1].pct = ' '
+    // }
 
-    if (item.form_data.back_img) {
-      files[2].pct = ' '
-    }
+    // if (item.form_data.back_img) {
+    //   files[2].pct = ' '
+    // }
     
     this.data.addFinds[0] = item.form_data;
+    
+    if (item.form_data.find_type== '1'){
+      let front_imgs = [];
+      item.form_data.front_img.forEach((o, i) => {
+        let ob = {};
+        ob.url = o,
+          ob.pct = 'finish';
+        front_imgs.push(ob);
+      })
+      this.data.addFinds[0].front_img = front_imgs;
+    }
+    
+
     this.data.addFinds[0].address = item.form_data.address; 
     this.data.addFinds[0].checkType = item.cname;
     this.data.addFinds[0].id = item.id;
-    this.data.addFinds[0].files = files;
+    // this.data.addFinds[0].files = files;
     this.data.addFinds[0].index = index;
     this.data.addFinds[0].desc = item.form_data.desc;
     this.data.addFinds[0].selcetTabNum = item.form_data.find_type;
@@ -419,6 +433,7 @@ Page({
     this.setData({
       addFinds: this.data.addFinds,
     })
+    
     // 获取默认地址
     this.getSelectedAddress();
     console.log('数据');
@@ -588,7 +603,7 @@ Page({
       }
     })
   },
-  submit(){
+  submit(){ 
  
     if (!this.data.addFinds[0].desc){
       wx.showToast({
@@ -599,16 +614,47 @@ Page({
       return false
     }
 
-    if (this.data.addFinds[0].selcetTabNum == 1){
-      if (!this.data.addFinds[0].front_img && !this.data.addFinds[0].side_img && this.data.addFinds[0].back_img){
+    if (this.data.addFinds[0].selcetTabNum == 1) {
+      
+      // if (!this.data.addFinds[0].front_img && !this.data.addFinds[0].side_img && this.data.addFinds[0].back_img){
+      //   wx.showToast({
+      //     title: '请添加图片',
+      //     icon: 'none',
+      //     duration: 2000
+      //   })
+      //   return false;
+      // }
+      // 获取上传图片
+      let uploadC = this.selectComponent('#upload'); 
+    
+      let uploadImgs = [];
+      // 判定是否在已是完成状态
+      // let isUploading = uploadC.data.files.every((ele, i) => {
+      //   return (ele.pct && (ele.pct === 'finish' || ele.pct === 'fail'))
+      // })
+      // if (!isUploading) {
+      //   util.errorTips('图片正在上传')
+      //   return false
+      // } 
+      // 添加数据
+      uploadC.data.files.forEach((ele, i) => {
+        if (ele.full_url  ) {
+          uploadImgs.push(ele.full_url)
+        } else if ( ele.url ){
+          uploadImgs.push(ele.url)
+        }
+      })
+      if (uploadImgs == 0) {
         wx.showToast({
-          title: '请添加图片',
+          title: '至少上传一张图片',
           icon: 'none',
-          duration: 2000
+          duration: 1500
         })
         return false;
-      }
-      
+    }else{
+        this.data.addFinds[0].front_img = uploadImgs
+        
+    }
     }
 
 
@@ -638,6 +684,7 @@ Page({
       form_data: this.data.addFinds[0],
       id: this.data.addFinds[0].id
     }
+    
     api.findEdit({
       method:'POST',
       data

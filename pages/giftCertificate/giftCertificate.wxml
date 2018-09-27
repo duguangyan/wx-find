@@ -1,0 +1,45 @@
+<view class='gift-certificate'>
+
+  <view wx:for='{{lists}}' wx:key="this">
+    <view class='flex pd-20 find' bindtap='goFind'data-list="{{item}}" data-msg='{{item.msg}}'>
+        <view class='flex-4'>
+            <view class='cf'> <text class='fll p1'>{{item.name}}</text>  
+            <text class='flr p2'>{{item.source_type==1?'系统赠送':'积分兑换'}}</text></view>
+            <view class='p3'>说明: {{item.desc}}</view>
+            <view class='p3'>有效日期: {{item.created_at}} 至 {{item.end_at}}</view>
+        </view>
+        <view class='flex-1'>
+            <view>￥{{item.coupon_data.value}}</view>
+            <view>{{item.msg}}</view>
+            <view class='i'></view>
+            <view class='i'></view>
+            <view class='i'></view>
+        </view>
+    </view>
+  </view>
+  
+  <!-- <view>
+      <view class='flex pd-40 get' bindtap='goGet'>
+        <view class='flex-4'>
+          <view class='cf'> <text class='fll p1'>取送代金券</text>  <text class='flr p2'>系统赠送</text></view>
+          <view class='p3'>说明: 抵扣一次找料服务</view>
+          <view class='p3'>有效日期: 2018-08-24 至 2018-09-30</view>
+        </view>
+        <view class='flex-1'>
+            <view>￥30</view>
+            <view>去使用</view>
+            <view class='i'></view>
+            <view class='i'></view>
+            <view class='i'></view>
+        </view>
+      </view>
+  </view> -->
+
+
+      <view  wx:if="{{!hasDate}}" class='loding pdb-30'>
+        已经全部加载完毕
+      </view>
+      <!--加载组件  -->
+      <mainloading wx:if="{{hasDate}}" />
+      <loading modal-text="加载更多"  wx:if="{{hasDate}}" />
+</view>

@@ -39,6 +39,50 @@ Page({
 
 
     },
+    // 签到
+    signIn(){
+      api.signIn({
+        method:'POST'
+      }).then((res)=>{
+          if(res.code==200){
+            this.data.memberInfo.hasSign = true;
+            this.setData({
+              memberInfo: this.data.memberInfo
+            })
+            wx.showToast({
+              title: res.msg,
+              icon: 'none',
+              duration: 1500
+            })
+          }else{
+            wx.showToast({
+              title: res.msg,
+              icon: 'none',
+              duration: 1500
+            })
+          }
+        })
+
+    },
+    // 个人信息修改也
+    personInformation(){
+      let memberInfo = JSON.stringify(this.data.memberInfo);
+      wx.navigateTo({
+        url: '../personInformation/personInformation?memberInfo=' + memberInfo,
+      })
+    },
+    // 去我的礼券
+    goGiftCertificate(){
+      wx.navigateTo({
+        url: '../giftCertificate/giftCertificate',
+      })
+    },
+    // 去任务成长页面
+    goGrowthTask(){
+      wx.navigateTo({
+        url: '../growthTask/growthTask',
+      })
+    },
     // 去设置页面
     gotoSettinngPage(){
       wx.navigateTo({
@@ -303,6 +347,7 @@ Page({
       }).then((res) => {
         console.log('用户信息 = ', res);
         if(res.code==200){
+          wx.setStorageSync('invite_code', res.data.invite_code);
           app.globalData.memberInfo = res.data;
           this.setData({
             memberInfo: res.data
@@ -401,6 +446,22 @@ Page({
   changeNickName(e){
     //this.NickName = event.detail.value;
     this.data.memberInfo.nick_name = e.detail.value;
+    
+  },
+
+  // 去 web-view 积分商城
+  goIntegralmall(){
+    let token = wx.getStorageSync('token') || '';
+    if (token){
+      wx.navigateTo({
+        url: "../integralmall/integralmall"
+      })
+    }else{
+      wx.navigateTo({
+        url: "../login/login"
+      })
+      
+    }
     
   }
 })

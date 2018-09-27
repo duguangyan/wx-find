@@ -2,28 +2,95 @@ page {
     background: #f2f2f2;
 }
 
-view {
-    background: #fff;
-}
 .text-center{
   text-align: center;
   margin-bottom: 30rpx;
 }
+.ellipsis{
+  max-width: 360rpx;
+}
 .center-setting{
   position: absolute;
-  right: 30rpx;
-  top: 30rpx;
+  right: 40rpx;
+  top: 40rpx;
   width: 43rpx;
   height: 41rpx;
 }
 .section-avatar {
-    height: 310rpx;
-    margin: 0 20rpx;
-    margin-top: 20rpx;
-    border-radius:10rpx;
-    box-shadow: 2rpx 0 10rpx  rgba(102, 102, 102, 0.3); 
-    position: relative
+    height: 180rpx;
+    padding-top: 30rpx;
+    position: fixed;
+    width: 100%;
+    background-color: #C81A29;
+    padding-bottom: 50rpx;  
+    margin-bottom: 70rpx;
+    z-index: 99999;
 }
+.section-footer{
+  position: absolute;
+  bottom: -50rpx;
+  width:670rpx;
+  height:100rpx;
+  line-height: 100rpx;
+  left: 40rpx;
+  text-align: center;
+  color: #fff;
+  background:rgba(255,255,255,1);
+  border-radius:20rpx;
+  box-shadow: 0rpx 5rpx 1rpx #eee;
+}
+.sign-in{
+  width:156rpx;
+  height:48rpx;
+  background:rgba(143,0,15,1);
+  border-radius:24rpx;
+  text-align: center;
+  line-height: 48rpx;
+  color: #fff;
+  margin-top: 10rpx;
+  font-size: 26rpx;
+}
+.sign-cur{
+  background-color: #999;
+  color: #333;
+  opacity: .7;
+}
+.vip{
+  position: relative;
+}
+.vip image{
+  width:61rpx;
+  height:44rpx;
+  margin-left: 30rpx;
+}
+.vip text{
+  position:absolute;
+  top:8rpx;
+  left:44rpx;
+  font-size:16rpx;
+  color:#BB202A;
+}
+.fll60{
+  display: inline-block;
+  width: 60%;
+  margin-left: 20rpx;
+  position: relative;
+  top: -20rpx;
+  left: 10rpx;
+}
+
+.fll20{
+  display: inline-block;
+  width: 20%;
+}
+.no-login{
+  color: #fff;
+  text-align: center;
+  width: 100%;
+  position: relative;
+  top: 50rpx;
+}
+
 .header-bg{
   position: absolute;
   bottom: 0;
@@ -31,8 +98,9 @@ view {
   width: 100%;
 }
 .avatar {
-    padding: 0 30rpx;
-    position: relative;
+    margin: 0 30rpx;
+    background-color: #C81A29;
+   
     /* top: -30rpx; */
 }
 .member-info{
@@ -42,15 +110,12 @@ view {
 .top_30{
   top: -30rpx;
 }
-.setting{
-  position: relative;
-    /* top: -30rpx; */
-}
 .avatar image {
     width: 120rpx;
     height: 120rpx;
     margin: 0 auto;
     border-radius:50%; 
+    border: 1rpx solid #fff;
     /* box-shadow: 16rpx 16rpx 16rpx #f2f2f2; *//* background: #ccc; */
 }
 .center-top-txt{
@@ -72,12 +137,23 @@ view {
     border-radius: 30rpx;
     margin-top: 20rpx;
 }
-
+.balance{
+  font-size:24rpx;
+  color: #333;
+}
+.balance text{
+  font-size:40rpx;
+  color: #BA0519;
+}
 .setting {
-  display: inline-block;
-  width: 100rpx;
-  padding: 20rpx 26rpx;
-  margin-right: 45rpx;
+  width:100rpx;
+  height:60rpx;
+  line-height: 60rpx;
+  text-align: center;
+  background:rgba(255,204,15,1);
+  border-radius:48rpx;
+  color: #6B6B6B;
+  margin: 0 30rpx 0 200rpx;
 }
 
 /*图文按钮  */
@@ -95,14 +171,14 @@ view {
 }
 .center-num{
   position:absolute;
-  top:30rpx;
-  right:90rpx;
+  top:24rpx;
+  right:74rpx;
   padding:0rpx;
   border:3rpx solid #c81a29;
   border-radius:50%;
-  min-width:20rpx;
-  min-height:14rpx;
-  font-size:14rpx;
+  min-width:33rpx;
+  min-height:30rpx;
+  font-size:20rpx;
   background-color:#fff;
   color:#c81a29;
 }
@@ -111,9 +187,9 @@ view {
 }
 
 .section-order .item image {
-    height: 40rpx;
-    width: 40rpx;
-    margin: 40rpx auto 16rpx;
+    height: 60rpx;
+    width: 60rpx;
+    margin: 40rpx auto 10rpx;
 }
 
 /*客服按钮  */
@@ -131,11 +207,9 @@ view {
 
 /*第三列  */
 .section-order{
-  margin: 0 20rpx;
-  border-radius:10rpx;
-  box-shadow: 2rpx 0 10rpx rgba(102, 102, 102, 0.3); 
   margin-top: 20rpx;
-  overflow: hidden
+  overflow: hidden;
+  background-color: #fff;
 }
 .section-order .my-order-line {
     line-height: 104rpx;
@@ -208,4 +282,10 @@ view {
   top: 50%;
   margin-top: -8rpx;
   right: 28rpx;
+}
+button::after {
+    border-radius: 0;
+}
+button{
+    border-radius: 0;
 }

@@ -36,7 +36,12 @@
     "pages/classify/classify",
     "pages/addressSearch/addressSearch",
     "pages/changePassword1/changePassword1",
-    "pages/changePassword2/changePassword2"
+    "pages/changePassword2/changePassword2",
+    "pages/integralmall/integralmall",
+    "pages/growthTask/growthTask",
+    "pages/giftCertificate/giftCertificate",
+    "pages/newUserRegister/newUserRegister",
+    "pages/personInformation/personInformation"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -74,7 +79,6 @@
         "iconPath": "public/images/icon/1.4.png",
         "selectedIconPath": "public/images/icon/2.4.png"
       }
-      
     ]
   },
   "networkTimeout": {

@@ -428,13 +428,13 @@ Page({
           let uploadC = this.selectComponent('#upload'+i);
           let uploadImgs = [];
           // 判定是否在已是完成状态
-          let isUploading = uploadC.data.files.every((ele, i) => {
-            return (ele.pct && (ele.pct === 'finish' || ele.pct === 'fail'))
-          })
-          if (!isUploading) {
-            util.errorTips('图片正在上传')
-            return false
-          }
+          // let isUploading = uploadC.data.files.every((ele, i) => {
+          //   return (ele.pct && (ele.pct === 'finish' || ele.pct === 'fail'))
+          // })
+          // if (!isUploading) {
+          //   util.errorTips('图片正在上传')
+          //   return false
+          // }
           // 添加数据
           uploadC.data.files.forEach((ele, i) => {
             if (ele.full_url) {
@@ -511,6 +511,7 @@ Page({
                  _this.setData({
                    isPopup: false
                  })
+                 clearInterval(_this.data.interval);
                  _this.goPay();
                }
              }, 1000)
@@ -539,6 +540,7 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {  
+    
       // 动态获取须知
       api.needKnow({}).then((res) => {
         console.log(res);
@@ -594,7 +596,7 @@ Page({
         let findNum = 1;
         for (let i = 0; i < parseInt(findNum); i++) {
           newAddFinds.push(
-            { index: i, cid: this.data.addFinds[0].cid, checkType: this.data.addFinds[0].checkType, find_type: options.selcetTabNum, selcetTabNum: options.selcetTabNum || 0, get_type: '1', selcetSecondTabNum: '1', isSelect: false, desc: '', files: [{}, {}, {}], get_address: this.data.defaultAddressId, address: this.data.defaultAddress }
+            { index: i, cid: this.data.addFinds[0].cid, checkType: this.data.addFinds[0].checkType, find_type: selcetTabNum, selcetTabNum: selcetTabNum, get_type: '1', selcetSecondTabNum: '1', isSelect: false, desc: '', files: [{}, {}, {}], get_address: this.data.defaultAddressId, address: this.data.defaultAddress }
           )
           // 设置数据
           this.setData({

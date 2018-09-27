@@ -1,0 +1,55 @@
+<view class='info'>
+    <view class='info-top'>
+        <view class='header-img'>
+          <image  
+          src="{{memberInfo.avatar_path != ''? memberInfo.avatar_path:'../../public/images/center/9.png'}}">
+          </image>
+        </view>
+        <view class='edit-img'>
+         <image bindtap='editHeadImg'
+          src="{{'../../public/images/center/8.png'}}">
+          </image>
+        </view>
+    </view>
+    <view class='info-content'>
+        <view class='nickname pdb-10 pd-40 fs32 bb1 cf'>
+          <view class='fll text-333'>昵称:</view>
+          <view class='flr text-666'>
+            <input type='text' placeholder='请输入昵称' value='{{memberInfo.nick_name}}' bindinput="getNickName"></input>
+          </view>
+        </view>
+        
+        <view class='nickname pdb-10 pd-40 fs32 bb1 cf'>
+          <view class='fll text-333'>联系人:</view>
+          <view class='flr text-666'>
+            <input type='text' placeholder='请输入联系人' value='{{memberInfo.contact_name}}' bindinput="getPersonName"></input>
+          </view>
+        </view>
+        <view class='nickname pdb-10 pd-40 fs32 bb1 cf'>
+          <view class='fll text-333'>联系号码:</view>
+          <view class='flr text-666'>
+            <input type='text' placeholder='请输入联系号码' value='{{memberInfo.contact_phone}}' bindinput="getPersonPhone"></input>
+          </view>
+        </view>
+
+        <view class='nickname pdb-10 pd-40 fs32 bb1 cf'>
+          <view class='fll text-333'>公司名称:</view>
+          <view class='flr text-666'>
+            <input type='text' placeholder='请输入公司名称' 
+            value='{{memberInfo.company_name}}' bindinput="getCompanyName"></input>
+          </view>
+        </view>
+
+        <view class='nickname pdb-10 pd-40 fs32 bb1 cf flex'>
+          <view class='fll text-333 flex-2'>公司地址:</view>
+          <view class='flr text-666 flex-4' bindtap='getCompanyAddress'>
+            <text wx:if="{{memberInfo.company_address!=null}}">{{memberInfo.company_address }}</text>
+            <text wx:if="{{memberInfo.company_address==null}}">请输入公司地址</text>
+          </view>
+        </view>
+    </view>
+
+    <view class='save' bindtap='save'>
+      保存
+    </view>
+</view>

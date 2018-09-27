@@ -16,6 +16,7 @@ Page({
     isFocus: true,    //聚焦  
     Value: "",        //输入的内容  
     ispassword: true, //是否密文显示 true为密文， false为明文。
+    couponListPrice: 0 // 优惠券金额
   },
 
   // 去地址选择页面
@@ -85,7 +86,12 @@ Page({
     })
     let _this = this;
     this.data.payDates.task_ids = this.data.task_ids;
-    
+    // 获取优惠券信息
+    if (this.data.couponList){
+      this.data.couponListPrice = Math.ceil(this.data.couponList.coupon_data.value);
+    }else{
+      this.data.couponListPrice = 0;
+    }
     if (this.data.finds.length>0){
       if (!this.data.findsAddress){
         wx.showToast({
@@ -133,7 +139,7 @@ Page({
     api.checkPayType({
       method: 'POST',
       data: {
-        total_amount : this.data.findsTotalPrice + this.data.fetchsTotalPrice
+        total_amount: this.data.findsTotalPrice + this.data.fetchsTotalPrice - this.data.couponListPrice
       }
     }).then((res)=>{
       
@@ -241,6 +247,17 @@ Page({
                 duration: 2000
               })
             })
+        } else if (res.data.pay_type == 4){
+          this.data.payDates.coupon_id = this.data.couponList.id;
+          api.payment({
+            method: 'POST',
+            data: this.data.payDates
+          }).then((res) => {debugger
+            let pay_log = JSON.stringify(res.data.pay_log);
+            wx.redirectTo({
+              url: '../taskPaySuccess/taskPaySuccess?pay_log=' + pay_log
+            })
+          })
         }
        
       }else{
@@ -590,5 +607,12 @@ Page({
       url: '../changePassword/changePassword?forgetPayPassWord=1',
     })
   },
+  // 去优惠券列表
+  goCoupon(){
+    let totalPrice = this.data.findsTotalPrice + this.data.fetchsTotalPrice;
+    wx.navigateTo({
+      url: '../giftCertificate/giftCertificate?from=giftCertificate&totalPrice='+totalPrice,
+    })
+  }
 
 })

@@ -199,10 +199,15 @@
 
       
   </view> 
+  <view bindtap='goCoupon' class='task-get box-shadow cell-padding fs30 mgt-30 lh90 bottom-border coupon'>
+    <text>{{couponList.name}} {{couponList.coupon_data.value}}{{couponList?'':'使用优惠券'}}</text>  
+    <text class='iconfont icon-jiantou'></text>
+  </view>
   <view style='height:140rpx;'></view>
+  
   <view class='task-pay fs30 lh120 box-shadow pdl-30' wx:if='{{fetchs.length>0 ||finds.length>0}}'>
       <view class='flr task-paybtn' style='margin-right:240rpx;'>
-        应付款：<text class='text-red'>￥{{filter.formatMoney(findsTotalPrice + fetchsTotalPrice)}}</text>
+        应付款：<text class='text-red'>￥{{filter.formatMoney(findsTotalPrice + fetchsTotalPrice - couponListPrice)}}</text>
       </view>
       <view class='task-sum'>
         <text style='color:#999;'>（余额:￥{{filter.formatMoney(balance_amount) || '0'}}）</text>

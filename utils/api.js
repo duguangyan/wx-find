@@ -1,5 +1,5 @@
-// const apiUrl = 'https://devv2.yidap.com';   // 测试
-const apiUrl = 'https://apiv2.yidap.com';     // 正式
+const apiUrl = 'https://devv2.yidap.com';   // 测试
+// const apiUrl = 'https://apiv2.yidap.com';     // 正式
 const versionNumber = 'v2.4.6';  //版本号
 
 if (apiUrl == 'https://apiv2.yidap.com'){
@@ -47,11 +47,12 @@ const myRequest = function (params = {}, url , id, st, page) {
             method: params.method || 'GET',
             data,
             header,
-            success(res) {
+          success(res) {
                 var res = res.data;
                 if (200 === res.code || 0 === res.code) {
                     resolve(res);
                 } else {
+                    
                     if (401 === res.code) {  
                       wx.hideLoading();
                       console.log('401统一处理');
@@ -76,6 +77,13 @@ const myRequest = function (params = {}, url , id, st, page) {
                         })
                       }
                     }
+                  if (201 === res.code){
+                    wx.showToast({
+                      title: res.msg,
+                      icon:'none',
+                      duration: 2000
+                    })
+                  }
                     reject(res);
                 }
             },
@@ -94,7 +102,7 @@ const myRequest = function (params = {}, url , id, st, page) {
 
             },
             complete(res) {
-
+              
             }
         })
     })
@@ -439,10 +447,26 @@ const orderDel = (params) => myRequest(params, `${apiUrl}/find/api/order/delete`
 // 须知
 const needKnow = (params) => myRequest(params, `${apiUrl}/find/api/need_know`);
 
-
-
+/**
+ * 成长任务
+ */
+// 获取成长任务例表
+const getGrowth = (params) => myRequest(params, `${apiUrl}/imall/grade`);
+// 签到
+const signIn = (params) => myRequest(params, `${apiUrl}/imall/sign`);
+// 完善个人信息
+const updateExt = (params) => myRequest(params, `${apiUrl}/api/member/updateExt`);
+// 优惠券列表
+const coupon = (params, id, st, page) => myRequest(params, `${apiUrl}/find/api/coupon`, id, st, page);
+// 邀请新用户规则
+const invite = (params) => myRequest(params, `${apiUrl}/imall/invite`);
 
 module.exports = {
+  invite,
+  coupon,
+  updateExt,
+  signIn,
+  getGrowth,
   needKnow,
   orderDel,
   changeNickName,

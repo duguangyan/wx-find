@@ -7,8 +7,8 @@ App({
   onLaunch: function () {
     // if (wx.getSystemInfoSync().environment){
 
-    //   //console.log(wx.getSystemInfoSync().environment);
-    //   //util.successTips('成功');
+    //   // console.log(wx.getSystemInfoSync().environment);
+    //   // util.successTips('成功');
     //   // 微信企业号
       
     // }else{

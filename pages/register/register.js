@@ -8,7 +8,8 @@ Page({
      */
     data: {
         agree: true,
-        smsText:'获取验证码'
+        smsText:'获取验证码',
+        invite_code:''
     },
     // 手机账号
     mobile(e) {
@@ -69,7 +70,7 @@ Page({
                   data: {
                     phone: account
                   }
-                }).then((res)=>{
+                }).then((res)=>{ 
                   // 短信发送成功，限制按钮
                   util.successTips('短信发送成功');
                   this.setData({
@@ -196,9 +197,10 @@ Page({
                 password: password,
                 code: sms,
                 from:3,
-                open_id: open_id
+                open_id: open_id,
+                invite_code: this.data.invite_code
             }
-        }).then((res) => {
+        }).then((res) => { 
             if(res.code===200){
               console.log(res);
               wx.setStorageSync('token', res.data.access_token);
@@ -208,7 +210,7 @@ Page({
               wx.navigateBack({
                  delta: 2
               })
-            }else{
+            }else{ 
               wx.showToast({
                 title: res.user_name[0],
                 icon: 'none',
@@ -227,7 +229,11 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
-
+      if (options.invite_code){
+        this.data.invite_code = options.invite_code;
+        console.log("-----------------------------------------------");
+        console.log(this.data.invite_code);
+      }
     },
 
     /**

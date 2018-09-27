@@ -93,7 +93,7 @@ Page({
             wx.setStorageSync('token', res.data.access_token);
             wx.setStorageSync('token_type', res.data.token_type);
             wx.setStorageSync('user_name', user_name);
-
+          
             console.log('fromId');
             console.log(e.detail.formId);
             if (e.detail.formId != 'the formId is a mock one') {

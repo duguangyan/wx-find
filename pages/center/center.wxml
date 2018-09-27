@@ -1,5 +1,5 @@
 
-<view class="section-avatar flex flex-start">
+<!-- <view class="section-avatar flex flex-start">
     <image  hidden='{{!memberInfo}}'  class='center-setting'
     src='../../public/images/icon/center-setting-icon.png' bindtap='gotoSettinngPage'>
     </image>
@@ -16,7 +16,7 @@
                 <view class="fs30 bold-600 ellipsis" bindtap='showSoltDialog'>
                    {{memberInfo.nick_name||memberInfo.user_name}}
                 </view>
-                <!-- <text class="fs30 bold-600">{{memberInfo.user_name}}</text> -->
+            
                 <text hidden="{{true}}" bindtap='modifyInfo' class="iconfont icon-shouhuodizhiyebianji bold-600 fs34 pd-20"></text>
             </view>
             <view class="mgt-10">
@@ -24,11 +24,8 @@
                 <text class="text-yellow mgl-20 fs26">余额：￥ {{memberInfo.asset.balance_amount || 0}}</text>
             </view>
         </view>
-        <!-- <navigator wx:if='{{!loginTime}}' style="padding:20rpx 0" open-type='navigate' url="" hidden='{{memberInfo}}' class="fs32 bold">
-            您暂未登录（点击登录）
-        </navigator>
-        open-type='navigate' url="../login/login"
-         -->
+        
+        
         <view style="padding:20rpx 0"  
         bindtap='toLogin'  
         hidden='{{memberInfo}}' 
@@ -42,7 +39,60 @@
             <text class='text-fff fs30'>充值</text>
         </navigator>
     </view>
+</view> -->
+
+
+<view class='cf section-avatar'>
+  <view class='fll20' wx:if="{{memberInfo}}" bindtap='personInformation'>
+     <view class="avatar">
+        <image class=' btn-shadow' 
+        src="{{memberInfo.avatar_path || '../../public/images/center/9.png'}}">
+        </image>
+    </view>
+  </view>
+  <view class='fll60' wx:if="{{memberInfo}}">
+      <view>
+         <view class="fs32 text-white cf">
+            <view class='ellipsis fll' bindtap='showSoltDialog'>{{memberInfo.nick_name||memberInfo.user_name}}</view>
+            <view class='vip fll'>
+              <image src='../../public/images/center/6.png'></image>
+              <text>VIP{{memberInfo.grade.level}}</text>
+            </view>
+        </view>
+        <view wx:if='{{memberInfo.hasSign}}' class='sign-in sign-cur fs28'>
+            签到
+        </view>
+        <view wx:if='{{!memberInfo.hasSign}}' class='sign-in fs28' bindtap='signIn'>
+            签到
+        </view>
+      </view>
+  </view>
+  <view class='fll20' wx:if="{{memberInfo}}">
+   <image  hidden='{{!memberInfo}}'  class='center-setting'
+    src='../../public/images/center/7.png' bindtap='gotoSettinngPage'>
+    </image>
+  </view>
+
+  <view class='section-footer flex' wx:if="{{memberInfo}}">
+      <view class="flex-2">
+          <text class="balance">余额:<text>￥{{memberInfo.asset.balance_amount || 0}}</text></text>
+      </view>
+      <view wx:if="{{memberInfo}}" class="flex-1 setting">
+        <navigator open-type='navigate' url="../recharge/recharge">
+            <text class='text-333 fs30'>充值</text>
+        </navigator>
+    </view>
+  </view>
+  <view style="padding:20rpx 0"  
+        bindtap='toLogin'  
+        hidden='{{memberInfo}}' 
+        class="fs32 bold no-login">
+            您暂未登录（点击登录）
+        </view>
 </view>
+<view style='height:320rpx'></view>
+
+
 
 <view class="section-order mgt-20">
     <view class="my-order-line flex">
@@ -78,6 +128,18 @@
     </view>
 </view>
 
+<view class="navigator-box section-order mgt-20">
+    <button class="navigator-text fs30 pdl-30" bindtap='goIntegralmall'
+    style="background-color:#fff;border:none;height:115rpx;line-height:115rpx;text-align:left;">积分商城</button>
+    <view class="navigator-arrow"></view>
+</view>
+
+<view class="navigator-box section-order mgt-20">
+    <button class="navigator-text fs30 pdl-30" bindtap='goGrowthTask'
+    style="background-color:#fff;border:none;height:115rpx;line-height:115rpx;text-align:left;">成长任务</button>
+    <view class="navigator-arrow"></view>
+</view>
+
 <view class="navigator-box section-order mgt-20" bindtap='goAddress'>
   <block class='navigator'>
       <view class="navigator-text fs30 pdl-30">我的地址</view>
@@ -90,6 +152,14 @@
     open-type="contact">客服</button>
     <view class="navigator-arrow"></view>
 </view>
+
+<view class="navigator-box section-order mgt-20">
+    <button class="navigator-text fs30 pdl-30" bindtap='goGiftCertificate'
+    style="background-color:#fff;border:none;height:115rpx;line-height:115rpx;text-align:left;">我的礼券</button>
+    <view class="navigator-arrow"></view>
+</view>
+
+
 <view class="navigator-box section-order mgt-20">
   <block class='navigator'>
       <view class="navigator-text fs24 text-666 pdl-30 text-center">

@@ -33,7 +33,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 1,
+			"current": 33,
 			"list": [
 				{
 					"id": -1,
@@ -214,6 +214,29 @@
 					"name": "地址搜索2.2.1",
 					"pathName": "pages/addressSearch/addressSearch",
 					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "成长任务",
+					"pathName": "pages/growthTask/growthTask",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "我的礼券",
+					"pathName": "pages/giftCertificate/giftCertificate",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "邀请新用户注册",
+					"pathName": "pages/newUserRegister/newUserRegister",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "个人信息编辑",
+					"pathName": "pages/personInformation/personInformation"
 				}
 			]
 		}
