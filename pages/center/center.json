@@ -1,6 +1,6 @@
 {
-    "navigationBarTitleText": "个人中心",
-    "usingComponents": {
-      "solt-dialog": "../../component/soltDialog/solt-dialog"
-    }
+  "navigationBarTitleText": "个人中心",
+  "usingComponents": {
+    "solt-dialog": "../../component/soltDialog/solt-dialog"
+  }
 }

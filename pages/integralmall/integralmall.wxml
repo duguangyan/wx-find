@@ -1,1 +1,1 @@
-<web-view src="https://integralmall.yidap.com?token={{token}}&addressId={{addressId}}" />
+<web-view src="https://integralmall.yidap.com?token={{token}}&addressId={{addressId}}&nowTime={{nowTime}}" />

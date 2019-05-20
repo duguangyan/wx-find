@@ -12,6 +12,11 @@
         </view>
     </view>
     <view class='info-content'>
+        <view class='flex info-nav'>
+            <view class="flex-1 {{isChecked?'cur':''}}" data-id='1' bindtap='checkNav'>个人</view>
+            <view class="flex-1 {{!isChecked?'cur':''}}" data-id='2' bindtap='checkNav'>商家</view>
+        </view>
+
         <view class='nickname pdb-10 pd-40 fs32 bb1 cf'>
           <view class='fll text-333'>昵称:</view>
           <view class='flr text-666'>
@@ -22,20 +27,22 @@
         <view class='nickname pdb-10 pd-40 fs32 bb1 cf'>
           <view class='fll text-333'>联系人:</view>
           <view class='flr text-666'>
-            <input type='text' placeholder='请输入联系人' value='{{memberInfo.contact_name}}' bindinput="getPersonName"></input>
+            <input type='text' disabled='{{memberInfo.audit_status == 2}}' placeholder='请输入联系人' value='{{memberInfo.contact_name}}' bindinput="getPersonName"></input>
           </view>
         </view>
+
         <view class='nickname pdb-10 pd-40 fs32 bb1 cf'>
           <view class='fll text-333'>联系号码:</view>
           <view class='flr text-666'>
-            <input type='text' placeholder='请输入联系号码' value='{{memberInfo.contact_phone}}' bindinput="getPersonPhone"></input>
+            <input type='text' disabled='{{memberInfo.audit_status == 2}}' placeholder='请输入联系号码' 
+            value='{{memberInfo.contact_phone}}' bindinput="getPersonPhone"></input>
           </view>
         </view>
 
         <view class='nickname pdb-10 pd-40 fs32 bb1 cf'>
           <view class='fll text-333'>公司名称:</view>
           <view class='flr text-666'>
-            <input type='text' placeholder='请输入公司名称' 
+            <input type='text' placeholder='请输入公司名称' disabled='{{memberInfo.audit_status == 2}}'
             value='{{memberInfo.company_name}}' bindinput="getCompanyName"></input>
           </view>
         </view>
@@ -47,9 +54,35 @@
             <text wx:if="{{memberInfo.company_address==null}}">请输入公司地址</text>
           </view>
         </view>
+
+      <view class='nickname pdb-10 pd-40 fs32 bb1 cf' >
+        <view class='fll text-333'>{{isChecked?'身份证号码:':'营业执照编号:'}}</view>
+        <view class='flr text-666'>
+          <input type='text' placeholder='请输入相关信息' disabled='{{memberInfo.audit_status == 2}}'
+          value='{{memberInfo.certificate}}' bindinput="getCardNo"></input>
+        </view>
+      </view>
+
+      <view class='nickname pdb-10 pd-40 fs32 bb1 cf' style='margin-top:30rpx;'>
+        <view class='fll text-333'>{{isChecked?'身份证照片:':'营业执照图片:'}}</view>
+        <view class='flr text-666 certificate_img' bindtap='checkImg' style='margin-bottom:20rpx;'>
+          <view class='pic'>+</view>
+          <image wx:if="{{memberInfo.certificate_img}}" src="{{memberInfo.certificate_img}}"></image>
+        </view>
+
+      </view>
+
+
+      
+
+
     </view>
+
+
+     
 
     <view class='save' bindtap='save'>
       保存
     </view>
+    <view style='height:50rpx;'></view>
 </view>

@@ -8,13 +8,16 @@
 		"es6": true,
 		"postcss": true,
 		"minified": true,
-		"newFeature": true
+		"newFeature": true,
+		"checkInvalidKey": true
 	},
 	"compileType": "miniprogram",
 	"libVersion": "1.9.98",
 	"appid": "wx95dd0020bb2c868f",
 	"projectname": "%E5%B0%8F%E9%B9%BF%E5%BF%AB%E6%89%BE%E5%BA%94%E7%94%A8",
 	"isGameTourist": false,
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
 	"condition": {
 		"search": {
 			"current": -1,
@@ -33,7 +36,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 33,
+			"current": 35,
 			"list": [
 				{
 					"id": -1,
@@ -236,7 +239,20 @@
 				{
 					"id": -1,
 					"name": "个人信息编辑",
-					"pathName": "pages/personInformation/personInformation"
+					"pathName": "pages/personInformation/personInformation",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "订单",
+					"pathName": "pages/order/order",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "聊天室",
+					"pathName": "pages/chat/chat",
+					"scene": null
 				}
 			]
 		}

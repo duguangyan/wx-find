@@ -1,3 +1,4 @@
+<wxs src="../../utils/filter.wxs" module="filter" />
 <view class='find-order-detail fs30'>
 <!-- 找料 -->
   <view style='background-color: #fff;'>
@@ -139,21 +140,28 @@
     </view>
 
     <view class='find-order-detail-price fs30 pdl-30 border-bottom pd-30'>
-        <view><text>服务费用</text><text class='flr'>￥{{itemObj.find_fee}}</text></view>
+        <view wx:if="{{userType!=2}}"><text>服务费用</text><text class='flr'>￥{{itemObj.find_fee}}</text></view>
+        <view wx:if="{{userType==2}}"><text>包月:使用次数</text><text class='flr'>{{filter.rounding(itemObj.find_fee)}}次</text></view>
     </view>
-    <view class='fs30 lh90  bb-20 tg-r pdr-30'>
+    <!-- <view class='fs30 lh90  bb-20 tg-r pdr-30'>
         <text>实付款： <text class='text-red'>￥{{itemObj.find_fee}}</text></text>
-    </view>
+    </view> -->
 
      <view class='find-order-detail-btn bt-1 cf' wx:if='{{itemObj.button_status.on_cancel==1 ||itemObj.button_status.on_pay==1||itemObj.button_status.on_prompt==1 ||itemObj.button_status.on_confirm==1 ||itemObj.button_status.on_comment==1}}'>
  
                     <button data-id='{{itemObj.id}}' bindtap='toComment'  wx:if='{{itemObj.button_status.on_comment==1}}'>评价</button>
                     <button style='border: 1rpx solid #666;color: #666;' data-id='{{itemObj.id}}' bindtap='delOrder'wx:if='{{itemObj.button_status.on_cancel==1}}'>取消订单</button>
                     <button data-id='{{itemObj.id}}' disabled='{{isDisabled}}' bindtap='doPay' wx:if='{{itemObj.button_status.on_pay==1}}' class='order-footer-btn-red'>去支付</button>
+                    
                     <button data-id='{{itemObj.id}}' bindtap='urgeOrder'  wx:if='{{itemObj.button_status.on_prompt==1}}' class='order-footer-btn-red'>催单</button>
+<button style='border: 1rpx solid #666;color: #666;' data-id='{{item.id}}' catchtap='toReturn' 
+              wx:if='{{item.button_status.refuse_status==1}}'>退款</button>
+
                     <button data-id='{{itemObj.id}}' bindtap='affirmOrder' wx:if='{{itemObj.button_status.on_confirm==1}}' 
                     class='order-footer-btn-red' 
                     data-index="{{index}}">确认收货</button>
+                    <button data-id='{{itemObj.id}}' bindtap='goChat'  
+                    wx:if='{{itemObj.button_status.on_prompt==1 || itemObj.button_status.on_confirm==1}}' class='order-footer-btn-red'>联系找料员</button>
                 </view>
   </view>
   

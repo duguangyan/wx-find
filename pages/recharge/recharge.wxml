@@ -1,32 +1,86 @@
 <wxs src="../../utils/filter.wxs" module="filter" />
 <view class="recharge  cf fs30">
-  <view class='recharge-title lh90 pdl-30 bb-1 text-666'>选择充值金额</view>
-  <view class='recharge-list cf'>
-    <view class='recharge-list-li btn-shadow' wx:for='{{rechargeList}}' wx:key='this' data-id='{{item.id}}' data-value='{{item.values}}' bindtap='doPay'>
-      <view  data-id='{{item.id}}'>
-        <text data-id='{{item.id}}' class='recharge-list-text text-red mgt-30'>充{{item.values}}元</text>
-        <text data-id='{{item.id}}' class='recharge-list-text text-red' style='padding-left:50rpx;'>送{{item.arrival_values - item.values }}元</text>
+
+  <view class='flex lh90 pdl-30 bb-1 text-666 text-center bg-white'>
+      <view class='flex-1 {{navIndex==inx?"navActive":""}}' 
+      wx:for='{{navArrText}}' wx:for-index="inx"  wx:key='this' data-inx="{{inx}}"
+       bindtap='navCheck'>
+        <text>{{item}}</text>
       </view>
-    </view>
   </view>
-  <view class='recharge-explain cf fs30'>
-    <view style='padding-top: 30rpx;'>充值说明：</view>
-    <view>
-      1、账户充值仅限微信在线方式支付，目前暂不支持其它支付方式；
-    </view>
-    <view>
-      3、账户充值成功后不支持退款且不可提现；
-    </view>
-    <view>
-      4、账户余额仅限用于支付小鹿快找业务相关服务费用；
-    </view>
-    <view>
-      5、账户余额有效期：自充值日起至用完即止；
-    </view>
-    <view>
-      6、如需咨询，可拨打客服热线<text class='text-red' bindtap='contact'>400-8088-156</text>。
-    </view>
-    <text class='position'></text>
+  <!-- <view class='recharge-title lh90 pdl-30 bb-1 text-666'>选择充值金额</view> -->
+  <view  wx:if="{{navIndex == 0}}">
+
+      <view class='recharge-list cf'>
+        <view class='recharge-list-li btn-shadow' wx:for='{{rechargeList}}' wx:key='this' data-id='{{item.id}}' data-value='{{item.values}}' bindtap='doPay'>
+          <view  data-id='{{item.id}}' style="width:100%">
+            <view data-id='{{item.id}}' class='recharge-list-text text-center text-red mgt-30 fs32'>充值</view>
+            <view class="text-center text-red">￥{{item.values}}</view>
+            <!-- <text data-id='{{item.id}}' class='recharge-list-text text-red fs18'>送{{item.arrival_values - item.values }}元</text> -->
+          </view>
+        </view>
+      </view>
+      <view class='recharge-explain cf fs30'>
+        <view style='padding-top: 30rpx;'>充值说明：</view>
+        <view>
+          1、账户充值仅限微信在线方式支付，目前暂不支持其它支付方式；
+        </view>
+        <view>
+          2、账户充值成功后不支持退款且不可提现；
+        </view>
+        <view>
+          3、账户余额仅限用于支付小鹿快找业务相关服务费用；
+        </view>
+        <view>
+          4、账户余额仅限用于支付小鹿快找业务相关服务费用；
+        </view>
+        <view>
+          5、账户余额有效期：90天；
+        </view>
+        <view>
+          6、如需咨询，可拨打客服热线<text class='text-red' bindtap='contact'>400-8088-156</text>。
+        </view>
+        <text class='position'></text>
+      </view>
+
   </view>
+ 
+
+<view  wx:if="{{navIndex == 1}}">
+
+      <view class='recharge-list cf'>
+        <view class='recharge-list-li btn-shadow' wx:for='{{times}}' wx:key='this' data-id='{{item.id}}' data-value='{{item.values}}' bindtap='doPay'>
+          <view  data-id='{{item.id}}' style="width:100%">
+            <view data-id='{{item.id}}' class='recharge-list-text text-center text-red mgt-30 fs32'>￥{{item.values}}元/月</view>
+            <view class="text-center text-red">{{item.name}}</view>
+            <!-- <text data-id='{{item.id}}' class='recharge-list-text text-red fs18'>送{{item.arrival_values - item.values }}元</text> -->
+          </view>
+        </view>
+      </view>
+      <view class='recharge-explain cf fs30'>
+        <view style='padding-top: 30rpx;'>包月说明：</view>
+        <view>
+          1、包月说明：
+        </view>
+        <view>
+          2、包月说明：
+        </view>
+        <view>
+          3、包月说明：
+        </view>
+        <view>
+          4、包月说明：
+        </view>
+        <view>
+          5、包月说明：
+        </view>
+        <view>
+          6、如需咨询，可拨打客服热线<text class='text-red' bindtap='contact'>400-8088-156</text>。
+        </view>
+        <text class='position'></text>
+      </view>
+
+  </view>
+
     
 </view>

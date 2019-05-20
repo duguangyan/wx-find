@@ -252,13 +252,15 @@ Page({
     // this.data.checkTypes_cid = this.data.checkTypes[0].id;
     this.data.desc = '';
     this.data.findNum = 1;
+    this.data.totalFecthPrice = this.data.fecthPrice;
     // this.data.checkType = this.data.checkTypes[0].name;
     this.setData({
       isPopup: false,
       checkTypes_cid: this.data.checkTypes_cid,
       desc: this.data.desc,
       findNum: this.data.findNum,
-      checkType: this.data.checkType
+      checkType: this.data.checkType,
+      totalFecthPrice: this.data.totalFecthPrice
     })
   },
   // 获取描述
@@ -387,6 +389,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+  
     // 动态获取须知
     api.needKnow({}).then((res) => {
       console.log(res);

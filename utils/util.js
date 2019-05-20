@@ -1,3 +1,13 @@
+function isCardNo(card) {
+  // 身份证号码为15位或者18位，15位时全为数字，18位前17位为数字，最后一位是校验位，可能为数字或字符X 
+  var reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+  if (reg.test(card) === false) {
+    return false;
+  }else{
+    return true;
+  }
+}
+
 function getCurrentTime() {
   var keep = '';
   var date = new Date();
@@ -37,7 +47,7 @@ function vailPhone(number) {
 
   let flag = false;
   // let myreg = /^(((13[0-9]{1})|(14[0-9]{1})|(17[0]{1})|(15[0-3]{1})|(15[5-9]{1})|(18[0-9]{1}))+\d{8})$/;
-  let myreg = /^1[34578]\d{9}$/;
+  let myreg = /^1[3456789]\d{9}$/;
   if (number.length != 11) { 
     flag = flag;
   } else if (!myreg.test(number)) {
@@ -224,7 +234,7 @@ function getNowFormatDate() {
   if (seconds >= 0 && seconds <= 9) {
     seconds = "0" + seconds;
   }
-  var currentdate = year + sign1 + month + sign1 + day + " " + hour + sign2 + minutes + sign2 + seconds + " " + week;
+  var currentdate = year + sign1 + month + sign1 + day + " " + hour + sign2 + minutes + sign2 + seconds;
   return currentdate;
 }
 
@@ -242,6 +252,7 @@ function extend(des, src, override) {
 }
 
 module.exports = {
+  isCardNo,
   extend,
   getNowFormatDate:getNowFormatDate,
   getCurrentTime: getCurrentTime,

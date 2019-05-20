@@ -22,7 +22,7 @@
             <view class="width-200 word-spacing">
                 <text class="text-theme">*</text>描述:</view>
 
-            <textarea hidden='{{isNotes || isCheckTypeModel}}' class="flex-1 find-desc height-200"  wx:if="{{!isPopup}}" name="field_desc" data-index='{{idx}}' bindinput='getDescription' value="{{item.desc}}" placeholder='(注：请详细描述物料的名称、用途、材质、交货时间)'>
+            <textarea hidden='{{isNotes || isCheckTypeModel}}' class="flex-1 find-desc height-200 {{isIos?'':'andClass'}}"  wx:if="{{!isPopup}}" name="field_desc" data-index='{{idx}}' bindinput='getDescription' value="{{item.desc}}" placeholder='(注：请详细描述物料的名称、用途、材质、交货时间)'>
             </textarea>
         </view>
 
@@ -151,7 +151,7 @@ style="width:44rpx;height:44rpx;position:absolute;right:0;top:0rpx;background-co
     <view class="cell-padding submit-form">
 
       <form bindsubmit="findSubmit" report-submit='true' >
-        <button  formType="submit" class='btn-shadow'>加入小鹿任务</button>
+        <button disabled='{{findDisabled}}'  formType="submit" class='btn-shadow'>加入小鹿任务</button>
       </form>
         
     </view>

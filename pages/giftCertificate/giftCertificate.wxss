@@ -1,4 +1,7 @@
 /* pages/giftCertificate/giftCertificate.wxss */
+.curMsg{
+  background-color: #999!important;
+}
 .gift-certificate .flex{
   background-color: #fff;
   margin-top: 20rpx;

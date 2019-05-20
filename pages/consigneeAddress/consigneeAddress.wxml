@@ -121,6 +121,7 @@
           <text class='fll'>以下地址超出配送范围</text> 
           <text class='flr text-theme' bindtap='editShow' data-index='2'>{{editTitle2}}</text>
       </view>
+      <view class='fs24 jifen'>(积分商城无地址范围限制)</view>
       <view class='address-right-list cf'>
           
           <view class="address-right-warp cf {{editTitle2=='完成'?'pd0':''}}" 

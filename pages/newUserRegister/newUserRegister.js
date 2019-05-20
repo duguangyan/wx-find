@@ -83,8 +83,9 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
+    let nick_name = wx.getStorageSync('nick_name') || wx.getStorageSync('user_name');
     return {
-      title: '新用户邀请注册',
+      title: nick_name +':邀请您注册',
       path: '/pages/register/register?invite_code=' + wx.getStorageSync('invite_code'),
       success: function (res) {
         // 转发成功

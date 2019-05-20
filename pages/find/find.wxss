@@ -1,7 +1,9 @@
 .title-bg {
     background: #f0eff5;
 }
-
+.andClass{
+  margin-top: 10rpx !important;
+}
 .width-166 {
     width: 166rpx;
     text-align-last: justify;

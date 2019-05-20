@@ -56,7 +56,7 @@ page{
   display: block;
   height: 70rpx;
   line-height: 70rpx;
-  width: 170rpx;
+  width: 180rpx;
   text-align: center;
   border: 1rpx solid #c81a29;
   color: #c81a29;

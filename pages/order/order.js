@@ -34,6 +34,55 @@ Page({
     Value: "",        //输入的内容  
     ispassword: true, //是否密文显示 true为密文， false为明文。
   },
+  // 退款
+  toReturn(e){ 
+    let data = {
+      order_id: e.target.dataset.id
+    }
+    let _this = this;
+    wx.showModal({
+      title: '提示',
+      content: '确认退款吗？',
+      success: function (res) {
+        if (res.confirm) {
+          console.log('用户点击确定')
+          api.refuse({
+            method: 'POST',
+            data
+          }).then((res) => {
+            if (res.code = 200) {
+              for (let i = 0; i < _this.data.findList.length; i++) {
+                if (_this.data.findList[i].id == e.target.dataset.id) {
+                  _this.data.findList[i].button_status.on_prompt = 0;
+                }
+              }
+              _this.setData({
+                findList: _this.data.findList
+              })
+              wx.showToast({
+                title: res.msg,
+                icon: 'success',
+                duration: 1500
+              })
+            } else {
+              wx.showToast({
+                title: res.msg,
+                duration: 1500
+              })
+            }
+          }).catch((res) => {
+            wx.showToast({
+              title: res.msg,
+              duration: 1500
+            })
+          })
+        } else if (res.cancel) {
+          console.log('用户点击取消')
+        }
+      }
+    })
+
+  },
   // 去下单
   doOrder(){
     wx.switchTab({
@@ -198,7 +247,7 @@ Page({
         }
       }else{ 
          data = '';
-      }
+      } 
       api.repay({
         method:'POST',
         data
@@ -290,7 +339,7 @@ Page({
                  })
                }
                data.fail = function (res) {
-                 _this.data.findList[order_index].isDisabled = false;
+                 _this.data.findList[_this.data.order_index].isDisabled = false;
                  _this.setData({
                    findList: _this.data.findList
                  })
@@ -676,7 +725,9 @@ Page({
         url: '../findOrderDetail/findOrderDetail?id=' + options.orderId + '&nav=' + options.nav
       })
     }
-   
+    this.setData({
+      userType: wx.getStorageSync("userType")
+    })
   },
 
   /**
@@ -711,6 +762,17 @@ Page({
     this.getList(this.data.orderNavNum, this.data.orderChildNavNum);
     //获得dialog组件
     this.dialog = this.selectComponent("#dialog");
+
+
+    // 判断用户类型包月还是充值或普通
+    api.memberInfo({}).then((res) => {
+      if (res.code == 200) {
+        wx.setStorageSync('userType', res.data.asset.type);
+        this.setData({
+          userType: res.data.asset.type
+        })
+      }
+    })
   },
 
   /**

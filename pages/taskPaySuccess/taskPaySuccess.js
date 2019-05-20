@@ -43,6 +43,10 @@ Page({
       time: this.data.time,
       pay_log
     })
+
+    this.setData({
+      userType: wx.getStorageSync("userType")
+    })
   },
 
   /**

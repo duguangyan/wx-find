@@ -141,6 +141,13 @@ page{
     font-size: 20rpx;
 }
 
+.fs18 {
+    font-size: 18rpx;
+}
+.fs16 {
+    font-size: 16rpx;
+}
+
 .fs0 {
     font-size: 0;
 }

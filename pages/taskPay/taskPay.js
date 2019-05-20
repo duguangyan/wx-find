@@ -37,6 +37,10 @@ Page({
     wx.setStorageSync('status', 0);
     // 获取默认地址
     this.getSelectedAddress();
+
+    this.setData({
+      userType: wx.getStorageSync("userType")
+    })
   },
   // 收货地址
   getSelectedAddress() {
@@ -141,10 +145,10 @@ Page({
       data: {
         total_amount: this.data.findsTotalPrice + this.data.fetchsTotalPrice - this.data.couponListPrice
       }
-    }).then((res)=>{
+    }).then((res)=>{ 
       
       if(res.code==200){
-        if (res.data.pay_type == 3){
+        if (res.data.pay_type == 3 || res.data.pay_type == 5){
           let is_set_pay_pass = res.data.is_set_pay_pass;
           if (res.data.is_set_pay_pass){
             _this.setData({
@@ -173,7 +177,9 @@ Page({
           }
           
         } else if (res.data.pay_type==2){ 
-
+          if (this.data.couponList){
+            this.data.payDates.coupon_id = this.data.couponList.id;
+          }
           api.payment({
             method:'POST',
             data: this.data.payDates
@@ -252,7 +258,7 @@ Page({
           api.payment({
             method: 'POST',
             data: this.data.payDates
-          }).then((res) => {debugger
+          }).then((res) => {
             let pay_log = JSON.stringify(res.data.pay_log);
             wx.redirectTo({
               url: '../taskPaySuccess/taskPaySuccess?pay_log=' + pay_log
@@ -513,14 +519,26 @@ Page({
         this.data.payDates.pay_pwd = inputValue;
         this.data.payDates.only_order = false;
         if(res.code==200){
+          if (this.data.couponList) {
+            this.data.payDates.coupon_id = this.data.couponList.id;
+          }
           api.payment({
             method:'POST',
             data: this.data.payDates
-          }).then((res) => {  
-            let pay_log = JSON.stringify(res.data.pay_log);
-            wx.redirectTo({
-              url: '../taskPaySuccess/taskPaySuccess?pay_log=' + pay_log
-            })
+          }).then((res) => { 
+            if(res.code==200){
+              let pay_log = JSON.stringify(res.data.pay_log);
+              wx.redirectTo({
+                url: '../taskPaySuccess/taskPaySuccess?pay_log=' + pay_log
+              })
+            }else{ 
+              util.errorTips(res.msg);
+              _this.setData({
+                Value: '',
+                focusValue: '',
+              })
+            }
+            
           })
         }else{
           util.errorTips(res.msg);
@@ -565,6 +583,9 @@ Page({
         if (res.confirm) {
           this.data.payDates.pay_pwd = null;
           this.data.payDates.only_order = true;
+          if (this.data.couponList) {
+            this.data.payDates.coupon_id = this.data.couponList.id;
+          }
           api.payment({
             method: 'POST',
             data: this.data.payDates

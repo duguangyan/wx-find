@@ -21,12 +21,19 @@ Page({
     }
     if (msg =='去使用'){
       if (!this.data.from){
-        util.errorTips('可以使用');
+        // util.errorTips('可以使用');
+        wx.switchTab({
+          url: '../index/index',
+        })
         return false;
       }
       let list = e.currentTarget.dataset.list;
       if (Math.ceil(list.coupon_data.value) > this.data.totalPrice) {
         util.errorTips('支付金额小于优惠券金额');
+        return false;
+      }
+      if (Math.ceil(list.coupon_data.full_sub) > this.data.totalPrice) {
+        util.errorTips('满￥' + list.coupon_data.full_sub+'使用');
         return false;
       }
       // 更新上一页的地址数据  来自找料任务页面

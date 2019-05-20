@@ -13,6 +13,12 @@ function fmoney(s, n) {
 var formatMoney = function (num) {
   return fmoney(num,2)
 }
+
+var rounding = function(n){
+  var res = n | 0; // 3 
+  return res;
+}
 module.exports = {
+  rounding: rounding,
   formatMoney: formatMoney
 }

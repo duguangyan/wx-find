@@ -225,32 +225,44 @@ Page({
         wx.navigateBack();
         }).catch((res) => {
           console.log('地址不在服务范围');
-          wx.showModal({
-            title: '提示',
-            content: '你当前位置不在服务范围内',
-            cancelText: '重新输入',
-            confirmText: '保存地址',
-            confirmColor: '#c81a29',
-            success: (res) => {
-              if (res.confirm) {
-                let data = _this.data.saveData;
-                data.force_save = 1 ;
-                api.addAddress({
-                  method: "POST",
-                  data: data
-                }).then((res) => {
-                  // 修改上一个页面栈数据
-                  wx.showToast({
-                    title: '新增成功',
-                  })
-                  wx.navigateBack();
-                })
-                return false;
-              } else if (res.cancel) {
-                console.log('用户点击取消')
-              }
-            }
-          })
+          let data = _this.data.saveData;
+            data.force_save = 1 ;
+            api.addAddress({
+              method: "POST",
+              data: data
+            }).then((res) => {
+              // 修改上一个页面栈数据
+              wx.showToast({
+                title: '新增成功',
+              })
+              wx.navigateBack();
+            })
+          // wx.showModal({
+          //   title: '提示',
+          //   content: '你当前位置不在服务范围内',
+          //   cancelText: '重新输入',
+          //   confirmText: '保存地址',
+          //   confirmColor: '#c81a29',
+          //   success: (res) => {
+          //     if (res.confirm) {
+          //       let data = _this.data.saveData;
+          //       data.force_save = 1 ;
+          //       api.addAddress({
+          //         method: "POST",
+          //         data: data
+          //       }).then((res) => {
+          //         // 修改上一个页面栈数据
+          //         wx.showToast({
+          //           title: '新增成功',
+          //         })
+          //         wx.navigateBack();
+          //       })
+          //       return false;
+          //     } else if (res.cancel) {
+          //       console.log('用户点击取消')
+          //     }
+          //   }
+          // })
         })
 
     } else if (type === 'edit') {
@@ -267,33 +279,46 @@ Page({
 
         }).catch((res) => {
           console.log('地址不在服务范围');
-          wx.showModal({
-            title: '提示',
-            content: '你当前位置不在服务范围内',
-            cancelText: '重新输入',
-            confirmText: '保存地址',
-            confirmColor: '#c81a29',
-            success: (res) => {
-              if (res.confirm) {
-                let data = _this.data.saveData;
-                data.force_save = 1;
-                api.editAddress({
-                  method: 'PUT',
-                  data: data
-                }, _this.data.id).then((res) => {
+          let data = _this.data.saveData;
+          data.force_save = 1;
+          api.editAddress({
+            method: 'PUT',
+            data: data
+          }, _this.data.id).then((res) => {
 
-                  // 修改上一个页面栈数据
-                  wx.showToast({
-                    title: '修改成功',
-                  })
-                  wx.navigateBack();
-                })
-                return false;
-              } else if (res.cancel) {
-                console.log('用户点击取消')
-              }
-            }
+            // 修改上一个页面栈数据
+            wx.showToast({
+              title: '修改成功',
+            })
+            wx.navigateBack();
           })
+          // wx.showModal({
+          //   title: '提示',
+          //   content: '你当前位置不在服务范围内',
+          //   cancelText: '重新输入',
+          //   confirmText: '保存地址',
+          //   confirmColor: '#c81a29',
+          //   success: (res) => {
+          //     if (res.confirm) {
+          //       let data = _this.data.saveData;
+          //       data.force_save = 1;
+          //       api.editAddress({
+          //         method: 'PUT',
+          //         data: data
+          //       }, _this.data.id).then((res) => {
+
+          //         // 修改上一个页面栈数据
+          //         wx.showToast({
+          //           title: '修改成功',
+          //         })
+          //         wx.navigateBack();
+          //       })
+          //       return false;
+          //     } else if (res.cancel) {
+          //       console.log('用户点击取消')
+          //     }
+          //   }
+          // })
         }).finally(() => {
 
       })

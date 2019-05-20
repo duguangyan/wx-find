@@ -1,7 +1,18 @@
 page {
     background: #f2f2f2;
 }
-
+.center-service{
+  line-height: 40rpx;
+  color: #666;
+  text-align: center;
+  padding-top:10rpx; 
+}
+.balance-text{
+  position: relative;
+  left: 10rpx;
+  top: 8rpx;
+  font-size: 24rpx;
+}
 .text-center{
   text-align: center;
   margin-bottom: 30rpx;
@@ -29,14 +40,14 @@ page {
 .section-footer{
   position: absolute;
   bottom: -50rpx;
-  width:670rpx;
+  width:750rpx;
   height:100rpx;
   line-height: 100rpx;
-  left: 40rpx;
+  /* left: 40rpx; */
   text-align: center;
   color: #fff;
   background:rgba(255,255,255,1);
-  border-radius:20rpx;
+  /* border-radius:20rpx; */
   box-shadow: 0rpx 5rpx 1rpx #eee;
 }
 .sign-in{
@@ -59,16 +70,18 @@ page {
   position: relative;
 }
 .vip image{
-  width:61rpx;
-  height:44rpx;
+  width:60rpx;
+  height:60rpx;
   margin-left: 30rpx;
 }
 .vip text{
   position:absolute;
-  top:8rpx;
-  left:44rpx;
+  top:15rpx;
+  left:36rpx;
   font-size:16rpx;
   color:#BB202A;
+  width:50rpx;
+  text-align:center;
 }
 .fll60{
   display: inline-block;
@@ -150,10 +163,10 @@ page {
   height:60rpx;
   line-height: 60rpx;
   text-align: center;
-  background:rgba(255,204,15,1);
+  background:#FFAD00;
   border-radius:48rpx;
   color: #6B6B6B;
-  margin: 0 30rpx 0 200rpx;
+  margin: 0 30rpx 0 0;
 }
 
 /*图文按钮  */

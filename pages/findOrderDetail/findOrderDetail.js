@@ -21,6 +21,51 @@ Page({
       Value: "",        //输入的内容  
       ispassword: true, //是否密文显示 true为密文， false为明文。
     },
+  // 退款
+  toReturn(e) {
+    let data = {
+      order_id: e.target.dataset.id
+    }
+    let _this = this;
+    wx.showModal({
+      title: '提示',
+      content: '确认退款吗？',
+      success: function (res) {
+        if (res.confirm) {
+          console.log('用户点击确定')
+          api.refuse({
+            method: 'POST',
+            data
+          }).then((res) => {
+            if (res.code = 200) {
+              _this.data.itemObj.button_status.refuse_status = 0;
+              _this.setData({
+                itemObj: _this.data.itemObj
+              })
+              wx.showToast({
+                title: res.msg,
+                icon: 'success',
+                duration: 1500
+              })
+            } else {
+              wx.showToast({
+                title: res.msg,
+                duration: 1500
+              })
+            }
+          }).catch((res) => {
+            wx.showToast({
+              title: res.msg,
+              duration: 1500
+            })
+          })
+        } else if (res.cancel) {
+          console.log('用户点击取消')
+        }
+      }
+    })
+
+  },
   previewImage: function (e) {
     var current = e.target.dataset.src;
     wx.previewImage({
@@ -320,6 +365,12 @@ Page({
         isUrgeOrder: false
       })
     },
+    goChat(e){
+      let id = e.currentTarget.dataset.id;
+      wx.navigateTo({
+        url: '../chat/chat?id=' + id
+      })
+    },
     urgeOrder(e) {
       let id = e.currentTarget.dataset.id;
 
@@ -387,7 +438,9 @@ Page({
       this.data.commentId = options.id;
       this.data.id = options.id;
       this.data.nav = options.nav;
-
+      this.setData({
+        userType: wx.getStorageSync("userType")
+      })
       
 
       // let nav = options.nav,

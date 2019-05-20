@@ -5,7 +5,8 @@
   </view>
   <button class='new-userBTN' open-type="share">邀请新用户</button>
   <view class='pd-40 mgt-30'>
-    <text>{{desc}}</text>
+    <!-- <text>{{desc}}</text> -->
+    <rich-text nodes="{{desc}}"></rich-text>
   </view>
 
   <modal 
@@ -15,8 +16,8 @@
     no-cancel
     bindconfirm="showRuleModel">
     <view class='star-warp'>
-    <text style='font-size:24rpx;'>{{rule}}</text>
-      <!-- <rich-text nodes="{{rule}}"></rich-text> -->
+    <!-- <text style='font-size:24rpx;'>{{rule}}</text> -->
+      <rich-text nodes="{{rule}}"></rich-text>
     </view>
   </modal>
 </view>

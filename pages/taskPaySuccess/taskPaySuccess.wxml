@@ -11,7 +11,9 @@
   <view class='border-b20'></view>
 
   <view class='lh90 border-bottom fs30'>
-      <text class='pdl-30'>实付款： <text class='text-red'>￥{{filter.formatMoney(pay_log.pay_amount)}}</text></text>
+  
+      <text wx:if="{{userType==2}}" class='pdl-30'>包月： <text class='text-red'>使用{{pay_log.pay_amount}} 次</text></text>
+      <text wx:if="{{userType!=2}}" class='pdl-30'>实付款： <text class='text-red'>￥{{filter.formatMoney(pay_log.pay_amount)}}</text></text>
   </view>
 
   <view class='footer-btn'>

@@ -12,12 +12,12 @@
   margin-top: 30rpx;
 }
 .top-img{
-  height: 1000rpx;
+  height: 500rpx;
   position: relative;
 }
 .top-img image{
   width: 100%;
-  height: 1000rpx;
+  height: 500rpx;
 }
 .rule{
   position: absolute;

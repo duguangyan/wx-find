@@ -8,10 +8,16 @@ Page({
     startY: 0,
     findsCheckAll:true, //找料全选按钮
     fetchsCheckAll:true,
-    isCheckAll:true
+    isCheckAll:true,
+    userType:0
   },
   onLoad: function (options) {
-    
+   
+    this.setData({
+      userType: wx.getStorageSync("userType")
+    })
+
+    console.log(this.data.userType);
   },
   // 判断取消选中并获取ID
   cancelCheck(nav, id,check){
@@ -225,13 +231,26 @@ Page({
     })
   },
   onShow: function () { 
+
     // 页面显示  
     this.setData({
       findsCheckAll: true, //找料全选按钮
       fetchsCheckAll: true,
-      isCheckAll: true
+      isCheckAll: true,
     })
+    
     this.init();
+
+    // 判断用户类型包月还是充值或普通
+    api.memberInfo({}).then((res) => {
+      if (res.code == 200) {
+        wx.setStorageSync('userType', res.data.asset.type);
+        this.setData({
+          userType: res.data.asset.type
+        })
+      }
+    })
+
   },
   init() {
     let cancelCheckFindsIds = wx.getStorageSync('cancelCheckFindsIds') || [];
@@ -321,13 +340,13 @@ Page({
     let fetchsSumPrice = 0;
     for (let i = 0; i < finds.length; i++) {
       if (finds[i].check) {
-        findsSumPrice += parseInt(finds[i].form_data.fee);
+        findsSumPrice += finds[i].form_data.fee;
         findsLength++;
       }
     }
     for (let i = 0; i < fetchs.length; i++) {
       if (fetchs[i].check) {
-        fetchsSumPrice += parseInt(fetchs[i].form_data.fee);
+        fetchsSumPrice += fetchs[i].form_data.fee;
         fetchsLength++;
       }
     }

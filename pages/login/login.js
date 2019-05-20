@@ -91,11 +91,21 @@ Page({
             app.globalData.userInfo = res.data.user;
             console.log(app.globalData.token);
             wx.setStorageSync('token', res.data.access_token);
+            wx.setStorageSync('userId', res.data.user.id);
+            wx.setStorageSync('avatar_path', res.data.user.avatar_path);
             wx.setStorageSync('token_type', res.data.token_type);
             wx.setStorageSync('user_name', user_name);
-          
             console.log('fromId');
             console.log(e.detail.formId);
+
+          api.memberInfo({}).then((res) => {
+            if (res.code == 200) {
+              wx.setStorageSync('userType', res.data.asset.type);
+            }
+          })
+
+
+
             if (e.detail.formId != 'the formId is a mock one') {
               let data = {
                 "form_id": e.detail.formId,

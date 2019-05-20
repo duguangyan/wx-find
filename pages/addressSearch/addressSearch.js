@@ -12,7 +12,9 @@ Page({
     multiIndex: [6, 0],
     addressInputValue:'请填写搜索内容',
     titleTips:'当前位置',
-    serachAdressList:[]
+    serachAdressList:[],
+    addressValue:"",
+    addressTitle:"请输入地址"
   },
 
   /**

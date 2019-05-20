@@ -150,7 +150,7 @@ Page({
       /**
        * 来自个人信息编辑
        */
-      if (options.from == 'personInformation'){
+      if (options.from == 'personInformation' || options.h5=='h5'){
         this.data.from = 'personInformation';
         this.setData({
           isFullAddress: true
@@ -293,7 +293,7 @@ Page({
 
     // 点击选中地址返回
     goBlack(e) { 
-      
+     
       this.setData({
         checkIndex: e.currentTarget.dataset.index
       })
@@ -315,6 +315,7 @@ Page({
 
       // 来自H5页面
       if (this.data.h5) {
+        console.log('h5');
         wx.navigateTo({
           url: '../integralmall/integralmall?addressId=' + item.id,
         })

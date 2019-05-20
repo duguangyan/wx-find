@@ -2,7 +2,6 @@ const util = require('../../utils/util.js');
 const api = require('../../utils/api.js');
 let app = getApp();
 Page({
-
     /**
      * 页面的初始数据
      */
@@ -41,7 +40,7 @@ Page({
         this.isBtnActive();
     },
     // 获取手机验证码
-    getSMS() {
+    getSMS() { 
 
         let account = this.data.account;
 
@@ -74,7 +73,7 @@ Page({
                   // 短信发送成功，限制按钮
                   util.successTips('短信发送成功');
                   this.setData({
-                    smsID: res.data
+                    smsID: res.data.sms_id
                   })
                   // 倒计时60s
                   let second = 60;
@@ -207,9 +206,16 @@ Page({
               wx.setStorageSync('token_type', res.data.token_type);
               app.globalData.token = res.data.access_token;
               app.globalData.userInfo = res.data.user;
-              wx.navigateBack({
-                 delta: 2
-              })
+              if (this.data.invite_code){
+                wx.switchTab({
+                  url: '../index/index',
+                })
+              }else{
+                wx.navigateBack({
+                  delta: 2
+                })
+              }
+              
             }else{ 
               wx.showToast({
                 title: res.user_name[0],

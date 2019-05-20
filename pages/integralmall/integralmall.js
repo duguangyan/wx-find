@@ -6,7 +6,7 @@ Page({
    */
   data: {
     url: 'https://integralmall.yidap.com?token=' + wx.getStorageSync('token'),
-    token: wx.getStorageSync('token'),
+    token: '',
     addressId:''
   },
 
@@ -14,6 +14,12 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    this.data.nowTime = parseInt(new Date().getTime() / 1000);
+    this.data.token = wx.getStorageSync('token');
+    this.setData({
+      token:this.data.token,
+      nowTime: this.data.nowTime
+    })
     if (options.addressId){
       this.setData({
         addressId: options.addressId

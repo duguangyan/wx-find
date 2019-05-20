@@ -66,6 +66,28 @@ Page({
     },
     // 个人信息修改也
     personInformation(){
+      let token = wx.getStorageSync('token');
+      let isTrue = token ? false : true;
+      if (isTrue) {
+        wx.showModal({
+          title: '您尚未登录',
+          content: '是否前往登录页面',
+          confirmText: '前往',
+          confirmColor: '#c81a29',
+          success: (res) => {
+            if (res.confirm) {
+              wx.navigateTo({
+                url: '../login/login',
+              })
+              return false;
+            } else if (res.cancel) {
+              console.log('用户点击取消')
+            }
+          }
+        })
+
+        return false;
+      }
       let memberInfo = JSON.stringify(this.data.memberInfo);
       wx.navigateTo({
         url: '../personInformation/personInformation?memberInfo=' + memberInfo,
@@ -73,12 +95,56 @@ Page({
     },
     // 去我的礼券
     goGiftCertificate(){
+      let token = wx.getStorageSync('token');
+      let isTrue = token ? false : true;
+      if (isTrue) {
+        wx.showModal({
+          title: '您尚未登录',
+          content: '是否前往登录页面',
+          confirmText: '前往',
+          confirmColor: '#c81a29',
+          success: (res) => {
+            if (res.confirm) {
+              wx.navigateTo({
+                url: '../login/login',
+              })
+              return false;
+            } else if (res.cancel) {
+              console.log('用户点击取消')
+            }
+          }
+        })
+
+        return false;
+      }
       wx.navigateTo({
         url: '../giftCertificate/giftCertificate',
       })
     },
     // 去任务成长页面
     goGrowthTask(){
+      let token = wx.getStorageSync('token');
+      let isTrue = token ? false : true;
+      if (isTrue) {
+        wx.showModal({
+          title: '您尚未登录',
+          content: '是否前往登录页面',
+          confirmText: '前往',
+          confirmColor: '#c81a29',
+          success: (res) => {
+            if (res.confirm) {
+              wx.navigateTo({
+                url: '../login/login',
+              })
+              return false;
+            } else if (res.cancel) {
+              console.log('用户点击取消')
+            }
+          }
+        })
+
+        return false;
+      }
       wx.navigateTo({
         url: '../growthTask/growthTask',
       })
@@ -305,6 +371,9 @@ Page({
     onLoad: function (options) {  
       // let userInfo = app.globalData.userInfo;
       // console.log(userInfo);
+      this.setData({
+        memberInfo: false
+      })
     },
 
     /**
@@ -330,7 +399,7 @@ Page({
       this.data.orderTab2[2].num = 0;
       this.setData({
         v,
-        memberInfo: false,
+        // memberInfo: false,
         orderTab1: this.data.orderTab1,
         orderTab2: this.data.orderTab2
       })
@@ -348,6 +417,7 @@ Page({
         console.log('用户信息 = ', res);
         if(res.code==200){
           wx.setStorageSync('invite_code', res.data.invite_code);
+          wx.setStorageSync('nick_name', res.data.nick_name);
           app.globalData.memberInfo = res.data;
           this.setData({
             memberInfo: res.data

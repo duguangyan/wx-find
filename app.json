@@ -2,8 +2,6 @@
   "pages": [
     "pages/index/index",
     "pages/order/order",
-    "pages/task/task",
-    "pages/task1/task1",
     "pages/center/center",
     "pages/find/find",
     "pages/recharge/recharge",
@@ -15,7 +13,6 @@
     "pages/consigneeAddress/consigneeAddress",
     "pages/consigneeAddressList/consigneeAddressList",
     "pages/newAddress/newAddress",
-    "pages/newAddress1/newAddress1",
     "pages/findOrderDetail/findOrderDetail",
     "pages/firmOrder/firmOrder",
     "pages/firmPackageOrder/firmPackageOrder",
@@ -41,7 +38,8 @@
     "pages/growthTask/growthTask",
     "pages/giftCertificate/giftCertificate",
     "pages/newUserRegister/newUserRegister",
-    "pages/personInformation/personInformation"
+    "pages/personInformation/personInformation",
+    "pages/chat/chat"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -84,5 +82,6 @@
   "networkTimeout": {
     "request": 8000,
     "downloadFile": 8000
-  }
+  },
+  "sitemapLocation": "sitemap.json"
 }

@@ -55,7 +55,6 @@ Page({
         })
 
         api.memberExit({
-         
           data: {
             user_name: account
           }
@@ -70,7 +69,7 @@ Page({
               // 短信发送成功，限制按钮
               util.successTips('短信发送成功');
               this.setData({
-                smsID: res.data
+                smsID: res.data.sms_id
               })
               // 倒计时60s
               let second = 60;
@@ -117,7 +116,7 @@ Page({
               // 短信发送成功，限制按钮
               util.successTips('短信发送成功');
               this.setData({
-                smsID: res.data
+                smsID: res.data.sms_id
               })
               // 倒计时60s
               let second = 60;

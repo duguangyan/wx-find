@@ -6,12 +6,19 @@ Page({
    * 页面的初始数据
    */
   data: {
-  
+    navIndex:0,
+    navArrText: ['充值VIP',"包月VIP"]
   },
   //  联系我们电话
   contact() {
     wx.makePhoneCall({
       phoneNumber: '400-8088-156'
+    })
+  },
+  navCheck(e){
+    let inx = e.currentTarget.dataset.inx;
+    this.setData({
+      navIndex:inx
     })
   },
   // 去支付
@@ -34,6 +41,11 @@ Page({
         let data = res.data.sdk;
         data.success = function (res) { 
           console.log('支付成功');
+          if(this.navIndex == 0){
+            wx:wx.setStorageSync("userType", 1);
+          } else if (this.navIndex == 1){
+            wx: wx.setStorageSync("userType", 2);
+          }
           console.log(res);
           wx.navigateTo({
             url: '../rechargeSuccess/rechargeSuccess?value=' + value
@@ -57,9 +69,11 @@ Page({
     api.getRechargeList({}).then((res)=>{
       console.log(res);
       if(res.code == 200){
-        let rechargeList = res.data;
+        let rechargeList = res.data.balance;
+        let times = res.data.times;
         this.setData({
-          rechargeList
+          rechargeList,
+          times
         })
       }
     })

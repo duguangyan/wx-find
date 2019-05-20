@@ -10,7 +10,7 @@
         </view>
         <view class='flex-1'>
             <view>￥{{item.coupon_data.value}}</view>
-            <view>{{item.msg}}</view>
+            <view class="{{item.msg=='已使用'?'curMsg':''}}">{{item.msg}}</view>
             <view class='i'></view>
             <view class='i'></view>
             <view class='i'></view>

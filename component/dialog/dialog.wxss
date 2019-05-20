@@ -34,6 +34,8 @@
     word-wrap: break-word;
     word-break: break-all;
     color: #999999;
+    height: 500rpx;
+    overflow: scroll;
 }
 .wx-dialog-footer{
     display: flex;
@@ -62,9 +64,11 @@
     flex: 1;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     position: relative;
+    background: #C81A29;
+    
 }
 .wx-dialog-footer .wx-dialog-btn:nth-of-type(1){
-    color: #353535;
+    color: #fff;
 }
 .wx-dialog-footer .wx-dialog-btn:nth-of-type(2){
     color: #fff;

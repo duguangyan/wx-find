@@ -1,52 +1,8 @@
-
-<!-- <view class="section-avatar flex flex-start">
-    <image  hidden='{{!memberInfo}}'  class='center-setting'
-    src='../../public/images/icon/center-setting-icon.png' bindtap='gotoSettinngPage'>
-    </image>
-    <image class='header-bg' src='../../public/images/center/header_bg.png'></image>
-    <view class="avatar">
-        <image class=' btn-shadow' 
-        src="{{memberInfo.avatar_path || '../../public/images/center/default_avatar.png'}}">
-        </image>
-    </view>
-
-    <view class="member-info text-left bold {{memberInfo? 'top_30' : ''}}">
-        <view class='center-top-txt' wx:if="{{memberInfo}}">
-            <view class="fs26 bold ">
-                <view class="fs30 bold-600 ellipsis" bindtap='showSoltDialog'>
-                   {{memberInfo.nick_name||memberInfo.user_name}}
-                </view>
-            
-                <text hidden="{{true}}" bindtap='modifyInfo' class="iconfont icon-shouhuodizhiyebianji bold-600 fs34 pd-20"></text>
-            </view>
-            <view class="mgt-10">
-                <image class='center-money' src='../../public/images/center/money.png'></image>
-                <text class="text-yellow mgl-20 fs26">余额：￥ {{memberInfo.asset.balance_amount || 0}}</text>
-            </view>
-        </view>
-        
-        
-        <view style="padding:20rpx 0"  
-        bindtap='toLogin'  
-        hidden='{{memberInfo}}' 
-        class="fs32 bold">
-            您暂未登录（点击登录）
-        </view>
-    </view>
-
-    <view wx:if="{{memberInfo}}" class="setting bg-red text-center mgr-20 radius-10">
-        <navigator open-type='navigate' url="../recharge/recharge">
-            <text class='text-fff fs30'>充值</text>
-        </navigator>
-    </view>
-</view> -->
-
-
 <view class='cf section-avatar'>
   <view class='fll20' wx:if="{{memberInfo}}" bindtap='personInformation'>
      <view class="avatar">
         <image class=' btn-shadow' 
-        src="{{memberInfo.avatar_path || '../../public/images/center/9.png'}}">
+        src="{{memberInfo.avatar_path}}">
         </image>
     </view>
   </view>
@@ -55,8 +11,11 @@
          <view class="fs32 text-white cf">
             <view class='ellipsis fll' bindtap='showSoltDialog'>{{memberInfo.nick_name||memberInfo.user_name}}</view>
             <view class='vip fll'>
-              <image src='../../public/images/center/6.png'></image>
-              <text>VIP{{memberInfo.grade.level}}</text>
+              <image wx:if="{{memberInfo.asset.type==0}}" src='../../public/images/center/66.png'></image>
+              <image wx:if="{{memberInfo.asset.type!=0}}" src='../../public/images/center/6.png'></image>
+              <text wx:if="{{memberInfo.asset.type== 0}}">VIP</text>
+              <text wx:if="{{memberInfo.asset.type== 1}}">充</text>
+              <text wx:if="{{memberInfo.asset.type== 2}}">包</text>
             </view>
         </view>
         <view wx:if='{{memberInfo.hasSign}}' class='sign-in sign-cur fs28'>
@@ -75,14 +34,18 @@
 
   <view class='section-footer flex' wx:if="{{memberInfo}}">
       <view class="flex-2">
-          <text class="balance">余额:<text>￥{{memberInfo.asset.balance_amount || 0}}</text></text>
+          <text class="balance">余额(元):<text class='balance-text'>{{memberInfo.asset.balance_amount || 0}}</text></text>
+      </view>
+      <view class="flex-2">
+          <text class="balance">服务(次):<text class='balance-text'>{{memberInfo.asset.times || 0}}</text></text>
       </view>
       <view wx:if="{{memberInfo}}" class="flex-1 setting">
         <navigator open-type='navigate' url="../recharge/recharge">
-            <text class='text-333 fs30'>充值</text>
+            <text class='text-fff fs24'>VIP充值</text>
         </navigator>
-    </view>
+      </view>
   </view>
+  
   <view style="padding:20rpx 0"  
         bindtap='toLogin'  
         hidden='{{memberInfo}}' 
@@ -90,10 +53,14 @@
             您暂未登录（点击登录）
         </view>
 </view>
+
 <view style='height:320rpx'></view>
 
 
-
+<view class='center-service' wx:if="{{memberInfo}}">
+      包月服务期限: {{memberInfo.asset.expired_at || "0"}} 
+      <text class="text-red" wx:if="{{memberInfo.asset.expired_warning == true}}">( 即将到期 )</text>
+</view>
 <view class="section-order mgt-20">
     <view class="my-order-line flex">
         <view class="fs30">找料订单</view>

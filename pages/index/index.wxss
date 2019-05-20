@@ -2,6 +2,13 @@
 page{
   background-color: #fff;
 }
+rich-text   .rich-img {
+
+width: 100% ;
+
+height: auto ;
+
+}
 .section-box {
     padding: 10rpx 50rpx 80rpx;
     display: flex;

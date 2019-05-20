@@ -8,6 +8,7 @@ Page({
      * 页面的初始数据
      */
     data: {
+        findDisabled:false,
         checkTypeIndex:0,// 第几个
         isCheckTypeModel:false, // 分类model
         classifyList:'', // 分类列表
@@ -15,6 +16,7 @@ Page({
         isNotes:true, // 找料须知弹窗
         isAddShow:'true',
         interval:'',
+        findNum:1,
         payNum:10, // 支付倒计时
         isPopup:false, // 弹窗控制
         addressIndex:'', // 地址索引
@@ -384,6 +386,7 @@ Page({
     // 提交表单
 
     findSubmit(e) {
+      
       console.log('fromId');
       console.log(e.detail.formId);
       if (e.detail.formId != 'the formId is a mock one') {
@@ -487,6 +490,9 @@ Page({
           // 只有描述 此方法头部已经判断
         }
       }
+      this.setData({
+        findDisabled: true
+      })
       let findDates = {
         task_type:'1',
         form_data: this.data.addFinds
@@ -497,6 +503,12 @@ Page({
         data: findDates
       }).then((res)=>{
           console.log(res);
+          setTimeout(()=>{
+            this.setData({
+              findDisabled: false
+            })
+          },500)
+          
           if(res.code==200){
              this.setData({
                isPopup:true
@@ -540,7 +552,10 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {  
-    
+      this.data.isIos = (wx.getSystemInfoSync().system).indexOf('iOS') >= 0;
+      this.setData({
+        isIos: this.data.isIos
+      })
       // 动态获取须知
       api.needKnow({}).then((res) => {
         console.log(res);
@@ -569,9 +584,17 @@ Page({
         // 根据上一级findNum创建找料单数
         let newAddFinds = [];
         let findNum = 1;
+        try{
+          if (options.selcetTabNum) {
+            this.data.selcetTabNum = options.selcetTabNum
+          } 
+        }catch(e){
+          this.data.selcetTabNum = 1;
+          console.log(e);
+        }
         for (let i = 0; i < parseInt(findNum); i++) {
           newAddFinds.push(
-            { index: i, cid: this.data.addFinds[0].cid, checkType: this.data.addFinds[0].checkType, find_type: options.selcetTabNum || 1, selcetTabNum: options.selcetTabNum || 1, get_type: '1', selcetSecondTabNum: '1', isSelect: false, desc: '', files: [{}, {}, {}], get_address: wx.getStorageSync('defaultAddress').id, address: wx.getStorageSync('defaultAddress') }
+            { index: i, cid: this.data.addFinds[0].cid, checkType: this.data.addFinds[0].checkType, find_type: this.data.selcetTabNum, selcetTabNum: this.data.selcetTabNum, get_type: '1', selcetSecondTabNum: '1', isSelect: false, desc: '', files: [{}, {}, {}], get_address: wx.getStorageSync('defaultAddress').id, address: wx.getStorageSync('defaultAddress') }
           )
           // 设置数据
           this.setData({

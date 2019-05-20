@@ -11,6 +11,19 @@ Page({
       selcetTabNum:1,
       isPopup:false,
     },
+  // 获取公告
+    mynotice(){
+      api.mynotice({}).then((res) => {
+        console.log(res);
+        this.setData({
+          nodes: res.data.content.replace(/\<img/gi, '<img class="rich-img" '),
+          dialogTitle: res.data.title
+        })
+
+        this.indexDialog = this.selectComponent('#indexDialog');
+        this.indexDialog.showDialog();
+      })
+    },
     // 提交
     doSubmit () {  
       this.setData({
@@ -177,21 +190,27 @@ Page({
         url: '../material/material',
       })
     },
-
+    chat(){
+      wx.navigateTo({
+        url: '../chat/chat',
+      })
+    },
     /**
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
-    
+      
     },
     /**
      * 生命周期函数--监听页面初次渲染完成
      */
     onReady: function () {
-    
+      
 
     },
-
+    confirmEvent(){
+      this.indexDialog.hideDialog();
+    },
     getDistance: function (lat1, lng1, lat2, lng2) { 
 
       lat1 = lat1 || 0;
@@ -219,7 +238,6 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow: function () {
-      
       this.setData({
         findNum:this.data.findNum
       })
@@ -230,6 +248,8 @@ Page({
           serviceData
         })
       });
+      this.mynotice();
+      
     },
     /**
      * 生命周期函数--监听页面隐藏
@@ -266,4 +286,5 @@ Page({
       console.log('fromId:');
       console.log(e.detail.formId);
     }
+    
 })

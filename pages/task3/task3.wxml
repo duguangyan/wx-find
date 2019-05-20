@@ -21,7 +21,9 @@
         
         <view class='task-content pdr-20'>
           <view>
-            <text>物料品类: {{item.cname}}</text> <text class='flr pdr-30'>金额: ￥{{filter.formatMoney(item.form_data.fee)}}</text>
+            <text>物料品类: {{item.cname}}</text> 
+            <text class='flr pdr-30' wx:if="{{userType ==2}}">包月:使用{{item.form_data.fee}}次</text>
+            <text class='flr pdr-30' wx:if="{{userType !=2}}">金额: ￥{{filter.formatMoney(item.form_data.fee)}}</text>
           </view>
           <view>
             <text style='width:450rpx' class='ellipsis'>物料描述: {{item.form_data.desc}}</text>
@@ -92,7 +94,9 @@
   </view>
   <view class='cf'>
     <view class='lh90 flr pdr-30'>共{{findsLength}}个任务，小计：
-      <text class='text-red'>￥{{filter.formatMoney(findsSumPrice)}}</text>
+      <text class='text-red'  wx:if="{{userType ==2}}">包月：使用{{findsSumPrice}}次</text>
+      <text class='text-red'  wx:if="{{userType !=2}}">￥{{filter.formatMoney(findsSumPrice)}}</text>
+      
     </view>
   </view> 
 </view>
@@ -118,7 +122,9 @@
         </view>
         <view class='task-content pdr-20'>
           <view>
-            <text>物料品类: {{item.cname}}</text> <text class='flr pdr-30'>金额: ￥{{filter.formatMoney(item.form_data.fee)}}</text>
+            <text>物料品类: {{item.cname}}</text> 
+            <text class='flr pdr-30' wx:if="{{userType ==2}}">包月:使用{{item.form_data.fee}}次</text>
+            <text class='flr pdr-30' wx:if="{{userType !=2}}">金额: ￥{{filter.formatMoney(item.form_data.fee)}}</text>
           </view>
           <view>
             <text style='width:450rpx' class='ellipsis'>物料描述: {{item.form_data.desc}}</text>
@@ -154,7 +160,8 @@
   </view>
   <view class='cf'>
     <view class='lh90 flr pdr-30'>共{{fetchsLength}}个任务，小计：
-      <text class='text-red'>￥{{filter.formatMoney(fetchsSumPrice)}}</text>
+      <text class='text-red' wx:if="{{userType ==2}}">包月：使用{{fetchsSumPrice}}次</text>
+      <text class='text-red' wx:if="{{userType !=2}}">￥{{filter.formatMoney(fetchsSumPrice)}}</text>
     </view>
   </view> 
 </view>
@@ -165,7 +172,9 @@
       <text catchtap='doCheckAll'  wx:if='{{isCheckAll}}' class="iconfont icon-dui fs40 pdr-20 text-theme"></text>
       <text catchtap='doCheckAll'  wx:if='{{!isCheckAll}}' class="iconfont icon-yuan fs40 pdr-20 text-eb"></text>
         <text class='text-underline mgr-50' catchtap='doCheckAll'>全选</text>
-        <text class='mgr-50'>合计：<text class='text-red'>￥{{filter.formatMoney(sumPrice)}}</text></text>
+        
+        <text class='mgr-50' wx:if="{{userType !=2}}">合计：<text class='text-red'>￥{{filter.formatMoney(sumPrice)}}</text></text>
+         <text class='mgr-50' wx:if="{{userType ==2}}">合计：<text class='text-red'>包月:使用{{sumPrice}}次</text></text>
         <form  wx:if="{{sumPrice!=0}}" bindsubmit="saveTask" class='task-pay-btn' report-submit='true' >
           <button form-type="submit" class='task-pay-btn'>
             <text class='text-underline' bindtap='saveTask'>结算</text> 

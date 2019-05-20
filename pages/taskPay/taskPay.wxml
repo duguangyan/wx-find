@@ -8,7 +8,11 @@
         </view>
         <view class='task-find-list fs30' wx:for='{{finds}}' wx:key='this'>
             <view class='task-find-item'>
-               <view>物料品类：{{item.cname}}   <text class='flr'>金额:￥{{filter.formatMoney(item.form_data.fee)}}</text></view>
+               <view>物料品类：{{item.cname}}   
+               
+                <text class='flr' wx:if="{{userType == 2}}">使用:{{item.form_data.fee}}次</text>
+                <text class='flr' wx:if="{{userType != 2}}">金额:￥{{filter.formatMoney(item.form_data.fee)}}</text>
+               </view>
                <view>物料描述：{{item.form_data.desc}}</view>
                <view wx:if='{{item.form_data.find_type==1}}'>找料方式：按图找料</view>
                <view wx:if='{{item.form_data.find_type==2}}'>找料方式：按样找料</view>
@@ -70,7 +74,10 @@
             </view> 
         </view>
         <view class='task-find-sum lh90 fs30 bb-1'>
-            <text>共{{finds.length}}个任务,小计：<text class='text-red'>￥{{filter.formatMoney(findsTotalPrice)}}</text></text>
+            <text>共{{finds.length}}个任务,小计：
+              <text class='text-red' wx:if="{{userType != 2}}">￥{{filter.formatMoney(findsTotalPrice)}}</text>
+              <text class='text-red' wx:if="{{userType == 2}}">{{findsTotalPrice}} 次</text>
+            </text>
         </view> 
 
         <!--收货地址  -->
@@ -199,7 +206,7 @@
 
       
   </view> 
-  <view bindtap='goCoupon' class='task-get box-shadow cell-padding fs30 mgt-30 lh90 bottom-border coupon'>
+  <view wx:if="{{userType != 2}}" bindtap='goCoupon' class='task-get box-shadow cell-padding fs30 mgt-30 lh90 bottom-border coupon'>
     <text>{{couponList.name}} {{couponList.coupon_data.value}}{{couponList?'':'使用优惠券'}}</text>  
     <text class='iconfont icon-jiantou'></text>
   </view>
@@ -207,7 +214,9 @@
   
   <view class='task-pay fs30 lh120 box-shadow pdl-30' wx:if='{{fetchs.length>0 ||finds.length>0}}'>
       <view class='flr task-paybtn' style='margin-right:240rpx;'>
-        应付款：<text class='text-red'>￥{{filter.formatMoney(findsTotalPrice + fetchsTotalPrice - couponListPrice)}}</text>
+        应付款：
+        <text class='text-red' wx:if="{{userType == 2}}">包月:使用{{findsTotalPrice + fetchsTotalPrice - couponListPrice}} 次</text>
+        <text class='text-red' wx:if="{{userType != 2}}">￥{{filter.formatMoney(findsTotalPrice + fetchsTotalPrice - couponListPrice)}}</text>
       </view>
       <view class='task-sum'>
         <text style='color:#999;'>（余额:￥{{filter.formatMoney(balance_amount) || '0'}}）</text>

@@ -1,6 +1,6 @@
-const apiUrl = 'https://devv2.yidap.com';   // 测试
-// const apiUrl = 'https://apiv2.yidap.com';     // 正式
-const versionNumber = 'v2.4.6';  //版本号
+ const apiUrl = 'https://devv2.yidap.com';   // 测试
+//const apiUrl = 'https://apiv2.yidap.com';     // 正式
+const versionNumber = 'v2.5.8';  //版本号
 
 if (apiUrl == 'https://apiv2.yidap.com'){
   wx.setStorageSync('v', versionNumber+' 正式');
@@ -15,7 +15,7 @@ Promise.prototype.finally = function (callback) {
     );
 };
 /*
- * 
+ *  
  * @param {*} params 
  * @param {*} url String
  * @param {*} data Object
@@ -461,7 +461,24 @@ const coupon = (params, id, st, page) => myRequest(params, `${apiUrl}/find/api/c
 // 邀请新用户规则
 const invite = (params) => myRequest(params, `${apiUrl}/imall/invite`);
 
+// 退款
+const refuse = (params) => myRequest(params, `${apiUrl}/find/api/order/refuse`);
+
+// 公告
+const mynotice = (params) => myRequest(params, `${apiUrl}/find/api/notice`);
+
+// 根据用户ID获取用户信息
+const getUserInfoformSocket = (params) => myRequest(params, `${apiUrl}/socket/getUserInfo`);
+
+// 获取聊天记录
+const getMessageBySocket = (params) => myRequest(params, `${apiUrl}/socket/getMessage`);
+
+
+
 module.exports = {
+  getMessageBySocket,
+  mynotice,
+  refuse,
   invite,
   coupon,
   updateExt,
@@ -549,5 +566,6 @@ module.exports = {
   packageOrderPay,
   myPackageOrderList,
   activity,
-  activitySubmit
+  activitySubmit,
+  getUserInfoformSocket
 }
