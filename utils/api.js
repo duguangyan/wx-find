@@ -1,7 +1,7 @@
- const apiUrl = 'https://devv2.yidap.com';   // 测试
+const apiUrl = 'https://devv2.yidap.com';   // 测试
 //const apiUrl = 'https://apiv2.yidap.com';     // 正式
-const versionNumber = 'v2.5.8';  //版本号
-
+const versionNumber = 'v3.0.1';  //版本号
+import md5 from "./md5.min.js";
 if (apiUrl == 'https://apiv2.yidap.com'){
   wx.setStorageSync('v', versionNumber+' 正式');
 }else{
@@ -24,12 +24,51 @@ Promise.prototype.finally = function (callback) {
  * @param {*} complete Function
  */
 // id 类型或id   st 状态
+
+// sign签名拼接方法
+function MakeSign(url, Obj) {
+  let newKey = Object.keys(Obj).sort()
+  let newObj = {}
+  for (let i = 0; i < newKey.length; i++) {
+    newObj[newKey[i]] = Obj[newKey[i]]
+  }
+  let str = ''
+  for (let key in newObj) {
+    if (newObj[key] == null) {
+      str += key + '=&'
+    }else if (typeof newObj[key] == 'object' && newObj[key]!=null){
+        str += key + '=[object Object]&'
+    } else{
+      str += key + '=' + newObj[key] + '&'
+    }
+  }
+  let newUrl='';
+  if (url.indexOf('https://devv2.yidap.com')>-1){
+    newUrl = url.split('https://devv2.yidap.com')[1];
+  }else{
+    newUrl = url.split('https://apiv2.yidap.com')[1];
+  } 
+  let newStr = newUrl + '?' + str.substring(0, str.length - 1) + 'zhong_pi_lian'
+  newStr = newStr.replace('sign=&', '')
+  console.log('newStr:->' + newStr)
+  
+  return md5(newStr)
+}
+
 const myRequest = function (params = {}, url , id, st, page) {
 
     return new Promise((resolve, reject) => {
-        let data = params.data || {};
+        let timestamp = Date.parse(new Date());
+        let data = {};
+            data = params.data || {};
+            data.timestamp    = timestamp;
+            data.sign         = MakeSign(url, data);
+            data.deviceId     = "wx";
+            data.platformType =  "1";
+            data.versionCode  = '3.0';
+            
         const token = wx.getStorageSync('token') || '';
-        const token_type = wx.getStorageSync('token_type') || '';
+        const token_type = wx.getStorageSync('token_type') || 'Bearer';
         // data.member_token = token;
         let header = {'Accept':'application/json', 'Authorization': token_type+ ' ' +token };
         let apiUrl = url;
@@ -49,11 +88,11 @@ const myRequest = function (params = {}, url , id, st, page) {
             header,
           success(res) {
                 var res = res.data;
-                if (200 === res.code || 0 === res.code) {
+                if (200 == res.code || 0 == res.code) {
                     resolve(res);
                 } else {
                     
-                    if (401 === res.code) {  
+                    if (401 == res.code) {  
                       wx.hideLoading();
                       console.log('401统一处理');
                       let fromCenter =  wx.getStorageSync('fromCenter');
@@ -77,13 +116,14 @@ const myRequest = function (params = {}, url , id, st, page) {
                         })
                       }
                     }
-                  if (201 === res.code){
+                  if (201 == res.code || -1 == res.code || 1 == res.code){
                     wx.showToast({
                       title: res.msg,
                       icon:'none',
                       duration: 2000
                     })
                   }
+                  
                     reject(res);
                 }
             },
@@ -195,36 +235,36 @@ const cartNumber = (params) => {
 
 // 订单收货地址列表
 const listAddress = (params) => {
-  return myRequest(params, `${apiUrl}/find/api/member/address`)
+  return myRequest(params, `${apiUrl}/api/member/address`)
 }
 // 订单收货地址详情
 const infoAddress = (params,id) => {
-  return myRequest(params, `${apiUrl}/find/api/member/address`,id)
+  return myRequest(params, `${apiUrl}/api/member/address/show`)
 }
 
 // 订单新增收货地址
 const addAddress = (params) => {
-  return myRequest(params, `${apiUrl}/find/api/member/address`)
+  return myRequest(params, `${apiUrl}/api/member/address`)
 }
 
 // 订单编辑收货地址
-const editAddress = (params,id) => {
-    return myRequest(params, `${apiUrl}/find/api/member/address`,id)
+const editAddress = (params) => {
+    return myRequest(params, `${apiUrl}/api/member/address`)
 }
 
 // 获取订单默认收货地址资料
 const defaultAddress = (params) => {
-  return myRequest(params, `${apiUrl}/find/api/member/address_default`)
+  return myRequest(params, `${apiUrl}/api/member/address/default`)
 }
 
 // 设置默认收货地址
 const setDefaultAddress = (params,id) => {
-  return myRequest(params, `${apiUrl}/find/api/member/address/edit-default`,id)
+  return myRequest(params, `${apiUrl}/api/member/address/edit-default`,id)
 }
 
 // 删除收货地址
 const deleteAddress = (params,id) => {
-  return myRequest(params, `${apiUrl}/find/api/member/address`,id)
+  return myRequest(params, `${apiUrl}/api/member/address/delete`)
 }
 
 // 结算 添加订单
@@ -233,10 +273,12 @@ const addOrder = (params) => {
 }
 
 // 订单列表 id:1找料 2取料 订单状态st: 0所有状态4未支付5待收货6待评价
-const orderList = (params,id,st,page) => {
-  return myRequest(params, `${apiUrl}/find/api/order/type`, id, st, page)
+// const orderList = (params,id,st,page) => {
+//   return myRequest(params, `${apiUrl}/api/order/type`, id, st, page)
+// }
+const orderList = (params) => {
+  return myRequest(params, `${apiUrl}/api/order`)
 }
-
 // 订单详情
 const orderDetail = (params) => {
     return myRequest(params, `${apiUrl}/ec/order/info`)
@@ -249,17 +291,20 @@ const cancelOrder = (params) => {
 
 // 任务中心去支付支付
 const payment = (params) => {
-  return myRequest(params, `${apiUrl}/find/api/order`)
+  return myRequest(params, `${apiUrl}/api/order`)
 }
 // 重新支付
 const repay = (params,id) => {
-  return myRequest(params, `${apiUrl}/find/api/order/repay`,id)
+  return myRequest(params, `${apiUrl}/api/order/repay`,id)
 }
 
 
-// 微信支付
-const wxPay = (params) => {
+// 订单微信支付
+const wxPayByOrder = (params) => {
   return myRequest(params, `${apiUrl}/api/wechat/unify`)
+}
+const wxPay = (params) => {
+  return myRequest(params, `${apiUrl}/api/recharge`)
 }
 
 // 确认收货
@@ -298,7 +343,7 @@ const getAddress = (params) => myRequest(params, `${apiUrl}/api/region/listTree`
 const brandShow = (params) => myRequest(params, `${apiUrl}/item/brand/get`);
 
 // 获取服务人数
-const serviceNum = (params) => myRequest(params, `${apiUrl}/find/api/material`);
+const serviceNum = (params) => myRequest(params, `${apiUrl}/api/material`);
 
 /**
  * 
@@ -308,19 +353,19 @@ const serviceNum = (params) => myRequest(params, `${apiUrl}/find/api/material`);
 
 // 小鹿快找接口
 // 提交订单
-const addDemand = (params) => myRequest(params, `${apiUrl}/find/demand/add`);
+const addDemand = (params) => myRequest(params, `${apiUrl}/demand/add`);
 
 // 套餐费用
-const demandPrice = (params) => myRequest(params, `${apiUrl}/find/demand/price`);
+const demandPrice = (params) => myRequest(params, `${apiUrl}/demand/price`);
 
 // 找料支付接口
-const demandPay = (params) => myRequest(params, `${apiUrl}/find/demand/pay`);
+const demandPay = (params) => myRequest(params, `${apiUrl}/demand/pay`);
 
 // 找料订单详情
-const demandInfo = (params) => myRequest(params, `${apiUrl}/find/demand/info`);
+const demandInfo = (params) => myRequest(params, `${apiUrl}/demand/info`);
 
 // 找料订单列表
-const demandList = (params) => myRequest(params, `${apiUrl}/find/demand/list`);
+const demandList = (params) => myRequest(params, `${apiUrl}/demand/list`);
 
 
 /**
@@ -330,19 +375,23 @@ const demandList = (params) => myRequest(params, `${apiUrl}/find/demand/list`);
 
 
 // 购买套餐列表
-const packageList = (params) => myRequest(params, `${apiUrl}/find/package/getList`);
+const packageList = (params) => myRequest(params, `${apiUrl}/package/getList`);
 
 // 配送服务  
-const packageService = (params) => myRequest(params, `${apiUrl}/find/distribution/getArea`);
+const packageService = (params) => myRequest(params, `${apiUrl}/distribution/getArea`);
 
 // 充值订单提交
-const addPackageOrder = (params) => myRequest(params, `${apiUrl}/find/package_order/store`);
+const addPackageOrder = (params) => myRequest(params, `${apiUrl}/package_order/store`);
 
 // 去支付
-const packageOrderPay = (params) => myRequest(params, `${apiUrl}/find/package_order/pay`);
+const packageOrderPay = (params) => myRequest(params, `${apiUrl}/package_order/pay`);
+
+// 余额支付
+const payAsset = (params) => myRequest(params, `${apiUrl}/api/pay/asset`);
+
 
 // 我的套餐列表
-const myPackageOrderList = (params) => myRequest(params, `${apiUrl}/find/package_order/index`);
+const myPackageOrderList = (params) => myRequest(params, `${apiUrl}/package_order/index`);
 
 
 
@@ -354,98 +403,101 @@ const activity = (params) => myRequest(params, `${apiUrl}/ec/spike_activity/info
 const activitySubmit = (params) => myRequest(params, `${apiUrl}/ec/spike_activity/make`);
 
 // 获取找料类型数据
-const getCheckTypes = (params) => myRequest(params, `${apiUrl}/find/api/category`);
+const getCheckTypes = (params) => myRequest(params, `${apiUrl}/api/category`);
 
 // 任务中心列表数据
-const getTaskInit = (params,id) => myRequest(params, `${apiUrl}/find/api/task/type`,id);
+const getTaskInit = (params,id) => myRequest(params, `${apiUrl}/api/task`,);
+
+// 更新任务
+const updateTaskInit = (params, id) => myRequest(params, `${apiUrl}/api/task/update`);
 
 // 删除找料任务
-const delTask = (params,id) => myRequest(params, `${apiUrl}/find/api/task`,id);
+const delTask = (params, id) => myRequest(params, `${apiUrl}/api/task/delete`);
 
 // 任务中心结算
-const saveTask = (params) => myRequest(params, `${apiUrl}/find/api/task`);
+const saveTask = (params) => myRequest(params, `${apiUrl}/api/task`);
 
 // 加入小鹿任务
-const joinTask = (params) => myRequest(params, `${apiUrl}/find/api/task`);
+const joinTask = (params) => myRequest(params, `${apiUrl}/api/task`);
 
 // 充值列表
-const getRechargeList = (params) => myRequest(params, `${apiUrl}/find/api/recharge`);
+const getRechargeList = (params) => myRequest(params, `${apiUrl}/api/recharge`);
 
 // 找料或取料单价
-const getFindOrFetchPrice = (params,id) => myRequest(params, `${apiUrl}/find/api/taskfee`,id);
+const getFindOrFetchPrice = (params,id) => myRequest(params, `${apiUrl}/api/taskfee`,id);
 
 // 催单
-const urgeOrder = (params, id) => myRequest(params, `${apiUrl}/find/api/order/prompt`, id);
+const urgeOrder = (params, id) => myRequest(params, `${apiUrl}/api/order/prompt`, id);
 // 取消订单
-const delOrder = (params, id) => myRequest(params, `${apiUrl}/find/api/order/cancel`, id);
+const delOrder = (params, id) => myRequest(params, `${apiUrl}/api/order/cancel`, id);
 
 // 订单列表 订单支付
-const orderListToPay = (params, id) => myRequest(params, `${apiUrl}/find/api/order/repay`, id);
+const orderListToPay = (params, id) => myRequest(params, `${apiUrl}/api/order/repay`, id);
 
 // 订单列表 确认收货
-const affirmOrder = (params, id) => myRequest(params, `${apiUrl}/find/api/order/confirm`, id);
+const affirmOrder = (params, id) => myRequest(params, `${apiUrl}/api/order/confirm`);
 
 // 订单评价
-const toCommentOrder = (params, id) => myRequest(params, `${apiUrl}/find/api/order/comment`, id);
+const toCommentOrder = (params, id) => myRequest(params, `${apiUrl}/api/order/comment`);
 
 // 判断配送是否范围
-const isFromScope = (params, id) => myRequest(params, `${apiUrl}/find/api/member/address_check`, id);
+const isFromScope = (params, id) => myRequest(params, `${apiUrl}/api/member/address_check`, id);
 
 // 修改任务
-const findEdit = (params, id) => myRequest(params, `${apiUrl}/find/api/task`, id);
+const findEdit = (params, id) => myRequest(params, `${apiUrl}/api/task`, id);
 
 // 找料订单详情
-const getOrderDetail = (params, id) => myRequest(params, `${apiUrl}/find/api/order`, id);
+const getOrderDetail = (params, id) => myRequest(params, `${apiUrl}/api/order/show`);
 
 // 获取公司地址
-const getCompanyaddress = (params) => myRequest(params, `${apiUrl}/find/api/company/address`);
+const getCompanyaddress = (params) => myRequest(params, `${apiUrl}/api/company/address`);
 
 // 获取用户信息
 const getUserInfo = (params) => myRequest(params, `${apiUrl}/api/show`);
 
 // 获取单个任务价格
-const getTaskFee = (params, id) => myRequest(params, `${apiUrl}/find/api/taskfee`,id);
+const getTaskFee = (params) => myRequest(params, `${apiUrl}/api/task/fee`);
 // 获取openId
 const getOpenId = (params) => myRequest(params, `${apiUrl}/api/member/openId`);
 
 //个人中心统计
-const centerStatistics = (params) => myRequest(params, `${apiUrl}/find/api/member/stastics`);
+const centerStatistics = (params) => myRequest(params, `${apiUrl}/api/member/stastics`);
 
 // get是否设置支付密码 put保存支付密码 post验证支付密码 
-const doPayPassWord = (params) => myRequest(params, `${apiUrl}/find/api/member/paypwd`);
+const doPayPassWord = (params) => myRequest(params, `${apiUrl}/api/member/paypwd`);
 // 忘记支付密码
-const resetpaypwd = (params) => myRequest(params, `${apiUrl}/find/api/member/resetpaypwd`);
+const resetpaypwd = (params) => myRequest(params, `${apiUrl}/api/member/resetpaypwd`);
 
 
 // 忘记支付密码
-const restPayPwd = (params) => myRequest(params, `${apiUrl}/find/api/member/resetpaypwd`);
+const restPayPwd = (params) => myRequest(params, `${apiUrl}/api/member/resetpaypwd`);
 
 // 总订单支付
-const repayorder = (params) => myRequest(params, `${apiUrl}/find/api/repayorder`);
+const repayorder = (params) => myRequest(params, `${apiUrl}/api/repayorder`);
 
 // 检查验证码
-const smschk = (params) => myRequest(params, `${apiUrl}/find/api/member/smschk`);
+const smschk = (params) => myRequest(params, `${apiUrl}/api/member/smschk`);
 
 // 获取fromId 
 const getFormId = (params) => myRequest(params, `${apiUrl}/api/member/form_id`);
 
 // 订单支付方式
-const checkPayType = (params) => myRequest(params, `${apiUrl}/find/api/order/checkPayType`);
+const checkPayType = (params) => myRequest(params, `${apiUrl}/api/order/checkPayType`);
 
 // 支付验证密码
-const verifyPassword = (params) => myRequest(params, `${apiUrl}/find/api/member/paypwd`);
+const verifyPassword = (params) => myRequest(params, `${apiUrl}/api/member/paypwd`);
 
 // 设置支付密码
-const setPayPwd = (params) => myRequest(params, `${apiUrl}/find/api/member/setPayPwd`);
+const setPayPwd = (params) => myRequest(params, `${apiUrl}/api/member/resetpaypwd`);
 
 // 修改昵称
 const changeNickName = (params) => myRequest(params, `${apiUrl}/api/member/nick_name`);
 
 // 订单删除
-const orderDel = (params) => myRequest(params, `${apiUrl}/find/api/order/delete`);
+const orderDel = (params) => myRequest(params, `${apiUrl}/api/order/delete`);
 
 // 须知
-const needKnow = (params) => myRequest(params, `${apiUrl}/find/api/need_know`);
+const needKnow = (params) => myRequest(params, `${apiUrl}/api/need_know`);
 
 /**
  * 成长任务
@@ -457,26 +509,55 @@ const signIn = (params) => myRequest(params, `${apiUrl}/imall/sign`);
 // 完善个人信息
 const updateExt = (params) => myRequest(params, `${apiUrl}/api/member/updateExt`);
 // 优惠券列表
-const coupon = (params, id, st, page) => myRequest(params, `${apiUrl}/find/api/coupon`, id, st, page);
+// const coupon = (params, id, st, page) => myRequest(params, `${apiUrl}/api/coupon`, id, st, page);
+const coupon = (params) => myRequest(params, `${apiUrl}/api/coupon`);
 // 邀请新用户规则
 const invite = (params) => myRequest(params, `${apiUrl}/imall/invite`);
 
 // 退款
-const refuse = (params) => myRequest(params, `${apiUrl}/find/api/order/refuse`);
+const refuse = (params) => myRequest(params, `${apiUrl}/api/order/refuse`);
 
 // 公告
-const mynotice = (params) => myRequest(params, `${apiUrl}/find/api/notice`);
+const mynotice = (params) => myRequest(params, `${apiUrl}/api/notice`);
 
 // 根据用户ID获取用户信息
 const getUserInfoformSocket = (params) => myRequest(params, `${apiUrl}/socket/getUserInfo`);
 
-// 获取聊天记录
-const getMessageBySocket = (params) => myRequest(params, `${apiUrl}/socket/getMessage`);
+
+// 用户退出登录
+const userLogout = (params) => myRequest(params, `${apiUrl}/api/logout`);
+
+// 获取邀请码
+const getInviteCode = (params) => myRequest(params, `${apiUrl}/api/member/invite_code`);
+
+// 获取余额支付
+const getUserAsset = (params) => myRequest(params, `${apiUrl}/api/member/asset`);
+
+// 删除订单
+const orderDelete = (params) => myRequest(params, `${apiUrl}/api/order/delete`);
+
+// 催单
+const orderPrompt = (params) => myRequest(params, `${apiUrl}/api/order/prompt`);
+
+// 短信登录
+const smsLogin = (params) => myRequest(params, `${apiUrl}/api/sms/login`);
+
+// 短信登录
+const memberAvatarPath = (params) => myRequest(params, `${apiUrl}/api/member/avatar_path`);
 
 
 
 module.exports = {
-  getMessageBySocket,
+  memberAvatarPath,
+  smsLogin,
+  orderDelete,
+  orderPrompt,
+  payAsset,
+  wxPayByOrder,
+  updateTaskInit,
+  getUserAsset,
+  getInviteCode,
+  userLogout,
   mynotice,
   refuse,
   invite,

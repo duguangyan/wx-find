@@ -54,110 +54,110 @@ Page({
           smsStatus: true,
         })
 
-        api.memberExit({
-          data: {
-            user_name: account
-          }
-        }).then((res) => {
-          if(res.code!=200){
-            api.restSMS({
-              method: 'POST',
-              data: {
-                phone: account
-              }
-            }).then((res) => {
-              // 短信发送成功，限制按钮
-              util.successTips('短信发送成功');
-              this.setData({
-                smsID: res.data.sms_id
-              })
-              // 倒计时60s
-              let second = 60;
-              const timer = setInterval(() => {
-
-                second--;
-
-                let smsText = `${second}s后重新发送`;
-                this.setData({
-                  smsText
-                })
-
-                if (second == 1) {
-                  this.setData({
-                    smsStatus: false,
-                    smsText: false
-                  })
-                  clearInterval(timer)
-                }
-
-              }, 1000)
-
-            }).catch((res) => {
-
-              util.errorTips('短信发送失败');
-              this.setData({
-                smsStatus: false,
-              })
-
-            })
-          }
+        // api.memberExit({
+        //   data: {
+        //     user_name: account
+        //   }
+        // }).then((res) => {
+        //   if(res.code!=200){
+            
+        //   }
           
 
 
-        }).catch((res) => {
-          // 用户不存在res.msg
-          if(res.code==201){
-            api.restSMS({
-              method: 'POST',
-              data: {
-                phone: account
-              }
-            }).then((res) => {
-              // 短信发送成功，限制按钮
-              util.successTips('短信发送成功');
-              this.setData({
-                smsID: res.data.sms_id
-              })
-              // 倒计时60s
-              let second = 60;
-              const timer = setInterval(() => {
+        // }).catch((res) => {
+        //   // 用户不存在res.msg
+        //   if(res.code==201){
+        //     api.restSMS({
+        //       method: 'POST',
+        //       data: {
+        //         phone: account
+        //       }
+        //     }).then((res) => {
+        //       // 短信发送成功，限制按钮
+        //       util.successTips('短信发送成功');
+        //       this.setData({
+        //         smsID: res.data.sms_id
+        //       })
+        //       // 倒计时60s
+        //       let second = 60;
+        //       const timer = setInterval(() => {
 
-                second--;
+        //         second--;
 
-                let smsText = `${second}s后重新发送`;
-                this.setData({
-                  smsText
-                })
+        //         let smsText = `${second}s后重新发送`;
+        //         this.setData({
+        //           smsText
+        //         })
 
-                if (second == 1) {
-                  this.setData({
-                    smsStatus: false,
-                    smsText: '重新发送'
-                  })
-                  clearInterval(timer)
-                }
+        //         if (second == 1) {
+        //           this.setData({
+        //             smsStatus: false,
+        //             smsText: '重新发送'
+        //           })
+        //           clearInterval(timer)
+        //         }
 
-              }, 1000)
+        //       }, 1000)
 
-            }).catch((res) => {
+        //     }).catch((res) => {
 
-              util.errorTips('短信发送失败');
+        //       util.errorTips('短信发送失败');
+        //       this.setData({
+        //         smsStatus: false,
+        //       })
+
+        //     })
+        //   }
+        //   if (-1 === res.code) {
+        //     util.errorTips('用户还没注册!');
+        //     this.setData({
+        //       smsStatus: false,
+        //     })
+
+        //   }
+        // })
+
+        api.restSMS({
+          method: 'POST',
+          data: {
+            mobile: account
+          }
+        }).then((res) => {
+          // 短信发送成功，限制按钮
+          util.successTips('短信发送成功');
+          this.setData({
+            smsID: res.data.id
+          })
+          // 倒计时60s
+          let second = 60;
+          const timer = setInterval(() => {
+
+            second--;
+
+            let smsText = `${second}s后重新发送`;
+            this.setData({
+              smsText
+            })
+
+            if (second == 1) {
               this.setData({
                 smsStatus: false,
+                smsText: false
               })
+              clearInterval(timer)
+            }
 
-            })
-          }
-          if (-1 === res.code) {
-            util.errorTips('用户还没注册!');
-            this.setData({
-              smsStatus: false,
-            })
+          }, 1000)
 
-          }
+        }).catch((res) => {
+
+          util.errorTips('短信发送失败');
+          this.setData({
+            smsStatus: false,
+          })
+
         })
-
-
       } else {
         util.errorTips('请确认手机号码');
       }
@@ -218,7 +218,7 @@ Page({
             return false;
         }
 
-        if (sms.length !== 4) {
+        if (sms.length !== 6) {
             util.errorTips('请确认验证码');
             return false;
         }
@@ -231,16 +231,19 @@ Page({
         api.restpwd({
             method: 'POST',
             data: {
-                user_name: account,
+                mobile: account,
                 password: password,
-                sms_id: smsID,
+                id: smsID,
                 code: sms
             }
         }).then((res) => {
 
             console.log(res);
             util.successTips('修改成功');
-            wx.navigateBack();
+            setTimeout(()=>{
+              wx.navigateBack();
+            },1000)
+            
 
         }).catch((res) => {
 

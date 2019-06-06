@@ -19,7 +19,7 @@
  position: relative;
 }
 .del {
- background-color: #d5393c;
+ background-color: #F29800;
  width: 90px;
  display: flex;
  flex-direction: column;
@@ -82,7 +82,7 @@
 .task-pay-btn{
   width: 200rpx;
   display: inline-block;
-  background-color: #c81a29;
+  background-color: #F29800;
   text-align: center;
   color: #fff;
   float: right;
@@ -119,7 +119,7 @@
   line-height: 60rpx;
   text-align: center;
   color: #fff;
-  background-color: #c81a29;
+  background-color: #F29800;
   border-radius:10rpx; 
   font-size: 36rpx;
   margin: 0 auto;

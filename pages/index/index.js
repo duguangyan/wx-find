@@ -1,4 +1,5 @@
 const api = require('../../utils/api.js');
+const util = require('../../utils/util.js');
  const QQMapWX = require('../../libs/qqmap-wx-jssdk.min.js');
 let app = getApp();
  var qqmapsdk;
@@ -7,9 +8,37 @@ Page({
      * 页面的初始数据
      */
     data: {
-      findNum:1,
-      selcetTabNum:1,
-      isPopup:false,
+      findNum:0,
+      indicatorDots: false,
+      autoplay: true,
+      interval: 3000,
+      duration: 500,
+      bannerImgs: ['https://static.yidap.com/miniapp/o2o_find/index/index_banner_1.png', 'https://static.yidap.com/miniapp/o2o_find/index/index_banner_2.png'],
+      title: "小鹿快找",
+      isArrow: false,
+      navArr: [
+        {
+          img: "https://static.yidap.com/miniapp/o2o_find/index/index_nav_1.png",
+          text: "数百名资深专业皮革辅料买手"
+        },
+        {
+          img: "https://static.yidap.com/miniapp/o2o_find/index/index_nav_2.png",
+          text: "3分钟响应、3小时反馈、8小时内找到"
+        }
+      ],
+      contentArr: [
+        {
+          img: "https://static.yidap.com/miniapp/o2o_find/index/index_icon_1.png",
+          text: ""
+        },
+        {
+          img: "https://static.yidap.com/miniapp/o2o_find/index/index_icon_2.png",
+          text: ""
+        },
+      ],
+      serviceData: "", // 服务人数 次数
+      nodes: "", //公告
+      isNodes: false, // 是否显示公告
     },
   // 获取公告
     mynotice(){
@@ -127,6 +156,30 @@ Page({
         isPopup: false
       })
     },
+    goPageForIndex(e){
+      let index = e.currentTarget.dataset.index;
+
+      let token = wx.getStorageSync('token');
+      if (!token) {
+        // 跳转关联页面
+        wx.navigateTo({
+          url: '../login/login',
+        })
+        return false;
+      }
+      console.log(e);
+      if(index == 0 ){
+        wx.navigateTo({
+          url: '../find/find?findNum=' + 1 + '&selcetTabNum=' + 1,
+        })
+      }else{
+        // 跳转关联页面
+        wx.navigateTo({
+          url: '../material/material',
+        })
+      }
+      
+    },
     // 去找料
     goFind(e) {
       
@@ -199,6 +252,15 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
+      if (options.fromUserId){
+        util.successTips(options.fromUserId);
+      }
+      if (options.invite_code){
+        wx.setStorage({
+          key: 'invite_code',
+          data: options.invite_code
+        })
+      }
       
     },
     /**
@@ -248,7 +310,12 @@ Page({
           serviceData
         })
       });
-      this.mynotice();
+      if (wx.getStorageSync('token') != null 
+      && wx.getStorageSync('token') != undefined 
+      && wx.getStorageSync('token') != ''){
+        this.mynotice();
+      }
+      
       
     },
     /**

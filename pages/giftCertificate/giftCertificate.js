@@ -28,12 +28,12 @@ Page({
         return false;
       }
       let list = e.currentTarget.dataset.list;
-      if (Math.ceil(list.coupon_data.value) > this.data.totalPrice) {
+      if (Math.ceil(list.value) > this.data.totalPrice) {
         util.errorTips('支付金额小于优惠券金额');
         return false;
       }
-      if (Math.ceil(list.coupon_data.full_sub) > this.data.totalPrice) {
-        util.errorTips('满￥' + list.coupon_data.full_sub+'使用');
+      if (Math.ceil(list.full_sub) > this.data.totalPrice) {
+        util.errorTips('满￥' + list.full_sub+'使用');
         return false;
       }
       // 更新上一页的地址数据  来自找料任务页面
@@ -42,7 +42,8 @@ Page({
       let prevPage = pages[pages.length - 2];   //上一个页面
       prevPage.setData({
         couponList: list,
-        couponListPrice: list.coupon_data.value
+        couponListPrice: list.value,
+        couponId:list.id
       })
       // 返回上一页
       wx.navigateBack({
@@ -60,23 +61,25 @@ Page({
   /**
    * 获取代金券列表
    */
-  getCoupon(index, status, page){
-    api.coupon({},index, status, page).then((res)=>{
-      if(res.code==200){
-        this.data.totalPages = res.data.total;
-        this.data.lists = this.data.lists.concat(res.data.data);
+  getCoupon(){
+    api.coupon({}).then((res)=>{
+      if (res.code == 200 || res.code == 0){
+        //this.data.totalPages = res.data.total;
+        //this.data.lists = this.data.lists.concat(res.data.data);
+        this.data.lists = res.data;
         this.data.lists.forEach((o,i)=>{
-          if (o.is_used == 2){
-            if (o.is_valid){
-              this.data.lists[i].msg = '去使用'
-            }else{
-              this.data.lists[i].msg = '已失效'
-            }
-          }else{
-            this.data.lists[i].msg = '已使用'
-          }
+          this.data.lists[i].msg = '去使用'
+          // if (o.is_used == 2){
+          //   if (o.is_valid){
+          //     this.data.lists[i].msg = '去使用'
+          //   }else{
+          //     this.data.lists[i].msg = '已失效'
+          //   }
+          // }else{
+          //   this.data.lists[i].msg = '已使用'
+          // }
         })
-
+        
         this.setData({
           lists:this.data.lists
         })
@@ -107,7 +110,7 @@ Page({
       this.data.from = options.from;
       this.data.totalPrice = options.totalPrice;
     }
-    this.getCoupon(undefined,undefined,this.data.page);
+    this.getCoupon();
   },
 
   /**

@@ -67,7 +67,7 @@
 }
 .join-find{
   text-align: center;
-  background-color: #c81a29;
+  background-color: #F29800;
   margin: 0 20rpx;
   border-radius:10rpx;
   color: #fff; 

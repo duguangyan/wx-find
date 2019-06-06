@@ -1,24 +1,33 @@
 <wxs src="../../utils/filter.wxs" module="filter" />
 <view class="recharge  cf fs30">
 
-  <view class='flex lh90 pdl-30 bb-1 text-666 text-center bg-white'>
-      <view class='flex-1 {{navIndex==inx?"navActive":""}}' 
-      wx:for='{{navArrText}}' wx:for-index="inx"  wx:key='this' data-inx="{{inx}}"
-       bindtap='navCheck'>
-        <text>{{item}}</text>
-      </view>
-  </view>
-  <!-- <view class='recharge-title lh90 pdl-30 bb-1 text-666'>选择充值金额</view> -->
-  <view  wx:if="{{navIndex == 0}}">
-
-      <view class='recharge-list cf'>
-        <view class='recharge-list-li btn-shadow' wx:for='{{rechargeList}}' wx:key='this' data-id='{{item.id}}' data-value='{{item.values}}' bindtap='doPay'>
-          <view  data-id='{{item.id}}' style="width:100%">
-            <view data-id='{{item.id}}' class='recharge-list-text text-center text-red mgt-30 fs32'>充值</view>
-            <view class="text-center text-red">￥{{item.values}}</view>
-            <!-- <text data-id='{{item.id}}' class='recharge-list-text text-red fs18'>送{{item.arrival_values - item.values }}元</text> -->
+  
+ 
+      <view class='recharge-content'>
+          <view class='item-1'>
+            <view>充值金额</view>
           </view>
-        </view>
+
+          <view class='cf item-2'>
+            <text class='fll'>￥</text>
+            <input class='fll' type='text'  data-value='{{price}}'
+             value='{{price}}' placeholder='请输入充值金额' bindinput='doInput'></input>
+          </view>
+
+          <view class='item-3'>支付方式 </view>
+          <view class='item-4'>
+              <view class='cf'>
+                <view class='fll'>
+                <image class='wx' src='../../public/images/icon/wx.png'></image>
+                </view>
+                <view class='fll'>
+                微信支付
+                </view>
+                <view class='flr'>
+                
+                </view>
+              </view>
+          </view>
       </view>
       <view class='recharge-explain cf fs30'>
         <view style='padding-top: 30rpx;'>充值说明：</view>
@@ -40,47 +49,7 @@
         <view>
           6、如需咨询，可拨打客服热线<text class='text-red' bindtap='contact'>400-8088-156</text>。
         </view>
-        <text class='position'></text>
+        <!-- <text class='position'></text> -->
       </view>
-
-  </view>
- 
-
-<view  wx:if="{{navIndex == 1}}">
-
-      <view class='recharge-list cf'>
-        <view class='recharge-list-li btn-shadow' wx:for='{{times}}' wx:key='this' data-id='{{item.id}}' data-value='{{item.values}}' bindtap='doPay'>
-          <view  data-id='{{item.id}}' style="width:100%">
-            <view data-id='{{item.id}}' class='recharge-list-text text-center text-red mgt-30 fs32'>￥{{item.values}}元/月</view>
-            <view class="text-center text-red">{{item.name}}</view>
-            <!-- <text data-id='{{item.id}}' class='recharge-list-text text-red fs18'>送{{item.arrival_values - item.values }}元</text> -->
-          </view>
-        </view>
-      </view>
-      <view class='recharge-explain cf fs30'>
-        <view style='padding-top: 30rpx;'>包月说明：</view>
-        <view>
-          1、包月说明：
-        </view>
-        <view>
-          2、包月说明：
-        </view>
-        <view>
-          3、包月说明：
-        </view>
-        <view>
-          4、包月说明：
-        </view>
-        <view>
-          5、包月说明：
-        </view>
-        <view>
-          6、如需咨询，可拨打客服热线<text class='text-red' bindtap='contact'>400-8088-156</text>。
-        </view>
-        <text class='position'></text>
-      </view>
-
-  </view>
-
-    
-</view>
+      <view class='pay' bindtap='doPay'>立即支付</view>
+ </view>

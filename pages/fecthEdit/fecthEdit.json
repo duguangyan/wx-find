@@ -1,3 +1,6 @@
 {
-  "navigationBarTitleText": "取送任务修改"
+  "navigationBarTitleText": "取送任务修改",
+  "usingComponents": {
+    "upload-edit": "../../component/upload-edit/index"
+  }
 }

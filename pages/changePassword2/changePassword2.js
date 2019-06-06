@@ -83,10 +83,10 @@ Page({
 
     if (length < 6 ) {
       util.errorTips('输入至少6位字符');
-      return false;
+      
     } else if (length > 20) {
       util.errorTips('密码最多20位字符');
-      return false;
+      
     }
     if (index == 1) {
       this.data.passwordValue1 = e.detail.value
@@ -117,12 +117,13 @@ Page({
         api.restpwd({
           method: 'POST',
           data: {
-            user_name,
+            mobile:user_name,
             password: this.data.passwordValue1,
-            code: this.data.code
+            code: this.data.code,
+            id:wx.getStorageSync('codeId')
           }
         }).then((res) => {
-          if (res.code == 200) {
+          if (res.code == 200 || res.code == 0) {
             console.log(res);
             util.passWordSuccessTips('修改成功');
             // 清理缓存
@@ -131,28 +132,31 @@ Page({
             } catch (e) {
               // Do something when catch error
             }
-            wx.login({
-              success: function (res) {
-                //console.log(res);
-                if (res.code) {
-                  //发起网络请求
-                  let data = {
-                    code: res.code,
-                    from: 3
-                  }
-                  api.getOpenId({
-                    data
-                  }).then((res) => {
-                    wx.setStorageSync('open_id', res.data.openid);
-                    setTimeout(() => {
-                      wx.navigateTo({
-                        url: '../login/login?chengePassWord=1',
-                      })
-                    }, 1000)
-                  })
-                }
-              }
-            });
+            wx.navigateTo({
+              url: '../login/login?chengePassWord=1',
+            })
+            // wx.login({
+            //   success: function (res) {
+            //     //console.log(res);
+            //     if (res.code) {
+            //       //发起网络请求
+            //       let data = {
+            //         code: res.code,
+            //         from: 3
+            //       }
+            //       api.getOpenId({
+            //         data
+            //       }).then((res) => {
+            //         wx.setStorageSync('open_id', res.data.openid);
+            //         setTimeout(() => {
+            //           wx.navigateTo({
+            //             url: '../login/login?chengePassWord=1',
+            //           })
+            //         }, 1000)
+            //       })
+            //     }
+            //   }
+            // });
 
 
           } else {

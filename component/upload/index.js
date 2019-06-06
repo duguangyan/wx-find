@@ -20,7 +20,7 @@ Component({
 
       addUpload: true,
       files: [],
-        index: 0,
+      index: 0,
   },
 
   /**
@@ -84,10 +84,20 @@ Component({
 
                   function uploadimg(files, i = 0) {
                       console.log('=============', files[i].url)
-                      const access_token = wx.getStorageSync('access_token') || '';
+                      const access_token = wx.getStorageSync('token') || '';
+
+                    let timestamp = Date.parse(new Date());
+                    let data = {};
+                    data.file = '[object Object]';
+                    data.type = 'big';
+                    data.timestamp = timestamp;
+                    data.sign = util.MakeSign(api.apiUrl+'/api/upload', data);
+                    data.deviceId = "wx";
+                    data.platformType = "1";
+                    data.versionCode = '3.0';
                       // 上传图片，返回链接地址跟id,返回进度对象
                       let uploadTask = wx.uploadFile({
-                          url: `${api.apiUrl}/api/upload/simpleUpload`,
+                          url: `${api.apiUrl}/api/upload`,
                           filePath: files[i].url,
                           name: 'file',
                           header: {
@@ -95,17 +105,13 @@ Component({
                               'Accept': 'application/json',
                               'Authorization': `Bearer ${access_token}`
                           },
-                          formData: {
-                              'type': 'reward_img'
-                          },
+                          formData: data,
                           success: (res) => {
                               console.log(res);
                               var res = JSON.parse(res.data);
 
-                              if (200 === res.code) {
-                                  files[i].full_url = res.data.full_url;
-                                  // files[i].path = res.data.path;
-
+                            if (200 === res.code || 0 === res.code) {
+                                  files[i].full_url = res.data;
                                   that.setData({
                                       files,
                                   })

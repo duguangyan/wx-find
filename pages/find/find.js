@@ -25,11 +25,11 @@ Page({
         selcetTabNum: 1, // 找料方式切换 
         checkTypes:[], // 物料类型数据
         checkTypes_cid: [], // 物料类型数据 cid
-        checkType: '', 
+        cname: '', 
         isSelect: false, // 下拉显示按描述找料
         selcetSecondTabNum: '1', //  上门  寄送地址切换
         get_type:'1', //寄送地址切换
-        addFinds: [{ index: 0, checkType: '', selcetTabNum: 1, find_type: '1', selcetSecondTabNum: '1', isSelect: false, desc: '', cid:'', files: [{}, {}, {}],address:{}}]
+      addFinds: [{ index: 0, cname: '', selcetTabNum: 1, find_type: 1, selcetSecondTabNum: '1', isSelect: false, desc: '', cid:'',address:{}}]
     },
 
     //  联系我们电话
@@ -65,26 +65,26 @@ Page({
       // }
       // 获取默认地址
       api.defaultAddress({
-      }, 1).then((res) => {
-        if (res.code == 200) {
+      }).then((res) => {
+        if (res.code == 200 || res.code == 0) {
           let defaultAddress = res.data;
           wx.setStorageSync('defaultAddress', res.data)
-          // 可能位空数组
-          if (Array.isArray(defaultAddress)) {
-            _this.setData({
-              findsAddress: false,
-              fetchsAddress: false
-            })
-          } else {
-            // findsAddress fetchsAddress
-            // 获取默认地址
-            let findsAddress = defaultAddress;
-            let fetchsAddress = defaultAddress;
-            _this.setData({
-              findsAddress,
-              fetchsAddress
-            })
+          let findsAddress = defaultAddress;
+          let fetchsAddress = defaultAddress;
+          _this.setData({
+            findsAddress,
+            fetchsAddress
+          })
+
+          if (defaultAddress.id){
+            wx.setStorageSync('defaultAddress',false);
           }
+          
+        }else{
+          _this.setData({
+            findsAddress:false,
+            fetchsAddress:false
+          })
         }
       }).catch((res) => {
 
@@ -195,7 +195,7 @@ Page({
       
       let defaultAddressId = this.data.defaultAddress?this.data.defaultAddress.id:'';
       let defaultAddress   = this.data.defaultAddress ? this.data.defaultAddress : false;
-      let newAddFinds = this.data.addFinds.concat([{ find_type: '1', index: this.data.addFinds.length, cid: this.data.checkTypes_cid[0], checkType: '', selcetTabNum: '1', selcetSecondTabNum: '1', isSelect: false, desc: '', cid:'', files: [{}, {}, {}], get_address: defaultAddress.id, address: defaultAddress}]) ;
+      let newAddFinds = this.data.addFinds.concat([{ find_type: 1, index: this.data.addFinds.length, cid: this.data.checkTypes_cid[0], cname: '', selcetTabNum: '1', selcetSecondTabNum: '1', isSelect: false, desc: '', cid: '', address_id: defaultAddress.id, address: defaultAddress}]) ;
       this.setData({
         addFinds: newAddFinds
       });
@@ -269,7 +269,7 @@ Page({
         let index = e.currentTarget.dataset.index;
         let id = e.currentTarget.dataset.id;
         this.data.addFinds[index].selcetTabNum = id;
-        this.data.addFinds[index].find_type = id;
+        this.data.addFinds[index].find_type = parseInt(id);
         if(id == 2){
           this.data.addFinds[index].get_type = 1;
         }
@@ -389,22 +389,27 @@ Page({
       
       console.log('fromId');
       console.log(e.detail.formId);
-      if (e.detail.formId != 'the formId is a mock one') {
-        let data = {
-          "form_id": e.detail.formId,
-          "from": "3"
-        }
-        api.getFormId({
-          method: 'POST',
-          data
-        }).then((res) => {
-          console.log(res);
-          console.log('获取formId');
-        })
-      }
+      // if (e.detail.formId != 'the formId is a mock one') {
+      //   let data = {
+      //     "form_id": e.detail.formId,
+      //     "from": "3"
+      //   }
+      //   api.getFormId({
+      //     method: 'POST',
+      //     data
+      //   }).then((res) => {
+      //     console.log(res);
+      //     console.log('获取formId');
+      //   })
+      // }
       let _this = this;
       console.log(this.data.addFinds); 
       for (let i = 0; i < this.data.addFinds.length;i++){ 
+
+        if (this.data.addFinds[i].find_type == 1){
+          this.data.addFinds[i].address_id = 0
+        }
+        this.data.addFinds[i].type = 1;
         // 物料类型必填 判断是否填写
         if (this.data.addFinds[i].cid == '') {
           wx.showToast({
@@ -430,6 +435,7 @@ Page({
           // 获取上传图片
           let uploadC = this.selectComponent('#upload'+i);
           let uploadImgs = [];
+          
           // 判定是否在已是完成状态
           // let isUploading = uploadC.data.files.every((ele, i) => {
           //   return (ele.pct && (ele.pct === 'finish' || ele.pct === 'fail'))
@@ -444,6 +450,7 @@ Page({
               uploadImgs.push(ele.full_url)
             }
           })
+          
           console.log(uploadImgs);
           
           if (uploadImgs == 0) {
@@ -454,7 +461,7 @@ Page({
             })
             return false;
           }else{
-            this.data.addFinds[i].front_img = uploadImgs;
+            this.data.addFinds[i].desc_img = uploadImgs;
           }
           
           // 是否至少上传一张图片
@@ -495,7 +502,7 @@ Page({
       })
       let findDates = {
         task_type:'1',
-        form_data: this.data.addFinds
+        task: this.data.addFinds
       }
       // 发起请求
       api.joinTask({
@@ -509,7 +516,7 @@ Page({
             })
           },500)
           
-          if(res.code==200){
+        if (res.code == 200 || res.code == 0){
              this.setData({
                isPopup:true
              })
@@ -527,23 +534,23 @@ Page({
                  _this.goPay();
                }
              }, 1000)
+          }else{
+          this.setData({
+            findDisabled: true
+          })
           }
       })
     },
     // 获取公司地址
     getCompanyaddress(){ 
       api.getCompanyaddress({}).then((res)=>{
-        if(res.code == 200){
+        if (res.code == 200 || res.code == 0){
           console.log('公司地址');
           console.log(res.data.address);
           let companyaddress = res.data;
           this.setData({
             companyaddress
           })
-
-
-          
-
         }
       })
     },
@@ -560,7 +567,7 @@ Page({
       api.needKnow({}).then((res) => {
         console.log(res);
         this.setData({
-          findNeedKnow: res.data.find.value
+          findNeedKnow: res.data.find_need_know
         })
       })
 
@@ -594,7 +601,7 @@ Page({
         }
         for (let i = 0; i < parseInt(findNum); i++) {
           newAddFinds.push(
-            { index: i, cid: this.data.addFinds[0].cid, checkType: this.data.addFinds[0].checkType, find_type: this.data.selcetTabNum, selcetTabNum: this.data.selcetTabNum, get_type: '1', selcetSecondTabNum: '1', isSelect: false, desc: '', files: [{}, {}, {}], get_address: wx.getStorageSync('defaultAddress').id, address: wx.getStorageSync('defaultAddress') }
+            { index: i, cid: this.data.addFinds[0].cid, cname: this.data.addFinds[0].cname, find_type: parseInt(this.data.selcetTabNum), selcetTabNum: this.data.selcetTabNum, get_type: '1', selcetSecondTabNum: '1', isSelect: false, desc: '', files: [{}, {}, {}], get_address: wx.getStorageSync('defaultAddress').id, address: wx.getStorageSync('defaultAddress') }
           )
           // 设置数据
           this.setData({
@@ -609,6 +616,7 @@ Page({
         return false
       }
       this.getSelectedAddress(() => {
+        
         // 获取上一级页面传过来的数据
         this.setData({
           findNum: 1,
@@ -619,7 +627,7 @@ Page({
         let findNum = 1;
         for (let i = 0; i < parseInt(findNum); i++) {
           newAddFinds.push(
-            { index: i, cid: this.data.addFinds[0].cid, checkType: this.data.addFinds[0].checkType, find_type: selcetTabNum, selcetTabNum: selcetTabNum, get_type: '1', selcetSecondTabNum: '1', isSelect: false, desc: '', files: [{}, {}, {}], get_address: this.data.defaultAddressId, address: this.data.defaultAddress }
+            { index: i, cid: this.data.addFinds[0].cid, cname: this.data.addFinds[0].cname, find_type: selcetTabNum, selcetTabNum: selcetTabNum, get_type: '1', selcetSecondTabNum: '1', isSelect: false, desc: '', get_address: this.data.defaultAddressId, address: this.data.defaultAddress }
           )
           // 设置数据
           this.setData({
@@ -630,9 +638,9 @@ Page({
         this.setData({
           addFinds: newAddFinds
         });
-        console.log(this.data.addFinds);
+       
       });
-      
+      console.log('addFinds-->' + JSON.stringify(this.data.addFinds));
     },
 
     /**
@@ -688,17 +696,12 @@ Page({
     onShareAppMessage: function () {
 
     },
-
-
-  xxx() {
-    console.log('xxxxxxxxxxxxxxxxxxxx');
-  },
     // 收货地址
     getSelectedAddress() { 
       // 获取默认地址
       api.defaultAddress({
       }, 1).then((res) => {
-        if (res.code == 200) {
+        if (res.code == 200 || res.code == 0) {
           let defaultAddress = res.data;
           wx.setStorageSync('defaultAddress', res.data)
           // 可能位空数组
@@ -711,7 +714,7 @@ Page({
             })
           } else {
             this.data.addFinds[app.globalData.addressIndex].address = res.data;
-            this.data.addFinds[app.globalData.addressIndex].get_address = res.data.id;
+            this.data.addFinds[app.globalData.addressIndex].address_id = res.data.id;
             this.setData({
               // 设置为空
               defaultAddress: res.data,
@@ -720,6 +723,8 @@ Page({
             })
           }
           
+        }else{
+          wx.setStorageSync('defaultAddress', null)
         }
 
       }).catch((res) => {
@@ -787,8 +792,8 @@ Page({
     // 返回上一层，继续找料
     goBack () {
       clearInterval(this.data.interval);
-      
-      let newAddFinds = { index: 0, cid: this.data.addFinds[0].cid, checkType: this.data.addFinds[0].checkType, find_type: this.data.addFinds[0].selcetTabNum, selcetTabNum: this.data.addFinds[0].selcetTabNum, get_type: '1', selcetSecondTabNum: '1', isSelect: false, desc: '', files: [{}, {}, {}], get_address: this.data.defaultAddress.id, address: this.data.defaultAddress }
+      console.log(this.data.addFinds);
+      let newAddFinds = { index: 0, cid: this.data.addFinds[0].cid, cname: this.data.addFinds[0].cname, find_type: this.data.addFinds[0].find_type, selcetTabNum: this.data.addFinds[0].selcetTabNum, get_type: '1', selcetSecondTabNum: '1', isSelect: false, desc: '', files: [{}, {}, {}], get_address: this.data.defaultAddress.id, address: this.data.defaultAddress, address_id: this.data.defaultAddress.id}
       this.data.addFinds = [];
       this.data.addFinds[0] = newAddFinds;
       this.setData({

@@ -80,24 +80,23 @@ Page({
   },
   // 获取物料类型数据
   getCheckTypes() {
+    
     if (wx.getStorageSync('classifyList')){
       let classifyList = wx.getStorageSync('classifyList');
       this.setData({
         classifyList,
-        classifyListChild: classifyList[0].list
+        classifyListChild: classifyList[0].children
       })
+      
     }else{
       api.getCheckTypes({}).then((res) => {
         console.log(res);
-        if (res.code == 200) {
-          let classifyList = res.data;
-          this.setData({
-            classifyList,
-            classifyListChild: classifyList[0].list
-          })
-          wx.setStorageSync('classifyList', classifyList);
-          console.log(res);
-        }
+        let classifyList = res.data;
+        this.setData({
+          classifyList,
+          classifyListChild: classifyList[0].children
+        })
+        wx.setStorageSync('classifyList', classifyList);
       })
     }
     
@@ -109,7 +108,7 @@ Page({
       navIndex: index,
       id: e.currentTarget.dataset.id,
       idname: e.currentTarget.dataset.name,
-      classifyListChild: this.data.classifyList[index].list
+      classifyListChild: this.data.classifyList[index].children
     })
     
     
@@ -124,7 +123,7 @@ Page({
     console.log(this.data.childIndex)
     if (!this.data.id) {
       this.data.id = this.data.classifyList[0].id;
-      this.data.idname = this.data.classifyList[0].name;
+      this.data.idname = this.data.classifyList[0].title;
     }
     let obj = {
       id1name: this.data.idname,
@@ -151,8 +150,10 @@ Page({
       //设置上一页数据
       let addFinds = prevPage.data.addFinds; //取上页data里的数据也可以修改
       let index = parseInt(this.data.indexType);
-      addFinds[index].checkType = checkType;
+      addFinds[index].cname = checkType;
       addFinds[index].cid = cid;
+      console.log('-------------------');
+      console.log(addFinds);
       prevPage.setData({
         addFinds
       })

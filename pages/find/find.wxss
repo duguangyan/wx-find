@@ -72,7 +72,7 @@
 
 .submit-form button {
     color: #FFF;
-    background: #c81a29;
+    background: #F29800;
     margin-bottom: 30rpx;
     position: relative;
     z-index: 99999;
@@ -98,13 +98,13 @@
 }
 .close_btn image{
   display: inline-block;
-  width: 50rpx;
-  height: 50rpx;
+  width: 56rpx;
+  height: 56rpx;
   margin-top: 30rpx;
 }
 .selcetTab1{
   position: relative;
-  left: 38rpx;
+  left: 0rpx;
 }
 .selcetTab2{
   position: relative;
@@ -236,7 +236,7 @@
   line-height: 80rpx;
   text-align: center;
   margin: 0 auto;
-  background-color: #c81a29;
+  background-color: #F29800;
   border-radius:20rpx;
   font-size: 30rpx;
   color: #fff; 
@@ -251,11 +251,11 @@
   font-size: 30rpx;
   margin-left: 60rpx;
   margin-top: 20rpx;
-  border: 1rpx solid #f23030;
+  border: 1rpx solid #F29800;
   border-radius:10rpx; 
 }
 .go-pay{
-  background-color: #f23030;
+  background-color: #c81a29;
   color:#fff;
 }
 .address-info{
@@ -278,7 +278,8 @@
   top: 8rpx;
 }
 .xuzhi text{
-
+  font-size: 24rpx;
+  color: #999;
 }
 .notes-btn{
   
@@ -289,7 +290,7 @@
 }
 .notes-btn view{
   margin-left: 218rpx;
-  background-color: #c81a29;
+  background-color: #F29800;
   color: #fff;
 }
 .notes-btn-content{
@@ -302,7 +303,7 @@
   line-height: 50rpx;
 }
 .icon-gantan1{
-  color: #c81a29;
+  color: #F29800;
   position: relative;
   top: 2rpx;
   margin-right: 5rpx;
@@ -328,5 +329,5 @@
 .address-icon{
   position: absolute;
   right: 30rpx;
-  top: 30%;
+  top: 40%;
 }

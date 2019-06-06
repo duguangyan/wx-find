@@ -88,7 +88,7 @@
        </form>
       <!-- <view class='join-find lh90 fs30 mgb-30' bindtap='fethchSubmit'>加入小鹿任务</view> -->
       <view class='xuzhi' bindtap='showNotes'>
-        <image src='../../public/images/icon/xuzhi.png'></image> <text class='fs30'>《小鹿取送须知》</text>
+        <image src='../../public/images/icon/xuzhi.png'></image> <text class='fs24 text-999'>《小鹿取送须知》</text>
       </view>
       <view style='height:50rpx;'></view>
 </view>
@@ -120,7 +120,7 @@
         </view> -->
         
         <view catchtap='checkIsResNotes' class='mgt-30' style='padding-left:200rpx;'>
-            <text wx:if='{{isResNotes}}' class="iconfont icon-dui icon-dui-1 fs40 pdl-10 text-theme"></text>
+            <text wx:if='{{isResNotes}}' class="iconfont icon-dui icon-dui-1 fs40 pdl-10 text-yellow"></text>
             <text wx:if='{{!isResNotes}}' class="iconfont icon-yuan icon-yuan-1 fs40 pdl-10 text-eb"></text>
             <text style='color:999;padding-left:20rpx;'>已阅读，下次不再显示</text> 
         </view>

@@ -8,7 +8,7 @@
      <image class='setting-icon-2' src='../../public/images/icon/center-moeny-icon.png'></image>支付密码 
     <text class='iconfont icon-jiantou flr pdr-20'></text>
   </view>
-  <view class='btn-shadow lh115 bg-theme radius-10 login-out'  bindtap='loginOut'>
+  <view class='btn-shadow lh115 bg-yellow radius-10 login-out'  bindtap='loginOut'>
     退出登陆 
   </view>
 </view>

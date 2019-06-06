@@ -9,7 +9,7 @@
             <view class='p3'>有效日期: {{item.created_at}} 至 {{item.end_at}}</view>
         </view>
         <view class='flex-1'>
-            <view>￥{{item.coupon_data.value}}</view>
+            <view>￥{{item.value}}</view>
             <view class="{{item.msg=='已使用'?'curMsg':''}}">{{item.msg}}</view>
             <view class='i'></view>
             <view class='i'></view>
@@ -40,6 +40,6 @@
         已经全部加载完毕
       </view>
       <!--加载组件  -->
-      <mainloading wx:if="{{hasDate}}" />
-      <loading modal-text="加载更多"  wx:if="{{hasDate}}" />
+      <!-- <mainloading wx:if="{{hasDate}}" />
+      <loading modal-text="加载更多"  wx:if="{{hasDate}}" /> -->
 </view>

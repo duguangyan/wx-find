@@ -257,7 +257,7 @@
   padding-bottom: 30rpx; 
 }
 .submit{
-  background-color: #c81a29;
+  background-color: #F29800;
   color: #fff;
   text-align: center;
 }

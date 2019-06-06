@@ -41,7 +41,7 @@ page {
     bottom: 0;
     width: 100%;
     z-index: 999;
-    background: #C81A29;
+    background: #F29800;
 }
 
 /* CSS3图片水平垂直居中 [图片父容器必须有高度] */

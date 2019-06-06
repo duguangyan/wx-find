@@ -3,9 +3,9 @@
 {{filter.formatMoney('11111111')}}
 </view> -->
 <!-- <web-view src="https://static.yidap.com"></web-view> -->
-<view>
-    <image src="https://static.yidap.com/miniapp/xiaolu-banner-new.png" style='width:100%;height:100%;' mode='widthFix'></image>
-    <!--介绍 S  -->
+<!-- <view>
+    <image src="https://static.yidap.com/miniapp/o2o_find/index/index_banner_1.png" style='width:100%;height:100%;' mode='widthFix'></image>
+   
     <view class="section-box">
     
         <view class="section-item" bindtap='chat'>
@@ -26,29 +26,9 @@
                 <text class="text-666">3分钟响应、3小时反馈、8小时内找到 </text>
             </view>
         </view>
-        <!-- <view class="section-item">
-            <image src="../../public/images/index/find_3.png"></image>
-            <view class="section-item-title fs35 bold-800">
-                <text class='fs36'>好</text>
-            </view>
-            <view>
-                <text class="text-666">与国内正规工厂合作,质量有保障</text>
-            </view>
-        </view>
-        <view class="section-item">
-            <image src="../../public/images/index/find_4.png"></image>
-            <view class="section-item-title fs35 bold-800">
-                <text class='fs36'>省</text>
-            </view>
-            <view>
-                <text class="text-666">平台大批量采购,省时省心更省钱</text>
-            </view>
-        </view> -->
+       
     </view>
-    <!--介绍 E  -->
-    <!-- <view class="now-btn">
-        截止当前
-    </view> -->
+   
     <view style='text-align:center'>
       <image style='height:70rpx;margin:0 auto;margin-bottom:20rpx;' src='../../public/images/index/index_1.png'></image>
     </view>
@@ -78,15 +58,6 @@
         <text>小鹿客服：<text style='color:#1435ff;'>400-8088-156</text></text>
     </view>
 </view>
-<!-- <dialog id='dialog' 
-      title='我是标题' 
-      content='恭喜你，学会了小程序组件' 
-      cancelText='知道了' 
-      confirm='谢谢你'
-      bind:cancelEvent="_cancelEvent"  
-      bind:confirmEvent="_confirmEvent">
-      <view>xxx</view>
-    </dialog> -->
 <view class='index-popup' wx:if="{{isPopup}}">
     <view class='index-popup-bg' catchtap='closePopup'></view>
     <view class='index-popup-content'>
@@ -121,5 +92,63 @@
 
 <dialog id="indexDialog" title="{{dialogTitle}}" bind:confirmEvent="confirmEvent">
   <rich-text nodes="{{nodes}}"></rich-text>
-</dialog>
+</dialog> -->
 
+<view class="index">
+
+		<view class="index-top-warp">
+			<view class="uni-padding-wrap">
+			    <swiper
+            indicator-dots="{{indicatorDots}}"
+            autoplay="{{autoplay}}"
+            interval="{{interval}}"
+            duration="{{duration}}"
+          >
+            <block wx:for="{{bannerImgs}}" wx:key="index">
+              <swiper-item>
+                <image src="{{item}}" class="slide-image" width="355" height="150" />
+              </swiper-item>
+            </block>
+          </swiper>
+			</view>
+			<view class="nav bg-yellow flex">
+        <view class='line'></view>
+				<view class="flex-1 item" wx:for="{{navArr}}" wx:key="index" >
+					<image src="{{item.img}}"></image>
+					<text class="fs24 text-fff">{{item.text}}</text>
+				</view>
+			</view>
+		</view>
+		
+		<view class="index-content-warp">
+			<view class="title">
+				<image src="https://static.yidap.com/miniapp/o2o_find/index/index_icon_4.png"></image>
+			</view>
+			<view class="flex fs30 text-center">
+				<view class="flex-1">提供服务<text class="text-yellow">{{serviceData.num_task||0}}</text>次</view>
+				<view class="flex-1">提供服务<text class="text-yellow">{{serviceData.num_people||0}}</text>人</view>
+			</view>
+			
+			<view class="flex nav">
+				<view class="flex-1 item text-center" wx:for="{{contentArr}}" wx:key="index" bindtap="goPageForIndex" data-index='{{index}}'>
+					<image src="{{item.img}}"></image>
+					<view class="fs24 text-333 text">{{item.text}}</view>
+				</view>
+			</view>
+		</view>
+		
+		<view class="service flex">
+			<image src="https://static.yidap.com/miniapp/o2o_find/index/index_icon_5.png"></image>
+      <view class='flex-1 left fll'  bindtap="contact"></view>
+      <view class='flex-1 right flr'>
+        <button class="navigator-text fs30 pdl-30" 
+    style="background-color:#fff;border:none;height:115rpx;line-height:115rpx;text-align:left;opacity:0" 
+    open-type="contact"></button>
+    <view class="navigator-arrow"></view>
+      </view>
+		</view>
+		<dialog id="indexDialog" title="{{dialogTitle}}" bind:confirmEvent="confirmEvent">
+      <rich-text nodes="{{nodes}}"></rich-text>
+    </dialog>
+		
+	</view>

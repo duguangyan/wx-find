@@ -20,11 +20,15 @@
 
           <view class="pd-30 flex align-start fs30">
             <view class="width-200 word-spacing">
-                <text class="text-theme">*</text>描 述 ：</view>
-
+                <text class="text-theme">*</text>描 述 ：
+            </view>
             <textarea class="flex-1 height-200 field-desc" name="field_desc" data-index='{{idx}}' bindinput='getDesc' value="{{desc}}" placeholder='(注：请详细描述物料的名称、用途、材质、交货时间)'>
             </textarea>
         </view>
+        <view class="pd-20 upload-view flex">
+            <upload-edit id='upload' files="{{desc_img}}" />
+        </view>
+
        
     </view>
 
@@ -40,20 +44,20 @@
               <view data-index='{{idx}}' bindtap='goConsigneeAddress' class="flex-1 address-info fs24">
                   
                   <view>
-                      <text class='remark' wx:if='{{defaultAddress.remark}}'>{{defaultAddress.remark||''}}</text> 
-                      {{defaultAddress.city_str|| ''}} {{defaultAddress.address|| ''}}
+                      <text class='remark' wx:if='{{address.remark}}'>{{address.remark||''}}</text> 
+                      {{address.address|| ''}} {{address.name|| ''}}  {{address.room|| ''}}
                       
                   </view>
                   <view style='word-break:break-all;'>
-                      <text> {{defaultAddress.consignee|| ''}} / {{defaultAddress.mobile|| ''}}</text>
+                      <text> {{address.consignee|| ''}} / {{address.mobile|| ''}}</text>
                   </view>
                   <view style='word-break:break-all;'>
-                      <text class='text-999'>{{defaultAddress.stall || ''}}</text>
+                      <text class='text-999'>{{address.stall || ''}}</text>
                   </view>
               </view>
 
               <view data-index='{{idx}}' bindtap='goConsigneeAddress'  
-              wx:if='{{!defaultAddress}}' class="text-666 h100 lh100 flex-1">
+              wx:if='{{!address}}' class="text-666 h100 lh100 flex-1">
                   点击添加取料地址
               </view>
           </view>

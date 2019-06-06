@@ -1,7 +1,7 @@
 /* pages/personInformation/personInformation.wxss */
 .info-top{
   height: 180rpx;
-  background-color: #C81A29;
+  background-color: #F29800;
   position: relative;
 }
 .info-top .header-img image{
@@ -43,7 +43,7 @@ page{
 .save{
   width:300rpx;
   height:96rpx;
-  background:rgba(187,32,42,1);
+  background:#F29800;
   border-radius:48rpx;
   text-align: center;
   line-height: 96rpx;
@@ -68,7 +68,7 @@ page{
   border: 1rpx solid #eee;
 }
 .cur{
-  background-color: rgba(187,32,42,1);
+  background-color: #F29800;
   color: #fff !important;
 }
 .certificate_img .pic ,.certificate_img image{

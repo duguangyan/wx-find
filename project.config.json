@@ -12,7 +12,7 @@
 		"checkInvalidKey": true
 	},
 	"compileType": "miniprogram",
-	"libVersion": "1.9.98",
+	"libVersion": "2.7.0",
 	"appid": "wx95dd0020bb2c868f",
 	"projectname": "%E5%B0%8F%E9%B9%BF%E5%BF%AB%E6%89%BE%E5%BA%94%E7%94%A8",
 	"isGameTourist": false,
@@ -36,7 +36,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 35,
+			"current": 37,
 			"list": [
 				{
 					"id": -1,
@@ -252,6 +252,20 @@
 					"id": -1,
 					"name": "聊天室",
 					"pathName": "pages/chat/chat",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "聊天列表",
+					"pathName": "pages/chatList/chatList",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "分享",
+					"pathName": "pages/makeMoney/makeMoney",
 					"scene": null
 				}
 			]

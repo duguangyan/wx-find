@@ -9,7 +9,9 @@ Page({
     findsCheckAll:true, //找料全选按钮
     fetchsCheckAll:true,
     isCheckAll:true,
-    userType:0
+    userType:0,
+    isData:true,
+    companyaddress:''
   },
   onLoad: function (options) {
    
@@ -18,6 +20,20 @@ Page({
     })
 
     console.log(this.data.userType);
+    this.getCompanyaddress();
+  },
+  // 获取公司地址
+  getCompanyaddress() {
+    api.getCompanyaddress({}).then((res) => {
+      if (res.code == 200 || res.code == 0) {
+        console.log('公司地址');
+        console.log(res.data.address);
+        let companyaddress = res.data;
+        this.setData({
+          companyaddress
+        })
+      }
+    })
   },
   // 判断取消选中并获取ID
   cancelCheck(nav, id,check){
@@ -105,10 +121,10 @@ Page({
     let nav = e.currentTarget.dataset.nav;
     if(nav == 1){
       //开始触摸时 重置所有删除
-      this.data.finds.forEach(function (v, i) {
-        if (v.isTouchMove)//只操作为true的
-          v.isTouchMove = false;
-      })
+      // this.data.findsfetchs.forEach(function (v, i) {
+      //   if (v.isTouchMove)//只操作为true的
+      //     v.isTouchMove = false;
+      // })
       this.setData({
         startX: e.changedTouches[0].clientX,
         startY: e.changedTouches[0].clientY,
@@ -116,10 +132,10 @@ Page({
       })
     }else{
       //开始触摸时 重置所有删除
-      this.data.fetchs.forEach(function (v, i) {
-        if (v.isTouchMove)//只操作为true的
-          v.isTouchMove = false;
-      })
+      // this.data.fetchs.forEach(function (v, i) {
+      //   if (v.isTouchMove)//只操作为true的
+      //     v.isTouchMove = false;
+      // })
       this.setData({
         startX: e.changedTouches[0].clientX,
         startY: e.changedTouches[0].clientY,
@@ -198,9 +214,14 @@ Page({
       content: '是否删除？',
       success: function (res) {
         if (res.confirm) {
-          api.delTask({ method: 'DELETE' }, id).then((res) => {
+          api.delTask({
+             method: 'POST' ,
+             data:{
+               id
+             }
+          }).then((res) => {
             console.log(res);
-            if (res.code == 200) {
+            if (res.code == 200 || res.code == 0) {
               wx.showToast({
                 title: '删除成功',
                 duration: 1500
@@ -237,19 +258,21 @@ Page({
       findsCheckAll: true, //找料全选按钮
       fetchsCheckAll: true,
       isCheckAll: true,
+      finds:[],
+      fetchs:[]
     })
     
     this.init();
 
     // 判断用户类型包月还是充值或普通
-    api.memberInfo({}).then((res) => {
-      if (res.code == 200) {
-        wx.setStorageSync('userType', res.data.asset.type);
-        this.setData({
-          userType: res.data.asset.type
-        })
-      }
-    })
+    // api.memberInfo({}).then((res) => {
+    //   if (res.code == 200) {
+    //     wx.setStorageSync('userType', res.data.asset.type);
+    //     this.setData({
+    //       userType: res.data.asset.type
+    //     })
+    //   }
+    // })
 
   },
   init() {
@@ -264,16 +287,23 @@ Page({
     wx.showLoading({
       title: '加载中',
     })
-    api.getTaskInit({}, '0').then((res) => {
-      if (res.code == 200) {
-        console.log(res);
+    api.getTaskInit({}).then((res) => {
+      if (res.code == 200 || res.code == 0) {
+        
+        if (res.data.find.length > 0 || res.data.fetch.length > 0){
+          this.setData({
+            isData: false
+          })
+        }
+        
+        
         let finds = res.data.find;
         let findsLength = res.data.find.length;
         let fetchs = res.data.fetch;
         let fetchsLength = res.data.fetch.length;
         finds.forEach( (v, i) => {
             v.isTouchMove    = false;
-            finds[i].address = finds[i].address?JSON.parse(finds[i].address):null;
+            finds[i].address = finds[i].address?finds[i].address:null;
             finds[i].check   = true;
             cancelCheckFindsIds.forEach((v,j)=>{
               if (finds[i].id == v){
@@ -287,7 +317,7 @@ Page({
         })
         fetchs.forEach( (v, i)=> {
           v.isTouchMove     = false;
-          fetchs[i].address = JSON.parse(fetchs[i].address); 
+          fetchs[i].address = fetchs[i].address; 
           fetchs[i].check  = true;
 
 
@@ -302,7 +332,7 @@ Page({
           
 
         })
-
+        console.log('3--------------------------------------');
         
         this.setData({
           finds,
@@ -313,10 +343,14 @@ Page({
           fetchsCheckAll: this.data.fetchsCheckAll,
           isCheckAll: this.data.isCheckAll
         })
-
+        
         // 计算价格
         this.doSumPrice();
         this.isHasData();
+      }else{
+        this.setData({
+          isData:true
+        })
       }
       wx.hideLoading();
     }).catch((res)=>{
@@ -340,13 +374,13 @@ Page({
     let fetchsSumPrice = 0;
     for (let i = 0; i < finds.length; i++) {
       if (finds[i].check) {
-        findsSumPrice += finds[i].form_data.fee;
+        findsSumPrice += parseFloat(finds[i].fee);
         findsLength++;
       }
     }
     for (let i = 0; i < fetchs.length; i++) {
       if (fetchs[i].check) {
-        fetchsSumPrice += fetchs[i].form_data.fee;
+        fetchsSumPrice += parseFloat(fetchs[i].fee);
         fetchsLength++;
       }
     }
@@ -367,10 +401,10 @@ Page({
     this.data.totalFindsPrice = 0;
     this.data.totalFetchsPrice= 0;
     for (let i = 0; i < finds.length;i++){
-      this.data.totalFindsPrice += finds[i].form_data.fee;
+      this.data.totalFindsPrice += parseFloat(finds[i].fee);
     }
     for (let i = 0; i < fetchs.length; i++) {
-      this.data.totalFetchsPrice += fetchs[i].form_data.fee;
+      this.data.totalFetchsPrice += parseFloat(fetchs[i].fee);
     }
     this.setData({
       totalFindsPrice  : this.data.totalFindsPrice,
@@ -519,19 +553,19 @@ Page({
   // 点击结算
   saveTask(e) {
     console.log(e.detail.formId );
-    if (e.detail.formId != 'the formId is a mock one') {
-      let data = {
-        "form_id": e.detail.formId,
-        "from": "3"
-      }
-      api.getFormId({
-        method: 'POST',
-        data
-      }).then((res) => {
-        console.log(res);
-        console.log('获取formId');
-      })
-    }
+    // if (e.detail.formId != 'the formId is a mock one') {
+    //   let data = {
+    //     "form_id": e.detail.formId,
+    //     "from": "3"
+    //   }
+    //   api.getFormId({
+    //     method: 'POST',
+    //     data
+    //   }).then((res) => {
+    //     console.log(res);
+    //     console.log('获取formId');
+    //   })
+    // }
     let newFinds = [];
     let newFetchs = [];
     let task_ids = [];
@@ -582,16 +616,17 @@ Page({
   // edit
   edit(e){
 
-    let item = JSON.stringify(e.currentTarget.dataset.item),
+    let item = e.currentTarget.dataset.item,
        index = e.currentTarget.dataset.index,
        nav   = e.currentTarget.dataset.nav;
+       wx.setStorageSync('taskEditItem', item)
        if(nav == 1){
          wx.navigateTo({
-           url: '../findEdit/findEdit?item=' + item + "&index=" + index
+           url: '../findEdit/findEdit?&index=' + index
          })
        }else{
          wx.navigateTo({
-           url: '../fecthEdit/fecthEdit?item=' + item + "&index=" + index
+           url: '../fecthEdit/fecthEdit?index=' + index
          })
        }
   },

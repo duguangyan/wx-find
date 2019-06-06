@@ -13,7 +13,8 @@ Page({
     data: {
       editTitle1:'编辑',
       editTitle2: '编辑',
-      isFullAddress:false
+      isFullAddress:false,
+      isEmpty:true
     },
     // 编辑显示
     editShow(e){
@@ -113,13 +114,28 @@ Page({
                     console.log('用户点击确定');
                     // 确定删除
                     api.deleteAddress({
-                      method: 'DELETE'
-                    },id).then((res) => {
+                      method: 'POST',
+                      data:{
+                        id
+                      }
+                    }).then((res) => {
 
                         wx.showToast({
                             title: '删除成功',
                         })
+                      let xx =  wx.getStorageSync('defaultAddress').id;
+                      
+                      if (wx.getStorageSync('defaultAddress').id){
+                        if (id == wx.getStorageSync('defaultAddress').id) {
+                          wx.setStorageSync('defaultAddress', false);
+                        }
+                      }
+                      
                         // 获取列表数据
+                        this.setData({
+                          addressList:[],
+                          isEmpty: true
+                        })
                         this.getAddressListData();
 
 
@@ -141,6 +157,7 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {  
+      
       /**
        * 来自H5页面
        */
@@ -190,12 +207,12 @@ Page({
         }
 
       }
-      
+    
         // 获取列表数据
-        if (firstIn) {
-            this.getAddressListData();
+        // if (firstIn) {
+        //     this.getAddressListData();
 
-        }
+        // }
         
 
     },
@@ -216,11 +233,11 @@ Page({
         editTitle2:'编辑'
       })
         // 获取列表数据
-        if (!firstIn) {
-            this.getAddressListData();
-        }
-        firstIn = false;
-
+        // if (!firstIn) {
+        //     this.getAddressListData();
+        // }
+        // firstIn = false;
+      this.getAddressListData();
     },
 
     /**
@@ -253,34 +270,40 @@ Page({
 
     // 获取收货地址列表数据
     getAddressListData() {
-
+    
   //      wx.showNavigationBarLoading();
         wx.showLoading({
           title: '加载中',
         })
-        api.listAddress({
-
-        }).then((res) => {
-
-            console.log('地址执行'); 
-            console.log(res);
-            let addressList = res.data;
-
-            let isEmpty = addressList.length == 0 ? true : false;
-            let hasAddressNum1 = 0, hasAddressNum2 = 0; 
-            addressList.forEach((v,i)=>{
-              if (v.area_id==0){
-                hasAddressNum2++
-              }else{
-                hasAddressNum1++
-              }
-            })
-            this.setData({
+        api.listAddress({}).then((res) => {
+            if(res.code==0||res.code==200){
+              console.log('地址执行');
+              console.log(res);
+              let addressList = res.data;
+              
+              let isEmpty = addressList.length <= 0 || addressList == null || addressList == undefined ? true : false;
+              let hasAddressNum1 = 0, hasAddressNum2 = 0;
+              addressList.forEach((v, i) => {
+                if (v.area_id == 0) {
+                  hasAddressNum2++
+                } else {
+                  hasAddressNum1++
+                }
+              })
+              this.setData({
                 addressList,
                 isEmpty,
                 hasAddressNum1,
                 hasAddressNum2
-            })
+              })
+            }else if(res.code==1){
+              let addressList = [];
+              this.setData({
+                addressList,
+                isEmpty:true
+              })
+            }
+            
           wx.hideLoading();
         }).catch((res) => {
           wx.hideLoading();
@@ -333,7 +356,9 @@ Page({
         let currPage = pages[pages.length - 1];   //当前页面
         let prevPage = pages[pages.length - 2];  //上一个页面
         prevPage.setData({
+          address_id: item.address.id,
           address: item.address,
+          
         })
       }
 
@@ -344,8 +369,9 @@ Page({
         let currPage = pages[pages.length - 1];   //当前页面
         let prevPage = pages[pages.length - 2];  //上一个页面
         prevPage.setData({
-          get_address: item.id,
-          defaultAddress: item
+          address_id: item.id,
+          defaultAddress: item,
+          findsAddress: true
         })
       } else if (this.data.hasFormFind) {
         wx.setStorageSync('findsAddress', item);
@@ -358,6 +384,7 @@ Page({
         this.data.addFinds[app.globalData.addressIndex].get_address = item.id;
         prevPage.setData({
           addFinds: this.data.addFinds,
+          findsAddress: true
           //defaultAddress:item
         })
       } else if (this.data.taskPayIndex) {

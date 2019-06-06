@@ -56,7 +56,8 @@
 	line-height: 44rpx;
 	margin-bottom: 20rpx;
   position: relative;
-  left: -10rpx;
+  left:-40rpx;
+  top:-20rpx;
 }
 
 /* 三角箭头 */

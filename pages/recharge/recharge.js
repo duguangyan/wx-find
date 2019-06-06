@@ -1,13 +1,19 @@
 // pages/recharge/recharge.js
 const api = require('../../utils/api.js');
+const util = require('../../utils/util.js');
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
+    price:'',
     navIndex:0,
-    navArrText: ['充值VIP',"包月VIP"]
+    navArrText: ['充值VIP',"包月VIP"],
+    navArrCheck:[
+      { img: '', name: '微信支付' },
+      { img: '', name: '支付宝' }
+    ]
   },
   //  联系我们电话
   contact() {
@@ -21,15 +27,26 @@ Page({
       navIndex:inx
     })
   },
+  doInput(e){
+    let price = e.detail.value;
+    this.setData({
+      price
+    })
+  },
   // 去支付
   doPay (e) { 
-    
-    let id = e.currentTarget.dataset.id;
-    let value = e.currentTarget.dataset.value;
+    if (!util.verificationAmount(this.data.price)) {
+      util.errorTips("请输入正确的金额");
+      return false;
+    }
+    console.log(this.data.price);
+    let value = this.data.price;
     let payInfo = {
-      order_id: id,
-      order_type:3,
-      open_id : wx.getStorageSync('open_id')
+      open_id : wx.getStorageSync('open_id'),
+      pay_type:'wx',
+      type:'miniapp',
+      total_fee: this.data.price,
+      package_id:0
     };
     
     api.wxPay({
@@ -37,15 +54,15 @@ Page({
       data: payInfo
     }).then((res) => {
       console.log(res);
-      if (res.code == 200) {
-        let data = res.data.sdk;
+      if (res.code == 200 || res.code == 0) {
+        let data = res.data;
         data.success = function (res) { 
           console.log('支付成功');
-          if(this.navIndex == 0){
-            wx:wx.setStorageSync("userType", 1);
-          } else if (this.navIndex == 1){
-            wx: wx.setStorageSync("userType", 2);
-          }
+          // if(this.navIndex == 0){
+          //   wx:wx.setStorageSync("userType", 1);
+          // } else if (this.navIndex == 1){
+          //   wx: wx.setStorageSync("userType", 2);
+          // }
           console.log(res);
           wx.navigateTo({
             url: '../rechargeSuccess/rechargeSuccess?value=' + value

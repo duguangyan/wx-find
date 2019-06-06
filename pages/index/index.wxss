@@ -1,12 +1,16 @@
 /*  */
-page{
+
+.rich-img{
+width: 100% ;
+
+height: auto ;
+}
+/* page{
   background-color: #fff;
 }
 rich-text   .rich-img {
 
-width: 100% ;
 
-height: auto ;
 
 }
 .section-box {
@@ -196,4 +200,117 @@ height: auto ;
   font-size: 30rpx;
   color: #fff; 
   margin-top: 60rpx;
+} */
+page{
+  background-color: #fff;
+}
+.index .service{
+  line-height: 140rpx;
+	text-align: center;
+	font-size: 26rpx;
+  position: relative;
+}
+.index .service .left{
+  width: 375rpx;
+  height: 140rpx;
+  position: relative;
+  z-index: 999999;
+}
+.index .service .right{
+  width: 375rpx;
+  height: 140rpx;
+  position: relative;
+  z-index: 999999;
+}
+.index .service image{
+	width: 600rpx;
+  height: 80rpx;
+  position: absolute;
+  top: 16rpx;
+  left: 75rpx;
+  margin-bottom: 50rpx;
+}
+.index .index-content-warp{
+  width: 710rpx;
+  height: 490rpx;
+  border-radius: 20rpx; 
+  margin: 20rpx;
+  box-shadow:0px 0px 20px -6px rgba(102,102,102,0.5);
+  background-color: #fff;
+}
+.index .index-content-warp .title image{
+  width: 710rpx;
+  height: 80rpx;
+  margin: 50rpx 0;
+}
+.index .index-content-warp .nav{
+	position: relative;
+				top: 20rpx;
+}
+
+.index .index-content-warp .nav image{
+  width: 228rpx;
+	height: 228rpx;
+}
+.index .index-content-warp .nav .text{
+width: 220rpx;
+					display: block;
+					margin: 0 auto;
+           position: relative;
+  top: -66rpx;
+  color: #F29800;
+}
+
+.index .index-top-warp{
+  height: 570rpx;
+			width: 710rpx;
+			margin:20rpx;
+			border-radius: 20rpx; 
+			overflow: hidden;
+			box-shadow:0px 4px 12px -6px rgba(102,102,102,0.5);
+}
+.index .index-top-warp swiper-item{
+  height:360rpx 
+}
+.index .index-top-warp swipe
+.index .index-top-warp .swiper-item image{
+width: 100%;
+					height: 360rpx;
+}
+.index .index-top-warp .nav{
+  height: 211rpx;
+  position: relative;
+}
+.index .index-top-warp image{
+  width: 100rpx;
+					height: 100rpx;
+}
+.index .index-top-warp .nav .line{
+					height: 100rpx;
+					width: 2rpx;
+					background: #fff;
+					display: inline-block;
+					position: absolute;
+					top: 50rpx;
+					left: 355rpx;
+					z-index: 9;
+}
+
+.index .index-top-warp .nav .item{
+  text-align: center;
+  position: relative;
+}
+.index .index-top-warp .nav .item .text-fff{
+  width: 212rpx;
+  text-align: center;
+  margin: 0 auto;
+  display: block;
+ 
+}
+.slide-image{
+  width: 100% !important;
+  height: 100% !important;
+}
+.index-top-warp swiper{
+  height: 360rpx;
 }

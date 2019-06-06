@@ -1,5 +1,6 @@
 <view class='cf section-avatar'>
-  <view class='fll20' wx:if="{{memberInfo}}" bindtap='personInformation'>
+<!-- bindtap='personInformation' -->
+  <view class='fll20' wx:if="{{memberInfo}}" bindtap='changeAvatarPath'>  
      <view class="avatar">
         <image class=' btn-shadow' 
         src="{{memberInfo.avatar_path}}">
@@ -11,20 +12,22 @@
          <view class="fs32 text-white cf">
             <view class='ellipsis fll' bindtap='showSoltDialog'>{{memberInfo.nick_name||memberInfo.user_name}}</view>
             <view class='vip fll'>
-              <image wx:if="{{memberInfo.asset.type==0}}" src='../../public/images/center/66.png'></image>
-              <image wx:if="{{memberInfo.asset.type!=0}}" src='../../public/images/center/6.png'></image>
-              <text wx:if="{{memberInfo.asset.type== 0}}">VIP</text>
-              <text wx:if="{{memberInfo.asset.type== 1}}">充</text>
-              <text wx:if="{{memberInfo.asset.type== 2}}">包</text>
+              <image wx:if="{{memberInfo.vip==0}}" src='../../public/images/center/66.png'></image> 
+              <image wx:if="{{memberInfo.vip>0}}" src='../../public/images/center/6.png'></image>
+              <!-- <text>VIP</text> -->
+              <!-- <text wx:if="{{memberInfo.asset.type== 2}}">包</text> -->
             </view>
+            <view class="fll mgl-20 recharge" bindtap='goRecharge'>充值</view>
         </view>
-        <view wx:if='{{memberInfo.hasSign}}' class='sign-in sign-cur fs28'>
+        <!-- <view wx:if='{{memberInfo.hasSign}}' class='sign-in sign-cur fs28'>
             签到
         </view>
         <view wx:if='{{!memberInfo.hasSign}}' class='sign-in fs28' bindtap='signIn'>
             签到
-        </view>
+        </view> -->
+        
       </view>
+      
   </view>
   <view class='fll20' wx:if="{{memberInfo}}">
    <image  hidden='{{!memberInfo}}'  class='center-setting'
@@ -33,17 +36,19 @@
   </view>
 
   <view class='section-footer flex' wx:if="{{memberInfo}}">
-      <view class="flex-2">
-          <text class="balance">余额(元):<text class='balance-text'>{{memberInfo.asset.balance_amount || 0}}</text></text>
+      <view class="flex-1">
+          <view class="balance fs28 text-999">余额(元)</view>
+          <view class='balance-text fs48 text-red'>￥{{memberInfo.balance || 0}}</view>
       </view>
-      <view class="flex-2">
-          <text class="balance">服务(次):<text class='balance-text'>{{memberInfo.asset.times || 0}}</text></text>
+      <view class="flex-1">
+          <view class="balance  fs28 text-999">成功邀请(人)</view>
+          <view class='balance-text fs48 text-red'>{{memberInfo.invited || 0}}</view>
       </view>
-      <view wx:if="{{memberInfo}}" class="flex-1 setting">
+      <!-- <view wx:if="{{memberInfo}}" class="flex-1 setting">
         <navigator open-type='navigate' url="../recharge/recharge">
             <text class='text-fff fs24'>VIP充值</text>
         </navigator>
-      </view>
+      </view> -->
   </view>
   
   <view style="padding:20rpx 0"  
@@ -54,13 +59,13 @@
         </view>
 </view>
 
-<view style='height:320rpx'></view>
+<view style='height:380rpx'></view>
 
 
-<view class='center-service' wx:if="{{memberInfo}}">
+<!-- <view class='center-service' wx:if="{{memberInfo}}">
       包月服务期限: {{memberInfo.asset.expired_at || "0"}} 
       <text class="text-red" wx:if="{{memberInfo.asset.expired_warning == true}}">( 即将到期 )</text>
-</view>
+</view> -->
 <view class="section-order mgt-20">
     <view class="my-order-line flex">
         <view class="fs30">找料订单</view>
@@ -71,7 +76,8 @@
     </view>
     <view class="flex flex-start">
         <view bindtap='toMyOrder' data-method='1' data-id="{{item.id}}" class="item" wx:for="{{orderTab1}}" wx:key="{{i}}">
-            <image mode='aspectFit' src='../../public/images/center/{{item.imgId}}.png'></image>
+            <image mode='aspectFit' 
+            src='https://static.yidap.com/miniapp/o2o_find/index/center_icon_{{item.imgId}}.png'></image>
             <text>{{item.name}}</text>
             <text class='center-num' wx:if='{{item.num}}'>{{item.num || 0}}</text>
         </view>
@@ -88,7 +94,8 @@
     </view>
     <view class="flex flex-start">
         <view bindtap='toMyOrder' data-method='2' data-id="{{item.id}}" class="item" wx:for="{{orderTab2}}" wx:key="{{i}}">
-            <image mode='aspectFit' src='../../public/images/center/{{item.imgId}}.png'></image>
+            <image mode='aspectFit' 
+            src='https://static.yidap.com/miniapp/o2o_find/index/center_icon_{{item.imgId}}.png'></image>
             <text>{{item.name}}</text>
             <text class='center-num text-red' wx:if='{{item.num}}'>{{item.num || 0}}</text>
         </view>
@@ -96,16 +103,25 @@
 </view>
 
 <view class="navigator-box section-order mgt-20">
-    <button class="navigator-text fs30 pdl-30" bindtap='goIntegralmall'
-    style="background-color:#fff;border:none;height:115rpx;line-height:115rpx;text-align:left;">积分商城</button>
+    <button class="navigator-text fs30 pdl-30" bindtap='goMakeMoney'
+    style="background-color:#fff;border:none;height:115rpx;line-height:115rpx;text-align:left;">
+    分享赚钱
+     <text class="fs24 text-666 mgl-20">分享《小鹿快找》赚取“佣金”</text>
+    </button>
     <view class="navigator-arrow"></view>
 </view>
 
-<view class="navigator-box section-order mgt-20">
+<!-- <view class="navigator-box section-order mgt-20">
+    <button class="navigator-text fs30 pdl-30" bindtap='goIntegralmall'
+    style="background-color:#fff;border:none;height:115rpx;line-height:115rpx;text-align:left;">积分商城</button>
+    <view class="navigator-arrow"></view>
+</view> -->
+
+<!-- <view class="navigator-box section-order mgt-20">
     <button class="navigator-text fs30 pdl-30" bindtap='goGrowthTask'
     style="background-color:#fff;border:none;height:115rpx;line-height:115rpx;text-align:left;">成长任务</button>
     <view class="navigator-arrow"></view>
-</view>
+</view> -->
 
 <view class="navigator-box section-order mgt-20" bindtap='goAddress'>
   <block class='navigator'>
@@ -113,6 +129,14 @@
       <view class="navigator-arrow"></view>
   </block>
 </view>
+
+
+<view class="navigator-box section-order">
+    <button class="navigator-text fs30 pdl-30" bindtap='goGiftCertificate'
+    style="background-color:#fff;border:none;height:115rpx;line-height:115rpx;text-align:left;">我的礼券</button>
+    <view class="navigator-arrow"></view>
+</view>
+
 <view class="navigator-box section-order mgt-20">
     <button class="navigator-text fs30 pdl-30" 
     style="background-color:#fff;border:none;height:115rpx;line-height:115rpx;text-align:left;" 
@@ -120,17 +144,16 @@
     <view class="navigator-arrow"></view>
 </view>
 
-<view class="navigator-box section-order mgt-20">
-    <button class="navigator-text fs30 pdl-30" bindtap='goGiftCertificate'
-    style="background-color:#fff;border:none;height:115rpx;line-height:115rpx;text-align:left;">我的礼券</button>
+<view class="navigator-box section-order">
+    <button class="navigator-text fs30 pdl-30" bindtap='goChatList'
+    style="background-color:#fff;border:none;height:115rpx;line-height:115rpx;text-align:left;">消息列表</button>
     <view class="navigator-arrow"></view>
 </view>
-
 
 <view class="navigator-box section-order mgt-20">
   <block class='navigator'>
       <view class="navigator-text fs24 text-666 pdl-30 text-center">
-      Copyright @2018 一大批 版权所有 版本 {{v}}
+      Copyright @2019  众皮联 版权所有 版本 {{v}}
       </view>
   </block>
 </view>

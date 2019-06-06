@@ -1,4 +1,6 @@
 {
+  "navigationBarBackgroundColor": "#F29800",
+  "navigationBarTextStyle": "white",
   "navigationBarTitleText": "个人中心",
   "usingComponents": {
     "solt-dialog": "../../component/soltDialog/solt-dialog"

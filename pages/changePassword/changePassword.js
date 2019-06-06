@@ -19,6 +19,17 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    if(wx.getStorageSync('passwordIndex') == 0){
+      wx.setNavigationBarTitle({
+        title:'修改登录密码'
+      })
+    }else{
+      wx.setNavigationBarTitle({
+        title: '修改支付密码'
+      })
+    }
+    
+
     this.data.getStorageUserName = wx.getStorageSync('user_name');
     
     if (options.forgetPayPassWord) {
@@ -34,6 +45,13 @@ Page({
       wx.removeStorageSync('forgetPayPassWord');
     }
     
+    if(wx.getStorageSync('user_name')){
+      this.setData({
+        hasUserName:true,
+        user_name:wx.getStorageSync('user_name')
+      })
+    }
+
   },
 
   /**

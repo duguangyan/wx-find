@@ -1,5 +1,6 @@
 let app = getApp();
 const api = require('../../utils/api.js');
+const util = require('../../utils/util.js');
 let onfire = require('../../utils/onfire.js');
 
 
@@ -9,35 +10,136 @@ Page({
      * 页面的初始数据
      */
     data: {
-
+        v:'',
+        memberInfo:null,
         orderTab1: [{
-            id: 4,
-            imgId:1,
-            name: '待付款'
-        }, {
-            id: 5,
+            id: 1,
             imgId: 2,
             name: '待收货'
         }, {
-            id: 6,
+            id: 2,
             imgId: 3,
             name: '待评价'
         }],
         orderTab2: [{
-          id: 4,
-          imgId: 1,
-          name: '待付款'
-        }, {
-          id: 5,
+          id: 1,
           imgId: 2,
           name: '待收货'
         }, {
-          id: 6,
+          id: 2,
           imgId: 3,
           name: '待评价'
         }],
 
 
+    },
+  changeAvatarPath(){
+    let _this = this;
+    wx.showModal({
+      title: '提示',
+      content: '是否修改头像',
+      success: (res) => {
+        if (res.confirm) {
+          
+
+          wx.chooseImage({
+            count: 1,
+            sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+            sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+            success: (res) => {
+              // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
+
+
+              const access_token = wx.getStorageSync('token') || '';
+              let data = {};
+              data.file = '[object Object]';
+              data.type = 'big';
+              let timestamp = Date.parse(new Date());
+              data.timestamp = timestamp;
+              data.sign = util.MakeSign(api.apiUrl+'/api/upload', data);
+              data.deviceId = "wx";
+              data.platformType = "1";
+              data.versionCode = '3.0';
+              // 上传图片，返回链接地址跟id,返回进度对象
+              let uploadTask = wx.uploadFile({
+                url: `${api.apiUrl}/api/upload`,
+                filePath: res.tempFilePaths[0],
+                name: 'file',
+                header: {
+                  'content-type': 'multipart/form-data',
+                  'Accept': 'application/json',
+                  'Authorization': `Bearer ${access_token}`
+                },
+                formData: data,
+                success: (res) => {
+                  console.log('图片上传');
+                  console.log(res);
+                  var ress = JSON.parse(res.data);
+                  if (200 === ress.code || 0 === ress.code) {
+                    _this.data.memberInfo.avatar_path = ress.data;
+                  
+                    _this.setData({
+                       memberInfo:this.data.memberInfo
+                    })
+                    wx.setStorageSync('avatar_path', _this.data.memberInfo.avatar_path)
+                  } else {
+                    util.errorTips('上传错误');
+                  }
+
+                },
+                fail(err) {
+                  console.log(err)
+                },
+                complete() {
+
+                }
+              })
+
+
+            }
+          })
+
+
+
+
+
+        } else if (res.cancel) {
+          console.log('用户点击取消')
+        }
+      }
+    })
+  },
+    goRecharge(){
+      wx.navigateTo({
+        url: '../recharge/recharge',
+      })
+    },
+    goMakeMoney(){
+      let token = wx.getStorageSync('token');
+      let isTrue = token ? false : true;
+      if (isTrue) {
+        wx.showModal({
+          title: '您尚未登录',
+          content: '是否前往登录页面',
+          confirmText: '前往',
+          confirmColor: '#c81a29',
+          success: (res) => {
+            if (res.confirm) {
+              wx.navigateTo({
+                url: '../login/login',
+              })
+              return false;
+            } else if (res.cancel) {
+              console.log('用户点击取消')
+            }
+          }
+        })
+
+        return false;
+      }
+      wx.navigateTo({
+        url: '../makeMoney/makeMoney',
+      })
     },
     // 签到
     signIn(){
@@ -93,7 +195,36 @@ Page({
         url: '../personInformation/personInformation?memberInfo=' + memberInfo,
       })
     },
+  
+    goChatList() {
+      let token = wx.getStorageSync('token');
+      let isTrue = token ? false : true;
+      if (isTrue) {
+        wx.showModal({
+          title: '您尚未登录',
+          content: '是否前往登录页面',
+          confirmText: '前往',
+          confirmColor: '#c81a29',
+          success: (res) => {
+            if (res.confirm) {
+              wx.navigateTo({
+                url: '../login/login',
+              })
+              return false;
+            } else if (res.cancel) {
+              console.log('用户点击取消')
+            }
+          }
+        })
+
+        return false;
+      }
+      wx.navigateTo({
+        url: '../chatList/chatList',
+      })
+    },
     // 去我的礼券
+   
     goGiftCertificate(){
       let token = wx.getStorageSync('token');
       let isTrue = token ? false : true;
@@ -393,10 +524,10 @@ Page({
       wx.setStorageSync('fromCenter','1');
       this.data.orderTab1[0].num = 0;
       this.data.orderTab1[1].num = 0;
-      this.data.orderTab1[2].num = 0;
+      // this.data.orderTab1[2].num = 0;
       this.data.orderTab2[0].num = 0;
       this.data.orderTab2[1].num = 0;
-      this.data.orderTab2[2].num = 0;
+      // this.data.orderTab2[2].num = 0;
       this.setData({
         v,
         // memberInfo: false,
@@ -415,15 +546,29 @@ Page({
 
       }).then((res) => {
         console.log('用户信息 = ', res);
-        if(res.code==200){
+        if(res.code==0){
           wx.setStorageSync('invite_code', res.data.invite_code);
           wx.setStorageSync('nick_name', res.data.nick_name);
           app.globalData.memberInfo = res.data;
           this.setData({
             memberInfo: res.data
           })
+
+          this.data.orderTab1[0].mun = memberInfo.find_order.unpaid;
+          this.data.orderTab1[1].mun = memberInfo.find_order.unreceived;
+          this.data.orderTab1[2].mun = memberInfo.find_order.no_comment;
+
+          this.data.orderTab2[0].mun = memberInfo.deliver_order.unpaid;
+          this.data.orderTab2[1].mun = memberInfo.deliver_order.unreceived;
+          this.data.orderTab2[2].mun = memberInfo.deliver_order.no_comment;
+
+          this.setData({
+            orderTab1: this.data.orderTab1,
+            orderTab2: this.data.orderTab2
+          })
           // 获取用户订单数量
-          this.centerStatistics();
+
+          //this.centerStatistics();
         }
         
       }).catch((res) => {
@@ -486,7 +631,7 @@ Page({
       method:'POST',
       data
     }).then((res)=>{
-        if(res.code==200){
+      if (res.code == 200 || res.code == 0){
           this.setData({ 
             memberInfo: this.data.memberInfo
           })

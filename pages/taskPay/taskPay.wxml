@@ -10,38 +10,29 @@
             <view class='task-find-item'>
                <view>物料品类：{{item.cname}}   
                
-                <text class='flr' wx:if="{{userType == 2}}">使用:{{item.form_data.fee}}次</text>
-                <text class='flr' wx:if="{{userType != 2}}">金额:￥{{filter.formatMoney(item.form_data.fee)}}</text>
+                <text class='flr' wx:if="{{userType == 2}}">使用:{{item.fee}}次</text>
+                <text class='flr' wx:if="{{userType != 2}}">金额:￥{{filter.formatMoney(item.fee)}}</text>
                </view>
-               <view>物料描述：{{item.form_data.desc}}</view>
-               <view wx:if='{{item.form_data.find_type==1}}'>找料方式：按图找料</view>
-               <view wx:if='{{item.form_data.find_type==2}}'>找料方式：按样找料</view>
-               <view wx:if='{{item.form_data.find_type==3}}'>找料方式：按描述找料</view>
+               <view>物料描述：{{item.desc}}</view>
+               <view wx:if='{{item.find_type==1}}'>找料方式：按图找料</view>
+               <view wx:if='{{item.find_type==2}}'>找料方式：按样找料</view>
+               <view wx:if='{{item.find_type==3}}'>找料方式：按描述找料</view>
                <image class='task-find-img'
                 src='../../public/images/task/task_find.png'></image>
             </view> 
             <view class='task-find-method'>
-              <view class='task-find-method-img' wx:if='{{item.form_data.find_type==1}}'>
-               <image catchtap="imgYu" wx:for='{{item.form_data.front_img}}' wx:key='this' src='{{item}}'></image>
-                  <!-- <image wx:if='{{item.form_data.front_img}}' 
-                   catchtap="imgYu" data-src='{{item.form_data.front_img}}' src='{{item.form_data.front_img}}'></image>
-                  <image wx:if='{{item.form_data.side_img}}' 
-                   catchtap="imgYu" data-src='{{item.form_data.side_img}}' src='{{item.form_data.side_img}}'></image>
-                  <image wx:if='{{item.form_data.back_img}}' 
-                   catchtap="imgYu" data-src='{{item.form_data.back_img}}' src='{{item.form_data.back_img}}'></image> -->
+              <view class='task-find-method-img' wx:if='{{item.find_type==1}}'>
+               <image catchtap="imgYu" wx:for='{{item.front_img}}' wx:key='this' src='{{item}}'></image>
               </view> 
-              <view class='task-find-method-getfind' wx:if='{{item.form_data.find_type==2}}'>
+              <view class='task-find-method-getfind' wx:if='{{item.find_type==2}}'>
                   <!-- <view wx:if='{{item.address.stall}}'>地址名称：{{item.address.stall || ''}} </view>
                   <view wx:if='{{item.address.consignee}}'>
                      联 系 人：{{item.address.consignee || ''}} {{item.address.mobile || ''}}
                   </view> -->
-                  <view wx:if='{{item.form_data.get_type!=2}}'>
+                  <view>
                     取样地址：
                   </view>
-                  <view wx:if='{{item.form_data.get_type==2}}'>
-                    寄样地址：
-                  </view>
-                  <view wx:if='{{item.form_data.get_type==1}}'>
+                  <view>
                       <view class='fs24'>
                         <view class='remark' wx:if="{{item.address.remark && item.address.remark!=''}}">
                           {{item.address.remark||''}}
@@ -55,22 +46,25 @@
                         {{item.address.stall || ''}}
                       </view>
                   </view>
-                  
-                  
-                <view wx:if='{{item.form_data.get_type==2}}'>
-        
+              </view> 
+
+
+              <view class='task-find-method-getfind' wx:if='{{item.find_type==3}}'>
+                  <view>
+                    寄样地址：
+                  </view>
+                <view>
                     <view class='fs24 pdr-20' style='word-break:break-all;' >
-                        <text class='remark'wx:if='{{item.address[0].tag}}'>{{item.address[0].tag||''}}</text> 
-                        {{item.address[0].address||''}}
+                        <text class='remark'wx:if='{{item.address[0].tag}}'>{{companyaddress[0].tag||''}}</text> 
+                        {{companyaddress[0].address||''}}
                     </view>
                     <view class='fs24 pdr-20' style='word-break:break-all;'>
-                        {{item.address[0].consignee||''}} / {{item.address[0].mobile||''}}
+                        {{companyaddress[0].consignee||''}} / {{companyaddress[0].mobile||''}}
                     </view>
                     <view>...</view>
                 </view>
-
-                  
               </view> 
+
             </view> 
         </view>
         <view class='task-find-sum lh90 fs30 bb-1'>
@@ -81,7 +75,7 @@
         </view> 
 
         <!--收货地址  -->
-      <view class="fs30 bottom-border" wx:if="{{finds.length>0}}">
+      <!-- <view class="fs30 bottom-border" wx:if="{{finds.length>0}}">
           <view class="cell-padding fs30 mgt-30 lh90 bottom-border">
               送样地址（找料任务）
               <input class="hidden" value="{{findsAddress.id}}" name="address_id"></input>
@@ -90,17 +84,6 @@
               <text class="iconfont icon-dizhi fs50 text-gray mgr-20"></text>
               <text class='iconfont icon-jiantou address-icon'></text>
               <view hidden='{{!findsAddress}}'  class="flex-1 address-info fs30 pdt-30">
-                  <!-- <view class="flex">
-                      <text>地址名称: {{findsAddress.stall || ''}}</text>
-                  </view>
-                  <view class="flex">
-                      <text>联系人<text class='mgl-30'>:</text> {{findsAddress.consignee || ''}}</text>
-                      <text>{{findsAddress.mobile || ''}}</text>
-                  </view>
-                  <view class='pdb-30'>
-                      <text>收货地址：</text>
-                      <text>{{findsAddress.city_str || ''}} {{findsAddress.address || ''}}</text>
-                  </view> -->
                   <view class='fs24'>
                     <view class='remark' wx:if='{{findsAddress.remark&&findsAddress.remark!=""}}'>
                     {{findsAddress.remark||''}}
@@ -119,7 +102,7 @@
                   点击添加收货地址
               </view>
           </view>
-      </view>
+      </view> -->
       </view>
       
        
@@ -133,8 +116,8 @@
         </view>
         <view class='task-find-list fs30' wx:for='{{fetchs}}' wx:key='this'>
             <view class='task-find-item'>
-               <view>物料品类：{{item.cname}}  <text class='flr'>金额:￥{{filter.formatMoney(item.form_data.fee)}}</text></view>
-               <view>物料描述：{{item.form_data.desc}}</view>
+               <view>物料品类：{{item.cname}}  <text class='flr'>金额:￥{{filter.formatMoney(item.fee)}}</text></view>
+               <view>物料描述：{{item.desc}}</view>
                <image class='task-find-img' src='../../public/images/task/task_get.png'></image>
             </view> 
             <view class='task-find-method'>
@@ -142,7 +125,7 @@
                   <!-- <view>地址名称：{{fetchsAddress.stall ||''}}</view>
                   <view>联系人：{{fetchsAddress.consignee||''}} </view>
                   <view>取料地址：{{fetchsAddress.city_str}} {{fetchsAddress.address||''}}</view> -->
-                  <view>地址名称：</view>
+                  <view>取料地址：</view>
                   <view class='fs24'>
                     <view class='remark' wx:if='{{item.address.remark&&item.address.remark!=""}}'>
                        {{item.address.remark||''}}
@@ -162,27 +145,22 @@
         <view class='task-find-sum lh90 fs30 bb-1'>
             共{{fetchs.length}}个任务,小计：<text class='text-red'>￥{{filter.formatMoney(fetchsTotalPrice)}}</text>   
         </view> 
-        <!--收货地址  -->
-      <view class="fs30 bottom-border" wx:if='{{fetchs.length>0}}'>
+        
+      </view>
+
+      
+  </view> 
+
+<!--收货地址  -->
+      <view class="fs30 bottom-border task-get box-shadow">
           <view class="cell-padding fs30 mgt-30 lh90 bottom-border">
-              送料地址（取送任务）
+              送料地址
               <input class="hidden" value="{{fetchsAddress.id}}" name="address_id"></input>
           </view>
           <view class="cell-padding address flex flex-start" data-index='2' bindtap='goConsigneeAddress'>
               <text class="iconfont icon-dizhi fs40 text-gray mgr-20"></text>
               <text class='iconfont icon-jiantou address-icon'></text>
               <view hidden='{{!fetchsAddress}}'  class="flex-1 address-info fs30 pdt-30">
-                  <!-- <view class="flex">
-                      <text>地址名称: {{fetchsAddress.stall||''}}</text>
-                  </view>
-                  <view class="flex">
-                      <text>联系人<text class='mgl-30'>:</text> {{fetchsAddress.consignee||''}}</text>
-                      <text>{{fetchsAddress.mobile||''}}</text>
-                  </view>
-                  <view class='pdb-30'>
-                      <text>取料地址：</text>
-                      <text>{{fetchsAddress.city_str||''}} {{fetchsAddress.address||''}}</text>
-                  </view> -->
                   <view class='fs24'>
                     <view class='remark' wx:if='{{fetchsAddress.remark&&fetchsAddress.remark!=""}}'>
                     {{fetchsAddress.remark||''}}
@@ -202,14 +180,34 @@
               </view>
           </view>
       </view>
-      </view>
 
-      
-  </view> 
   <view wx:if="{{userType != 2}}" bindtap='goCoupon' class='task-get box-shadow cell-padding fs30 mgt-30 lh90 bottom-border coupon'>
     <text>{{couponList.name}} {{couponList.coupon_data.value}}{{couponList?'':'使用优惠券'}}</text>  
     <text class='iconfont icon-jiantou'></text>
   </view>
+
+ <view class='task-get box-shadow cell-padding fs30 mgt-30 pay-type'>
+   <view class='title'>选择支付方式</view>
+   <view class='items'>
+      <view class='item cf' wx:for="{{payTypeList}}" wx:key="this" catchtap='payTypeCheck' data-index='{{index}}'>
+        <image class='fll' src='{{item.icon}}'></image>  
+        <text class='fll mgl-20 text' wx:if="{{item.title!='余额'}}">{{item.title}} </text>
+        <text class='fll mgl-20 text' wx:if="{{item.title=='余额'}}">{{item.title}} （余额:￥{{filter.formatMoney(balance_amount) || '0'}})</text>
+        <view class='flr check-btn'>
+            <text wx:if='{{payTypeCheckIndex == index}}' 
+            class="iconfont icon-dui icon-dui-1 fs40 pdl-10 text-yellow"></text>
+            <text wx:if='{{payTypeCheckIndex != index}}' 
+            class="iconfont icon-dui icon-yuan-1 fs40 pdl-10 text-eb"></text>
+        </view>
+        
+        
+        
+      </view>
+       
+   </view>  
+ </view>
+
+
   <view style='height:140rpx;'></view>
   
   <view class='task-pay fs30 lh120 box-shadow pdl-30' wx:if='{{fetchs.length>0 ||finds.length>0}}'>
@@ -218,9 +216,9 @@
         <text class='text-red' wx:if="{{userType == 2}}">包月:使用{{findsTotalPrice + fetchsTotalPrice - couponListPrice}} 次</text>
         <text class='text-red' wx:if="{{userType != 2}}">￥{{filter.formatMoney(findsTotalPrice + fetchsTotalPrice - couponListPrice)}}</text>
       </view>
-      <view class='task-sum'>
+      <!-- <view class='task-sum'>
         <text style='color:#999;'>（余额:￥{{filter.formatMoney(balance_amount) || '0'}}）</text>
-      </view>
+      </view> -->
       <button class='task-pay-btn text-underline' disabled='{{isDisabled}}' bindtap='doPay'>支付</button> 
   </view>
 </view>

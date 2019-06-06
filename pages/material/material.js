@@ -33,11 +33,11 @@ Page({
   },
   // 获取单个任务价格
   getTaskFee(){
-    api.getTaskFee({},2).then((res)=>{
-      if(res.code==200){
-        this.data.fecthPrice = res.data.fee;
-        this.data.totalFecthPrice = res.data.fee;
-        wx.setStorageSync('fecthPrice', res.data.fee);
+    api.getTaskFee({}).then((res)=>{
+      if (res.code == 200 || res.code == 0){
+        this.data.fecthPrice = res.data.fetch_price;
+        this.data.totalFecthPrice = res.data.fetch_price;
+        wx.setStorageSync('fecthPrice', res.data.fetch_price);
         this.setData({
           fecthPrice: this.data.fecthPrice,
           totalFecthPrice: this.data.totalFecthPrice
@@ -50,6 +50,10 @@ Page({
         })
       }
     })
+    // this.setData({
+    //   fecthPrice: 10,
+    //   totalFecthPrice: 10
+    // })
   },
   // 显示照料须知
   showNotes() {
@@ -189,7 +193,7 @@ Page({
   getCheckTypes() {
     api.getCheckTypes({}).then((res) => { 
       console.log(res);
-      if (res.code == 200) {
+      if (res.code == 200 || res.code == 0) {
         this.setData({
           checkTypes: res.data,
           checkTypes_cid:res.data[0].id,
@@ -276,19 +280,19 @@ Page({
     
     console.log('fromId');
     console.log(e.detail.formId);
-    if (e.detail.formId != 'the formId is a mock one') {
-      let data = {
-        "form_id": e.detail.formId,
-        "from": "3"
-      }
-      api.getFormId({
-        method: 'POST',
-        data
-      }).then((res) => {
-        console.log(res);
-        console.log('获取formId');
-      })
-    }
+    // if (e.detail.formId != 'the formId is a mock one') {
+    //   let data = {
+    //     "form_id": e.detail.formId,
+    //     "from": "3"
+    //   }
+    //   api.getFormId({
+    //     method: 'POST',
+    //     data
+    //   }).then((res) => {
+    //     console.log(res);
+    //     console.log('获取formId');
+    //   })
+    // }
 
     // 获取上传图片
     let uploadC = this.selectComponent('#upload');
@@ -335,12 +339,13 @@ Page({
       return false
     }
     let data ={
-      task_type:2,
-      form_data:[{
+      task:[{
+        type:2,
         cid:this.data.checkTypes_cid,
+        cname: this.data.checkType,
         desc: this.data.desc,
         fetch_num: this.data.findNum,
-        get_address: this.data.defaultAddress.id,
+        address_id: this.data.defaultAddress.id,
         desc_img: uploadImgs
       }]
     }
@@ -349,7 +354,7 @@ Page({
       data
     }).then((res)=>{  
       console.log(res);
-      if (res.code == 200) {
+      if (res.code == 200 || res.code == 0) {
         this.setData({
           isPopup: true
         })
@@ -378,7 +383,7 @@ Page({
     api.getFindOrFetchPrice({},2).then((res)=>{
       console.log('取料单价');
       console.log(res);
-      if(res.code == 200){
+      if (res.code == 200 || res.code == 0){
         this.setData({
           fecthPrice:res.data.fee
         })
@@ -394,7 +399,7 @@ Page({
     api.needKnow({}).then((res) => {
       console.log(res);
       this.setData({
-        deliveryNeedKnow: res.data.delivery.value
+        deliveryNeedKnow: res.data.delivery_need_know
       })
     })
 

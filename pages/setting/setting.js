@@ -76,6 +76,7 @@ Page({
    * 修改登录密码
    */
   gotoChangePassword(){
+    wx.setStorageSync('passwordIndex', 0);
     this.setData({
       isOldPayPasswordModel:false
     })
@@ -127,16 +128,24 @@ Page({
                   code: res.code,
                   from: 3
                 }
-                api.getOpenId({
-                  data
-                }).then((res) => {
-                  wx.setStorageSync('open_id', res.data.openid);
-                  setTimeout(() => {
-                    wx.navigateTo({
-                      url: '../login/login?chengePassWord=1',
-                    })
-                  }, 1000)
+
+                wx.navigateTo({
+                  url: '../login/login?chengePassWord=1',
                 })
+                // api.userLogout({}).then((res)=>{
+                  
+                // })
+                
+                // api.getOpenId({
+                //   data
+                // }).then((res) => {
+                //   wx.setStorageSync('open_id', res.data.openid);
+                //   setTimeout(() => {
+                //     wx.navigateTo({
+                //       url: '../login/login?chengePassWord=1',
+                //     })
+                //   }, 1000)
+                // })
               }
             }
           });
@@ -154,21 +163,24 @@ Page({
    * 修改支付密码
    */
   gotoChangePayPassword(){
-
+    wx.setStorageSync('passwordIndex', 1);
     api.doPayPassWord({}).then((res)=>{
-      if(res.code==200){
+      if (res.code == 200 || res.code == 0){
         wx.setStorageSync('hasPayPwd', !res.data.hasPayPwd);
         if (res.data.hasPayPwd){
           this.setData({
             isOldPayPasswordModel: true
           })
-        }else{
+        } else{
           wx.navigateTo({
-            url: '../changePayPassword/changePayPassword',
+            url: '../changePassword/changePassword',
           })
-          
         }
       }
+    }).catch((e)=>{
+      wx.navigateTo({
+        url: '../changePassword/changePassword',
+      })
     })
     
     

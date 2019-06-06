@@ -6,23 +6,23 @@
       <view class="classify-sider-list {{index == navIndex ? 'navActive':''}}" 
       wx:for='{{classifyList}}' 
       wx:key='this' data-index='{{index}}'
-      data-id='{{item.id}}' data-name='{{item.name}}'
-      catchtap='_navClick'>{{item.name}}</view>
+      data-id='{{item.id}}' data-name='{{item.title}}'
+      catchtap='_navClick'>{{item.title}}</view>
     </view>
     <view class='classify-content'>
       <view wx:for='{{classifyListChild}}' wx:for-item="parentItem" wx:for-index='parentIndex'  wx:key='this'>
           <view class='classify-content-title'>
-             <text class="classify-content-title-text {{parentItem.name.length>3 ? 'item-length-size':''}}" >
-                <text class="{{parentItem.name.length>3 ? 'item-big-size':''}}">{{parentItem.name}}</text>
+             <text class="classify-content-title-text {{parentItem.title.length>3 ? 'item-length-size':''}}" >
+                <text class="{{parentItem.title.length>3 ? 'item-big-size':''}}">{{parentItem.title}}</text>
              </text> 
           </view>
           <view class='classify-content-middle cf'>
-            <text wx:for='{{parentItem.list}}' wx:key='this'  data-index='{{index}}' 
+            <text wx:for='{{parentItem.children}}' wx:key='this'  data-index='{{index}}' 
             wx:for-index="index" data-parentindex='{{parentIndex}}'
             wx:for-item="childItem" data-parent='{{parentItem.id}}' data-id='{{childItem.id}}' 
-            data-parentname='{{parentItem.name}}' data-idname='{{childItem.name}}' 
+            data-parentname='{{parentItem.title}}' data-idname='{{childItem.title}}' 
             class="{{index==childIndex &&parentIndexX == parentIndex?'childActive':''}}"
-            catchtap='_childClick'>{{childItem.name}}</text>
+            catchtap='_childClick'>{{childItem.title}}</text>
           </view>
       </view>
     </view> 

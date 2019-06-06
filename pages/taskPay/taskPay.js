@@ -16,9 +16,19 @@ Page({
     isFocus: true,    //聚焦  
     Value: "",        //输入的内容  
     ispassword: true, //是否密文显示 true为密文， false为明文。
-    couponListPrice: 0 // 优惠券金额
+    couponListPrice: 0, // 优惠券金额
+    couponId:'',
+    payTypeList:[
+      { icon: '../../public/images/icon/wx.png', title: '微信支付' },
+      { icon: '../../public/images/icon/icon-balance.png', title: '余额' },
+    ],
+    payTypeCheckIndex:0
   },
-
+  payTypeCheck(e){
+    this.setData({
+      payTypeCheckIndex: e.currentTarget.dataset.index
+    })
+  },
   // 去地址选择页面
   goConsigneeAddress(e) { 
     let index = e.currentTarget.dataset.index;
@@ -26,7 +36,14 @@ Page({
       url: '../consigneeAddress/consigneeAddress?taskPayIndex=' +index,
     })
   },
-
+  // 获取余额
+  getUserAsset(){
+    api.getUserAsset({}).then((res)=>{
+      this.setData({
+        balance_amount: res.data.balance
+      })
+    })
+  },
   /**
    * 生命周期函数--监听页面加载
    */
@@ -37,7 +54,9 @@ Page({
     wx.setStorageSync('status', 0);
     // 获取默认地址
     this.getSelectedAddress();
-
+    // 获取公司地址
+    this.getCompanyaddress();
+    
     this.setData({
       userType: wx.getStorageSync("userType")
     })
@@ -57,8 +76,8 @@ Page({
     // }
     // 获取默认地址
     api.defaultAddress({
-    }, 1).then((res) => {
-      if (res.code == 200) {
+    }).then((res) => {
+      if (res.code == 200 || res.code == 0) {
         let defaultAddress = res.data;
         wx.setStorageSync('defaultAddress', res.data)
         // 可能位空数组
@@ -82,9 +101,195 @@ Page({
 
     }) 
   },
-
   // 支付
-  doPay() { 
+  doPay(){
+    // 信息判断
+    this.setData({
+      isDisabled: true
+    })
+    let _this = this;
+    this.data.payDates.task_ids = this.data.task_ids;
+    
+    // 获取优惠券信息
+    if (this.data.couponList) {
+      
+      this.data.couponListPrice = Math.ceil(this.data.couponList.value);
+    } else {
+      this.data.couponListPrice = 0;
+    }
+    // if (this.data.finds.length > 0) {
+    //   if (!this.data.findsAddress) {
+    //     wx.showToast({
+    //       title: '请添加找料地址',
+    //       icon: 'none',
+    //       duration: 2000
+    //     })
+    //     this.setData({
+    //       isDisabled: false
+    //     })
+    //     return false;
+    //   }
+    // }
+    if (this.data.fetchs.length > 0) {
+      if (!this.data.fetchsAddress) {
+        wx.showToast({
+          title: '请添加取料地址',
+          icon: 'none',
+          duration: 2000
+        })
+        this.setData({
+          isDisabled: false
+        })
+        return false;
+      }
+    }
+    if (this.data.fetchsAddress) {
+      // if (this.data.findsAddress) {
+      //   this.data.payDates.shipping_address_find = this.data.findsAddress.id
+      // }
+      this.data.payDates.shipping_address_fetch = this.data.fetchsAddress.id
+      
+    } else {
+      wx.showToast({
+        title: '请添加地址',
+        icon: 'none',
+        duration: 2000
+      })
+      this.setData({
+        isDisabled: false
+      })
+      return false;
+    }
+
+    // 支付方式 0：微信 1：余额
+    if (this.data.payTypeCheckIndex == 0){
+      console.log("微信支付");
+      api.wxPayByOrder({
+        method:'POST',
+        data:{
+          "type": "miniapp",
+          'open_id': wx.getStorageSync('open_id'),
+          "task_id": this.data.task_ids,
+          "coupon_id": this.data.couponId,
+          "address_id": this.data.fetchsAddress.id, // this.data.findsAddress.id
+        }
+      }).then((res)=>{
+        util.errorTips(res);
+        if (res.code == 200 || res.code == 0) {
+              let data = res.data.data;
+              let pay = res.data.pay;
+              // let pay = {};
+              //     pay.updated_at = util.getCurrentTime();
+              //     pay.pay_amount = this.data.findsTotalPrice + this.data.fetchsTotalPrice - this.data.couponListPrice;
+
+              // console.log('pay_log:->>>' + JSON.stringify(pay) );
+              data.success = function (res) {
+                console.log('支付成功');
+                console.log(res);
+                wx.redirectTo({
+                  url: '../taskPaySuccess/taskPaySuccess?pay_log=' + JSON.stringify(pay) 
+                })
+              }
+              data.fail = function (res) {
+                console.log('支付失败');
+                console.log(res);
+                _this.setData({
+                  isDisabled: false
+                })
+                wx.showToast({
+                  title: '支付失败',
+                  icon: 'none',
+                  duration: 2000
+                })
+                // if (_this.data.finds.length > 0 && _this.data.fetchs.length > 0) {
+                //   wx.setStorageSync('method', 1);   // 1  2 
+                //   wx.setStorageSync('status', 4);   // 4
+                //   wx.switchTab({
+                //     url: '../order/order'
+                //   })
+
+                // }
+                // if (_this.data.finds.length > 0) {
+                //   wx.setStorageSync('method', 1);   // 1  2 
+                //   wx.setStorageSync('status', 4);   // 4
+                //   wx.switchTab({
+                //     url: '../order/order'
+                //   })
+
+                // }
+                // if (_this.data.fetchs.length > 0) {
+                //   wx.setStorageSync('method', 2);   // 1  2 
+                //   wx.setStorageSync('status', 4);   // 4
+                //   wx.switchTab({
+                //     url: '../order/order'
+                //   })
+                // }
+              }
+              wx.requestPayment(data);
+            
+          } else {
+            wx.showToast({
+              title: res.msg || '支付失败',
+              icon: 'none',
+              duration: 2000
+            })
+            this.setData({
+              isDisabled: false
+            })
+          }
+          console.log(res);
+        }).catch((e) => {
+          wx.showToast({
+            title: e.msg,
+            icon: 'none',
+            duration: 2000
+          })
+          this.setData({
+            isDisabled: false
+          })
+        })
+
+    }else{
+      console.log("余额支付");
+      let _this = this;
+      wx.showModal({
+        title: '提示',
+        content: '确认支付吗?',
+        success: function (res) {
+          if (res.confirm) {
+            api.payAsset({
+              method: 'POST',
+              data: {
+                "type": "miniapp",
+                "asset_type": "balance",
+                'open_id': wx.getStorageSync('open_id'),
+                "task_id": _this.data.task_ids,
+                "coupon_id": _this.data.couponId,
+                "address_id": _this.data.fetchsAddress.id, // this.data.findsAddress.id
+              }
+            }).then((res) => {
+              if (res.code == 200 || res.code == 0) {
+                let pay = JSON.stringify(res.data.pay);
+                wx.redirectTo({
+                  url: '../taskPaySuccess/taskPaySuccess?pay_log=' + pay
+                })
+              } else {
+                util.errorTips('支付失败:' + res.msg);
+                this.setData({
+                  isDisabled: false
+                })
+              }
+            })
+          } else if (res.cancel) {
+            util.errorTips("你点击了取消")
+          }
+        }
+      })
+      
+    }
+  },
+  // 支付 废弃
+  doPayByIndex() { 
     this.setData({
       isDisabled:true
     })
@@ -147,7 +352,7 @@ Page({
       }
     }).then((res)=>{ 
       
-      if(res.code==200){
+      if (res.code == 200 || res.code == 0){
         if (res.data.pay_type == 3 || res.data.pay_type == 5){
           let is_set_pay_pass = res.data.is_set_pay_pass;
           if (res.data.is_set_pay_pass){
@@ -185,7 +390,7 @@ Page({
             data: this.data.payDates
           }).then((res) => { 
 
-            if (res.code == 200) { 
+            if (res.code == 200 || res.code == 0) { 
               let payInfo = res.data;
               payInfo.open_id = wx.getStorageSync('open_id'); 
               api.wxPay({
@@ -419,7 +624,9 @@ Page({
   onShow: function () { 
     
     // 获取用户信息 余额
-    this.getUserInfo();
+    // this.getUserInfo();
+    // 获取余额
+    this.getUserAsset();
     // 获取Storage找料取料数据
     let taskPayList = wx.getStorageSync('taskPayList');
     let { finds, fetchs, task_ids } = taskPayList;
@@ -427,10 +634,10 @@ Page({
     let findsTotalPrice = 0;
     let fetchsTotalPrice = 0;
     finds.forEach((v) => {
-      findsTotalPrice += JSON.parse(v.form_data.fee);
+      findsTotalPrice += parseFloat(v.fee);
     })
     fetchs.forEach((v) => {
-      fetchsTotalPrice += JSON.parse(v.form_data.fee);
+      fetchsTotalPrice += parseFloat(v.fee);
     })
     this.setData({
       taskPayList,
@@ -444,6 +651,19 @@ Page({
     console.log(this.data.finds);
     console.log(this.data.fetchs);
     
+  },
+  // 获取公司地址
+  getCompanyaddress() {
+    api.getCompanyaddress({}).then((res) => {
+      if (res.code == 200 || res.code == 0) {
+        console.log('公司地址');
+        console.log(res.data.address);
+        let companyaddress = res.data;
+        this.setData({
+          companyaddress
+        })
+      }
+    })
   },
   // 获取用户信息
   getUserInfo(){

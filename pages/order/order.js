@@ -33,11 +33,25 @@ Page({
     isFocus: true,    //聚焦  
     Value: "",        //输入的内容  
     ispassword: true, //是否密文显示 true为密文， false为明文。
+    companyaddress:''
+  },
+  // 获取公司地址
+  getCompanyaddress() {
+    api.getCompanyaddress({}).then((res) => {
+      if (res.code == 200 || res.code == 0) {
+        console.log('公司地址');
+        console.log(res.data.address);
+        let companyaddress = res.data;
+        this.setData({
+          companyaddress
+        })
+      }
+    })
   },
   // 退款
   toReturn(e){ 
     let data = {
-      order_id: e.target.dataset.id
+      id: e.target.dataset.id
     }
     let _this = this;
     wx.showModal({
@@ -53,7 +67,7 @@ Page({
             if (res.code = 200) {
               for (let i = 0; i < _this.data.findList.length; i++) {
                 if (_this.data.findList[i].id == e.target.dataset.id) {
-                  _this.data.findList[i].button_status.on_prompt = 0;
+                  _this.data.findList[i].can_refuse = 0;
                 }
               }
               _this.setData({
@@ -94,7 +108,7 @@ Page({
     console.log(typeof this.data.current_page);
     this.data.current_page = this.data.current_page+1;
     if (this.data.findList.length < this.data.totalPages) {
-      this.getList(this.data.orderNavNum, this.data.orderChildNavNum, this.data.current_page); 
+      this.getList(this.data.orderNavNum, this.data.orderChildNavNum); 
     }
   },
  
@@ -124,12 +138,13 @@ Page({
       })
     }
     let index = e.currentTarget.dataset.index;
+    wx.setStorageSync('orderNav', index);
     this.setData({
       orderNavNum: index,
       orderChildNavNum:0,
       current_page: 1
     })
-    this.getList(this.data.orderNavNum, this.data.orderChildNavNum);
+    this.getList(this.data.orderNavNum,0);
   },
   // nav 二级切换
   checkChildNav(e) {
@@ -263,7 +278,7 @@ Page({
              duration: 1500,
            })
            setTimeout(()=>{
-            // _this.getList(_this.data.orderNavNum, _this.data.orderChildNavNum);
+          
              wx.setStorageSync('method', _this.data.orderNavNum);
              wx.setStorageSync('status', 0);
              this.setData({
@@ -390,10 +405,11 @@ Page({
     
     console.log('催单');
     api.urgeOrder({
-      method:'Post'
-    }, id).then((res)=>{
+      method:'POST',
+      data:{id}
+    }).then((res)=>{
       console.log(res);
-      if(res.code==200){
+      if (res.code == 200 || res.code == 0){
         // wx.showModal({
         //   title: "催单成功！",
         //   content: "请联系找料员(<text>" + mobile +"</text>)或在线客服（400-8088-156），咨询进度",
@@ -433,11 +449,12 @@ Page({
           console.log('用户点击确定');
 
           api.affirmOrder({
-            method: 'POST'
-          }, id).then((res) => {
+            method: 'POST',
+            data:{id}
+          }).then((res) => {
             console.log(res);
-            if (res.code == 200) {
-              _this.data.findList[index].button_status.on_confirm = 0;
+            if (res.code == 200 || res.code == 0) {
+              _this.data.findList[index].can_confirm = 0;
               _this.setData({
                 findList: _this.data.findList
               })
@@ -465,7 +482,7 @@ Page({
     let item = JSON.stringify(this.data.findList[index]);
     console.log(item);
     wx.navigateTo({
-      url: '../findOrderDetail/findOrderDetail?id=' + id + '&nav=' + this.data.orderNavNum
+      url: '../findOrderDetail/findOrderDetail?id=' + id + '&nav=' + this.data.orderNavNum + '&status=' + this.data.orderChildNavNum
     })
   },
   // 去找料详情
@@ -553,6 +570,7 @@ Page({
   commentConfirm (e) { 
 
     let data  = {
+      id: this.data.commentId,
       star:this.data.starIndex_1+1,
       star_ship: this.data.starIndex_2 + 1,
       content: this.data.commentMsg
@@ -560,9 +578,9 @@ Page({
     api.toCommentOrder({
       method:'POST',
       data
-    }, this.data.commentId).then((res)=>{ 
+    }).then((res)=>{ 
           console.log(res);
-          if(res.code==200){
+      if (res.code == 200 || res.code == 0){
             wx.showToast({
               title: '评价成功！',
               icon: 'none',
@@ -638,17 +656,18 @@ Page({
   },
 
   // 获取订单列表
-  getList(index,status,page){  
+  getList(index, status){  
     wx.showLoading({
       title: '加载中',
     }) 
-    api.orderList({}, index, status, page).then((res)=>{
-      if(res.code==200){
-        if(page){
-          this.data.findList = this.data.findList.concat(res.data);
-        }else{
-          this.data.findList = res.data;
-        }
+    api.orderList({
+      data:{
+        type:index,
+        status
+      }
+    }).then((res)=>{
+      if (res.code == 200 || res.code == 0){
+        this.data.findList = res.data;
         if (this.data.findList.length<=0){
           this.setData({
             isData:true
@@ -658,7 +677,10 @@ Page({
             isData: false
           })
         }
-        this.data.totalPages = res.total;
+        if (res.total){
+          this.data.totalPages = res.total;
+        }
+        
         for (let i = 0; i < this.data.findList.length;i++){
           // 1按图找,2按样找3按描述
           if (this.data.findList[i].type == 1){
@@ -741,7 +763,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    this.getCompanyaddress();
     let method = wx.getStorageSync('method');
 
     if (method) {
@@ -877,4 +899,9 @@ Page({
       url: '../changePassword/changePassword?forgetPayPassWord=1',
     })
   },
+  goChat(){
+    wx.navigateTo({
+      url: '../chatList/chatList',
+    })
+  }
 })

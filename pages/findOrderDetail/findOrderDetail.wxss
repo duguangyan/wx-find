@@ -1,6 +1,19 @@
 page{
   background-color: #eee;
 }
+.type3 {
+  border-bottom: 20rpx solid #eee; 
+}
+.type3 .text-red,.type3 .con{
+  padding:30rpx;
+}
+
+.type3 .title{
+  height: 90rpx;
+  line-height: 90rpx;
+  border-bottom: 1rpx solid #eee; 
+  padding-left: 30rpx;
+}
 .order-icon{
   width: 42rpx;
   height: 40rpx;
@@ -58,8 +71,8 @@ page{
   line-height: 70rpx;
   width: 180rpx;
   text-align: center;
-  border: 1rpx solid #c81a29;
-  color: #c81a29;
+  border: 1rpx solid #F29800;
+  color: #F29800;
   border-radius: 10rpx; 
   float: right;
   margin: 30rpx 30rpx 30rpx 0;
@@ -76,7 +89,10 @@ page{
   margin-top: 20rpx;
 }
 
-
+.order-chat{
+  background: #F29800 !important;
+  color: #fff !important;
+}
 
 
 

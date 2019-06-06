@@ -5,7 +5,7 @@
       <image src='../../public/images/task/task_success.png'></image>
       <view class='task-success-msg'>
           <view class='fs48'>支付成功</view>
-          <view class='fs24'>{{time}}</view>
+          <view class='fs24'>{{pay_log.updated_at}}</view>
       </view>
   </view>
   <view class='border-b20'></view>
@@ -13,7 +13,7 @@
   <view class='lh90 border-bottom fs30'>
   
       <text wx:if="{{userType==2}}" class='pdl-30'>包月： <text class='text-red'>使用{{pay_log.pay_amount}} 次</text></text>
-      <text wx:if="{{userType!=2}}" class='pdl-30'>实付款： <text class='text-red'>￥{{filter.formatMoney(pay_log.pay_amount)}}</text></text>
+      <text wx:if="{{userType!=2}}" class='pdl-30'>实付款： <text class='text-red'>￥{{filter.formatMoney(pay_log.change_amount)}}</text></text>
   </view>
 
   <view class='footer-btn'>

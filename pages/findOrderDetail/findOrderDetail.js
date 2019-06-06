@@ -6,6 +6,9 @@ Page({
      * 页面的初始数据
      */
     data: {
+      status:1,
+      nav:1,
+      orderNav:1,
       isDelModel: true, // 取消订单模态框
       delMsg: '', // 取消订单原因数据
       isCommentModel: true, // 评价模态框 
@@ -24,7 +27,7 @@ Page({
   // 退款
   toReturn(e) {
     let data = {
-      order_id: e.target.dataset.id
+      id: e.target.dataset.id
     }
     let _this = this;
     wx.showModal({
@@ -38,7 +41,7 @@ Page({
             data
           }).then((res) => {
             if (res.code = 200) {
-              _this.data.itemObj.button_status.refuse_status = 0;
+              _this.data.itemObj.can_refuse= 0;
               _this.setData({
                 itemObj: _this.data.itemObj
               })
@@ -74,8 +77,12 @@ Page({
     })
   },
 // 去评价
-  toComment () {
+  toComment (e) {
     console.log('去评价');
+    let id = e.target.dataset.id;
+    this.setData({
+      orderId: id
+    })
     this.setData({
       isCommentModel: false
     })
@@ -100,6 +107,7 @@ Page({
       star_ship: this.data.starIndex_2 + 1,
       content: this.data.commentMsg
     }
+    data.id = this.data.orderId;
     api.toCommentOrder({
       method: 'POST',
       data
@@ -169,21 +177,41 @@ Page({
   },
     // 取消订单
     delOrder(e) {
+      let _this = this;
       let id = e.target.dataset.id;
       this.setData({
         delId: id
       })
       wx.showModal({
-        title: '确认取消此订单？',
+        title: '提示',
+        content:"确认删除此订单？",
         confirmText: '确定',
         success: (res) => {
           if (res.confirm) {
             console.log('取消订单');
-            this.setData({
-              isDelModel: false
+            api.orderDelete({
+              method: 'POST',
+              data:{
+                id: _this.data.delId
+              }
+            }).then((res) => {
+              console.log(res);
+              if (res.code == 200 || res.code == 0) {
+                wx.showToast({
+                  title: '删除成功',  //标题  
+                  icon: 'success',  //图标，支持"success"、"loading"  
+                  success: function () {
+                    wx.navigateBack({
+                      delta: 1
+                    })
+                  }, //接口调用成功的回调函数  
+                })
+
+              }
             })
           } else if (res.cancel) {
-            console.log('用户点击取消')
+            console.log('用户点击取消');
+            util.errorTips("你点击了取消");
           }
         }
       })
@@ -200,7 +228,7 @@ Page({
       let data = {
         remark: this.data.delMsg
       }
-      api.delOrder({
+      api.orderPrompt({
         method: 'POST',
         data
       }, this.data.delId).then((res) => {
@@ -375,9 +403,12 @@ Page({
       let id = e.currentTarget.dataset.id;
 
       console.log('催单');
-      api.urgeOrder({
-        method: 'Post'
-      }, id).then((res) => {
+      api.orderPrompt({
+        method: 'POST',
+        data:{
+          id
+        }
+      }).then((res) => {
         console.log(res);
         if (res.code == 200) {
           // wx.showModal({
@@ -397,7 +428,9 @@ Page({
             duration: 2000
           })
         }
-      })
+        }).catch((res)=>{
+          util.errorTips(res.msg);
+        })
 
 
     },
@@ -406,28 +439,49 @@ Page({
       let id = e.target.dataset.id;
       let index = e.target.dataset.index;
       let _this = this;
-      api.affirmOrder({
-        method: 'POST'
-      }, id).then((res) => {
-        console.log(res);
-        if (res.code == 200) {
-          _this.data.itemObj.button_status.on_confirm = 0;
-          _this.setData({
-            itemObj: _this.data.itemObj
-          })
-          wx.showToast({
-            title: '收货成功！',
-            icon: 'none',
-            duration: 2000
-          })
-        }else{
-          wx.showToast({
-            title: res.msg,
-            icon: 'none',
-            duration: 2000
-          })
+
+      wx.showModal({
+        title: '提示',
+        content: '确认收货吗?',
+        success: function (res) {
+          if (res.confirm) {
+            api.affirmOrder({
+              method: 'POST',
+              data: {
+                id
+              }
+            }).then((res) => {
+              console.log(res);
+              if (res.code == 200 || res.code == 0) {
+                _this.data.itemObj.can_confirm = 0;
+                _this.setData({
+                  itemObj: _this.data.itemObj
+                })
+                wx.showToast({
+                  title: '收货成功！',
+                  icon: 'none',
+                  duration: 2000,
+                  success(){
+                    wx.navigateBack({
+                      delta: 1
+                    })
+                  }
+                })
+                
+              } else {
+                wx.showToast({
+                  title: res.msg,
+                  icon: 'none',
+                  duration: 2000
+                })
+              }
+            })
+          } else if (res.cancel) {
+            util.errorTips("你点击了取消")
+          }
         }
       })
+
       console.log('确认收货');
     },
 
@@ -438,8 +492,11 @@ Page({
       this.data.commentId = options.id;
       this.data.id = options.id;
       this.data.nav = options.nav;
+      this.data.status = options.status;
       this.setData({
-        userType: wx.getStorageSync("userType")
+        userType: wx.getStorageSync("userType"),
+        nav:this.data.nav,
+        status: this.data.status
       })
       
 
@@ -474,24 +531,45 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow: function () {
+      this.setData({
+        orderNav: wx.getStorageSync('orderNav')
+      })
       this.getData();
+      this.getCompanyaddress();
     },
+  // 获取公司地址
+  getCompanyaddress() {
+    api.getCompanyaddress({}).then((res) => {
+      if (res.code == 200 || res.code == 0) {
+        console.log('公司地址');
+        console.log(res.data.address);
+        let companyaddress = res.data;
+        this.setData({
+          companyaddress
+        })
+      }
+    })
+  },
     getData(){
       if (this.data.id) {
-        api.getOrderDetail({}, this.data.id).then((res) => {
-          if (res.code == 200) {
+        api.getOrderDetail({
+          data:{
+            id: this.data.id
+          }
+        }).then((res) => {
+          if (res.code == 200 || res.code == 0) {
             let itemObj = res.data;
             console.log("-------------------");
             console.log(itemObj.desc_img);
-            if (itemObj.type) {
-              wx.setNavigationBarTitle({
-                title: '找料详情'
-              })
-            } else {
-              wx.setNavigationBarTitle({
-                title: '取送详情'
-              })
-            }
+            // if (itemObj.type == 1) {
+            //   wx.setNavigationBarTitle({
+            //     title: '找料详情'
+            //   })
+            // } else {
+            //   wx.setNavigationBarTitle({
+            //     title: '取送详情'
+            //   })
+            // }
             if (itemObj.type == 1) {
               itemObj.type_name = '按图找料'
             } else if (itemObj.type == 2) {

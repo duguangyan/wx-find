@@ -19,7 +19,7 @@
         </view>
 
         <view class="cell-padding">
-            <button formType="submit" class="login-btn bg-theme {{ BtnActive ?  '' : 'disabled-style' }}">
+            <button formType="submit" class="login-btn bg-yellow {{ BtnActive ?  '' : 'disabled-style' }}">
               登录
             </button>
         </view>

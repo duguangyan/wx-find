@@ -9,9 +9,10 @@ Page({
    * 页面的初始数据
    */
   data: {
+    check:false,
     searchValue:'',
     addressInfo: {
-      isSugShow:false,
+      // isSugShow:false,
       consignee: '',
       mobile: '',
       address: '',
@@ -22,6 +23,11 @@ Page({
     is_default: 0,
     multiIndex: [6, 0, 0]
 
+  },
+  doCheck(){
+    this.setData({
+      check: !this.data.check
+    })
   },
   // 获取用户当前地址
   getUserMapAddress(){
@@ -51,11 +57,18 @@ Page({
                 province: res.result.address_component.province,
                 title: res.result.formatted_addresses.recommend
               }
-                _this.data.addressInfo.mapAddress = mapAddress;
+              if (mapAddress.location != null && mapAddress.location != undefined && mapAddress.location != ''){
+                _this.data.addressInfo.address = mapAddress.address;
+                _this.data.addressInfo.consignee = wx.getStorageSync("nick_name") || '';
+                _this.data.addressInfo.mobile = wx.getStorageSync("user_name") || '';
+                _this.data.addressInfo.latitude = mapAddress.location.lat.toString();
+                _this.data.addressInfo.longitude = mapAddress.location.lng.toString();
                 console.log(res.result)
                 _this.setData({
                   addressInfo: _this.data.addressInfo
                 })
+              }
+              
             },
             fail: function(res) {
               console.log(res)
@@ -70,10 +83,46 @@ Page({
   },
   // 获取地图地址
   getMapAddress(){   
-    let v = this.data.addressInfo.address || this.data.addressInfo.mapAddress.address;
-    let t = this.data.addressInfo.title || this.data.addressInfo.mapAddress.title;
-    wx.navigateTo({
-      url: '../addressSearch/addressSearch?addressValue='+ v  + '&addressTitle=' + t
+    // let v = this.data.addressInfo.address || this.data.addressInfo.mapAddress.address;
+    // let t = this.data.addressInfo.title || this.data.addressInfo.mapAddress.title;
+    // wx.navigateTo({
+    //   url: '../addressSearch/addressSearch?addressValue='+ v  + '&addressTitle=' + t
+    // })
+    let that = this;
+    console.log(11);
+    wx.chooseLocation({
+      success:(res)=>{
+        console.log(res);
+        this.data.addressInfo.address = res.address;
+        this.data.addressInfo.name = res.name;
+        this.data.addressInfo.latitude = res.latitude.toString();
+        this.data.addressInfo.longitude = res.longitude.toString();
+        this.data.addressInfo.room = res.name == res.address ? '' : res.name;
+        this.setData({
+          addressInfo: this.data.addressInfo
+        })
+      },
+      fail:(res)=>{
+        util.errorTips("获取地图定位失败：" + res.errMsg);
+        console.log(res);
+        //不允许打开定位
+        wx.getSetting({
+          success: (res) => {
+            if (!res.authSetting['scope.userLocation']) {
+              //打开提示框，提示前往设置页面
+              that.setData({
+                showCon: true
+              })
+            }
+          }
+        })
+      },
+      complete:(res)=>{}
+    })
+  },
+  changeModalCancel(){
+    this.setData({
+      showCon: false
     })
   },
   // 清空mapInput
@@ -170,11 +219,13 @@ Page({
 
   },
   // 保存提交
-  saveSubmit() {
+  saveSubmit() { 
+    console.log("------------------1212121");
     let _this = this;
     let addressInfo = this.data.addressInfo,
       type = this.data.type;
-
+    
+      console.log('type:'+type);
     // 地址为空
     if (addressInfo.consignee.length === 0) {
       util.errorTips('请确认收货人');
@@ -200,128 +251,57 @@ Page({
 
     // 判断地址
 
-    if (!addressInfo.mapAddress) {
-      util.errorTips('请确认详细地址');
+    if (!addressInfo.address) {
+      util.errorTips('请确认地址信息');
       return false;
     }
 
     let is_default = this.data.is_default;
     console.log(this, is_default) 
-    
-    let data = util.extend({}, [this.data.addressInfo.mapAddress,this.data.addressInfo]);
+    if (this.data.check){
+      this.data.addressInfo.is_default = 1;
+    }else{
+      this.data.addressInfo.is_default = 0;
+    }
+    //this.data.addressInfo.is_default = this.data.is_default;
+    //let data = util.extend({}, [this.data.addressInfo.mapAddress,this.data.addressInfo]);
     this.setData({
-      saveData: data
+      saveData: this.data.addressInfo
     })
-    if (type === 'new') {
+
+    if (type == 'new') {
       api.addAddress({
         method:"POST",
-        data:data
-      }).then((res) => {
-
-        // 修改上一个页面栈数据
-        wx.showToast({
-          title: '新增成功',
-        })
-        wx.navigateBack();
-        }).catch((res) => {
-          console.log('地址不在服务范围');
-          let data = _this.data.saveData;
-            data.force_save = 1 ;
-            api.addAddress({
-              method: "POST",
-              data: data
-            }).then((res) => {
-              // 修改上一个页面栈数据
-              wx.showToast({
-                title: '新增成功',
-              })
-              wx.navigateBack();
-            })
-          // wx.showModal({
-          //   title: '提示',
-          //   content: '你当前位置不在服务范围内',
-          //   cancelText: '重新输入',
-          //   confirmText: '保存地址',
-          //   confirmColor: '#c81a29',
-          //   success: (res) => {
-          //     if (res.confirm) {
-          //       let data = _this.data.saveData;
-          //       data.force_save = 1 ;
-          //       api.addAddress({
-          //         method: "POST",
-          //         data: data
-          //       }).then((res) => {
-          //         // 修改上一个页面栈数据
-          //         wx.showToast({
-          //           title: '新增成功',
-          //         })
-          //         wx.navigateBack();
-          //       })
-          //       return false;
-          //     } else if (res.cancel) {
-          //       console.log('用户点击取消')
-          //     }
-          //   }
-          // })
+        data: this.data.addressInfo
+      }).then((res) => { 
+        if(res.code==200 || res.code ==0){
+          // 修改上一个页面栈数据
+          util.successTips(res.msg);
+          
+          wx.navigateBack();
+        }else{
+          util.errorTips(res.msg);
+        }
+        
         })
 
     } else if (type === 'edit') {
 
       // 编辑提交
       api.editAddress({
-        method:'PUT',
-        data: data
-      }, this.data.id).then((res) => {
-        wx.showToast({
-          title: '修改成功',
+        method:'POST',
+        data: this.data.addressInfo
+      }).then((res) => {
+        if (res.code == 200 || res.code == 0) {
+          // 修改上一个页面栈数据
+          util.successTips(res.msg);
+          wx.navigateBack();
+        } else {
+          util.errorTips(res.msg);
+        }
+       
+
         })
-        wx.navigateBack();
-
-        }).catch((res) => {
-          console.log('地址不在服务范围');
-          let data = _this.data.saveData;
-          data.force_save = 1;
-          api.editAddress({
-            method: 'PUT',
-            data: data
-          }, _this.data.id).then((res) => {
-
-            // 修改上一个页面栈数据
-            wx.showToast({
-              title: '修改成功',
-            })
-            wx.navigateBack();
-          })
-          // wx.showModal({
-          //   title: '提示',
-          //   content: '你当前位置不在服务范围内',
-          //   cancelText: '重新输入',
-          //   confirmText: '保存地址',
-          //   confirmColor: '#c81a29',
-          //   success: (res) => {
-          //     if (res.confirm) {
-          //       let data = _this.data.saveData;
-          //       data.force_save = 1;
-          //       api.editAddress({
-          //         method: 'PUT',
-          //         data: data
-          //       }, _this.data.id).then((res) => {
-
-          //         // 修改上一个页面栈数据
-          //         wx.showToast({
-          //           title: '修改成功',
-          //         })
-          //         wx.navigateBack();
-          //       })
-          //       return false;
-          //     } else if (res.cancel) {
-          //       console.log('用户点击取消')
-          //     }
-          //   }
-          // })
-        }).finally(() => {
-
-      })
     }
 
   },
@@ -536,15 +516,19 @@ Page({
 
   // 请求输出编辑信息
   getInfo(id) {
-    api.infoAddress({},id).then((res) => {
-
+    api.infoAddress({
+      data:{
+        id
+      }
+    }).then((res) => {
       let addressInfo = res.data;
       let mapAddress = {};
           mapAddress.address = res.data.address;
           mapAddress.title = res.data.title;
           addressInfo.mapAddress = mapAddress;
       this.setData({
-        addressInfo
+        addressInfo,
+        check: addressInfo.is_default == 0 ? false: true
       })
 
     }).catch(() => {

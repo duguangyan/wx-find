@@ -26,7 +26,7 @@
 }
 
 .nav-active{
-  color: #c81a29; 
+  color: #F29800; 
   position: relative;
 }
 .nav-active::after{
@@ -34,7 +34,7 @@
   display: block;
   width: 100%;
   height: 4rpx;
-  background-color: #c81a29;
+  background-color: #F29800;
   position: absolute;
   bottom: 0;
   left: 0;
@@ -44,14 +44,14 @@
   position: relative;
 }
 .nav-child-active{
-  color: #c81a29;
+  color: #F29800;
 }
 .nav-child-active::after{
   content: '';
   display: block;
   width: 100rpx;
   height: 4rpx;
-  background-color: #c81a29;
+  background-color: #F29800;
   position: absolute;
   bottom: 0;
   left: 50%;
@@ -156,8 +156,8 @@
   font-size: 30rpx;
 }
 .order-footer-btn-red{
-  border: 1rpx solid #c81a29 !important;
-  color: #c81a29;
+  border: 1rpx solid #F29800 !important;
+  color: #F29800;
 }
 .loding{
   text-align: center;
@@ -179,7 +179,7 @@
   line-height: 60rpx;
   text-align: center;
   margin: 0 auto;
-  background-color: #c81a29;
+  background-color: #F29800;
   border-radius:10rpx;
   color: #fff;
   font-size: 30rpx;
@@ -276,7 +276,7 @@
   line-height: 80rpx;
   text-align: center;
   margin: 0 auto;
-  background-color: #c81a29;
+  background-color: #F29800;
   border-radius:20rpx;
   font-size: 30rpx;
   color: #fff; 
@@ -316,7 +316,7 @@
 }
 .notes-btn view{
   margin-left: 218rpx;
-  background-color: #c81a29;
+  background-color: #F29800;
   color: #fff;
 }
 .notes-btn-content{
@@ -332,4 +332,14 @@
   right: 10rpx;
   top: -30rpx;
   color: #999;
+}
+.chat_list{
+  position: fixed;
+  right: 20rpx;
+  bottom: 50rpx;
+  z-index: 999999;
+}
+.chat_list image{
+  width: 140rpx;
+  height: 140rpx;
 }

@@ -91,7 +91,8 @@
                bindtap='goBlack' data-item='{{item}}' data-index='{{index}}'>
                   <view style='margin-top:20rpx;word-break:break-all;'>
                     <text class='remark' wx:if='{{item.remark}}'>{{item.remark||''}}</text>
-                    {{item.address||''}} {{item.room||''}}    
+                    {{item.address||''}} 
+                    {{item.room==0||item.room==null||item.room==''||item.room==undefined ?'':item.room}}    
                   </view>
                   <view class='cf color-999'>
                       <view style='word-break:break-all;'>

@@ -15,7 +15,8 @@ Page({
     describeValue: '',
     fecthPrice: 0, // 配送费用
     isPopup: false, // 弹窗控制   
-    payNum: 10, // 倒计时               
+    payNum: 10, // 倒计时    
+    desc_img:[]           
   },
   // 获取单个任务价格
   getTaskFee() { 
@@ -26,9 +27,9 @@ Page({
         })
         return false;
     }
-    api.getTaskFee({}, 2).then((res) => {
-      if (res.code == 200) {
-        this.data.fecthPrice = res.data.fee;
+    api.getTaskFee({}).then((res) => {
+      if (res.code == 200 || res.code == 0) {
+        this.data.fecthPrice = res.data.fetch_price;
         this.setData({
           fecthPrice: this.data.fecthPrice,
         })
@@ -43,37 +44,6 @@ Page({
   },
   // 切换类型
   checkType(e) {
-    // this.data.isSelect = true;
-    // this.setData({
-    //   isSelect: this.data.isSelect
-    // })
-    // let index = e.currentTarget.dataset.index;
-    // console.log(index);
-    // let _this = this;
-    // let itemList = [];
-    // for (let i = 0; i < this.data.checkTypes.length; i++) {
-    //   itemList.push(this.data.checkTypes[i].name);
-    // }
-
-    // wx.showActionSheet({
-    //   itemList: itemList,
-    //   success: function (res) {
-    //     console.log(res);
-    //     _this.data.isSelect = false;
-    //     _this.setData({
-    //       checkType: _this.data.checkTypes[res.tapIndex].name,
-    //       checkTypes_cid: _this.data.checkTypes[res.tapIndex].id,
-    //       isSelect: _this.data.isSelect
-    //     })
-    //   },
-    //   fail: function (res) {
-    //     console.log(res.errMsg)
-    //     _this.data.isSelect = false;
-    //     _this.setData({
-    //       isSelect: _this.data.isSelect
-    //     })
-    //   }
-    // })
     wx.navigateTo({
       url: '../classify/classify?from=2'
     })
@@ -249,23 +219,42 @@ Page({
       return false
     }
 
+    // 获取上传图片
+    let uploadC = this.selectComponent('#upload');
+
+    let uploadImgs = [];
+    // 添加数据
+    uploadC.data.files.forEach((ele, i) => {
+      if (ele.full_url) {
+        uploadImgs.push(ele.full_url)
+      } else if (ele.url) {
+        uploadImgs.push(ele.url)
+      }
+    })
+    
+
     let data ={
-      form_data:{
+      task:{
         fetch_num: this.data.findNum,
-        get_address: this.data.get_address,
+        address: this.data.address,
+        address_id: this.data.address.id,
         desc: this.data.desc,
-        cid: this.data.checkTypes_cid != '' ? this.data.checkTypes_cid: this.data.cid
-      },
-      id: this.data.id
+        cid: this.data.checkTypes_cid != '' ? this.data.checkTypes_cid: this.data.cid,
+        id: this.data.id,
+        cname: this.data.checkType,
+        desc_img: uploadImgs,
+        type:2
+      }
+      
     }
 
 
-    api.findEdit({
+    api.updateTaskInit({
       method:'POST',
-      data
-    },this.data.id).then((res)=>{
+      data: data.task
+    }).then((res)=>{
         console.log(res);
-        if(res.code==200){
+      if (res.code == 200 || res.code == 0){
           wx.navigateBack({
             delta: 1
           })
@@ -308,23 +297,34 @@ Page({
    */
   onLoad: function (options) {  
     app.globalData.isFromScope = true;
-    let item = JSON.parse(options.item);
+    let item = wx.getStorageSync('taskEditItem');
     console.log(item);
     this.data.checkType = item.cname;
     this.data.cid = item.cid;
-    this.data.findNum = item.form_data.fetch_num;
-    this.data.desc = item.form_data.desc;
+    this.data.findNum = item.fetch_num;
+    this.data.desc = item.desc;
     this.data.defaultAddress = item.address;
-    this.data.totalFecthPrice = item.form_data.fee;
-    this.data.get_address = item.form_data.get_address;
+    this.data.totalFecthPrice = item.fee;
+    this.data.address = item.address;
     this.data.id = item.id;
+    let desc_imgs = [];
+    item.desc_img.forEach((o, i) => {
+      let ob = {};
+      ob.url = o,
+        ob.pct = 'finish';
+      desc_imgs.push(ob);
+    })
+    this.data.desc_img = desc_imgs; 
+    
     this.setData({
       checkType: this.data.checkType,
       findNum:this.data.findNum,
       desc: this.data.desc,
       defaultAddress: this.data.defaultAddress,
       totalFecthPrice: this.data.totalFecthPrice,
-      id: this.data.id
+      id: this.data.id,
+      desc_img: this.data.desc_img,
+      address:this.data.address
     })
     // 获取物料类型
     //this.getCheckTypes();
@@ -336,7 +336,7 @@ Page({
     // this.getFindOrFetchPrice();
 
     // 获取单价
-    this.getTaskFee()
+    //this.getTaskFee()
   },
 
   /**

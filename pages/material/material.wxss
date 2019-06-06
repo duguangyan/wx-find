@@ -59,7 +59,7 @@
 }
 .join-find{
   text-align: center;
-  background-color: #c81a29;
+  background-color: #F29800;
   margin: 0 20rpx;
   border-radius:10rpx;
   margin-top: 50rpx;
@@ -175,7 +175,7 @@
   line-height: 80rpx;
   text-align: center;
   margin: 0 auto;
-  background-color: #c81a29;
+  background-color: #F29800;
   border-radius:20rpx;
   font-size: 30rpx;
   color: #fff; 
@@ -190,11 +190,11 @@
   font-size: 30rpx;
   margin-left: 60rpx;
   margin-top: 20rpx;
-  border: 1rpx solid #f23030;
+  border: 1rpx solid #F29800;
   border-radius:10rpx; 
 }
 .go-pay{
-  background-color: #f23030;
+  background-color: #F29800;
   color:#fff;
 }
 
@@ -277,7 +277,7 @@
   line-height: 80rpx;
   text-align: center;
   margin: 0 auto;
-  background-color: #c81a29;
+  background-color: #F29800;
   border-radius:20rpx;
   font-size: 30rpx;
   color: #fff; 
@@ -292,7 +292,7 @@
   font-size: 30rpx;
   margin-left: 60rpx;
   margin-top: 20rpx;
-  border: 1rpx solid #f23030;
+  border: 1rpx solid #F29800;
   border-radius:10rpx; 
 }
 .xuzhi {
@@ -317,7 +317,7 @@
 }
 .notes-btn view{
   margin-left: 218rpx;
-  background-color: #c81a29;
+  background-color: #F29800;
   color: #fff;
 }
 .notes-btn-content{

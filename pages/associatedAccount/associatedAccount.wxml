@@ -29,7 +29,7 @@
                     <checkbox color="red" value="1" checked="{{agree}}" />
                     <text class="text-gray">同意</text>
                 </label>
-                <text>《一大批用户协议》</text>
+                <text>《众皮联用户协议》</text>
             </checkbox-group>
         </view>
 

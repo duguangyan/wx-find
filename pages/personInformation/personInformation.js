@@ -68,9 +68,18 @@ Page({
    */
   uploadHeadImg(file,i){
     let access_token = wx.getStorageSync("access_token");
+    let data = {};
+    data.file = '[object Object]';
+    data.type = 'big';
+    let timestamp = Date.parse(new Date());
+    data.timestamp = timestamp;
+    data.sign = util.MakeSign('/api/upload', data);
+    data.deviceId = "wx";
+    data.platformType = "1";
+    data.versionCode = '3.0';
     let index  = i;
     wx.uploadFile({
-      url: `${api.apiUrl}/api/upload/simpleUpload`,
+      url: `${api.apiUrl}/api/upload`,
       filePath: file,
       name: 'file',
       header: {
@@ -78,9 +87,7 @@ Page({
         'Accept': 'application/json',
         'Authorization': `Bearer ${access_token}`
       },
-      formData: {
-        'type': 'reward_img'
-      },
+      formData: data,
       success: (res) => {
         console.log(res);
         var res = JSON.parse(res.data);

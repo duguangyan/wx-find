@@ -9,39 +9,37 @@ page {
 }
 .balance-text{
   position: relative;
-  left: 10rpx;
-  top: 8rpx;
-  font-size: 24rpx;
+  top: -20rpx;
 }
 .text-center{
   text-align: center;
   margin-bottom: 30rpx;
 }
 .ellipsis{
-  max-width: 360rpx;
+  max-width: 250rpx;
 }
 .center-setting{
   position: absolute;
   right: 40rpx;
-  top: 40rpx;
-  width: 43rpx;
-  height: 41rpx;
+  top: 62rpx;
+  width: 48rpx;
+  height: 48rpx;
 }
 .section-avatar {
     height: 180rpx;
     padding-top: 30rpx;
     position: fixed;
     width: 100%;
-    background-color: #C81A29;
+    background-color: #F29800;
     padding-bottom: 50rpx;  
     margin-bottom: 70rpx;
     z-index: 99999;
 }
 .section-footer{
   position: absolute;
-  bottom: -50rpx;
-  width:750rpx;
-  height:100rpx;
+  /* bottom: -50rpx; */
+  width:690rpx;
+  height:180rpx;
   line-height: 100rpx;
   /* left: 40rpx; */
   text-align: center;
@@ -49,6 +47,9 @@ page {
   background:rgba(255,255,255,1);
   /* border-radius:20rpx; */
   box-shadow: 0rpx 5rpx 1rpx #eee;
+  border-radius:20rpx;
+  margin:0 30rpx;
+
 }
 .sign-in{
   width:156rpx;
@@ -70,16 +71,16 @@ page {
   position: relative;
 }
 .vip image{
-  width:60rpx;
-  height:60rpx;
-  margin-left: 30rpx;
+  width:64rpx;
+  height:64rpx;
+  margin-left: 10rpx;
 }
 .vip text{
   position:absolute;
   top:15rpx;
   left:36rpx;
   font-size:16rpx;
-  color:#BB202A;
+  color:#F29800;
   width:50rpx;
   text-align:center;
 }
@@ -112,7 +113,7 @@ page {
 }
 .avatar {
     margin: 0 30rpx;
-    background-color: #C81A29;
+    /* background-color: #C81A29; */
    
     /* top: -30rpx; */
 }
@@ -150,10 +151,10 @@ page {
     border-radius: 30rpx;
     margin-top: 20rpx;
 }
-.balance{
+/* .balance{
   font-size:24rpx;
   color: #333;
-}
+} */
 .balance text{
   font-size:40rpx;
   color: #BA0519;
@@ -175,7 +176,7 @@ page {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    width: 33.33%;
+    width: 50%;
     height: 180rpx;
     text-align: center; 
 }
@@ -183,8 +184,8 @@ page {
   position: relative;
 }
 .center-num{
-  position:absolute;
-  top:24rpx;
+  position:absolute !important;
+  top:24rpx !important;
   right:74rpx;
   padding:0rpx;
   border:3rpx solid #c81a29;
@@ -200,11 +201,14 @@ page {
 }
 
 .section-order .item image {
-    height: 60rpx;
-    width: 60rpx;
+    height: 80rpx;
+    width: 80rpx;
     margin: 40rpx auto 10rpx;
 }
-
+.section-order .item text{
+  position: relative;
+  top: -10rpx;
+}
 /*客服按钮  */
 .contact-btn {
     width: 100%;
@@ -220,7 +224,7 @@ page {
 
 /*第三列  */
 .section-order{
-  margin-top: 20rpx;
+  /* margin-top: 20rpx; */
   overflow: hidden;
   background-color: #fff;
 }
@@ -301,4 +305,14 @@ button::after {
 }
 button{
     border-radius: 0;
+}
+.recharge{
+  width: 100rpx;
+  height: 48rpx;
+  border-radius: 40rpx; 
+  border: 2rpx solid #fff;
+  text-align: center;
+  line-height: 48rpx;
+  position: relative;
+  top: 8rpx;
 }

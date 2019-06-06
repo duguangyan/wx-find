@@ -8,6 +8,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    companyaddress:'',
     interval: '',
     payNum: 10, // 支付倒计时
     isPopup: false, // 弹窗控制
@@ -38,7 +39,7 @@ Page({
   getCheckTypes() {
     api.getCheckTypes({}).then((res) => {
       console.log(res);
-      if (res.code == 200) {
+      if (res.code == 200 || res.code == 0) {
         this.data.addFinds[0].cname = res.data[0].name;
         this.data.addFinds[0].cid = res.data[0].id;
         for (let i = 0; i < res.data.length; i++) {
@@ -154,7 +155,7 @@ Page({
     let id = e.currentTarget.dataset.id;
     this.data.addFinds[index].selcetTabNum = id;
     
-    this.data.addFinds[index].find_type = id;
+    this.data.addFinds[index].find_type = parseInt(id);
     this.data.addFinds[index].get_type = 1;
     this.data.addFinds[index].address = this.data.defaultAddress;
     this.data.addFinds[index].get_address = this.data.defaultAddress.id;
@@ -190,23 +191,29 @@ Page({
         console.log(files);
         const token = wx.getStorageSync('token') || '';
         const token_type = wx.getStorageSync('token_type') || '';
+        let timestamp = Date.parse(new Date());
+        let data = files || {};
+        data.timestamp = timestamp;
+        data.sign = util.MakeSign('/api/upload', data);
+        data.deviceId = "wx";
+        data.platformType = "1";
+        data.versionCode = '3.0';
+        data.type = 'big';
         // 上传图片，返回链接地址跟id,返回进度对象
         let uploadTask = wx.uploadFile({
-          url: `${api.apiUrl}/api/upload/simpleUpload`,
+          url: `${api.apiUrl}/api/upload`,
           filePath: res.tempFilePaths[0],
           name: 'file',
           header: {
             'content-type': 'multipart/form-data',
             'Authorization': token_type + ' ' + token
           },
-          formData: {
-            type: 'find_img',
-          },
+          formData: data,
           success: (res) => {
             console.log('图片上传');
             console.log(res);
             var res = JSON.parse(res.data);
-            if (200 === res.code) {
+            if (200 === res.code || 0 === res.code) {
               files[i].image_url = res.data.full_url;
               this.data.addFinds[index].files = files;
               if (imgIndex == 0) {
@@ -252,25 +259,25 @@ Page({
     })
   },
   // 删除上传
-  deleteItem(e) {
-    let index = e.currentTarget.dataset.index;
-    let i = e.currentTarget.dataset.id;
-    let files = this.data.addFinds[index].files;
-    files[i] = {};
-    this.data.addFinds[index].files = files;
-    console.log(this.data.addFinds[index].files);
-    if (i == 0) {
-      this.data.addFinds[index].front_img = '';
-    } else if (i == 1) {
-      this.data.addFinds[index].side_img = '';
-    } else {
-      this.data.addFinds[index].back_img = '';
-    }
-    this.setData({
-      addFinds: this.data.addFinds
-    });
-    console.log(this.data.addFinds);
-  },
+  // deleteItem(e) {
+  //   let index = e.currentTarget.dataset.index;
+  //   let i = e.currentTarget.dataset.id;
+  //   let files = this.data.addFinds[index].files;
+  //   files[i] = {};
+  //   this.data.addFinds[index].files = files;
+  //   console.log(this.data.addFinds[index].files);
+  //   if (i == 0) {
+  //     this.data.addFinds[index].front_img = '';
+  //   } else if (i == 1) {
+  //     this.data.addFinds[index].side_img = '';
+  //   } else {
+  //     this.data.addFinds[index].back_img = '';
+  //   }
+  //   this.setData({
+  //     addFinds: this.data.addFinds
+  //   });
+  //   console.log(this.data.addFinds);
+  // },
 
   // 提交表单
 
@@ -320,9 +327,9 @@ Page({
         // 只有描述 此方法头部已经判断
       }
     }
+   
     let findDates = {
-      task_type: '1',
-      form_data: this.data.addFinds
+      task: this.data.addFinds
     }
     // 发起请求
     api.joinTask({
@@ -330,7 +337,7 @@ Page({
       data: findDates
     }).then((res) => {
       console.log(res);
-      if (res.code == 200) {
+      if (res.code == 200 || res.code == 0) {
         this.setData({
           isPopup: true
         })
@@ -353,9 +360,9 @@ Page({
   // 获取公司地址
   getCompanyaddress() {
     api.getCompanyaddress({}).then((res) => {
-      if (res.code == 200) {
+      if (res.code == 200 || res.code == 0) {
         console.log('公司地址');
-        console.log(res.data.address);
+        console.log(res.data);
         let companyaddress = res.data;
         this.setData({
           companyaddress
@@ -369,63 +376,36 @@ Page({
   onLoad: function (options) { 
     // 获取公司地址
     this.getCompanyaddress();
-
-    let item = JSON.parse(options.item);
+    
+    let item = wx.getStorageSync('taskEditItem');
+  
     let index = options.index;
+  
     
+    this.data.addFinds[0] = item;
     
-    // let files = [{
-    //   url: item.form_data.front_img,
-    //     //pct: 'wait'
-    //   },{
-    //     url: item.form_data.side_img,
-    //     //pct: 'wait'
-    //   }, {
-    //     url: item.form_data.back_img,
-    //     //pct: 'wait'
-    //   }
-
-    // ];
-
-
-    // if (item.form_data.front_img){
-    //   files[0].pct = ' '
-    // }
-
-    // if (item.form_data.side_img) {
-    //   files[1].pct = ' '
-    // }
-
-    // if (item.form_data.back_img) {
-    //   files[2].pct = ' '
-    // }
-    
-    this.data.addFinds[0] = item.form_data;
-    
-    if (item.form_data.find_type== '1'){
-      let front_imgs = [];
-      item.form_data.front_img.forEach((o, i) => {
+    if (item.find_type== '1'){
+      let desc_imgs = [];
+      item.desc_img.forEach((o, i) => {
         let ob = {};
         ob.url = o,
           ob.pct = 'finish';
-        front_imgs.push(ob);
+        desc_imgs.push(ob);
       })
-      this.data.addFinds[0].front_img = front_imgs;
+      this.data.addFinds[0].desc_img = desc_imgs;
     }
     
 
-    this.data.addFinds[0].address = item.form_data.address; 
+    this.data.addFinds[0].address = item.address; 
     this.data.addFinds[0].checkType = item.cname;
     this.data.addFinds[0].id = item.id;
     // this.data.addFinds[0].files = files;
     this.data.addFinds[0].index = index;
-    this.data.addFinds[0].desc = item.form_data.desc;
-    this.data.addFinds[0].selcetTabNum = item.form_data.find_type;
-    this.data.addFinds[0].selcetSecondTabNum = item.form_data.get_type;
+    this.data.addFinds[0].desc = item.desc;
+    this.data.addFinds[0].selcetTabNum = item.find_type;
     if (this.data.addFinds[0].selcetTabNum == 3){
       this.data.addFinds[0].isSelect = true
     }
-    this.data.addFinds[0].selcetSecondTabNum = item.form_data.get_type;
 
     // 获取找料类型数据
     //this.getCheckTypes();
@@ -614,28 +594,12 @@ Page({
       return false
     }
 
-    if (this.data.addFinds[0].selcetTabNum == 1) {
-      
-      // if (!this.data.addFinds[0].front_img && !this.data.addFinds[0].side_img && this.data.addFinds[0].back_img){
-      //   wx.showToast({
-      //     title: '请添加图片',
-      //     icon: 'none',
-      //     duration: 2000
-      //   })
-      //   return false;
-      // }
+    if (this.data.addFinds[0].find_type == 1) {
+    
       // 获取上传图片
       let uploadC = this.selectComponent('#upload'); 
     
       let uploadImgs = [];
-      // 判定是否在已是完成状态
-      // let isUploading = uploadC.data.files.every((ele, i) => {
-      //   return (ele.pct && (ele.pct === 'finish' || ele.pct === 'fail'))
-      // })
-      // if (!isUploading) {
-      //   util.errorTips('图片正在上传')
-      //   return false
-      // } 
       // 添加数据
       uploadC.data.files.forEach((ele, i) => {
         if (ele.full_url  ) {
@@ -652,15 +616,15 @@ Page({
         })
         return false;
     }else{
-        this.data.addFinds[0].front_img = uploadImgs
+        this.data.addFinds[0].desc_img = uploadImgs
         
     }
     }
 
 
-    if (this.data.addFinds[0].selcetTabNum==2 && this.data.addFinds[0].selcetSecondTabNum==1){
+    if (this.data.addFinds[0].find_type==2){
 
-      if (!this.data.addFinds[0].address || this.data.addFinds[0].address == "") {
+      if (!this.data.addFinds[0].address_id || this.data.addFinds[0].address_id == "") {
         wx.showToast({
           title: '请填写地址',
           icon: 'none',
@@ -669,28 +633,29 @@ Page({
         return false;
       }
     }
-    if (this.data.addFinds[0].selcetTabNum == 1){
-      if (!this.data.addFinds[0].front_img && !this.data.addFinds[0].side_img && !this.data.addFinds[0].back_img) {
-        wx.showToast({
-          title: '至少上传一张图片',
-          icon: 'none',
-          duration: 2000
-        })
-        return false;
-      }
-    }
+    this.data.addFinds[0].address_id = this.data.addFinds[0].address.id; 
 
-    let data = {
-      form_data: this.data.addFinds[0],
-      id: this.data.addFinds[0].id
-    }
-    
-    api.findEdit({
+    let taskData = {
+      "id": this.data.addFinds[0].id,
+      "type": this.data.addFinds[0].type,
+      "find_type": this.data.addFinds[0].find_type,
+      "cid": this.data.addFinds[0].cid,
+      "cname": this.data.addFinds[0].cname,
+      "fetch_num": this.data.addFinds[0].fetch_num,
+      "desc": this.data.addFinds[0].desc,
+      "address_id": this.data.addFinds[0].address_id,
+      "fee": this.data.addFinds[0].fee,
+      "desc_img": this.data.addFinds[0].desc_img,
+    };
+    // console.log('this.data.addFinds:---->');
+    // console.log(this.data.addFinds);
+    // debugger
+    api.updateTaskInit({
       method:'POST',
-      data
-    }, this.data.addFinds[0].id).then((res)=>{
+      data: taskData
+    }).then((res)=>{
       console.log(res);
-      if(res.code == 200){
+      if (res.code == 200 || res.code == 0){
         // var pages = getCurrentPages();
         // var currPage = pages[pages.length - 1];   //当前页面
         // var prevPage = pages[pages.length - 2];  //上一个页面

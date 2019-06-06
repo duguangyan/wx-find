@@ -56,24 +56,18 @@ Page({
                 smsStatus: true,
             })
 
-            api.memberExit({
-                method: 'GET',
-                data: {
-                    user_name: account
-                }
-            }).then((res) => {
-              if(res.code === 200){
+              
 
                 api.regSMS({
                   method: 'POST',
                   data: {
-                    phone: account
+                    mobile: account
                   }
                 }).then((res)=>{ 
                   // 短信发送成功，限制按钮
                   util.successTips('短信发送成功');
                   this.setData({
-                    smsID: res.data.sms_id
+                    smsID: res.data.id
                   })
                   // 倒计时60s
                   let second = 60;
@@ -93,20 +87,8 @@ Page({
                   }, 1000)
                 })
                 
-              }else{
-                util.errorTips(res.msg);
-                  this.setData({
-                    smsStatus: false,
-                  })
-              }
-            }).catch((res) => {
-               
-              util.errorTips(res.msg);
-              this.setData({
-                smsStatus: false,
-              })
-                
-            })
+              
+            
         } else {
             util.errorTips('请确认手机号码');
         }
@@ -162,10 +144,9 @@ Page({
         let data = this.data,
             account = data.account || '',
             password = data.password || '',
-            smsID = data.smsID,
+            id = data.smsID,
             sms = data.sms || '',
             agree = data.agree;
-
         // 再次验证手机号
         const isMatch = util.vailPhone(account);
 
@@ -174,7 +155,7 @@ Page({
             return false;
         }
 
-        if (sms.length !== 4) {
+        if (sms.length !== 6) {
             util.errorTips('请确认验证码');
             return false;
         }
@@ -189,20 +170,23 @@ Page({
             return false
         }
         var open_id = wx.getStorageSync('open_id');
-        api.register({
+        
+        api.smsLogin({
             method: 'POST',
             data: {
-                user_name: account,
+                mobile: account,
                 password: password,
                 code: sms,
-                from:3,
-                open_id: open_id,
-                invite_code: this.data.invite_code
+                // from:3,
+                // open_id: open_id,
+                invite_code: this.data.invite_code,
+                id: this.data.smsID
             }
         }).then((res) => { 
-            if(res.code===200){
+          if (res.code === 200 || res.code === 0){
               console.log(res);
               wx.setStorageSync('token', res.data.access_token);
+              wx.setStorageSync('user_name', res.data.user_name);
               wx.setStorageSync('token_type', res.data.token_type);
               app.globalData.token = res.data.access_token;
               app.globalData.userInfo = res.data.user;
@@ -235,11 +219,12 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
-      if (options.invite_code){
-        this.data.invite_code = options.invite_code;
-        console.log("-----------------------------------------------");
-        console.log(this.data.invite_code);
+      if (wx.getStorageSync('invite_code')){
+        this.setData({
+          invite_code: wx.getStorageSync('invite_code')
+        })
       }
+     
     },
 
     /**

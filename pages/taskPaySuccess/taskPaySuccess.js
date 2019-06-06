@@ -7,7 +7,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-  
+    pay_log:''
   },
 
   /**
@@ -37,7 +37,8 @@ Page({
    */
   onLoad: function (options) {
     let pay_log = JSON.parse(options.pay_log);
-
+    
+    console.log('pay_log:->>>' + pay_log);
     this.data.time = util.getNowFormatDate();
     this.setData({
       time: this.data.time,

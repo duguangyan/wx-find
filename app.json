@@ -39,18 +39,20 @@
     "pages/giftCertificate/giftCertificate",
     "pages/newUserRegister/newUserRegister",
     "pages/personInformation/personInformation",
-    "pages/chat/chat"
+    "pages/chat/chat",
+    "pages/chatList/chatList",
+    "pages/makeMoney/makeMoney"
   ],
   "window": {
-    "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#C81A29",
-    "navigationBarTitleText": "一大批",
-    "navigationBarTextStyle": "white",
-    "backgroundColor": "#eeeeee"
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "众皮联",
+    "backgroundColor": "#eeeeee",
+    "backgroundTextStyle": "light"
   },
   "tabBar": {
     "color": "#000000",
-    "selectedColor": "#C81A29",
+    "selectedColor": "#F29800",
     "backgroundColor": "#ffffff",
     "list": [
       {
@@ -78,6 +80,11 @@
         "selectedIconPath": "public/images/icon/2.4.png"
       }
     ]
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于小程序位置接口的效果展示"
+    }
   },
   "networkTimeout": {
     "request": 8000,

@@ -19,6 +19,15 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    if (wx.getStorageSync('passwordIndex') == 0) {
+      wx.setNavigationBarTitle({
+        title: '修改登录密码'
+      })
+    } else {
+      wx.setNavigationBarTitle({
+        title: '修改支付密码'
+      })
+    }
     let user_name = options.user_name;
     this.setData({
       user_name
@@ -86,11 +95,13 @@ Page({
     api.restSMS({
       method: 'POST',
       data: {
-        phone: this.data.user_name
+        mobile: this.data.user_name
       }
     }).then((res) => {
       console.log(res);
-      if (res.code == 200) {
+      if (res.code == 200 || res.code == 0) {
+        wx.setStorageSync('codeId', res.data.id);
+
         util.successTips('验证码发送成功');
         if (!this.data.isGetCode) {
           console.log(1);
@@ -139,27 +150,37 @@ Page({
       phone: wx.getStorageSync('user_name'),
       code:this.data.code
     }
-    api.smschk({
-      method:'POST',
-      data
-    }).then((res)=>{
-      if(res.code==200){
-        if (wx.getStorageSync('forgetPayPassWord')){
-          wx.navigateTo({
-            url: '../changePayPassword/changePayPassword?code=' + this.data.code,
-          })
-        }else{
-          wx.navigateTo({
-            url: '../changePassword2/changePassword2?code=' + this.data.code,
-          })
-        }
+    if (wx.getStorageSync('passwordIndex') == 1){
+      wx.navigateTo({
+        url: '../changePayPassword/changePayPassword?code=' + this.data.code,
+      })
+    }else{
+      wx.navigateTo({
+        url: '../changePassword2/changePassword2?code=' + this.data.code,
+      })
+    }
+
+    // api.smschk({
+    //   method:'POST',
+    //   data
+    // }).then((res)=>{
+    //   if(res.code==200){
+    //     if (wx.getStorageSync('forgetPayPassWord')){
+    //       wx.navigateTo({
+    //         url: '../changePayPassword/changePayPassword?code=' + this.data.code,
+    //       })
+    //     }else{
+    //       wx.navigateTo({
+    //         url: '../changePassword2/changePassword2?code=' + this.data.code,
+    //       })
+    //     }
         
-      }else{
-        util.errorTips(res.msg);
-      }
-    }).catch((res)=>{
-      util.errorTips(res.msg);
-    })
+    //   }else{
+    //     util.errorTips(res.msg);
+    //   }
+    // }).catch((res)=>{
+    //   util.errorTips(res.msg);
+    // })
     
   },
 })

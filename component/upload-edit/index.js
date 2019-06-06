@@ -94,9 +94,19 @@ Component({
                     
                     // console.log('=============', files[i].url)
                       const access_token = wx.getStorageSync('access_token') || '';
+                    let data = {};
+                    data.file = '[object Object]';
+                    data.type = 'big';
+                    let timestamp = Date.parse(new Date());
+                    data.timestamp = timestamp;
+                    data.sign = util.MakeSign('/api/upload', data);
+                    data.deviceId = "wx";
+                    data.platformType = "1";
+                    data.versionCode = '3.0';
+                   
                       // 上传图片，返回链接地址跟id,返回进度对象
                       let uploadTask = wx.uploadFile({
-                          url: `${api.apiUrl}/api/upload/simpleUpload`,
+                          url: `${api.apiUrl}/api/upload`,
                         filePath: files[i].url,
                           name: 'file',
                           header: {
@@ -104,9 +114,7 @@ Component({
                               'Accept': 'application/json',
                               'Authorization': `Bearer ${access_token}`
                           },
-                          formData: {
-                              'type': 'reward_img'
-                          },
+                          formData: data,
                           success: (res) => {
                               console.log(res);
                               var res = JSON.parse(res.data);

@@ -1,0 +1,32 @@
+/* pages/makeMoney/makeMoney.wxss */
+.share{
+  padding: 0 30rpx;
+}
+.title{
+  margin: 50rpx 0 20rpx 0;
+}
+.content view{
+  line-height: 60rpx;
+}
+.text-center{
+  margin-top:50rpx; 
+}
+.icon-dui{
+  position: relative;
+  top: 2rpx;
+}
+.shareBtn{
+  width: 630rpx;
+  height: 88rpx;
+  line-height: 88rpx;
+  text-align: center;
+  background: #F29800;
+  border-radius:10rpx;
+  color: #fff;
+  font-size: 32rpx; 
+  margin: 30rpx auto;
+
+}
+.isFalse{
+  background: #999;
+}

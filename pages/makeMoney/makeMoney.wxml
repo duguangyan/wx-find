@@ -1,0 +1,33 @@
+<!--pages/makeMoney/makeMoney.wxml-->
+<view class='share'>
+    <view class='title fs30 text-center text-333'>分享细则</view>
+    <view class='content fs30 text-333'>
+      <view>
+        1、明说明说明说明说明说明说明说明说明明说明说明说明说明说明说明
+      </view>
+       <view>
+        1、明说明说明说明说明说明说明说明说明明说明
+      </view>
+    </view>
+
+
+
+    <view class='title fs30 text-center text-333'>获利简介</view>
+    <view class='content fs30 text-333'>
+        <view>
+        1、明说明说明说明说明说明说明说明说明明说明说明说明说明说明说明说明说明明说明说明说明说明说明说明说明说明
+      </view>
+       <view>
+        1、明说明说明说明说明说明说明说明说明明说明说明说明说明说明说明说明说明明说明说明说明说明说明说明说明说明
+      </view>
+    </view>
+
+
+    <view class='text-center' bindtap='checkAgree'>
+        <text wx:if="{{isAgree}}" class='iconfont icon-dui fs40 text-yellow'></text>
+        <text wx:if="{{!isAgree}}"  class='iconfont icon-dui fs40 text-eb'></text>
+        <text class='mgl-20 fs24 text-333'>已阅读,并同意</text>
+    </view>
+    <view class='shareBtn' wx:if="{{isAgree&&hasInviteCode}}"><button class='shareBtn' open-type="share">立即分享</button></view>
+    <view class='shareBtn isFalse' wx:if="{{!isAgree&&hasInviteCode}}">立即分享</view>
+</view>

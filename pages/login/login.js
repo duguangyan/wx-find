@@ -80,45 +80,41 @@ Page({
         api.login({
             method: 'POST',
             data: {
-                user_name,
+                mobile:user_name,
                 password,
                 from:3,
                 open_id
             }
         }).then((res) => {
-            console.log(res);
-            app.globalData.token = res.data.access_token;
-            app.globalData.userInfo = res.data.user;
-            console.log(app.globalData.token);
             wx.setStorageSync('token', res.data.access_token);
-            wx.setStorageSync('userId', res.data.user.id);
-            wx.setStorageSync('avatar_path', res.data.user.avatar_path);
-            wx.setStorageSync('token_type', res.data.token_type);
+            wx.setStorageSync('userId', res.data.id);
+            wx.setStorageSync('avatar_path', res.data.avatar_path);
             wx.setStorageSync('user_name', user_name);
-            console.log('fromId');
-            console.log(e.detail.formId);
+            // console.log('fromId');
+            // console.log(e.detail.formId);
 
-          api.memberInfo({}).then((res) => {
-            if (res.code == 200) {
-              wx.setStorageSync('userType', res.data.asset.type);
-            }
-          })
+          // api.memberInfo({}).then((res) => {
+          //   if (res.code == 200 || res.code == 0) {
+          //     wx.setStorageSync('userType', res.data.asset.type);
+          //   }
+          // })
+        
+          
 
 
-
-            if (e.detail.formId != 'the formId is a mock one') {
-              let data = {
-                "form_id": e.detail.formId,
-                "from": "3"
-              }
-              api.getFormId({
-                method: 'POST',
-                data
-              }).then((res) => {
-                console.log(res);
-                console.log('获取formId');
-              })
-            }
+            // if (e.detail.formId != 'the formId is a mock one') {
+            //   let data = {
+            //     "form_id": e.detail.formId,
+            //     "from": "3"
+            //   }
+            //   api.getFormId({
+            //     method: 'POST',
+            //     data
+            //   }).then((res) => {
+            //     console.log(res);
+            //     console.log('获取formId');
+            //   })
+            // }
             if (this.data.chengePassWord){
               wx.reLaunch({
                 url: '../center/center'
@@ -135,7 +131,6 @@ Page({
             // })
 
         }).catch((res) => {
-
             util.errorTips(res.msg);
         })
 

@@ -10,7 +10,7 @@
 
         <view class="mgt-30 pdl-30 input-box flex">
             <text class="bold mgr-50">验证码</text>
-            <input bindinput='sms' placeholder-class='fs30 text-999' placeholder='请输入验证码' maxlength='4'></input>
+            <input bindinput='sms' placeholder-class='fs30 text-999' placeholder='请输入验证码' maxlength='6'></input>
             <view bindtap='getSMS' class="{{smsStatus ? 'disabled' : ''}}">{{ smsText }}</view>
         </view>
 
@@ -26,12 +26,12 @@
                     <checkbox color="red" value="1" checked="{{agree}}" />
                     <text class="text-gray">同意</text>
                 </label>
-                <text>《一大批用户协议》</text>
+                <text>《众皮联用户协议》</text>
             </checkbox-group>
 
         </view>
 
-        <button bindtap='regSubmit' class="submit-btn bg-theme text-white {{ BtnActive ?  '' : 'disabled-style' }}">提交</button>
+        <button bindtap='regSubmit' class="submit-btn bg-yellow text-white {{ BtnActive ?  '' : 'disabled-style' }}">提交</button>
 
     </form>
 

@@ -6,21 +6,21 @@
   <view class='box-shadow order-header'>
     <view class='order-nav fs30 lh90 border-bottom'>
       <text bindtap='checkNav' data-index='1' class="{{orderNavNum==1?'nav-active':'order-text'}}">找料订单</text>
-      <text bindtap='checkNav' data-index='2' class="{{orderNavNum==2?'nav-active':'order-text'}}">取送订单</text>
+      <text bindtap='checkNav' data-index='2' class="{{orderNavNum==2?'nav-active':'order-text'}}">取料订单</text>
     </view>
     <view class='order-nav order-child-nav fs30 lh90' wx:if="{{orderNavNum==1}}">
       <text bindtap='checkChildNav' data-index='0' class="{{orderChildNavNum==0?'nav-child-active':''}}">全部</text>
-      <text bindtap='checkChildNav' data-index='4' class="{{orderChildNavNum==4?'nav-child-active':''}}">待付款</text>
-      <text bindtap='checkChildNav' data-index='5' class="{{orderChildNavNum==5?'nav-child-active':''}}">待收货</text>
-      <text bindtap='checkChildNav' data-index='6' class="{{orderChildNavNum==6?'nav-child-active':''}}">待评价</text>
-      <text bindtap='checkChildNav' data-index='7' class="{{orderChildNavNum==7?'nav-child-active':''}}">已完成</text>
+      <text bindtap='checkChildNav' data-index='1' class="{{orderChildNavNum==1?'nav-child-active':''}}">找料中</text>
+      <text bindtap='checkChildNav' data-index='2' class="{{orderChildNavNum==2?'nav-child-active':''}}">待收货</text>
+      <text bindtap='checkChildNav' data-index='3' class="{{orderChildNavNum==3?'nav-child-active':''}}">待评价</text>
+      <text bindtap='checkChildNav' data-index='4' class="{{orderChildNavNum==4?'nav-child-active':''}}">已完成</text>
     </view>
     <view class='order-nav order-child-nav fs30 lh90' wx:if="{{orderNavNum==2}}">
       <text bindtap='checkChildNav' data-index='0' class="{{orderChildNavNum==0?'nav-child-active':''}}">全部</text>
-      <text bindtap='checkChildNav' data-index='4' class="{{orderChildNavNum==4?'nav-child-active':''}}">待付款</text>
-      <text bindtap='checkChildNav' data-index='5' class="{{orderChildNavNum==5?'nav-child-active':''}}">待收货</text>
-      <text bindtap='checkChildNav' data-index='6' class="{{orderChildNavNum==6?'nav-child-active':''}}">待评价</text>
-      <text bindtap='checkChildNav' data-index='7' class="{{orderChildNavNum==7?'nav-child-active':''}}">已完成</text>
+      <text bindtap='checkChildNav' data-index='1' class="{{orderChildNavNum==1?'nav-child-active':''}}">取料中</text>
+      <text bindtap='checkChildNav' data-index='2' class="{{orderChildNavNum==2?'nav-child-active':''}}">待收货</text>
+      <text bindtap='checkChildNav' data-index='3' class="{{orderChildNavNum==3?'nav-child-active':''}}">待评价</text>
+      <text bindtap='checkChildNav' data-index='4' class="{{orderChildNavNum==4?'nav-child-active':''}}">已完成</text>
     </view>
   </view>
 
@@ -35,74 +35,99 @@
     <view class='box-shadow task-find' wx:for="{{findList}}" wx:key="this">
       <view class='task-find-title fs30'>
         <text class='task-find-sn ellipsis'>订单编号: {{item.order_sn}}</text>
-        <text class='task-find-snname text-red flr pdr-30'>{{item.button_status.red_title}}</text>
+        <text class='task-find-snname text-red flr pdr-30'>{{item.status_label}}</text>
       </view>
       <view class='task-find-list fs30 cf'>
         <view bindtap='goFindDetail' data-id='{{item.id}}' data-index="{{index}}" class='task-find-item-warp'>
           <view class="task-find-item {{orderNavNum==2?'pdb-50':''}}">
             <view style='width:650rpx;'>物料品类：{{item.cname}}
-              <text class='flr' wx:if="{{userType !=2}}">金额:￥{{filter.formatMoney(item.find_fee)}}</text>
-              <text class='flr' wx:if="{{userType ==2}}">包月:使用{{filter.rounding(item.find_fee)}}次</text>
+              <text class='flr' >金额:￥{{filter.formatMoney(item.fee)}}</text>
+              <!-- <text class='flr' wx:if="{{userType ==2}}">包月:使用{{filter.rounding(item.fee)}}次</text> -->
             </view>
             <view>物料描述：{{item.desc}}</view>
-            <view wx:if='{{orderNavNum==1}}'>找料方式：{{item.type_name}}
-              <text wx:if='{{item.get_type==1}}'>-上门取样 </text>
-              <text wx:if='{{item.get_type==2}}'>-寄送样品 </text>
-            </view>
+            <view wx:if='{{orderNavNum==1}}'>找料方式：{{item.find_type_label}}</view>
             <image wx:if="{{orderNavNum==1}}" class='task-find-img' src='../../public/images/task/task_find.png'></image>
             <image wx:if="{{orderNavNum==2}}" class='task-find-img' src='../../public/images/task/task_get.png'></image>
           </view>
           <view class='task-find-method pdb-20'>
-            <view class='task-find-method-img' wx:if='{{item.type==1}}'>
-              <image wx:for='{{item.front_img}}' wx:key='this' src='{{item}}'></image>
-
-              <!-- <image wx:if='{{item.side_img}}' src='{{item.side_img}}'></image>
-                        <image wx:if='{{item.back_img}}' src='{{item.back_img}}'></image> -->
-            </view>
-            <view class='task-find-method-img' wx:if='{{item.type==0}}'>
+            <view class='task-find-method-img'>
               <image wx:for='{{item.desc_img}}' wx:key='this' src='{{item}}'></image>
-
-              <!-- <image wx:if='{{item.side_img}}' src='{{item.side_img}}'></image>
-                        <image wx:if='{{item.back_img}}' src='{{item.back_img}}'></image> -->
             </view>
 
-            <view class='task-find-method-getfind fs24' wx:if='{{item.type==1 || item.type==2 || orderNavNum == 2}}'>
-              <!-- <view>地址名称: {{item.shipping_address.stall||''}} </view>
-                        <view>联 系 人 : 
-                        {{item.shipping_address.consignee||''}}  / {{item.shipping_address.mobile||''}}
-                        </view> -->
-              <view class='fs30' wx:if='{{item.get_type==1 || item.get_type==0}}'>取样地址: </view>
-              <view class='fs30' wx:if='{{item.get_type==2}}'>送样地址: </view>
+            <view class='task-find-method-getfind fs24' >
+              <view wx:if='{{item.get_address && item.find_type!=3 && orderChildNavNum <=1 && item.find_type!=1}}'>
+                <view class='fs30'>{{orderNavNum==2?'取料地址':'取样地址'}}: </view>
 
-              <view style='display:inline-block'>
-                <view class='remark' wx:if='{{item.shipping_address.remark}}'>
-                  {{item.shipping_address.remark||''}}
+                <view style='display:inline-block' >
+                  <view class='remark' wx:if="{{item.get_address.remark}}">
+                    {{item.get_address.remark||''}}
+                  </view>
+                  {{item.get_address.address||''}} {{item.get_address.room||''}}
                 </view>
-                {{item.shipping_address.city_str||''}} {{item.shipping_address.address||''}} {{item.shipping_address.room||''}}
-
+                <view style='word-break:break-all;'>
+                  {{item.get_address.consignee||''}} / {{item.get_address.mobile||''}}
+                </view>
+                <view class='text-999' style='word-break:break-all;'>
+                  {{item.get_address.stall||''}}
+                </view>
+              </view>
+              
+            
+              <view wx:if="{{(item.find_type==3 ||item.find_type==2 || item.find_type==1 || item.find_type==0) && orderChildNavNum >1}}">
+                  <view class='fs30'>送料地址: </view>
+                  <view style='display:inline-block'>
+                    <view class='remark' wx:if="{{item.get_address.remark}}">
+                      {{item.shipping_address.remark||''}}
+                    </view>
+                    {{item.shipping_address.address||''}} {{item.shipping_address.room||''}}
+                  </view>
+                  <view style='word-break:break-all;'>
+                    {{item.shipping_address.consignee||''}} / {{item.shipping_address.mobile||''}}
+                  </view>
+                  <view class='text-999' style='word-break:break-all;'>
+                    {{item.shipping_address.stall||''}}
+                  </view>
               </view>
 
-              <view style='word-break:break-all;'>
-                {{item.shipping_address.consignee||''}} / {{item.shipping_address.mobile||''}}
+
+              <view wx:if='{{item.find_type==3 && orderChildNavNum == 1}}'>
+                  <view class='fs30'>寄样地址: </view>
+                  <view wx:for='{{companyaddress}}' wx:key='this' class='bb1 mg10'>
+                      
+                      <view>
+                          <text class='remark' wx:if='{{item.tag}}'>{{item.tag||''}}</text> 
+                          <text>{{item.address}}</text>
+                      </view>
+                      <view class='text-999'>
+                          <view>
+                            {{item.consignee || ''}} / {{item.mobile || ''}}
+                          </view>   
+                      </view>
+                      <view class='text-999'>
+                          {{item.desc}}
+                      </view>
+                    </view>
+                    <view class='text-red'> 
+                      <text class='iconfont icon-gantan1'></text>寄样不支持到付,请客户自行承担寄样费用
+                    </view>
+                    
+                </view>
               </view>
-              <view class='text-999' style='word-break:break-all;'>
-                {{item.shipping_address.stall||''}}
-              </view>
-            </view>
-            <view class='order-footer-btn bt-2 cf' wx:if='{{item.button_status.on_cancel==1||item.button_status.on_pay==1||item.button_status.on_prompt==1||item.button_status.on_confirm==1||item.button_status.on_comment==1||item.button_status.can_delete==1 || item.button_status.refuse_status==1 }}'>
-              <button style='border: 1rpx solid #666;color: #666;' data-id='{{item.id}}' catchtap='delOrder' 
+              
+            <view class='order-footer-btn bt-2 cf' wx:if='{{item.can_refuse==1||item.can_confirm==1||item.can_delete==1 ||item.can_comment==1}}'>
+              <!-- <button style='border: 1rpx solid #666;color: #666;' data-id='{{item.id}}' catchtap='delOrder' 
               wx:if='{{item.button_status.on_cancel==1}}'>取消订单</button>
               <button data-id='{{item.id}}' disabled='{{item.isDisabled}}' data-index='{{index}}' catchtap='doPay' 
-              wx:if='{{item.button_status.on_pay==1}}' class='order-footer-btn-red'>去支付</button>
+              wx:if='{{item.button_status.on_pay==1}}' class='order-footer-btn-red'>去支付</button> -->
 
               
-              <button data-id='{{item.id}}' catchtap='urgeOrder' wx:if='{{item.button_status.on_prompt==1}}' class='order-footer-btn-red'>催单</button>
+              <!-- <button data-id='{{item.id}}' catchtap='urgeOrder' wx:if='{{item.button_status.on_prompt==1}}' class='order-footer-btn-red'>催单</button> -->
               <button style='border: 1rpx solid #666;color: #666;' data-id='{{item.id}}' catchtap='toReturn' 
-              wx:if='{{item.button_status.refuse_status==1}}'>退款</button>
-              <button data-id='{{item.id}}' catchtap='affirmOrder' wx:if='{{item.button_status.on_confirm==1}}' class='order-footer-btn-red' data-index="{{index}}">确认收货</button>
-              <button data-id='{{item.id}}' catchtap='toComment' wx:if='{{item.button_status.on_comment==1}}'>评价</button>
+              wx:if='{{item.can_refuse==1}}'>退款</button>
+              <button data-id='{{item.id}}' catchtap='affirmOrder' wx:if='{{item.can_confirm==1}}' class='order-footer-btn-red' data-index="{{index}}">确认收货</button>
+              <button data-id='{{item.id}}' catchtap='toComment' wx:if='{{item.can_comment==1}}'>评价</button>
               <button style='border: 1rpx solid #666;color: #666;' data-id='{{item.id}}' catchtap='toDel' 
-              wx:if='{{item.button_status.can_delete==1}}'>删除</button>
+              wx:if='{{item.can_delete==1}}'>删除</button>
 
 
             </view>
@@ -117,8 +142,8 @@
     已经全部加载完毕
   </view>
   <!--加载组件  -->
-  <mainloading modal-show="{{modalShow}}" />
-  <loading modal-text="加载更多" wx:if='{{!isData}}' modal-show="{{shopLoading}}" />
+  <!-- <mainloading modal-show="{{modalShow}}" />
+  <loading modal-text="加载更多" wx:if='{{!isData}}' modal-show="{{shopLoading}}" /> -->
   <!-- </scroll-view> -->
 </view>
 
@@ -183,3 +208,8 @@
   </view>   -->
 
 </form>
+
+<!-- 
+<view class='chat_list' bindtap='goChat'>
+    <image src="https://static.yidap.com/miniapp/o2o_find/index/order_list_icon_1.png"></image>
+</view> -->

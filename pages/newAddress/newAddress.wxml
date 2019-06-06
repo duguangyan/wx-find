@@ -29,7 +29,7 @@
     <view class="flex lh90 address-list"  bindtap='getMapAddress'>
             <view><text class='text-theme'>*</text><text class='spacing1'>地址</text></view>:
             <input  class='address-input ellipsis'placeholder='请填写地址' 
-            disabled value="{{addressInfo.mapAddress.title ||''}}">
+            disabled value="{{addressInfo.address ||''}}">
             </input>
     </view>
 
@@ -45,7 +45,7 @@
     </view> -->
     <view class="flex lh90 address-list"  >
             <view><text class='text-theme display-none'>*</text><text class='spacing1'>名称</text></view>:
-            <input  class='address-input'placeholder='公司名称、档口名称、公司名称等' bindinput='editStall'
+            <input  class='address-input'placeholder='公司名称、档口名称等' bindinput='editStall'
              value='{{addressInfo.stall}}'>
             </input>
     </view>
@@ -57,6 +57,16 @@
              value='{{addressInfo.remark}}'>
             </input>
     </view>
+    <view class='check-btn mgt-20'catchtap='doCheck'>
+        <text wx:if='{{check}}' class="iconfont icon-dui icon-dui-1 fs40 pdl-10 text-yellow"></text>
+        <text wx:if='{{!check}}' class="iconfont icon-dui icon-yuan-1 fs40 pdl-10 text-eb"></text>
+        <text class="mgl-20">设置默认</text> 
+    </view>
+
+    <!-- <view class="flex lh90 address-list cf address-switch">
+           <text class="mgr-20">设置默认</text> <switch class='flr' checked="{{is_default === 1}}" bindchange="setDefault" color="#C81A29"></switch>
+    </view> -->
+
 
 <!-- 
      <view class="flex cell-padding border-bottom lh100">
@@ -86,11 +96,7 @@
         <textarea bindinput='editDetailRemark' placeholder='备注' value='{{addressInfo.remark}}'>
         </textarea>
     </view> -->
-    <!-- <view class="spacing-view-24"></view>
-      <view hidden='true' class="flex cell-padding border-bottom lh100">
-        <view>设为默认地址</view>
-        <switch checked="{{is_default === 1}}" bindchange="setDefault" color="#C81A29"></switch>
-    </view>   -->
+     
 
 
 
@@ -100,3 +106,17 @@
       class="bottom-fixed btn-shadow h100 text-center lh100 text-white fs30">
     完成
 </view>
+
+
+<view  wx:if="{{showCon}}" class="modal-mask" bindtap="changeModalCancel">
+    <view class="modal-dialog">
+      <view class="modal-title">温馨提示</view>
+      <view class="modal-content">
+        获取定位失败，请前往设置打开定位权限
+      </view>
+      <view class="modal-footer">
+        <view class="btn-cancel" catchtap="changeModalCancel">取消</view>
+        <button open-type="openSetting" class="btn-confirm button-on-view" style="padding:0rpx;" catchtap="changeModalCancel">设置</button>
+      </view>
+    </view>
+  </view>

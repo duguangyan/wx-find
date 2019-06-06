@@ -1,10 +1,12 @@
 page{
-  background-color: #efeff4;
+  background-color: #F6F6F6;
 }
 .bg-theme {
     background-color: #c81a29 !important;
 }
-
+.bg-yellow{
+   background-color: #F29800 !important;
+}
 .bg-white {
     background-color: #fff;
 }
@@ -61,7 +63,7 @@ page{
 }
 /* 黄色 */
 .text-yellow{
-  color: #ff7c06;
+  color: #F29800 !important;
 }
 .text-orange{
   color: #FFCC0F;

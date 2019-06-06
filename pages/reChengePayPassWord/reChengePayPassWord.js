@@ -83,19 +83,22 @@ Page({
     })
     if (inputValue.length == 6) {  
       if (this.data.reInputValue == inputValue){  
+        
         let hasPayPwd = wx.getStorageSync('hasPayPwd');
-        if (!hasPayPwd){
-
+        if (hasPayPwd != undefined){
+            
           let data = {
             pay_pwd: inputValue,
             code:this.data.code,
-            phone: wx.getStorageSync('user_name')
+            mobile: wx.getStorageSync('user_name'),
+            id: wx.getStorageSync('codeId')
           }
+        
           api.resetpaypwd({
             method: 'POST',
             data
           }).then((res)=>{
-              if(res.code==200){
+            if (res.code == 200 || res.code == 0){
                 util.passWordSuccessTips('设置成功');
                 setTimeout(() => {
                   if (wx.getStorageSync('forgetPayPassWord')==1){

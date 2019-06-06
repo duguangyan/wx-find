@@ -80,7 +80,7 @@
   height: 100%;
   line-height: 120rpx;
   display: inline-block;
-  background-color: #c81a29;
+  background-color: #F29800;
   text-align: center;
   color: #fff;
   position: absolute;
@@ -121,8 +121,8 @@ text-align:right;
 
 }
 .task-paybtn{
-  position: relative;
-  top: -15rpx;
+  /* position: relative;
+  top: -15rpx; */
 }
 .address-icon{
   position: absolute;
@@ -161,5 +161,20 @@ text-align:right;
 }
 .coupon text:last-child{
   position: relative;
-  top: 5rpx;
+  top: 0rpx;
+}
+.pay-type .title{
+  padding: 20rpx 10rpx;
+}
+.pay-type .items .item{
+  height: 60rpx;
+  line-height: 60rpx;
+  padding: 20rpx 0;
+}
+.pay-type .items .item .text{
+  width: 500rpx;
+}
+.pay-type .items .item image{
+    width: 60rpx;
+    height: 60rpx;
 }
