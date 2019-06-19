@@ -1,0 +1,15 @@
+<!--pages/family/family.wxml-->
+<view class='family'>
+  <!-- <image src='https://static.yidap.com/miniapp/o2o_find/index/xuzhi.png'></image> -->
+  <view class='rich-text' >
+    <rich-text nodes="{{nodes}}"></rich-text>
+  </view>
+
+  <view class='check' bindtap='doCheck' wx:if="{{!isFamily}}">
+      <text wx:if="{{!isCheck}}" class='iconfont icon-dui icon-yuan-1 fs40 pdl-10 text-eb'></text>
+      <text wx:if="{{isCheck}}" class='iconfont icon-dui icon-yuan-1 fs40 pdl-10 text-yellow'></text>
+       已阅读,并同意
+  </view>   
+  <view wx:if="{{isCheck}}" class='register' bindtap='register'>{{isFamily?'立即推广':'一键注册'}}</view>
+  <view wx:if="{{!isCheck}}" class='register eb'  bindtap='register'>{{isFamily?'立即推广':'一键注册'}}</view>
+</view> 

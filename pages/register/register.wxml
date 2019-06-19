@@ -26,7 +26,7 @@
                     <checkbox color="red" value="1" checked="{{agree}}" />
                     <text class="text-gray">同意</text>
                 </label>
-                <text>《众皮联用户协议》</text>
+                <text bindtap='showNotes'>《众皮联用户协议》</text>
             </checkbox-group>
 
         </view>
@@ -44,6 +44,42 @@
 
     </view>
 
+</view>
+
+<view class='index-popup notes-popup' wx:if="{{isNotes}}">
+    <view class='index-popup-bg' catchtap='hiddenNotes'></view>
+    <view class='index-popup-content notes-btn-content'>
+        <view class='index-popup-title'>协议 <text class='iconfont icon-del1'  catchtap='hiddenNotes'></text></view>
+        <rich-text nodes="{{protocol}}"></rich-text>
+        <!-- <view class='index-popup-main bt-1'>
+          <view>一.  服务区域：</view>
+          <view class='fs24'>目前开放找料区域: <text class='text-red'>狮岭、白云</text>，更多开放区域敬请期待。</view>
+          <view>二.  服务项目：</view>
+          <view class='fs24'>1.现阶段只找皮革（含真皮、二层皮、PU、PVC)、皮具箱包产品纺织面料、皮具箱包产品辅料、五金等。</view>
+          <view>三．找料寄样说明</view>
+          <view class='fs24'>目前开放的找料寄样地址为 <text class='text-red'>狮岭和白云。</text></view>
+          <view class='fs24'>1.找料寄样地址选择</view>
+          <view class='fs24 pdl20'>寄样为PU、PVC、辅料、五金等，请寄狮岭。</view>
+          <view class='fs24 pdl20'>寄样为真皮、二层皮、纺织面料等，请寄白云。</view>
+          <view class='fs24'>2.无法判断寄样地址，可联系小鹿客服：
+          <text catchtap='contact' class='text-red'>400-8088-156</text>。
+          </view>
+          <view class='fs24'>3.找料寄样不支持到付，请客户自行承担寄样运费。</view>
+          <view class='fs24'></view>
+          <view>四．其他：</view>
+          <view class='fs24'>1.本服务平台不提供侵权产品的找料。</view>
+          <view class='fs24'>2.本服务平台不提供服务项目以外的产品找料。</view>
+          <view class='fs24'>3.由于市场及行业内因素，我们不承诺100%能找到您所需的物料，但我们会以100%的热情去找料。</view>
+        </view> -->
+        <!-- <view catchtap='checkIsResNotes' class='mgt-10' style='padding-left:200rpx;'>
+            <text wx:if='{{isResNotes}}' class="iconfont icon-dui icon-dui-1 fs40 pdl-10 text-yellow"></text>
+            <text wx:if='{{!isResNotes}}' class="iconfont icon-yuan icon-yuan-1 fs40 pdl-10 text-eb"></text>
+            <text style='color:999;padding-left:20rpx;'>已阅读，下次不再显示</text> 
+        </view> -->
+        <view class='index-popup-btn notes-btn'>
+            <view class='text-red btn-shadow' catchtap='hiddenNotes'>确定</view>
+        </view>   
+    </view>
 </view>
 
 

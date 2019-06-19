@@ -13,20 +13,20 @@ Page({
         v:'',
         memberInfo:null,
         orderTab1: [{
-            id: 1,
+            id: 2,
             imgId: 2,
             name: '待收货'
         }, {
-            id: 2,
+            id: 3,
             imgId: 3,
             name: '待评价'
         }],
         orderTab2: [{
-          id: 1,
+          id: 2,
           imgId: 2,
           name: '待收货'
         }, {
-          id: 2,
+          id: 3,
           imgId: 3,
           name: '待评价'
         }],
@@ -59,7 +59,7 @@ Page({
               data.sign = util.MakeSign(api.apiUrl+'/api/upload', data);
               data.deviceId = "wx";
               data.platformType = "1";
-              data.versionCode = '3.0';
+              data.versionCode = '4.0';
               // 上传图片，返回链接地址跟id,返回进度对象
               let uploadTask = wx.uploadFile({
                 url: `${api.apiUrl}/api/upload`,
@@ -77,11 +77,19 @@ Page({
                   var ress = JSON.parse(res.data);
                   if (200 === ress.code || 0 === ress.code) {
                     _this.data.memberInfo.avatar_path = ress.data;
-                  
                     _this.setData({
                        memberInfo:this.data.memberInfo
                     })
-                    wx.setStorageSync('avatar_path', _this.data.memberInfo.avatar_path)
+                    wx.setStorageSync('avatar_path', ress.data);
+                    api.memberAvatarPath({
+                      method:'POST',
+                      data:{
+                        avatar_path: ress.data
+                      }
+                    }).then((res)=>{
+                      util.successTips('图片上传成功');
+                    })
+
                   } else {
                     util.errorTips('上传错误');
                   }
@@ -109,12 +117,61 @@ Page({
       }
     })
   },
-    goRecharge(){
+    goRecharge(e){
+      let index = e.currentTarget.dataset.index;
       wx.navigateTo({
-        url: '../recharge/recharge',
+        url: '../recharge/recharge?index=' + index,
       })
+      
     },
-    goMakeMoney(){
+    /**
+     * 去小鹿家人中心
+     */
+    goFamilyCenter(){
+      let token = wx.getStorageSync('token');
+      let isTrue = token ? false : true;
+      if (isTrue) {
+        wx.showModal({
+          title: '您尚未登录',
+          content: '是否前往登录页面',
+          confirmText: '前往',
+          confirmColor: '#c81a29',
+          success: (res) => {
+            if (res.confirm) {
+              wx.navigateTo({
+                url: '../login/login',
+              })
+              return false;
+            } else if (res.cancel) {
+              console.log('用户点击取消')
+            }
+          }
+        })
+
+        return false;
+      }
+
+      api.getInviteCode({}).then((res) => {
+        if (res.code == 200 || res.code == 0) {
+          if (res.data.status == 0) {
+            wx.navigateTo({
+              url: '../familyExplain/familyExplain?familyStatus=' + res.data.status,
+            })
+          } else if (res.data.status == 1) {
+            wx.navigateTo({
+              url: '../familyCenter/familyCenter',
+            })
+          } else {
+            wx.navigateTo({
+              url: '../family/family',
+            })
+          }
+          
+        }
+      })
+      
+    },
+    goFamily(){
       let token = wx.getStorageSync('token');
       let isTrue = token ? false : true;
       if (isTrue) {
@@ -138,7 +195,7 @@ Page({
         return false;
       }
       wx.navigateTo({
-        url: '../makeMoney/makeMoney',
+        url: '../familyExplain/familyExplain',
       })
     },
     // 签到
@@ -518,6 +575,7 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow: function () {
+      
       // 版本号
       let v = wx.getStorageSync('v');
       

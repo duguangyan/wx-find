@@ -269,6 +269,7 @@ Page({
       saveData: this.data.addressInfo
     })
 
+
     if (type == 'new') {
       api.addAddress({
         method:"POST",

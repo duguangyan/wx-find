@@ -111,7 +111,7 @@ Page({
       title: '提示',
       content: '确认删除吗？',
       confirmText: '确认',
-      confirmColor: '#c81a29',
+      // confirmColor: '#c81a29',
       success: (res) => {
         if (res.confirm) {
           console.log(index);
@@ -197,7 +197,7 @@ Page({
         data.sign = util.MakeSign('/api/upload', data);
         data.deviceId = "wx";
         data.platformType = "1";
-        data.versionCode = '3.0';
+        data.versionCode = '4.0';
         data.type = 'big';
         // 上传图片，返回链接地址跟id,返回进度对象
         let uploadTask = wx.uploadFile({

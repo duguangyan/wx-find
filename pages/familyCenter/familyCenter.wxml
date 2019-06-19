@@ -1,0 +1,47 @@
+<!--pages/familyCenter/familyCenter.wxml-->
+<wxs src="../../utils/filter.wxs" module="filter" />
+<view class='family-center'>
+  <view class='top'>
+    <view class='head'>
+      <image src='{{avatar_path}}'></image>
+      <text class='txt-1'>{{familyInfo.consignee}}</text>
+      <text class='txt-2' bindtap='goFamilyExplain'>规则说明 ></text>
+    </view>
+    <view class='data flex'>
+      <view class='flex-1' wx:for="{{topData}}" wx:key="this" data-index='{{index}}' bindtap='goNextPage'>
+        <view class='t-1'>{{item.t}}</view>
+        <view class='t-2'>{{item.n}}</view>
+      </view>
+    </view>
+  </view>
+  <view class='profit'>
+    <view class='t'>当前推广收益</view>
+    <view class='m'>{{profit}}</view>
+  </view>
+  <view class='profit-btn' bindtap='withdrawal'><view>提现</view></view>
+
+
+  <view class='item'>
+    <view class="navigator-box section-order">
+      <button class="navigator-text fs30 pdl-30" open-type="share"
+      style="background-color:#fff;border:none;height:115rpx;line-height:115rpx;text-align:left;font-weight: 600;">
+      立即 <text style='color:#FFA40A'>推广小鹿家人</text>
+      <text class="fs24 text-666 mgr-30 flr" style='font-weight: 500;'>注册小鹿家人，增添更大收益</text>
+      </button>
+      <view class="navigator-arrow"></view>
+    </view>
+  </view>
+
+  <view class='item'>
+    <view class="navigator-box section-order">
+      <button class="navigator-text fs30 pdl-30" bindtap='call'
+      style="background-color:#fff;border:none;height:115rpx;line-height:115rpx;text-align:left;">
+      客服
+      <text class="fs24 text-666 mgr-30 flr">如有疑问，请联系客服</text>
+      </button>
+      <view class="navigator-arrow"></view>
+    </view>
+  </view>
+  
+
+</view>

@@ -83,7 +83,7 @@ Page({
         this.setData({
           lists:this.data.lists
         })
-        if (this.data.lists.length == this.data.totalPages){
+        if (this.data.lists.length <=0){
           this.setData({
             hasDate:false
           })

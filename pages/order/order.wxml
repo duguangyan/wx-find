@@ -76,7 +76,7 @@
               <view wx:if="{{(item.find_type==3 ||item.find_type==2 || item.find_type==1 || item.find_type==0) && orderChildNavNum >1}}">
                   <view class='fs30'>送料地址: </view>
                   <view style='display:inline-block'>
-                    <view class='remark' wx:if="{{item.get_address.remark}}">
+                    <view class='remark' wx:if="{{item.shipping_address.remark}}">
                       {{item.shipping_address.remark||''}}
                     </view>
                     {{item.shipping_address.address||''}} {{item.shipping_address.room||''}}

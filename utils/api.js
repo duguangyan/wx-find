@@ -1,6 +1,6 @@
-const apiUrl = 'https://devv2.yidap.com';   // 测试
-//const apiUrl = 'https://apiv2.yidap.com';     // 正式
-const versionNumber = 'v3.0.1';  //版本号
+ const apiUrl = 'https://devv2.yidap.com';   // 测试
+// const apiUrl = 'https://apiv2.yidap.com';     // 正式
+const versionNumber = 'v3.1.2';  //版本号
 import md5 from "./md5.min.js";
 if (apiUrl == 'https://apiv2.yidap.com'){
   wx.setStorageSync('v', versionNumber+' 正式');
@@ -54,7 +54,7 @@ function MakeSign(url, Obj) {
   
   return md5(newStr)
 }
-
+let showModel = '';
 const myRequest = function (params = {}, url , id, st, page) {
 
     return new Promise((resolve, reject) => {
@@ -65,8 +65,8 @@ const myRequest = function (params = {}, url , id, st, page) {
             data.sign         = MakeSign(url, data);
             data.deviceId     = "wx";
             data.platformType =  "1";
-            data.versionCode  = '3.0';
-            
+            data.versionCode  = '4.0';
+      
         const token = wx.getStorageSync('token') || '';
         const token_type = wx.getStorageSync('token_type') || 'Bearer';
         // data.member_token = token;
@@ -93,24 +93,30 @@ const myRequest = function (params = {}, url , id, st, page) {
                 } else {
                     
                     if (401 == res.code) {  
+                      
                       wx.hideLoading();
+                      if (showModel != '') {
+                        return false;
+                      }
                       console.log('401统一处理');
                       let fromCenter =  wx.getStorageSync('fromCenter');
                       wx.setStorageSync('fromCenter', '0');
                       if (fromCenter!=1){
-                        wx.showModal({
+                        showModel = wx.showModal({
                           title: '您尚未登录',
                           content: '是否前往登录页面',
                           confirmText: '前往',
-                          confirmColor: '#c81a29',
+                          // confirmColor: '#c81a29',
                           success: (res) => {
                             if (res.confirm) {
                               wx.navigateTo({
                                 url: '../login/login',
                               })
+                              showModel = '';
                               return false;
                             } else if (res.cancel) {
                               console.log('用户点击取消')
+                              showModel='';
                             }
                           }
                         })
@@ -543,12 +549,32 @@ const orderPrompt = (params) => myRequest(params, `${apiUrl}/api/order/prompt`);
 const smsLogin = (params) => myRequest(params, `${apiUrl}/api/sms/login`);
 
 // 短信登录
+// const memberAvatarPath = (params) => myRequest(params, `${apiUrl}/api/member/avatar_path`);
+
+
+// 小鹿人家累计客户
+const inviteCodeUser = (params) => myRequest(params, `${apiUrl}/api/member/invite_code/user`);
+
+// 小鹿人家累计客户
+const inviteCodeOrder = (params) => myRequest(params, `${apiUrl}/api/member/invite_code/order`);
+
+// 更新头像
 const memberAvatarPath = (params) => myRequest(params, `${apiUrl}/api/member/avatar_path`);
+
+// 购买鹿币
+const apiVirtual = (params) => myRequest(params, `${apiUrl}/api/virtual`);
+
+// 小鹿家人
+const inviteCodeRecommend = (params) => myRequest(params, `${apiUrl}/api/member/invite_code/recommend`);
 
 
 
 module.exports = {
+  inviteCodeRecommend,
+  apiVirtual,
   memberAvatarPath,
+  inviteCodeOrder,
+  inviteCodeUser,
   smsLogin,
   orderDelete,
   orderPrompt,

@@ -1,0 +1,34 @@
+/* pages/family/family.wxss */
+.rich-text{
+  padding:  20rpx 40rpx;
+}
+.family{
+  width: 100%;
+  height: 100%;
+}
+.family image{
+  width: 750rpx;
+  height: 1900rpx;
+}
+.register{
+  width: 630rpx;
+  height: 88rpx;
+  line-height: 88rpx;
+  text-align: center;
+  background: #F29800;
+  border-radius: 10rpx;
+  color: #fff;
+  font-size: 32rpx;
+  margin: 040rpx auto; 
+}
+.eb{
+   background: #999;
+}
+.check{
+  text-align: center;
+}
+.check .iconfont {
+  position: relative;
+  top: 2rpx;
+  left: -10rpx;
+}

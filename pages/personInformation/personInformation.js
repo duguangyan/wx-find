@@ -76,7 +76,7 @@ Page({
     data.sign = util.MakeSign('/api/upload', data);
     data.deviceId = "wx";
     data.platformType = "1";
-    data.versionCode = '3.0';
+    data.versionCode = '4.0';
     let index  = i;
     wx.uploadFile({
       url: `${api.apiUrl}/api/upload`,

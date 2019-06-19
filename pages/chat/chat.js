@@ -35,16 +35,19 @@ Page({
     currentPage:2,
     pageSize:10,
     isPull:false,
-  },
-  bindscroll(e){
-    console.log(e);
+    scrollLoading:0
   },
   bindscrolltoupper(){
+    let _this = this;
+    if (_this.data.scrollLoading == 1) { //防止多次触发
+      return false
+    }
+    _this.data.scrollLoading = 1;
     this.data.isPull = true;
     let currentPage = this.data.currentPage++;
     let pageSize = this.data.pageSize;
     console.log('currentPage:' + currentPage);
-    let _this = this;
+   
     wx.showNavigationBarLoading();  
     let createTime = util.getNowFormatDate(new Date());
     let avatar_path = wx.getStorageSync("avatar_path");
@@ -71,7 +74,7 @@ Page({
     this.bindscrolltoupper();
   },
   bindscroll (e) {
-    console.log(e) //这个就是滚动到的位置,可以用这个位置来写判断
+    // console.log(e) //这个就是滚动到的位置,可以用这个位置来写判断
   },
   onLoad(options){
     if (options.id){
@@ -207,6 +210,7 @@ Page({
         _this.setData({
           message_list: message_list,
         })
+        _this.data.scrollLoading = 0;
         // isScrollY
         if (_this.data.isPull) {
           if (isTrue) {
@@ -437,7 +441,7 @@ Page({
       data.sign = util.MakeSign(api.apiUrl+'/api/upload', data);
       data.deviceId = "wx";
       data.platformType = "1";
-      data.versionCode = '3.0';
+      data.versionCode = '4.0';
       let uploadTask = wx.uploadFile({
         url: `${api.apiUrl}/api/upload`,
         filePath: tempFilePath,

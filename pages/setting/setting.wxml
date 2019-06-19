@@ -8,6 +8,11 @@
      <image class='setting-icon-2' src='../../public/images/icon/center-moeny-icon.png'></image>支付密码 
     <text class='iconfont icon-jiantou flr pdr-20'></text>
   </view>
+
+  <view class='btn-shadow lh115 pdl-30 bg-white radius-10 mgt-20' bindtap='doFamily'>
+     <image class='setting-icon-3' src='../../public/images/icon/center-protect-icon.png'></image>绑定小鹿家人 
+    <text class='iconfont icon-jiantou flr pdr-20'></text>
+  </view>
   <view class='btn-shadow lh115 bg-yellow radius-10 login-out'  bindtap='loginOut'>
     退出登陆 
   </view>
@@ -44,3 +49,9 @@
   </view>   -->
   
 </form> 
+
+
+<dialog id="indexDialog" title="{{dialogTitle}}" bind:confirmEvent="confirmEvent">
+  <view class='family-view'><input bindinput="getInputValue"  placeholder='请输入绑定手机号码'></input></view>
+  
+</dialog>

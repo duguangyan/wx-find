@@ -99,7 +99,7 @@
         <view class='index-popup-title'>加入小鹿任务成功！</view>
         <view class='index-popup-btn'>
             <view class='go-pay' catchtap='goPay'>去结算({{payNum}}s)</view>
-            <view catchtap='goBack'>继续取送</view>
+            <view catchtap='goBack' style='color:#F29800'>继续取送</view>
         </view>   
     </view>
 </view>

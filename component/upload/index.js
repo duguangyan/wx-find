@@ -94,7 +94,7 @@ Component({
                     data.sign = util.MakeSign(api.apiUrl+'/api/upload', data);
                     data.deviceId = "wx";
                     data.platformType = "1";
-                    data.versionCode = '3.0';
+                    data.versionCode = '4.0';
                       // 上传图片，返回链接地址跟id,返回进度对象
                       let uploadTask = wx.uploadFile({
                           url: `${api.apiUrl}/api/upload`,
@@ -112,6 +112,7 @@ Component({
 
                             if (200 === res.code || 0 === res.code) {
                                   files[i].full_url = res.data;
+                                  files[i].pct = 'finish';
                                   that.setData({
                                       files,
                                   })

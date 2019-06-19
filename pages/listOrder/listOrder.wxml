@@ -1,0 +1,12 @@
+<!--pages/listOrder/listOrder.wxml-->
+<wxs src="../../utils/filter.wxs" module="filter" />
+<view class='list-order'>
+  <view class='item' wx:for="{{list}}" wx:key="this">
+    <view class='t-1'>订单号：{{item.order_sn}}</view>
+    <view class='t-2'>结算时间：{{item.created_at}}</view>
+    <view class='t-3'>下单金额：￥{{filter.formatMoney(item.fee)}}   
+      <text class='c-1 flr'>佣金：￥{{filter.formatMoney(item.commission)}}</text> 
+    </view>
+  </view>
+  <view class='no-data'>{{noDataText}}</view>
+</view>

@@ -20,6 +20,7 @@ Page({
     couponId:'',
     payTypeList:[
       { icon: '../../public/images/icon/wx.png', title: '微信支付' },
+      { icon: '../../public/images/icon/money.png', title: '鹿币' },
       { icon: '../../public/images/icon/icon-balance.png', title: '余额' },
     ],
     payTypeCheckIndex:0
@@ -40,7 +41,8 @@ Page({
   getUserAsset(){
     api.getUserAsset({}).then((res)=>{
       this.setData({
-        balance_amount: res.data.balance
+        balance_amount: res.data.balance,
+        virtual_amount: res.data.virtual
       })
     })
   },
@@ -49,7 +51,7 @@ Page({
    */
   onLoad: function (options) { 
     let payMethed = options.payMethed;
-
+    
     wx.setStorageSync('method', payMethed);
     wx.setStorageSync('status', 0);
     // 获取默认地址
@@ -161,7 +163,7 @@ Page({
       return false;
     }
 
-    // 支付方式 0：微信 1：余额
+    // 支付方式 0：微信 1：余额 2：鹿币
     if (this.data.payTypeCheckIndex == 0){
       console.log("微信支付");
       api.wxPayByOrder({
@@ -256,10 +258,12 @@ Page({
         title: '提示',
         content: '确认支付吗?',
         success: function (res) {
+
+          
           if (res.confirm) {
-            api.payAsset({
-              method: 'POST',
-              data: {
+            let data = '';
+            if (_this.data.payTypeCheckIndex == 2) {
+              data = {
                 "type": "miniapp",
                 "asset_type": "balance",
                 'open_id': wx.getStorageSync('open_id'),
@@ -267,6 +271,20 @@ Page({
                 "coupon_id": _this.data.couponId,
                 "address_id": _this.data.fetchsAddress.id, // this.data.findsAddress.id
               }
+            } else if (_this.data.payTypeCheckIndex == 1){
+              data = {
+                "type": "miniapp",
+                "asset_type": "virtual",
+                'open_id': wx.getStorageSync('open_id'),
+                "task_id": _this.data.task_ids,
+                "coupon_id": _this.data.couponId,
+                "address_id": _this.data.fetchsAddress.id, // this.data.findsAddress.id
+              }
+            }
+            
+            api.payAsset({
+              method: 'POST',
+              data
             }).then((res) => {
               if (res.code == 200 || res.code == 0) {
                 let pay = JSON.stringify(res.data.pay);
@@ -274,14 +292,22 @@ Page({
                   url: '../taskPaySuccess/taskPaySuccess?pay_log=' + pay
                 })
               } else {
-                util.errorTips('支付失败:' + res.msg);
+                util.errorTips(res.msg);
                 this.setData({
                   isDisabled: false
                 })
               }
+            }).catch((res)=>{
+              util.errorTips(res.msg);
+              _this.setData({
+                isDisabled: false
+              })
             })
           } else if (res.cancel) {
             util.errorTips("你点击了取消")
+            _this.setData({
+              isDisabled: false
+            })
           }
         }
       })

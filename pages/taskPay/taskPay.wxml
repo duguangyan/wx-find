@@ -22,7 +22,7 @@
             </view> 
             <view class='task-find-method'>
               <view class='task-find-method-img' wx:if='{{item.find_type==1}}'>
-               <image catchtap="imgYu" wx:for='{{item.front_img}}' wx:key='this' src='{{item}}'></image>
+               <image catchtap="imgYu" wx:for='{{item.desc_img}}' wx:key='this' src='{{item}}'></image>
               </view> 
               <view class='task-find-method-getfind' wx:if='{{item.find_type==2}}'>
                   <!-- <view wx:if='{{item.address.stall}}'>地址名称：{{item.address.stall || ''}} </view>
@@ -191,8 +191,9 @@
    <view class='items'>
       <view class='item cf' wx:for="{{payTypeList}}" wx:key="this" catchtap='payTypeCheck' data-index='{{index}}'>
         <image class='fll' src='{{item.icon}}'></image>  
-        <text class='fll mgl-20 text' wx:if="{{item.title!='余额'}}">{{item.title}} </text>
-        <text class='fll mgl-20 text' wx:if="{{item.title=='余额'}}">{{item.title}} （余额:￥{{filter.formatMoney(balance_amount) || '0'}})</text>
+        <text class='fll mgl-20 text' wx:if="{{item.title=='微信支付'}}">{{item.title}} </text>
+        <text class='fll mgl-20 text' wx:if="{{item.title=='余额'}}">{{item.title}} ￥{{filter.formatMoney(balance_amount) || '0'}}</text>
+         <text class='fll mgl-20 text' wx:if="{{item.title=='鹿币'}}">{{item.title}} ￥{{filter.formatMoney(virtual_amount) || '0'}}</text>
         <view class='flr check-btn'>
             <text wx:if='{{payTypeCheckIndex == index}}' 
             class="iconfont icon-dui icon-dui-1 fs40 pdl-10 text-yellow"></text>

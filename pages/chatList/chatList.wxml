@@ -16,7 +16,7 @@
         </view>
     </view>
 </view> -->
-
+<view class='no-data' wx:if="{{lists.length<=0}}">暂无数据</view>
 <wxs module="dateUtil" src="../../utils/timeUtil.wxs"></wxs>
 <!-- 自定义单选/多选/全选实现删除功能 -->
 <view class="chat-list">
@@ -26,11 +26,11 @@
             style="{{item.txtStyle}}" class="inner txt cf">
               <view class='fll item-1'>
                   <image src="{{item.avatar_path || 'https://ossyidap.oss-cn-shenzhen.aliyuncs.com/image/png/9EAFE4BFEFDDF762718332C8F1BE9F2C.png'}}"></image>
-                  <view wx:if="{{item.isRead}}" class='spot'></view>
+                  <view wx:if="{{item.userMessage.sms_status == 1}}" class='spot'></view>
               </view>
               <view class='fll item-2'>
-                <view>{{item.nick_name}}</view>
-                <view class='ellipsis'>{{item.userMessage[item.userMessage.length-1].sms_type=="TEXT"?item.userMessage[item.userMessage.length-1].content:'图片'}}</view>
+                <view>{{item.nick_name || item.user_name}}</view>
+                <view class='ellipsis'>{{item.userMessage.sms_type=="TEXT"?item.userMessage.content:'图片'}}</view>
               </view>
               <view class='flr item-3'>
                {{dateUtil.dateFormat(item.update_time)}}

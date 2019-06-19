@@ -18,7 +18,8 @@ Page({
     describeValue:'',
     fecthPrice:0, // 配送费用
     isPopup: false, // 弹窗控制   
-    payNum:10, // 倒计时               
+    payNum:10, // 倒计时
+    defaultAddress:''               
   },
   checkIsResNotes() {
     this.setData({
@@ -209,20 +210,16 @@ Page({
   // 获取默认地址
   getDefaultAddress() {
     api.defaultAddress({
-    }, 1).then((res) => {
-      let defaultAddress = res.data;
-      console.log(defaultAddress);
-      // 可能位空数组
-      if (Array.isArray(defaultAddress)) {
-        this.setData({
-          defaultAddress: false,
-          addressId: ''
-        })
-      } else {
-        this.setData({
-          defaultAddress,
-          addressId: defaultAddress.id,
-        })
+    }).then((res) => {
+      if(res.code == 0 || res.code == 200){
+        if (res.data.length>0){
+          let defaultAddress = res.data;
+          this.setData({
+            defaultAddress,
+            addressId: defaultAddress.id,
+          })
+        }
+        
       }
     })
     

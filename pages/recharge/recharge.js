@@ -9,6 +9,7 @@ Page({
   data: {
     price:'',
     navIndex:0,
+    index:1,
     navArrText: ['充值VIP',"包月VIP"],
     navArrCheck:[
       { img: '', name: '微信支付' },
@@ -48,38 +49,58 @@ Page({
       total_fee: this.data.price,
       package_id:0
     };
+    if(this.data.index == 1){
+      api.wxPay({
+        method: 'POST',
+        data: payInfo
+      }).then((res) => {
+        console.log(res);
+        if (res.code == 200 || res.code == 0) {
+          let data = res.data;
+          data.success = function (res) {
+            wx.navigateTo({
+              url: '../rechargeSuccess/rechargeSuccess?value=' + value
+            })
+          }
+          data.fail = function (res) {
+            console.log('支付失败');
+            console.log(res);
+            wx.showToast({
+              title: '支付失败',
+              icon: 'none',
+              duration: 2000
+            })
+          }
+          wx.requestPayment(data);
+        }
+      })
+    }else{
+      api.apiVirtual({
+        method: 'POST',
+        data: payInfo
+      }).then((res) => {
+        console.log(res);
+        if (res.code == 200 || res.code == 0) {
+          let data = res.data;
+          data.success = function (res) {
+            wx.navigateTo({
+              url: '../rechargeSuccess/rechargeSuccess?value=' + value
+            })
+          }
+          data.fail = function (res) {
+            console.log('支付失败');
+            console.log(res);
+            wx.showToast({
+              title: '支付失败',
+              icon: 'none',
+              duration: 2000
+            })
+          }
+          wx.requestPayment(data);
+        }
+      })
+    }
     
-    api.wxPay({
-      method: 'POST',
-      data: payInfo
-    }).then((res) => {
-      console.log(res);
-      if (res.code == 200 || res.code == 0) {
-        let data = res.data;
-        data.success = function (res) { 
-          console.log('支付成功');
-          // if(this.navIndex == 0){
-          //   wx:wx.setStorageSync("userType", 1);
-          // } else if (this.navIndex == 1){
-          //   wx: wx.setStorageSync("userType", 2);
-          // }
-          console.log(res);
-          wx.navigateTo({
-            url: '../rechargeSuccess/rechargeSuccess?value=' + value
-          })
-        }
-        data.fail = function (res) { 
-          console.log('支付失败');
-          console.log(res);
-          wx.showToast({
-            title: '支付失败',
-            icon: 'none',
-            duration: 2000
-          })
-        }
-        wx.requestPayment(data);
-      }
-    })
   },
   // 获取充值列表
   getRechargeList () {
@@ -101,6 +122,9 @@ Page({
   onLoad: function (options) {
       // 获取充值列表
     this.getRechargeList();
+    this.setData({
+      index: options.index
+    })
   },
 
   /**

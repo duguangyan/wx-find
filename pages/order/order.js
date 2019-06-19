@@ -495,7 +495,7 @@ Page({
   // 删除订单
   toDel(e){
     let data = {
-      order_id: e.target.dataset.id
+      id: e.target.dataset.id
     }
     let _this = this;
     wx.showModal({
@@ -550,6 +550,7 @@ Page({
     let commentId = e.target.dataset.id;
     console.log('去评价');
     this.setData({
+      commentMsg: '',
       isCommentModel: false,
       commentId
     })

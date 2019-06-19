@@ -1,0 +1,22 @@
+/* pages/listCustomer/listCustomer.wxss */
+.list-customer .item{
+  height: 80rpx;
+  line-height: 80rpx;
+  padding: 0 20rpx;
+  background: #fff;
+  margin-top: 20rpx;
+}
+
+.list-customer .item .fll{
+  font-size: 28rpx;
+}
+
+.list-customer .item .flr{
+  color: #999;
+}
+
+.no-data{
+  text-align: center;
+  line-height: 100rpx;
+  color: #999;
+}

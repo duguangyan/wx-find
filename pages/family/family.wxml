@@ -1,0 +1,43 @@
+<!--pages/family/family.wxml-->
+<view class='family'>
+    <view class='item cf'>
+      <view class='fll fs32 it-1'>姓名:</view>
+      <view class='fll fs32 it-2'> <input type='text' value="{{name}}" disabled='{{isExamine}}' placeholder='请输入姓名' bindinput='getName'></input> </view>
+    </view>
+    <view class='item cf'>
+      <view class='fll fs32 it-1'>联系电话:</view>
+      <view class='fll fs32 it-2'> <input type='number' value="{{phone}}" disabled='true'  placeholder='请输入联系电话' ></input> </view>
+    </view>
+    <view class='cf address'>
+      <view class='fll fs32 it-1'>联系地址:</view>
+      <view class='fll fs32 it-2'> 
+        <!-- <input type='text' placeholder='请输入联系地址' bindinput='getAddress'></input>  -->
+        <textarea placeholder="请输入联系地址" value="{{address}}" auto-height='true' disabled='{{isExamine}}'   bindinput='getAddress' />
+      </view>
+    </view>
+    <view class='item cf'>
+      <view class='fll fs32 it-1'>身份证号码:</view>
+      <view class='fll fs32 it-2'> <input type='text' value="{{number}}" disabled='{{isExamine}}' placeholder='请输入身份证号码' bindinput='getNumber'></input>           </view>
+      
+    </view>
+
+
+    <view class='bgg' bindtap='uploadImg' data-index='1'>
+        <image src="{{imgBg1}}"></image>
+        <view>请上传身份证正面(信息页)</view>
+    </view> 
+
+    <view class='bgg' bindtap='uploadImg' data-index='2'>
+        <image src="{{imgBg2}}"></image>
+        <view>请上传身份证反面(国徽页)</view>
+    </view> 
+
+
+    <view class='bt_item cf'  wx:if="{{id !=''}}">
+        <view class='fll'>{{status_label}}</view>
+        <view class='flr'>{{remark || ''}}</view>
+    </view>
+
+    <view style='padding-bottom:20rpx;' wx:if="{{!isExamine && isSubmit}}" bindtap='submit'><view  class='submit'>提交</view></view>
+    <view style='padding-bottom:20rpx;' wx:if="{{!isExamine && !isSubmit}}"><view  class='submit' style='background:#999;'>提交</view></view>
+</view> 

@@ -218,7 +218,7 @@ Page({
         title: '提示',
         content: '确认删除吗？',
         confirmText: '确认',
-        confirmColor: '#c81a29',
+        // confirmColor: '#c81a29',
         success: (res) => {
           if (res.confirm) {
             _this.data.isAddShow = true;
@@ -437,13 +437,14 @@ Page({
           let uploadImgs = [];
           
           // 判定是否在已是完成状态
-          // let isUploading = uploadC.data.files.every((ele, i) => {
-          //   return (ele.pct && (ele.pct === 'finish' || ele.pct === 'fail'))
-          // })
-          // if (!isUploading) {
-          //   util.errorTips('图片正在上传')
-          //   return false
-          // }
+          let isUploading = uploadC.data.files.every((ele, i) => {
+          
+            return (ele.pct && ele.pct === 'finish')
+          })
+          if (!isUploading) {
+            util.errorTips('图片正在上传')
+            return false
+          }
           // 添加数据
           uploadC.data.files.forEach((ele, i) => {
             if (ele.full_url) {
@@ -496,6 +497,9 @@ Page({
         } else if (this.data.addFinds[i].selcetTabNum == '3') { // 按描述找料判断
           // 只有描述 此方法头部已经判断
         }
+        if (this.data.addFinds[i].address){
+          this.data.addFinds[i].address_id = this.data.addFinds[i].address.id;
+        }
       }
       this.setData({
         findDisabled: true
@@ -532,6 +536,9 @@ Page({
                  })
                  clearInterval(_this.data.interval);
                  _this.goPay();
+                 this.setData({
+                   payNum: 10
+                 })
                }
              }, 1000)
           }else{
@@ -539,6 +546,11 @@ Page({
             findDisabled: true
           })
           }
+      }).catch((res)=>{
+        util.errorTips(res.msg);
+        this.setData({
+          findDisabled: false
+        })
       })
     },
     // 获取公司地址
@@ -791,6 +803,9 @@ Page({
     },
     // 返回上一层，继续找料
     goBack () {
+      this.setData({
+        payNum:10
+      })
       clearInterval(this.data.interval);
       console.log(this.data.addFinds);
       let newAddFinds = { index: 0, cid: this.data.addFinds[0].cid, cname: this.data.addFinds[0].cname, find_type: this.data.addFinds[0].find_type, selcetTabNum: this.data.addFinds[0].selcetTabNum, get_type: '1', selcetSecondTabNum: '1', isSelect: false, desc: '', files: [{}, {}, {}], get_address: this.data.defaultAddress.id, address: this.data.defaultAddress, address_id: this.data.defaultAddress.id}
@@ -814,6 +829,9 @@ Page({
     },
     // 去支付
     goPay () {
+      this.setData({
+        payNum: 10
+      })
       clearInterval(this.data.interval);
       wx.switchTab({
         url: '../task3/task3',

@@ -8,12 +8,14 @@ Page({
      * 页面的初始数据
      */
     data: {
+      familyStatus:0,
+      status_label:'',
       findNum:0,
       indicatorDots: false,
       autoplay: true,
       interval: 3000,
       duration: 500,
-      bannerImgs: ['https://static.yidap.com/miniapp/o2o_find/index/index_banner_1.png', 'https://static.yidap.com/miniapp/o2o_find/index/index_banner_2.png'],
+      bannerImgs: ['https://static.yidap.com/miniapp/o2o_find/index/index_banner_1.png','https://static.yidap.com/miniapp/o2o_find/index/index_banner_3.png', 'https://static.yidap.com/miniapp/o2o_find/index/index_banner_2.png'],
       title: "小鹿快找",
       isArrow: false,
       navArr: [
@@ -40,6 +42,56 @@ Page({
       nodes: "", //公告
       isNodes: false, // 是否显示公告
     },
+    // 进入小鹿家人
+  goIn(){
+    // util.successTips('正在开发中...')
+    // wx.navigateTo({
+    //   url: '../family/family',
+    // })
+
+    let token = wx.getStorageSync('token');
+    let isTrue = token ? false : true;
+    if (isTrue) {
+      wx.showModal({
+        title: '您尚未登录',
+        content: '是否前往登录页面',
+        confirmText: '前往',
+        // confirmColor: '#c81a29',
+        success: (res) => {
+          if (res.confirm) {
+            wx.navigateTo({
+              url: '../login/login',
+            })
+            return false;
+          } else if (res.cancel) {
+            console.log('用户点击取消')
+          }
+        }
+      })
+
+      return false;
+    }
+    api.getInviteCode({}).then((res) => {
+      if (res.code == 200 || res.code == 0) {
+        if (res.data.status == 0) {
+          wx.navigateTo({
+            url: '../familyExplain/familyExplain?familyStatus=' + res.data.status,
+          })
+        } else if (res.data.status == 1) {
+          wx.navigateTo({
+            url: '../familyCenter/familyCenter',
+          })
+        } else {
+          wx.navigateTo({
+            url: '../family/family',
+          })
+        }
+
+      }
+    })
+    
+  },
+ 
   // 获取公告
     mynotice(){
       api.mynotice({}).then((res) => {
@@ -252,6 +304,31 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
+
+      wx.login({
+        success: function (res) {
+          console.log(res);
+          if (res.code) {
+            //发起网络请求
+            let data = {
+              code: res.code,
+              from: 3
+            }
+            api.getOpenId({
+              data
+            }).then((res) => {
+              if (res.code == 200 || res.code == 0) {
+                wx.setStorageSync('open_id', res.data.openid)
+              } else {
+                util.errorTips(res.msg)
+              }
+            }).catch((res) => {
+              util.errorTips(res.msg)
+            })
+          }
+        }
+      });
+
       if (options.fromUserId){
         util.successTips(options.fromUserId);
       }
@@ -297,6 +374,27 @@ Page({
 
     },
     /**
+     * 获取小鹿家人状态
+     */
+  getInviteCode() {
+    api.getInviteCode({}).then((res) => {
+      if (res.code == 200 || res.code == 0) {
+        this.mynotice();
+        if (res.data.status>0){
+          this.setData({
+            familyStatus: res.data.status,
+            status_label: res.data.status_label
+          })
+        }else{
+          this.setData({
+            familyStatus: res.data.status
+          })
+        }
+       
+      }
+    })
+  },
+    /**
      * 生命周期函数--监听页面显示
      */
     onShow: function () {
@@ -313,7 +411,8 @@ Page({
       if (wx.getStorageSync('token') != null 
       && wx.getStorageSync('token') != undefined 
       && wx.getStorageSync('token') != ''){
-        this.mynotice();
+       
+        this.getInviteCode();
       }
       
       

@@ -111,12 +111,17 @@
             </block>
           </swiper>
 			</view>
-			<view class="nav bg-yellow flex">
-        <view class='line'></view>
+			<view class="nav">
+        <!-- <view class='line'></view>
 				<view class="flex-1 item" wx:for="{{navArr}}" wx:key="index" >
 					<image src="{{item.img}}"></image>
 					<text class="fs24 text-fff">{{item.text}}</text>
-				</view>
+				</view> -->
+        <view class='text-1'>小鹿家人</view>
+        <view class='text-2'>注册小鹿家人，增添更大收益</view>
+        <view class='go-in' wx:if="{{familyStatus == 0}}" bindtap='goIn'>一键注册</view>
+        <view class='go-in' wx:if="{{familyStatus == 1}}" bindtap='goIn'>立即推广</view>
+        <view class='go-in' wx:if="{{familyStatus == 2 || familyStatus == 3}}" bindtap='goIn'>{{status_label}}</view>
 			</view>
 		</view>
 		

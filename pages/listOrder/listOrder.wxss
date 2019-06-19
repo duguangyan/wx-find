@@ -1,0 +1,24 @@
+/* pages/listOrder/listOrder.wxss */
+.list-order .item{
+  width:670rpx;
+  height:160rpx;
+  background:rgba(255,255,255,1);
+  border-radius:8rpx;
+  margin: 0 20rpx;
+  margin-top: 20rpx;
+  padding: 20rpx;
+  font-size: 28rpx;
+}
+.list-order .item view{
+  line-height: 54rpx;
+}
+
+.list-order .item view .c-1{
+  color: #F29800;
+  margin-right: 20rpx;
+}
+.no-data{
+  text-align: center;
+  line-height: 100rpx;
+  color: #999;
+}

@@ -81,6 +81,7 @@ Page({
     console.log('去评价');
     let id = e.target.dataset.id;
     this.setData({
+      commentMsg:'',
       orderId: id
     })
     this.setData({
@@ -99,34 +100,36 @@ Page({
       isCommentModel: true
     })
   },
-  // 取消评价模态框并获取数据
+  // 提交获取数据
   commentConfirm(e) {
-
+    
     let data = {
       star: this.data.starIndex_1 + 1,
       star_ship: this.data.starIndex_2 + 1,
       content: this.data.commentMsg
     }
+    
     data.id = this.data.orderId;
     api.toCommentOrder({
       method: 'POST',
       data
     }, this.data.commentId).then((res) => {
       console.log(res);
-      if (res.code == 200) {
+      if (res.code == 200 || res.code == 0) {
         wx.showToast({
           title: '评价成功！',
           icon: 'none',
           duration: 2000
         })
-        
         this.setData({
           isCommentModel: true,
           isStarShow: false,
           starIndex_1: 4, // 星星评价选中
           starIndex_2: 4, // 星星评价选中
         })
+        console.log('commentMsg-->', this.data.commentMsg);
         this.getData();
+        
       } else {
         wx.showToast({
           title: '评价失败！',
@@ -233,7 +236,7 @@ Page({
         data
       }, this.data.delId).then((res) => {
         console.log(res);
-        if (res.code == 200) {
+        if (res.code == 200 || res.code == 0) {
           this.setData({
             isDelModel: true
           })
@@ -342,7 +345,7 @@ Page({
           data: payInfo
         }).then((res) => {
           console.log(res);
-          if (res.code == 200) {
+          if (res.code == 200 || res.code == 0) {
             let data = res.data.sdk;
             let pay_log = JSON.stringify(res.data.pay_log);
             data.success = function (res) {
@@ -396,7 +399,7 @@ Page({
     goChat(e){
       let id = e.currentTarget.dataset.id;
       wx.navigateTo({
-        url: '../chat/chat?id=' + id
+        url: '../chat1/chat?id=' + id
       })
     },
     urgeOrder(e) {
@@ -410,7 +413,7 @@ Page({
         }
       }).then((res) => {
         console.log(res);
-        if (res.code == 200) {
+        if (res.code == 200 || res.code == 0) {
           // wx.showModal({
           //   title: "催单成功！",
           //   content: "请联系找料员(<text>" + mobile +"</text>)或在线客服（400-8088-156），咨询进度",

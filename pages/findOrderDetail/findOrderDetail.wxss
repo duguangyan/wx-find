@@ -78,7 +78,7 @@ page{
   margin: 30rpx 30rpx 30rpx 0;
   font-size: 30rpx;
   padding: 0 10rpx;
- background-color: #fff;
+  background-color: #fff;
 }
 .task-find-method-img{
 }

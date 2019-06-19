@@ -131,7 +131,7 @@ Page({
         wx.showModal({
             title: '提示',
             content: '确定要删除吗？',
-            confirmColor: '#C81A29',
+            // confirmColor: '#C81A29',
             success: (res) => {
                 if (res.confirm) {
                     console.log('用户点击确定');

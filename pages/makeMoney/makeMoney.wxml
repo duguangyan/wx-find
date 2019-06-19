@@ -21,7 +21,9 @@
         1、明说明说明说明说明说明说明说明说明明说明说明说明说明说明说明说明说明明说明说明说明说明说明说明说明说明
       </view>
     </view>
-
+    <!-- <view>
+      <image src='https://static.yidap.com/miniapp/o2o_find/index/xuzhi.png'></image>
+    </view> -->
 
     <view class='text-center' bindtap='checkAgree'>
         <text wx:if="{{isAgree}}" class='iconfont icon-dui fs40 text-yellow'></text>

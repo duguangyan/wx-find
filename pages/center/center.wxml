@@ -12,38 +12,42 @@
          <view class="fs32 text-white cf">
             <view class='ellipsis fll' bindtap='showSoltDialog'>{{memberInfo.nick_name||memberInfo.user_name}}</view>
             <view class='vip fll'>
-              <image wx:if="{{memberInfo.vip==0}}" src='../../public/images/center/66.png'></image> 
-              <image wx:if="{{memberInfo.vip>0}}" src='../../public/images/center/6.png'></image>
+              <!-- <image wx:if="{{memberInfo.vip==0}}" src='../../public/images/center/66.png'></image> 
+              <image wx:if="{{memberInfo.vip>0}}" src='../../public/images/center/6.png'></image> -->
               <!-- <text>VIP</text> -->
               <!-- <text wx:if="{{memberInfo.asset.type== 2}}">包</text> -->
             </view>
-            <view class="fll mgl-20 recharge" bindtap='goRecharge'>充值</view>
+            <!-- <view class="fll mgl-20 recharge" bindtap='goRecharge'>充值</view> -->
         </view>
-        <!-- <view wx:if='{{memberInfo.hasSign}}' class='sign-in sign-cur fs28'>
-            签到
+        <view class='sign-in fs28 fll' bindtap='goRecharge' data-index='1'>
+            余额充值
         </view>
-        <view wx:if='{{!memberInfo.hasSign}}' class='sign-in fs28' bindtap='signIn'>
-            签到
-        </view> -->
-        
+        <view class='sign-in fs28 fll mgl-20' bindtap='goRecharge' data-index='2'>
+            购买鹿币
+        </view>
       </view>
       
   </view>
   <view class='fll20' wx:if="{{memberInfo}}">
+    <image  hidden='{{!memberInfo}}' class='center-setting customer-icon'
+    src='../../public/images/center/21.png' bindtap='goChatList'>
+    </image>
    <image  hidden='{{!memberInfo}}'  class='center-setting'
     src='../../public/images/center/7.png' bindtap='gotoSettinngPage'>
     </image>
   </view>
 
   <view class='section-footer flex' wx:if="{{memberInfo}}">
-      <view class="flex-1">
-          <view class="balance fs28 text-999">余额(元)</view>
-          <view class='balance-text fs48 text-red'>￥{{memberInfo.balance || 0}}</view>
-      </view>
-      <view class="flex-1">
-          <view class="balance  fs28 text-999">成功邀请(人)</view>
-          <view class='balance-text fs48 text-red'>{{memberInfo.invited || 0}}</view>
-      </view>
+    <view class="flex-1">
+        <view class="balance  fs28 text-333">鹿币(个)</view>
+        <view class='balance-text fs48 text-red'>{{memberInfo.virtual || 0}}</view>
+    </view>
+    <view class='line'></view>
+    <view class="flex-1">
+        <view class="balance fs28 text-333">余额(元)</view>
+        <view class='balance-text fs48 text-red'>{{memberInfo.balance || 0}}</view>
+    </view>
+      
       <!-- <view wx:if="{{memberInfo}}" class="flex-1 setting">
         <navigator open-type='navigate' url="../recharge/recharge">
             <text class='text-fff fs24'>VIP充值</text>
@@ -59,7 +63,7 @@
         </view>
 </view>
 
-<view style='height:380rpx'></view>
+<view style='height:420rpx'></view>
 
 
 <!-- <view class='center-service' wx:if="{{memberInfo}}">
@@ -103,13 +107,21 @@
 </view>
 
 <view class="navigator-box section-order mgt-20">
-    <button class="navigator-text fs30 pdl-30" bindtap='goMakeMoney'
+    <button class="navigator-text fs30 pdl-30" bindtap='goFamilyCenter'
     style="background-color:#fff;border:none;height:115rpx;line-height:115rpx;text-align:left;">
-    分享赚钱
-     <text class="fs24 text-666 mgl-20">分享《小鹿快找》赚取“佣金”</text>
+    小鹿家人
+     <text class="fs24 text-666 mgl-20">推广小鹿家人，增添更大收益</text>
     </button>
     <view class="navigator-arrow"></view>
 </view>
+
+<!-- <view class="navigator-box section-order">
+    <button class="navigator-text fs30 pdl-30" bindtap='goFamilyCenter'
+    style="background-color:#fff;border:none;height:115rpx;line-height:115rpx;text-align:left;">
+    进入小鹿家人
+    </button>
+    <view class="navigator-arrow"></view>
+</view> -->
 
 <!-- <view class="navigator-box section-order mgt-20">
     <button class="navigator-text fs30 pdl-30" bindtap='goIntegralmall'
@@ -130,14 +142,7 @@
   </block>
 </view>
 
-
 <view class="navigator-box section-order">
-    <button class="navigator-text fs30 pdl-30" bindtap='goGiftCertificate'
-    style="background-color:#fff;border:none;height:115rpx;line-height:115rpx;text-align:left;">我的礼券</button>
-    <view class="navigator-arrow"></view>
-</view>
-
-<view class="navigator-box section-order mgt-20">
     <button class="navigator-text fs30 pdl-30" 
     style="background-color:#fff;border:none;height:115rpx;line-height:115rpx;text-align:left;" 
     open-type="contact">客服</button>
@@ -145,10 +150,18 @@
 </view>
 
 <view class="navigator-box section-order">
+    <button class="navigator-text fs30 pdl-30" bindtap='goGiftCertificate'
+    style="background-color:#fff;border:none;height:115rpx;line-height:115rpx;text-align:left;">我的礼券</button>
+    <view class="navigator-arrow"></view>
+</view>
+
+
+
+<!-- <view class="navigator-box section-order">
     <button class="navigator-text fs30 pdl-30" bindtap='goChatList'
     style="background-color:#fff;border:none;height:115rpx;line-height:115rpx;text-align:left;">消息列表</button>
     <view class="navigator-arrow"></view>
-</view>
+</view> -->
 
 <view class="navigator-box section-order mgt-20">
   <block class='navigator'>

@@ -108,7 +108,7 @@ Page({
         wx.showModal({
             title: '提示',
             content: '确定要删除吗？',
-            confirmColor: '#C81A29',
+            // confirmColor: '#C81A29',
             success: (res) => {
                 if (res.confirm) {
                     console.log('用户点击确定');
@@ -158,6 +158,14 @@ Page({
      */
     onLoad: function (options) {  
       
+      /**
+       * 来自取送修改页面
+       */
+      if (options.fetchEdit){
+        this.setData({
+          hasFormfetchEdit: true
+        })
+      }
       /**
        * 来自H5页面
        */
@@ -362,7 +370,7 @@ Page({
         })
       }
 
-      if (this.data.hasFormfetch) {
+      if (this.data.hasFormfetch){
         wx.setStorageSync('fetchsAddress', item);
         // 更新上一页的地址数据  来自找料任务页面
         let pages = getCurrentPages();
@@ -371,6 +379,17 @@ Page({
         prevPage.setData({
           address_id: item.id,
           defaultAddress: item,
+          findsAddress: true
+        })
+      } else if (this.data.hasFormfetchEdit) {
+        wx.setStorageSync('fetchsAddress', item);
+        // 更新上一页的地址数据  来自找料任务页面
+        let pages = getCurrentPages();
+        let currPage = pages[pages.length - 1];   //当前页面
+        let prevPage = pages[pages.length - 2];  //上一个页面
+        prevPage.setData({
+          address_id: item.id,
+          address: item,
           findsAddress: true
         })
       } else if (this.data.hasFormFind) {

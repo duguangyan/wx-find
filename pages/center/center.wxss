@@ -1,6 +1,12 @@
 page {
     background: #f2f2f2;
 }
+.line{
+  width:2rpx;
+  height:80rpx;
+  background:rgba(238,238,238,1);
+  border-radius:1rpx;
+}
 .center-service{
   line-height: 40rpx;
   color: #666;
@@ -21,12 +27,12 @@ page {
 .center-setting{
   position: absolute;
   right: 40rpx;
-  top: 62rpx;
+  top: 48rpx;
   width: 48rpx;
   height: 48rpx;
 }
 .section-avatar {
-    height: 180rpx;
+    height: 210rpx;
     padding-top: 30rpx;
     position: fixed;
     width: 100%;
@@ -34,6 +40,7 @@ page {
     padding-bottom: 50rpx;  
     margin-bottom: 70rpx;
     z-index: 99999;
+  
 }
 .section-footer{
   position: absolute;
@@ -49,18 +56,25 @@ page {
   box-shadow: 0rpx 5rpx 1rpx #eee;
   border-radius:20rpx;
   margin:0 30rpx;
-
+  margin-top: 20rpx;
+}
+.customer-icon{
+  right: 120rpx;
+  z-index: 9999999;
+  width: 60rpx;
+  height: 60rpx;
+  top: 40rpx;
 }
 .sign-in{
   width:156rpx;
   height:48rpx;
-  background:rgba(143,0,15,1);
   border-radius:24rpx;
   text-align: center;
   line-height: 48rpx;
   color: #fff;
   margin-top: 10rpx;
   font-size: 26rpx;
+  border: 1rpx solid #fff; 
 }
 .sign-cur{
   background-color: #999;
@@ -89,7 +103,7 @@ page {
   width: 60%;
   margin-left: 20rpx;
   position: relative;
-  top: -20rpx;
+  top: -4rpx;
   left: 10rpx;
 }
 

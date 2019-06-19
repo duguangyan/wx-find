@@ -11,7 +11,10 @@ Page({
     Length: 6,        //输入框个数  
     isFocus: true,    //聚焦  
     Value: "",        //输入的内容  
-    ispassword: true, //是否密文显示 true为密文， false为明文。  
+    ispassword: true, //是否密文显示 true为密文， false为明文。
+    dialogTitle:'绑定小鹿家人',  
+    inputValue:'',
+    showModel:''
   },
 
   /**
@@ -115,7 +118,10 @@ Page({
 
           // 清理缓存
           try {
-            wx.clearStorageSync()
+            let open_id = wx.getStorageSync('open_id');
+            wx.clearStorageSync();
+            wx.setStorageSync('open_id', open_id);
+            
           } catch (e) {
             // Do something when catch error
           }
@@ -129,8 +135,8 @@ Page({
                   from: 3
                 }
 
-                wx.navigateTo({
-                  url: '../login/login?chengePassWord=1',
+                wx.reLaunch({
+                  url: '../center/center',
                 })
                 // api.userLogout({}).then((res)=>{
                   
@@ -248,5 +254,47 @@ Page({
       isOldPayPasswordModel: false,
       Value: ''
     })
+  },
+  // 绑定小鹿家人
+  doFamily(){
+    let _this = this;
+    api.inviteCodeRecommend({}).then((res)=>{
+      if(res.code == 0 || res.code == 200){
+        if(res.data.status == 0){
+          util.errorTips(res.data.msg);
+        } else if (res.data.status == 1){
+          util.errorTips(res.data.data.mobile +' ：绑定成功！');
+        }
+        
+      } else if (res.code == 1){
+        this.indexDialog = this.selectComponent('#indexDialog');
+        this.indexDialog.showDialog();
+      }
+    }).catch((res)=>{
+      this.indexDialog = this.selectComponent('#indexDialog');
+      this.indexDialog.showDialog();
+    })
+    
+    
+  },
+  confirmEvent(){
+    api.inviteCodeRecommend({
+      method:'POST',
+      data:{
+        mobile: this.data.inputValue
+      }
+    }).then((res)=>{
+      if(res.code==0 || res.code == 200){
+        if (res.data.status == 0) {
+          util.errorTips(res.data.msg);
+        } else if (res.data.status == 1) {
+          util.errorTips(res.data.data.mobile + ' ：绑定成功！');
+        }
+        this.indexDialog.hideDialog();
+      }
+    })
+  },
+  getInputValue(e){
+    this.data.inputValue = e.detail.value;
   }
 })

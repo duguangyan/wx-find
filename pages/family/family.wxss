@@ -1,0 +1,84 @@
+/* pages/family/family.wxss */
+.family{
+  border-top: 20rpx solid #eee; 
+}
+page{
+  background: #fff;
+}
+
+.item{
+  height: 76rpx;
+  line-height: 76rpx;
+  border-bottom: 1rpx solid #eee; 
+  margin-left: 40rpx;
+}
+
+.item input{
+  height: 76rpx;
+  line-height: 76rpx;
+  padding-left: 50rpx;
+}
+
+.item .it-1{
+  width: 200rpx;
+}
+.item .it-2{
+  width: 500rpx;
+}
+.address{
+  border-bottom: 1rpx solid #eee; 
+  margin-left: 40rpx;
+}
+
+.address .it-1{
+  width: 200rpx;
+  position: relative;
+  top: 10rpx;
+  
+}
+.address .it-2{
+  width: 450rpx;
+  min-height: 152rpx;
+  padding-left: 46rpx; 
+  overflow: hidden;
+}
+.address textarea{
+  min-height: 152rpx; 
+  width: 440rpx !important;
+}
+.bgg image{
+  width: 480rpx;
+  height: 302rpx;
+}
+.bgg view{
+  margin-top: 10rpx;
+}
+.bgg{
+  text-align: center;
+  padding: 40rpx 0 0 0;
+}
+.submit{
+  margin: 30rpx auto;
+  width: 630rpx;
+  height: 88rpx;
+  line-height: 88rpx;
+  text-align: center;
+  color: #fff;
+  background: #F29800;
+  border-radius:10rpx; 
+}
+.submit view{
+  padding-bottom:30rpx;
+}
+.bt_item{
+  /* height: 60rpx;
+  line-height: 60rpx; */
+  padding: 40rpx;
+  background:rgba(255,255,255,1);
+  color: #EF230C;
+  border-top:20rpx solid #f5f5f5; 
+  border-bottom:20rpx solid #f5f5f5; 
+  font-size:36rpx;
+  font-weight:500;
+  margin-top:40rpx; 
+}

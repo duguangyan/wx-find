@@ -8,8 +8,29 @@ Page({
     data: {
         agree: true,
         smsText:'获取验证码',
-        invite_code:''
+        invite_code:'',
+        isNotes:false,
+        isResNotes:false,
+        protocol:''
     },
+  //须知弹窗是否继续显示 
+  checkIsResNotes() {
+    this.setData({
+      isResNotes: !this.data.isResNotes
+    })
+  },
+  // 显示找料须知
+  showNotes(){
+    this.setData({
+      isNotes: true
+    })
+  },
+  // 隐藏找料须知
+  hiddenNotes() {
+    this.setData({
+      isNotes: false
+    })
+  },
     // 手机账号
     mobile(e) {
 
@@ -224,7 +245,17 @@ Page({
           invite_code: wx.getStorageSync('invite_code')
         })
       }
-     
+      // 动态获取须知
+      api.needKnow({}).then((res) => {
+        console.log(res);
+        
+        if(res.code == 200 || res.code == 0){
+          this.setData({
+            protocol: res.data.protocol
+          })
+        }
+        
+      })
     },
 
     /**

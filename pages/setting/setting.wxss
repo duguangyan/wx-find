@@ -4,6 +4,12 @@
   float: left;
   width: 50rpx;
 }
+.family-view{
+  height: 100rpx;
+}
+.wx-dialog-content{
+   height: 100rpx;
+}
 .lh115{
   height: 115rpx;
   line-height: 115rpx;
@@ -19,6 +25,13 @@
   width: 43rpx;
   height: 34rpx;
   margin-right: 30rpx;
+}
+.setting-icon-3{
+  width: 35rpx;
+  height: 42rpx;
+  margin-right: 30rpx;
+  position: relative;
+  top: 10rpx;
 }
 .login-out{
   margin-top: 75rpx;

@@ -84,10 +84,11 @@
       </view>
 
 
-    <view class='lh90 bb-1 fs30 pdl-30' wx:if='{{itemObj.get_address && itemObj.find_type!=3}}'>
+    <view class='lh90 bb-1 fs30 pdl-30' wx:if='{{itemObj.get_address && itemObj.find_type!=3 && itemObj.find_type!=1}}'>
       {{itemObj.find_type==2?'取样地址':'取料地址'}}
     </view>
-    <view class='find-order-detail-address bb-20 fs30 pdl-30'wx:if='{{itemObj.get_address && itemObj.find_type!=3}}'>
+    <view class='find-order-detail-address bb-20 fs30 pdl-30'
+    wx:if='{{itemObj.get_address && itemObj.find_type!=3&& itemObj.find_type!=1}}'>
      
       <view wx:if='{{itemObj.get_address}}'>
           <view class='lh50'>
@@ -181,7 +182,7 @@
                     class='order-footer-btn-red' 
                     data-index="{{index}}">确认收货</button>
                     <button  data-id='{{itemObj.findman_id}}' bindtap='goChat'  
-                    wx:if='{{itemObj.findman_id!=null && status!=2}}' class='order-footer-btn-red order-chat'>
+                    wx:if='{{itemObj.findman_id!=null && itemObj.can_comment!=1 && itemObj.can_delete!=1 &&itemObj.can_confirm!=1 && status!=2}}' class='order-footer-btn-red order-chat'>
                     {{nav==1?'联系找料员':'联系取料员'}}</button>
                     <button data-id='{{itemObj.distribution_id}}' bindtap='goChat'  
                     wx:if='{{itemObj.distribution_id!=null && status==2}}' class='order-footer-btn-red order-chat'>

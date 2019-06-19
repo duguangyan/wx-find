@@ -14,16 +14,14 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) { 
-    // 获取物料品类数据
-    this.getCheckTypes();
     // 获取上一级传值
     let fromType = options.from;   // 1找料订单 2去送订单
-    if (fromType==1){
+    if (fromType == 1) {
       this.setData({
         fromType,
         indexType: options.index
       })
-    } else if (fromType == 2){
+    } else if (fromType == 2) {
       this.setData({
         fromType
       })
@@ -41,7 +39,9 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-  
+    // 获取物料品类数据
+    this.getCheckTypes();
+    
   },
 
   /**

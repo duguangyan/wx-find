@@ -34,7 +34,7 @@
     word-wrap: break-word;
     word-break: break-all;
     color: #999999;
-    height: 500rpx;
+    /* height: 500rpx; */
     overflow: scroll;
 }
 .wx-dialog-footer{

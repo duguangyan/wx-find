@@ -40,8 +40,14 @@
     "pages/newUserRegister/newUserRegister",
     "pages/personInformation/personInformation",
     "pages/chat/chat",
+    "pages/chat1/chat",
     "pages/chatList/chatList",
-    "pages/makeMoney/makeMoney"
+    "pages/makeMoney/makeMoney",
+    "pages/family/family",
+    "pages/familyExplain/familyExplain",
+    "pages/familyCenter/familyCenter",
+    "pages/listCustomer/listCustomer",
+    "pages/listOrder/listOrder"
   ],
   "window": {
     "navigationBarBackgroundColor": "#ffffff",

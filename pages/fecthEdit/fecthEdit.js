@@ -168,7 +168,7 @@ Page({
   // 去地址选择页面
   goConsigneeAddress(e) {
     wx.navigateTo({
-      url: '../consigneeAddress/consigneeAddress?fetchs=true',
+      url: '../consigneeAddress/consigneeAddress?fetchEdit=true',
     })
   },
   // 去支付

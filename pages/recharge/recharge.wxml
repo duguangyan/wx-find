@@ -5,15 +5,28 @@
  
       <view class='recharge-content'>
           <view class='item-1'>
-            <view>充值金额</view>
+            <view>{{index==1?'充值金额':'购买数量'}}</view>
           </view>
 
           <view class='cf item-2'>
             <text class='fll'>￥</text>
             <input class='fll' type='text'  data-value='{{price}}'
-             value='{{price}}' placeholder='请输入充值金额' bindinput='doInput'></input>
+             value='{{price}}' placeholder='{{index==1?"请输入充值金额":"请输入购买数量"}}' bindinput='doInput'></input>
           </view>
 
+          <view class='cf item-2' wx:if="{{index == 2}}">
+            <text class='fll'>= ￥ {{price}} </text>
+          </view>
+
+          <view class='bz' wx:if="{{index == 1}}">
+            注：余额可用于购买鹿币,支付代采物料费用。
+          </view> 
+          <view class='bz' wx:if="{{index == 2}}">
+            注: 
+            <text>1、一次性鹿币购买须大于等于100</text>
+            <view class='mgl-30'>2、鹿币可用于支付找料及取料订单</view>
+
+          </view> 
           <view class='item-3'>支付方式 </view>
           <view class='item-4'>
               <view class='cf'>
@@ -29,7 +42,7 @@
               </view>
           </view>
       </view>
-      <view class='recharge-explain cf fs30'>
+      <view class='recharge-explain cf fs30' wx:if="{{index == 1}}">
         <view style='padding-top: 30rpx;'>充值说明：</view>
         <view>
           1、账户充值仅限微信在线方式支付，目前暂不支持其它支付方式；
@@ -44,12 +57,31 @@
           4、账户余额仅限用于支付小鹿快找业务相关服务费用；
         </view>
         <view>
-          5、账户余额有效期：90天；
+          5、如需咨询，可拨打客服热线<text class='text-red' bindtap='contact'>400-8088-156</text>。
+        </view>
+        <!-- <text class='position'></text> -->
+      </view>
+
+
+      <view class='recharge-explain cf fs30' wx:if="{{index == 2}}">
+        <view style='padding-top: 30rpx;'>购买说明：</view>
+        <view>
+          1、账户充值仅限微信在线方式支付，目前暂不支持其它支付方式；
         </view>
         <view>
-          6、如需咨询，可拨打客服热线<text class='text-red' bindtap='contact'>400-8088-156</text>。
+          2、账户充值成功后不支持退款且不可提现；
+        </view>
+        <view>
+          3、账户余额仅限用于支付小鹿快找业务相关服务费用；
+        </view>
+        <view>
+          4、账户余额仅限用于支付小鹿快找业务相关服务费用；
+        </view>
+        <view>
+          5、如需咨询，可拨打客服热线<text class='text-red' bindtap='contact'>400-8088-156</text>。
         </view>
         <!-- <text class='position'></text> -->
       </view>
       <view class='pay' bindtap='doPay'>立即支付</view>
+      <view class='height40'></view>
  </view>

@@ -1,0 +1,9 @@
+<!--pages/listCustomer/listCustomer.wxml-->
+<wxs src="../../utils/filter.wxs" module="filter" />
+<view class='list-customer'>
+  <view class='item cf' wx:for="{{list}}" wx:key="this">
+    <view class='fll'>用户账号： {{item.mobile}}</view>
+    <view class='flr'>{{item.created_at}}</view>
+  </view>
+  <view class='no-data'>没有更多信息了</view>
+</view>
