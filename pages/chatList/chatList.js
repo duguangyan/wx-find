@@ -93,8 +93,8 @@ Page({
     // this.getCacheMessage();
     let userId = wx.getStorageSync('userId');
     console.log('userId:' + userId);
-    app.globalData.socket = wx.connectSocket({  //im.yidap.com
-      url: 'wss://webapi.yidapi.com.cn/notice/socket?userId=' + userId +'&openType=1'
+    app.globalData.socket = wx.connectSocket({  //im.yidap.com webapi.yidapi.com.cn 
+      url: 'ws://192.168.11.113:9099/notice/socket?userId=' + userId +'&openType=1'
     });
     let _this = this;
     wx.onSocketClose((res) => {
@@ -313,6 +313,8 @@ Page({
   goChat(e) {
     let toUserId = e.currentTarget.dataset.id;
     let chatListIndex = e.currentTarget.dataset.index;
+    let fromUserPhoto = e.currentTarget.dataset.photo;
+    let userName = e.currentTarget.dataset.name;
     let oldArr = wx.getStorageSync('chatListIds') || [];
     if (oldArr.length>0){
       oldArr.forEach((o, i) => {
@@ -326,7 +328,7 @@ Page({
     
     wx.setStorageSync('chatListIds', oldArr);
     wx.navigateTo({
-      url: '../chat1/chat?toUserId=' + toUserId,
+      url: '../chat1/chat?toUserId=' + toUserId + '&fmUserName='+ userName + '&fromUserPhoto=' + fromUserPhoto,
     })
   }
 })

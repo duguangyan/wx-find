@@ -82,7 +82,7 @@ Page({
     //this.bindscrolltoupper1();
   },
   bindscroll (e) {
-    console.log(this.data.scrollLoading);
+    console.log('bindscroll',this.data.scrollLoading);
     var that = this;
     if (that.data.scrollLoading == 1) { //防止多次触发
       return false
@@ -138,7 +138,9 @@ Page({
     }else{
       this.data.toId = options.toUserId
     }
-    
+    wx.setNavigationBarTitle({
+      title: options.fmUserName,
+    })
     // IMapi.getPhotoByIM({
     //   method:'POST',
     //   data:{
@@ -148,7 +150,8 @@ Page({
     //   
     // })
     this.setData({
-      toId:this.data.toId
+      toId: this.data.toId,
+      fromUserPhoto: options.fromUserPhoto ? options.fromUserPhoto : 'https://ossyidap.oss-cn-shenzhen.aliyuncs.com/image/png/9EAFE4BFEFDDF762718332C8F1BE9F2C.png'
     })
   
   },
@@ -176,7 +179,7 @@ Page({
     userInfoId = md5.md5(userInfoId);
     
     // im.yidap.com webapi.yidapi.com.cn
-    let url = 'wss://webapi.yidapi.com.cn/notice/socket?userId=' + userId + '&toUserId=' + this.data.toId + '&openType=1&sms=' + this.data.sms;
+    let url = 'ws://192.168.11.113:9099/notice/socket?userId=' + userId + '&toUserId=' + this.data.toId + '&openType=1&sms=' + this.data.sms;
     console.log('连接用户ID：' + this.data.toId);
     console.log(url);
     app.globalData.socket = wx.connectSocket({
@@ -224,8 +227,9 @@ Page({
                 fromUserPhoto: o.form_user_photo,
                 smsType: o.sms_type,
                 smsStatus: o.sms_status,
-                fromUserPhoto: 'https://ossyidap.oss-cn-shenzhen.aliyuncs.com/image/png/9EAFE4BFEFDDF762718332C8F1BE9F2C.png',
-                toUserPhoto: avatar_path
+                fromUserPhoto: _this.data.fromUserPhoto,
+                toUserPhoto: avatar_path,
+                timeInterval: o.time_interval
               }
                arr.push(obj);
 
@@ -279,7 +283,7 @@ Page({
           
           let o = JSON.parse(res.data);
           if (o.userInfoId == userInfoId) {
-            o.fromUserPhoto = 'https://ossyidap.oss-cn-shenzhen.aliyuncs.com/image/png/9EAFE4BFEFDDF762718332C8F1BE9F2C.png';
+            o.fromUserPhoto = _this.data.fromUserPhoto;
             o.createTime = util.formatDate(o.createTime)
             _this.data.EventData.push(o);
           }
@@ -287,8 +291,7 @@ Page({
           _this.setData({
             EventData: _this.data.EventData
           })
-          _this.scrollToBottom();
-
+          _this.scrollToBottom();  
         }
         
         if (_this.data.currentPage <= 2) {
@@ -363,7 +366,7 @@ Page({
     
     let userInfoId = fromUserId < toUserId ?( fromUserId.toString() + toUserId.toString() ): ( toUserId.toString() + fromUserId.toString() );
 
-    let message = { fromUserId, toUserId, userInfoId, content, createTime, smsType: 'TEXT', sysType: 1, smsStatus: 0, toUserPhoto: avatar_path, fromUserPhoto: 'https://ossyidap.oss-cn-shenzhen.aliyuncs.com/image/png/9EAFE4BFEFDDF762718332C8F1BE9F2C.png', smsList: false, currentPage: '', pageSize: '' }
+    let message = { fromUserId, toUserId, userInfoId, content, createTime, smsType: 'TEXT', sysType: 1, smsStatus: 1, toUserPhoto: avatar_path, fromUserPhoto: _this.data.fromUserPhoto, smsList: false, currentPage: '', pageSize: '' }
     wx.sendSocketMessage({ 
       data: JSON.stringify(message) ,
       success(){
@@ -539,7 +542,7 @@ Page({
             let toUserId    = this.data.toId;
             let userInfoId  = fromUserId < toUserId ? (fromUserId.toString() + toUserId.toString()) : (toUserId.toString() + fromUserId.toString());
             let content     = res.data;
-            let message = { fromUserId, toUserId, userInfoId, content, createTime, smsType: 'IMAGE', sysType: 1, smsStatus: 0, toUserPhoto: avatar_path, fromUserPhoto: 'https://ossyidap.oss-cn-shenzhen.aliyuncs.com/image/png/9EAFE4BFEFDDF762718332C8F1BE9F2C.png', smsList: false, currentPage: '', pageSize: '' }
+            let message = { fromUserId, toUserId, userInfoId, content, createTime, smsType: 'IMAGE', sysType: 1, smsStatus: 1, toUserPhoto: avatar_path, fromUserPhoto: _this.data.fromUserPhoto, smsList: false, currentPage: '', pageSize: '' }
 
             var EventData  = _this.data.EventData ;
             
@@ -559,9 +562,6 @@ Page({
                 _this.onShow();
               }
             })
-    
-            
-            
           } else {
             util.errorTips('上传错误');
           }
@@ -578,7 +578,7 @@ Page({
     setTimeout(() => {
       this.scrollToBottom();
       wx.hideLoading();
-    }, 500)
+    }, 300)
   },
   scrollToBottom: function () {
     this.setData({

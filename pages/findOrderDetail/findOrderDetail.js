@@ -1,5 +1,6 @@
 const api = require('../../utils/api.js');
 const util = require('../../utils/util.js');
+const IMapi = require('../../utils/IMapi.js');
 Page({
 
     /**
@@ -397,9 +398,20 @@ Page({
       })
     },
     goChat(e){
-      let id = e.currentTarget.dataset.id;
-      wx.navigateTo({
-        url: '../chat1/chat?id=' + id
+      IMapi.getUserInfoformSocket({
+        method: 'POST',
+        data: {
+          'userId': e.currentTarget.dataset.id
+        }
+      }).then(res => {
+        if (res.code == 0) {
+          let id = e.currentTarget.dataset.id;
+          let fromUserPhoto = res.data.avatar_path;
+          let userName = res.data.nick_name || res.data.user_name;
+          wx.navigateTo({
+            url: '../chat1/chat?id=' + id + '&fmUserName=' + userName + '&fromUserPhoto=' + fromUserPhoto,
+          })
+        }
       })
     },
     urgeOrder(e) {
