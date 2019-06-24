@@ -1,4 +1,4 @@
-<view>11</view>
+
 <!-- <wxs src="../../utils/filter.wxs" module="filter" />
 <view>
 {{filter.formatMoney('11111111')}}
