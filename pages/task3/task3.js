@@ -91,7 +91,7 @@ Page({
       } else {
         if (!this.data.fetchsCheckAll) {
           cancelCheckFetchsIds = [];
-          this.data.finds.forEach((v, i) => {
+          this.data.fetchs.forEach((v, i) => {
             cancelCheckFetchsIds.push(this.data.fetchs[i].id);
           })
         } else {

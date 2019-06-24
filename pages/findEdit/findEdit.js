@@ -196,7 +196,7 @@ Page({
         data.timestamp = timestamp;
         data.sign = util.MakeSign('/api/upload', data);
         data.deviceId = "wx";
-        data.platformType = "1";
+        data.platformType = "2";
         data.versionCode = '4.0';
         data.type = 'big';
         // 上传图片，返回链接地址跟id,返回进度对象
@@ -632,8 +632,9 @@ Page({
         })
         return false;
       }
+      this.data.addFinds[0].address_id = this.data.addFinds[0].address.id; 
     }
-    this.data.addFinds[0].address_id = this.data.addFinds[0].address.id; 
+    
 
     let taskData = {
       "id": this.data.addFinds[0].id,

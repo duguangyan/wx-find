@@ -101,7 +101,7 @@ Component({
                     data.timestamp = timestamp;
                     data.sign = util.MakeSign('/api/upload', data);
                     data.deviceId = "wx";
-                    data.platformType = "1";
+                    data.platformType = "2";
                     data.versionCode = '4.0';
                    
                       // 上传图片，返回链接地址跟id,返回进度对象

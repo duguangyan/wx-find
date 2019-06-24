@@ -75,7 +75,7 @@ Page({
     data.timestamp = timestamp;
     data.sign = util.MakeSign('/api/upload', data);
     data.deviceId = "wx";
-    data.platformType = "1";
+    data.platformType = "2";
     data.versionCode = '4.0';
     let index  = i;
     wx.uploadFile({
