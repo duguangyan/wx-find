@@ -94,7 +94,7 @@ Page({
     let userId = wx.getStorageSync('userId');
     console.log('userId:' + userId);
     app.globalData.socket = wx.connectSocket({  //im.yidap.com webapi.yidapi.com.cn 
-      url: 'ws://192.168.11.113:9099/notice/socket?userId=' + userId +'&openType=1'
+      url: 'wss://webapi.yidapi.com.cn/notice/socket?userId=' + userId +'&openType=1'
     });
     let _this = this;
     wx.onSocketClose((res) => {
