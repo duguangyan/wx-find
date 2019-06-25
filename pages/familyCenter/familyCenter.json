@@ -1,4 +1,6 @@
 {
-  "usingComponents": {},
-  "navigationBarTitleText": "小鹿家人"
+  "navigationBarTitleText": "小鹿家人",
+  "usingComponents": {
+    "dialog": "../../component/dialog/dialog"
+  }
 }

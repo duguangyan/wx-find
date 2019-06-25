@@ -3,7 +3,12 @@
   background: #fff;
   padding-top: 20rpx;
 }
-
+.family-view{
+  height: 100rpx;
+}
+.wx-dialog-content{
+   height: 100rpx;
+}
 .family-center .top{
   width:710rpx;
   height:360rpx;

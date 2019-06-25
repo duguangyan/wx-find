@@ -1,18 +1,21 @@
 // pages/familyCenter/familyCenter.js
 const api = require('../../utils/api.js');
+const util = require('../../utils/util.js');
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
+    dialogTitle: '绑定小鹿家人',  
     avatar_path:'https://ossyidap.oss-cn-shenzhen.aliyuncs.com/image/png/9EAFE4BFEFDDF762718332C8F1BE9F2C.png',
     topData:[
       { t: '累计客户', n: '0' },
       { t: '累计订单', n: '0' },
       { t: '累计收益(元)',n:'0'},
     ],
-    profit: 2583868686.96
+    profit: 2583868686.96,
+    inputValue:''
   },
 
   /**
@@ -147,5 +150,48 @@ Page({
         })
       }
     })
+  },
+  // 绑定小鹿家人
+  doFamily() {
+    let _this = this;
+    api.inviteCodeRecommend({}).then((res) => {
+      if (res.code == 0 || res.code == 200) {
+        if (res.data.status == 0) {
+          util.errorTips(res.data.msg);
+        } else if (res.data.status == 1) {
+          util.errorTips(res.data.data.mobile + ' ：绑定成功！');
+        }
+
+      } else if (res.code == 1) {
+        this.indexDialog = this.selectComponent('#indexDialog');
+        this.indexDialog.showDialog();
+      }
+    }).catch((res) => {
+      this.indexDialog = this.selectComponent('#indexDialog');
+      this.indexDialog.showDialog();
+    })
+
+
+  },
+  confirmEvent() {
+    api.inviteCodeRecommend({
+      method: 'POST',
+      data: {
+        mobile: this.data.inputValue
+      }
+    }).then((res) => {
+      if (res.code == 0 || res.code == 200) {
+        if (res.data.status == 0) {
+          util.errorTips(res.data.msg);
+        } else if (res.data.status == 1) {
+          util.errorTips(res.data.data.mobile + ' ：绑定成功！');
+        }
+        this.indexDialog.hideDialog();
+      }
+    })
+  },
+  getInputValue(e) {
+    this.data.inputValue = e.detail.value;
   }
+  
 })

@@ -6,6 +6,7 @@ Page({
   /**
    * 页面的初始数据
    */
+  
   data: {
     isStarShow:false, // 初始化评价评语
     isUrgeOrder:false, // 催单弹窗
@@ -432,47 +433,7 @@ Page({
     
     
   },
-  // 确认收货
-  affirmOrder (e) {
-
-    let id = e.target.dataset.id;
-    let index = e.target.dataset.index;
-    let _this = this;
-    
-
-
-    wx.showModal({
-      title: '提示',
-      content: '确认收货吗?',
-      success: function (res) {
-        if (res.confirm) {
-          console.log('用户点击确定');
-
-          api.affirmOrder({
-            method: 'POST',
-            data:{id}
-          }).then((res) => {
-            console.log(res);
-            if (res.code == 200 || res.code == 0) {
-              _this.data.findList[index].can_confirm = 0;
-              _this.setData({
-                findList: _this.data.findList
-              })
-              wx.showToast({
-                title: '收货成功！',
-                icon: 'none',
-                duration: 2000
-              })
-            }
-          })
-          console.log('确认收货');
-
-        } else if (res.cancel) {
-          console.log('用户点击取消')
-        }
-      }
-    })
-  },
+   
   // 去找料详情
   goFindDetail (e) {
     console.log('去详情页');

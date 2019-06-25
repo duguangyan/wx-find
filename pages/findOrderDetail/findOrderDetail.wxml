@@ -97,7 +97,7 @@
             
           </view>
           <view class='lh50 text-999' style='word-break:break-all;'>
-            {{itemObj.get_address.consignee||''}} / {{itemObj.get_address.moonbile||''}}
+            {{itemObj.get_address.consignee||''}} / {{itemObj.get_address.mobile||''}}
           </view>
           <view class='lh50 text-999' style='word-break:break-all;'>
             {{itemObj.get_address.stall||''}}

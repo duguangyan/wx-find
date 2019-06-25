@@ -1,6 +1,6 @@
  const apiUrl = 'https://devv2.yidap.com';   // 测试
 // const apiUrl = 'https://apiv2.yidap.com';     // 正式
-const versionNumber = 'v3.1.2';  //版本号
+const versionNumber = 'v3.1.3';  //版本号
 import md5 from "./md5.min.js";
 if (apiUrl == 'https://apiv2.yidap.com'){
   wx.setStorageSync('v', versionNumber+' 正式');

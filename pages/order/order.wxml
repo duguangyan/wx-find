@@ -6,7 +6,7 @@
   <view class='box-shadow order-header'>
     <view class='order-nav fs30 lh90 border-bottom'>
       <text bindtap='checkNav' data-index='1' class="{{orderNavNum==1?'nav-active':'order-text'}}">找料订单</text>
-      <text bindtap='checkNav' data-index='2' class="{{orderNavNum==2?'nav-active':'order-text'}}">取料订单</text>
+      <text bindtap='checkNav' data-index='2' class="{{orderNavNum==2?'nav-active':'order-text'}}">取送订单</text>
     </view>
     <view class='order-nav order-child-nav fs30 lh90' wx:if="{{orderNavNum==1}}">
       <text bindtap='checkChildNav' data-index='0' class="{{orderChildNavNum==0?'nav-child-active':''}}">全部</text>

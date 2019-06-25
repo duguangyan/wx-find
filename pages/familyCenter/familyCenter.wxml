@@ -43,5 +43,25 @@
     </view>
   </view>
   
+ <view class='item'>
+    <view class="navigator-box section-order">
+      <button class="navigator-text fs30 pdl-30" bindtap='doFamily'
+      style="background-color:#fff;border:none;height:115rpx;line-height:115rpx;text-align:left;">
+      绑定小鹿家人
+      <text class="fs24 text-666 mgr-30 flr"></text>
+      </button>
+      <view class="navigator-arrow"></view>
+    </view>
+  </view>
+  <!-- <view class='btn-shadow lh115 pdl-30 bg-white radius-10 mgt-20' bindtap='doFamily'>
+     <image class='setting-icon-3' src='../../public/images/icon/center-protect-icon.png'></image>绑定小鹿家人 
+    <text class='iconfont icon-jiantou flr pdr-20'></text>
+  </view> -->
 
 </view>
+
+
+<dialog id="indexDialog" title="{{dialogTitle}}" bind:confirmEvent="confirmEvent">
+  <view class='family-view'><input bindinput="getInputValue"  placeholder='请输入绑定手机号码'></input></view>
+  
+</dialog>
