@@ -13,7 +13,6 @@ const md5 = require('../../utils/md5.js');
 var app = getApp();
 Page({
   data: {
-    aa: '',
     isFalse:false,
     inputShowed:false,
     isConfirmHold:true,

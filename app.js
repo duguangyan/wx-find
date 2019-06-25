@@ -55,7 +55,6 @@ App({
     //     }
     //   }
     // });
-    
   },
   globalData: {
     userInfo: null,
