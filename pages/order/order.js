@@ -112,7 +112,41 @@ Page({
       this.getList(this.data.orderNavNum, this.data.orderChildNavNum); 
     }
   },
- 
+  // 确认收货
+  affirmOrder(e) {
+    let index = e.target.dataset.index;
+    let id = e.target.dataset.id;
+    let _this = this;
+    wx.showModal({
+      title: '提示',
+      content: '确认收货吗?',
+      success: function (res) {
+        if (res.confirm) {
+          console.log('用户点击确定');
+          api.affirmOrder({
+            method: 'POST',
+            data: {
+              id
+            }
+          }).then((res) => {
+            console.log(res);
+            if (res.code == 200 || res.code == 0) {
+              _this.$data.orderList[index].can_confirm = 0;
+              util.successTips('收货成功！');
+            } else {
+              util.errorTips(res.msg);
+            }
+          }).catch((res) => {
+            util.errorTips(res.msg || res.message);
+          })
+          console.log('确认收货');
+
+        } else if (res.cancel) {
+          console.log('用户点击取消')
+        }
+      }
+    })
+  },
   lower: function (e) {
     console.log('下拉')
     
